@@ -1,0 +1,5 @@
+2007-12-03  Bastien Nocera  <hadess@hadess.net>
+
+	* *: Moved from Totem, export mini plparser
+	for use in the browser plugin (Closes: #462153)
+
