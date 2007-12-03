@@ -1,5 +1,10 @@
 2007-12-03  Bastien Nocera  <hadess@hadess.net>
 
+	* MAINTAINERS: add
+	* plparse/stamp-totem-pl-parser-builtins.h: Remove this built item
+
+2007-12-03  Bastien Nocera  <hadess@hadess.net>
+
 	* *: Moved from Totem, export mini plparser
 	for use in the browser plugin (Closes: #462153)
 
