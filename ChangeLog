@@ -1,3 +1,15 @@
+============ Version 2.21.4
+
+2007-12-03  Bastien Nocera  <hadess@hadess.net>
+
+	* Makefile.am:
+	* configure.in: 2.21.4
+
+	* totem-plparser-mini-uninstalled.pc.in:
+	* totem-plparser-mini.pc.in:
+	* totem-plparser-uninstalled.pc.in:
+	* totem-plparser.pc.in: Update includes to new location
+
 2007-12-03  Bastien Nocera  <hadess@hadess.net>
 
 	* MAINTAINERS: add
