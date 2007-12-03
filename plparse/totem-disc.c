@@ -310,8 +310,6 @@ cd_cache_new (const char *dev,
   cache->ctx = ctx;
 #endif
 
-  g_free (device);
-
   return cache;
 }
 

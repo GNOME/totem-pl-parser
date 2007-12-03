@@ -1,3 +1,12 @@
+2007-12-03  Bastien Nocera  <hadess@hadess.net>
+
+	* AUTHORS: added
+	* README: added
+	(Closes: #501314)
+
+	* plparse/totem-disc.c: (cd_cache_new), (cd_cache_has_medium):
+	Fix double-free due to overzealous free (Closes: #501120)
+
 ============ Version 2.21.4
 
 2007-12-03  Bastien Nocera  <hadess@hadess.net>
