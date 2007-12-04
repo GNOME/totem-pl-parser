@@ -5,10 +5,10 @@ includedir=@includedir@
 gconf_serverdir=@libexecdir@
 
 
-Name: totem-plparser
-Description: Totem Playlist Parser library
+Name: totem-plparser-mini
+Description: Totem Playlist Parser library, mini version
 Version: @VERSION@
 Requires: gtk+-2.0
 Requires.private: libxml-2.0 gnome-vfs-2.0 gnome-vfs-module-2.0
-Libs: -L${libdir} -ltotem-plparser
+Libs: -L${libdir} -ltotem-plparser-mini
 Cflags: -I${includedir}/totem-pl-parser/1/plparser

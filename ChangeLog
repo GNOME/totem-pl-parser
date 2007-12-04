@@ -1,3 +1,13 @@
+2007-12-04  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/Makefile.am: add soname info to
+	the mini lib
+	* plparse/plparser-mini.symbols: only export
+	the needed functions
+	* totem-plparser-mini-uninstalled.pc.in:
+	* totem-plparser-mini.pc.in: Fix library linkage,
+	we want -mini, not the full library
+
 2007-12-03  Bastien Nocera  <hadess@hadess.net>
 
 	* configure.in: Add missing DBUS_REQS

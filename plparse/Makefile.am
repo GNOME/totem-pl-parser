@@ -155,8 +155,10 @@ libtotem_plparser_mini_la_CFLAGS = \
 libtotem_plparser_mini_la_LIBADD = \
 	$(TOTEM_PLPARSER_MINI_LIBS)
 
-libtotem_plparser_mini_la_LDFLAGS = \
-	-no-undefined	\
+libtotem_plparser_mini_la_LDFLAGS =			\
+	-version-info $(PLPARSER_LT_VERSION)		\
+	-export-symbols $(srcdir)/plparser-mini.symbols	\
+	-no-undefined					\
 	$(AM_LDFLAGS)
 
 totem-pl-parser-builtins.h: stamp-totem-pl-parser-builtins.h
@@ -192,4 +194,5 @@ CLEANFILES = \
 EXTRA_DIST =				\
 	totemplparser-marshal.list	\
 	totem-pl-parser-features.h.in	\
-	plparser.symbols
+	plparser.symbols		\
+	plparser-mini.symbols
