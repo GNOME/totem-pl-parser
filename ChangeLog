@@ -1,5 +1,12 @@
 2007-12-04  Bastien Nocera  <hadess@hadess.net>
 
+	* totem-plparser-mini-uninstalled.pc.in:
+	* totem-plparser-mini.pc.in: Remove some
+	unneeded dependencies from the pkgconfig
+	files for the mini library
+
+2007-12-04  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/Makefile.am: add soname info to
 	the mini lib
 	* plparse/plparser-mini.symbols: only export
