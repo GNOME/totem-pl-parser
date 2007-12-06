@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+2.21.6:
+* Fix the library not detecting HAL
+* Fix contents of totem-pl-parser-mini.pc
+
 2.21.5:
 * Fix a double-free crasher
 
