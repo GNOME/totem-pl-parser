@@ -1,3 +1,14 @@
+2007-12-10  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c: (totem_pl_parser_might_be_file),
+	(totem_pl_parser_resolve_url), (totem_pl_parser_ignore),
+	(totem_pl_parser_ignore_from_mimetype),
+	(totem_pl_parser_parse_internal),
+	(totem_pl_parser_can_parse_from_data):
+	Work-around file-to-file relative links resolution, as appearing
+	in broken redirects on the Apple Trailers page
+	* plparse/test-parser.c: (test_resolve): add test
+
 ============ Version 2.21.6
 
 2007-12-06  Bastien Nocera  <hadess@hadess.net>

@@ -101,6 +101,7 @@ test_resolve (void)
 	test_resolve_real ("file:///home/hadess/Movies", "Movies/mymovie.mov", "file:///home/hadess/Movies/Movies/mymovie.mov");
 	test_resolve_real ("http://localhost/video.dir/video.mpg?param1=foo&param2=bar", "dir/image.jpg", "http://localhost/video.dir/dir/image.jpg");
 	test_resolve_real ("http://movies.apple.com/movies/us/apple/ipoditunes/2007/touch/features/apple_ipodtouch_safari_r640-9cie.mov", "/movies/us/apple/ipoditunes/2007/touch/features/apple_ipodtouch_safari_i320x180.m4v", "http://movies.apple.com/movies/us/apple/ipoditunes/2007/touch/features/apple_ipodtouch_safari_i320x180.m4v");
+	test_resolve_real ("http://movies.apple.com/movies/fox/jumper/jumper-tlrd_h.480.mov", "jumper-tlrd_h480.mov", "http://movies.apple.com/movies/fox/jumper/jumper-tlrd_h480.mov");
 }
 
 static void

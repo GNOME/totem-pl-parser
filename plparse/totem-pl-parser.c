@@ -893,6 +893,18 @@ totem_pl_parser_remove_filename (const char *url)
 	return no_file;
 }
 
+static gboolean
+totem_pl_parser_might_be_file (const char *url)
+{
+	const char *mimetype;
+
+	mimetype = gnome_vfs_get_mime_type_for_name (url);
+	g_message ("mimetype %s", mimetype);
+	if (mimetype == NULL || strcmp (mimetype, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0)
+		return FALSE;
+	return TRUE;
+}
+
 char *
 totem_pl_parser_resolve_url (const char *base, const char *url)
 {
@@ -911,7 +923,13 @@ totem_pl_parser_resolve_url (const char *base, const char *url)
 
 	/* gnome_vfs_uri_append_path is trying to be clever and
 	 * merges paths that look like they're the same */
-	if (url[0] != '/') {
+	if (totem_pl_parser_might_be_file (base) != FALSE) {
+		GnomeVFSURI *new;
+		
+		new = gnome_vfs_uri_new (base_no_frag);
+		base_uri = gnome_vfs_uri_get_parent (new);
+		gnome_vfs_uri_unref (new);
+	} else if (url[0] != '/') {
 		char *newbase = g_strdup_printf ("%s/", base_no_frag);
 		base_uri = gnome_vfs_uri_new (newbase);
 		g_free (newbase);
