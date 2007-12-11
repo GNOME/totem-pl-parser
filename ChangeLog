@@ -1,5 +1,11 @@
 2007-12-11  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser.c: (totem_pl_parser_is_iso8601_date),
+	(totem_pl_parser_parse_date): Add work-around for GLib
+	bug #503029
+
+2007-12-11  Bastien Nocera  <hadess@hadess.net>
+
 	* configure.in: Update requirements
 
 	* plparse/test-parser.c: (entry_metadata_foreach),

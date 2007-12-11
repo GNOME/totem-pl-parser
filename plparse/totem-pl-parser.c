@@ -1331,17 +1331,32 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 	return -1;
 }
 
+/* FIXME remove when http://bugzilla.gnome.org/show_bug.cgi?id=503029
+ * is fixed */
+static gboolean
+totem_pl_parser_is_iso8601_date (const char *date_str)
+{
+	while (g_ascii_isspace (*date_str))
+		date_str++;
+	if (*date_str == '\0')
+		return FALSE;
+	if (!g_ascii_isdigit (*date_str))
+		return FALSE;
+
+	return TRUE;
+}
+
 guint64
 totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 {
 	GTimeVal val;
-	guint64 res;
 
 	g_return_val_if_fail (date_str != NULL, -1);
 
 	memset (&val, 0, sizeof(val));
 	/* Try to parse as an ISO8601/RFC3339 date */
-	if (g_time_val_from_iso8601 (date_str, &val) != FALSE) {
+	if (totem_pl_parser_is_iso8601_date (date_str) != FALSE
+	    && g_time_val_from_iso8601 (date_str, &val) != FALSE) {
 		D(g_message ("Parsed duration '%s' using the ISO8601 parser", date_str));
 		return val.tv_sec;
 	}
