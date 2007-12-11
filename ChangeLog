@@ -1,3 +1,18 @@
+2007-12-11  Bastien Nocera  <hadess@hadess.net>
+
+	* configure.in: 
+	* totem-plparser-uninstalled.pc.in:
+	* totem-plparser.pc.in: Depend on camel to parse RFC 2822 date
+	strings (as used in RSS feeds), use GLib to parse RFC 3339/ISO 8601
+	dates (as used in Atom feeds)
+
+	* plparse/test-parser.c: (test_date_real), (test_date), (main):
+	Add tests for a few RSS and Atom date parsing
+	* plparse/totem-pl-parser.c: (totem_pl_parser_parse_date): use
+	Camel and GLib for date parsing
+
+	(Closes: #379932)
+
 2007-12-10  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c: (totem_pl_parser_might_be_file),

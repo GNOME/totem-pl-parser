@@ -32,9 +32,6 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#define _XOPEN_SOURCE
-#include <time.h>
-
 #include <string.h>
 #include <glib.h>
 #include <glib/gi18n-lib.h>
@@ -46,6 +43,7 @@
 #include <libgnomevfs/gnome-vfs.h>
 #include <libgnomevfs/gnome-vfs-mime.h>
 #include <libgnomevfs/gnome-vfs-utils.h>
+#include <camel/camel-mime-utils.h>
 
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
@@ -899,7 +897,6 @@ totem_pl_parser_might_be_file (const char *url)
 	const char *mimetype;
 
 	mimetype = gnome_vfs_get_mime_type_for_name (url);
-	g_message ("mimetype %s", mimetype);
 	if (mimetype == NULL || strcmp (mimetype, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0)
 		return FALSE;
 	return TRUE;
@@ -1344,103 +1341,17 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 guint64
 totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 {
-	struct tm tm;
-	char *result;
+	GTimeVal val;
 
-	/* RFC 2822 date format */
-	result = strptime (date_str, "%a, %d %b %Y %T", &tm);
+	g_return_val_if_fail (date_str != NULL, -1);
 
-	/* same as above, but without comma */
-	if (result == NULL) {
-		memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%a %d %b %Y %T", &tm);
+	/* Try to parse as an ISO8601/RFC3339 date */
+	if (g_time_val_from_iso8601 (date_str, &val) != FALSE) {
+		D(g_message ("Parsed duration '%s' using the ISO8601 parser", date_str));
+		return val.tv_sec;
 	}
 
-	/* close-to-RFC 2822, but with extra 0 */
-	if (result == NULL) {
-		memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%a, %d %b %Y 0%T", &tm);
-	}
-
-	/* close-to-RFC 2822, but with no seconds */
-	if (result == NULL) {
-		memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%a, %d %b %Y %R", &tm);
-	}
-
-	/* format without weekday */
-	if (result == NULL) {
-		memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%d %b %Y %T", &tm);
-	}
-
-	/* reversed day and long month */
-	if (result == NULL) {
-		memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%a, %B %d %Y %T", &tm);
-	}
-
-	/* ISO date like */
-	if (result == NULL) {
-		memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%Y-%m-%d %T", &tm);
-	}
-
-	/* ISO date like without timezone */
-	if (result == NULL) {
-	memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%Y-%m-%d", &tm);
-	}
-
-	/* Broken weekday short names */
-	if (result == NULL) {
-		char *tmp;
-
-		/* strip off the erroneous weekday */
-		tmp = strstr (date_str, ",");
-		if (tmp != NULL) {
-			tmp++;
-			memset (&tm, 0, sizeof (struct tm));
-			result = strptime (tmp, "%d %b %Y %T", &tm);
-		}
-	}
-
-	/* format with timezone offset from GMT */
-	if (result == NULL) {
-		memset (&tm, 0, sizeof (struct tm));
-		result = strptime (date_str, "%a %b %d %T %z %Y", &tm);
-	}
-
-	/* format with timezone name */
-	if (result == NULL) {
-		char *tmp;
-
-		memset (&tm, 0, sizeof (struct tm));
-
-		/* match first part of time string */
-		result = strptime (date_str, "%a %b %d %T ", &tm);
-
-		/* look for anything with a timezone name-like format
-		   i.e. at least one all caps alphabetical character */
-		if (result != NULL) {
-			size_t n;
-
-			n = strspn(result, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-			tmp = result+n;
-
-			/* make sure there was at least one character that matched */
-			if ((tmp != NULL) && n > 0)
-				/* remaining part must be the year */
-				result = strptime (tmp, "%Y", &tm);
-			else
-				result = NULL;
-		}
-	}
-
-	if (result == NULL)
-		D(g_message ("Couldn't parse date '%s'\n", date_str));
-
-	return (guint64) ((result == NULL) ? 0 : mktime (&tm));
+	return camel_header_decode_date (date_str, NULL);
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

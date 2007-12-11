@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 #include <libgnomevfs/gnome-vfs.h>
 
 #include "totem-pl-parser.h"
@@ -126,6 +127,47 @@ test_duration (void)
 	test_duration_real ("00:00:00.01", 1);
 	test_duration_real ("01:00:01.01", 3601);
 	test_duration_real ("01:00.01", 60);
+}
+
+#define DATE_BUFSIZE 512
+#define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
+
+static void
+test_date_real (const char *date_str, guint64 expected)
+{
+	char res_str[DATE_BUFSIZE];
+	struct tm *tm;
+	guint64 res;
+
+	res = totem_pl_parser_parse_date (date_str, option_debug);
+
+	tm = gmtime ((time_t *) &res);
+	strftime ((char *) &res_str, DATE_BUFSIZE, PRINT_DATE_FORMAT, tm);
+
+	if (res != expected) {
+		char expected_str[DATE_BUFSIZE];
+
+		tm = gmtime ((time_t *) &expected);
+		strftime ((char *) &expected_str, DATE_BUFSIZE, PRINT_DATE_FORMAT, tm);
+
+		error ("Error parsing '%s' to %"G_GUINT64_FORMAT" (%s), got %"G_GUINT64_FORMAT" (%s)",
+		       date_str, expected, expected_str, res, res_str);
+	}
+	g_print ("Parsed '%s' to %"G_GINT64_FORMAT" (%s)\n",
+		 date_str, res, res_str);
+}
+
+static void
+test_date (void)
+{
+	header ("Date/Time string parsing");
+
+	/* RSS */
+	test_date_real ("28 Mar 2007 10:28:18 GMT", 1175077698);
+	test_date_real ("01 may 2007 12:34:19 GMT", 1178022859);
+	/* Atom */
+	test_date_real ("2003-12-13T18:30:02Z", 1071340202);
+	test_date_real ("1990-12-31T15:59:60-08:00", 662688000);
 }
 
 #define MAX_DESCRIPTION_LEN 128
@@ -415,6 +457,7 @@ int main (int argc, char **argv)
 	if (files == NULL) {
 		test_duration ();
 		test_resolve ();
+		test_date ();
 #if 0
 		test_relative ();
 #endif
