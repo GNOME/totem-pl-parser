@@ -2,9 +2,6 @@
    Copyright (C) 2002, 2003, 2004, 2005, 2006 Bastien Nocera
    Copyright (C) 2003, 2004 Colin Walters <walters@rhythmbox.org>
 
-   Copyright (C) 2005 Renato Araujo Oliveira Filho - INdT <renato.filho@indt.org.br>
-   for totem_pl_parser_parse_date ()
-
    The Gnome Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public License as
    published by the Free Software Foundation; either version 2 of the
@@ -22,10 +19,6 @@
 
    Authors: Bastien Nocera <hadess@hadess.net>
 
-            for totem_pl_parser_parse_date ():
-            James Livingston  <doclivingston@gmail.com>
-            William Jon McCann  <mccann@jhu.edu>
-            Renato Araujo Oliveira Filho - INdT <renato.filho@indt.org.br>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -1342,15 +1335,19 @@ guint64
 totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 {
 	GTimeVal val;
+	guint64 res;
 
 	g_return_val_if_fail (date_str != NULL, -1);
 
+	memset (&val, 0, sizeof(val));
 	/* Try to parse as an ISO8601/RFC3339 date */
 	if (g_time_val_from_iso8601 (date_str, &val) != FALSE) {
 		D(g_message ("Parsed duration '%s' using the ISO8601 parser", date_str));
 		return val.tv_sec;
 	}
+	D(g_message ("Failed to parse duration '%s' using the ISO8601 parser", date_str));
 
+	/* Fall back to RFC 2822 date parsing */
 	return camel_header_decode_date (date_str, NULL);
 }
 

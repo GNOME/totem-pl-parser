@@ -1,5 +1,21 @@
 2007-12-11  Bastien Nocera  <hadess@hadess.net>
 
+	* configure.in: Update requirements
+
+	* plparse/test-parser.c: (entry_metadata_foreach),
+	(test_data_get_data), (main): Special-case pub dates, and print
+	the original value, the parsed value, and a human-readable parsed
+	value
+
+	* plparse/totem-pl-parser.c: (totem_pl_parser_parse_date):
+	Add some more debug, and remove Rhythmbox people from the Copyright
+
+	* plparse/xmlparser.c: (xml_parser_init),
+	(xml_parser_get_node_internal): Ignore Byte Order Marks at the
+	beginning of XML files (Closes: #503031)
+
+2007-12-11  Bastien Nocera  <hadess@hadess.net>
+
 	* configure.in: 
 	* totem-plparser-uninstalled.pc.in:
 	* totem-plparser.pc.in: Depend on camel to parse RFC 2822 date

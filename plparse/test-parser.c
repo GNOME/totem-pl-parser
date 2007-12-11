@@ -190,6 +190,22 @@ entry_metadata_foreach (const char *key,
 	    	g_print ("\t%s = '%s' (truncated)\n", key, tmp);
 	    	return;
 	}
+	if (g_ascii_strcasecmp (key, TOTEM_PL_PARSER_FIELD_PUB_DATE) == 0) {
+		struct tm *tm;
+		guint64 res;
+		char res_str[DATE_BUFSIZE];
+
+		res = totem_pl_parser_parse_date (value, option_debug);
+		if (res != (guint64) -1) {
+			tm = gmtime ((time_t *) &res);
+			strftime ((char *) &res_str, DATE_BUFSIZE, PRINT_DATE_FORMAT, tm);
+
+			g_print ("\t%s = '%s' (%"G_GUINT64_FORMAT"/'%s')\n", key, res_str, res, value);
+		} else {
+			g_print ("\t%s = '%s' (date parsing failed)\n", key, value);
+		}
+		return;
+	}
 	g_print ("\t%s = '%s'\n", key, value);
 }
 

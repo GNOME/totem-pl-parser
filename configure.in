@@ -35,7 +35,6 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 
 # Requirements
 GLIB_REQS=2.13.4
-GTK_REQS=2.11.6
 GNOMEVFS_REQS=2.16.0
 DBUS_REQS=0.61
 
@@ -77,7 +76,7 @@ fi
 AM_CONDITIONAL(HAVE_HAL, test x"$enable_hal" = xyes)
 
 dnl Check for packages for building libtotem-plparser.la
-PKG_CHECK_MODULES(TOTEM_PLPARSER, [gtk+-2.0 libxml-2.0 gnome-vfs-2.0 gnome-vfs-module-2.0 camel-1.2])
+PKG_CHECK_MODULES(TOTEM_PLPARSER, [glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 gnome-vfs-2.0 >= $GNOMEVFS_REQS gnome-vfs-module-2.0 camel-1.2])
 
 PKG_CHECK_MODULES([TOTEM_PLPARSER_MINI], [gnome-vfs-2.0 gnome-vfs-module-2.0])
 

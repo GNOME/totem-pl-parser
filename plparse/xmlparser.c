@@ -107,8 +107,34 @@ static void free_xml_property(xml_property_t * property) {
 }
 
 void xml_parser_init(const char * buf, int size, int mode) {
+  int offset;
 
-  lexer_init(buf, size);
+  offset = 0;
+
+  /* Ignore Byte Mark Orders */
+  if (size > 4) {
+    /* UTF-32 Big Endian */
+    if ((buf[0] & 0xff) == 0x00 && (buf[1] & 0xff) == 0x00 && (buf[2] & 0xff) == 0xFE && (buf[3] & 0xff) == 0xFF)
+      offset = 4;
+    /* UTF-32 Little Endian */
+    else if ((buf[3] & 0xff) == 0x00 && (buf[2] & 0xff) == 0x00 && (buf[1] & 0xff) == 0xFE && (buf[0] & 0xff) == 0xFF)
+      offset = 4;
+  }
+  if (offset == 0 && size > 3) {
+    /* UTF-8 */
+    if ((buf[0] & 0xff) == 0xef && (buf[1] & 0xff) == 0xbb && (buf[2] & 0xff) == 0xbf)
+      offset = 3;
+  }
+  if (offset == 0 && size > 2) {
+    /* UTF-16  Big Endian */
+    if ((buf[0] & 0xff) == 0xfe && (buf[1] & 0xff) == 0xff)
+      offset = 2;
+    /* UTF-16 Little Endian */
+    else if ((buf[0] & 0xff) == 0xff && (buf[1] & 0xff) == 0xfe)
+      offset = 2;
+  }
+
+  lexer_init(buf + offset, size - offset);
   xml_parser_mode = mode;
 }
 
