@@ -15,11 +15,8 @@
  *
  * You should have received a copy of the GNU Library General Public
  * License along with the Gnome Library; see the file COPYING.LIB.  If not,
- * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- *
- *  $Id: xmllexer.c,v 1.13 2007/03/04 16:19:12 hadess Exp $
- *
+ * write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth
+ * Floor, Boston, MA 02110, USA
  */
 
 #define LOG_MODULE "xmllexer"
@@ -43,6 +40,8 @@
 #include <iconv.h>
 #endif
 
+#include "bswap.h"
+
 /* private constants*/
 
 /* private global variables */
@@ -50,6 +49,45 @@ static const char * lexbuf;
 static int lexbuf_size = 0;
 static int lexbuf_pos  = 0;
 static int in_comment  = 0;
+static char *lex_malloc = NULL;
+
+enum utf { UTF32BE, UTF32LE, UTF16BE, UTF16LE };
+
+static void lex_convert (const char * buf, int size, enum utf utf)
+{
+  char *utf8 = malloc (size * (utf >= UTF16BE ? 3 : 6) + 1);
+  char *bp = utf8;
+  while (size > 0)
+  {
+    uint32_t c = 0;
+    switch (utf)
+    {
+    case UTF32BE: c = _X_BE_32 (buf); buf += 4; break;
+    case UTF32LE: c = _X_LE_32 (buf); buf += 4; break;
+    case UTF16BE: c = _X_BE_16 (buf); buf += 2; break;
+    case UTF16LE: c = _X_LE_16 (buf); buf += 2; break;
+    }
+    if (!c)
+      break; /* embed a NUL, get a truncated string */
+    if (c < 128)
+      *bp++ = c;
+    else
+    {
+      int count = (c >= 0x04000000) ? 5 :
+		  (c >= 0x00200000) ? 4 :
+		  (c >= 0x00010000) ? 3 :
+		  (c >= 0x00000800) ? 2 : 1;
+      *bp = (char)(0x1F80 >> count);
+      count *= 6;
+      *bp++ |= c >> count;
+      while ((count -= 6) >= 0)
+	*bp++ = 128 | ((c >> count) & 0x3F);
+    }
+  }
+  *bp = 0;
+  lexbuf_size = bp - utf8;
+  lexbuf = lex_malloc = realloc (utf8, lexbuf_size + 1);
+}
 
 static enum {
   NORMAL,
@@ -58,8 +96,29 @@ static enum {
 } lex_mode = NORMAL;
 
 void lexer_init(const char * buf, int size) {
+  static const char boms[] = { 0xFF, 0xFE, 0, 0, 0xFE, 0xFF },
+		    bom_utf8[] = { 0xEF, 0xBB, 0xBF };
+
+  free (lex_malloc);
+  lex_malloc = NULL;
+
   lexbuf      = buf;
   lexbuf_size = size;
+
+  if (size >= 4 && !memcmp (buf, boms + 2, 4))
+    lex_convert (buf + 4, size - 4, UTF32BE);
+  else if (size >= 4 && !memcmp (buf, boms, 4))
+    lex_convert (buf + 4, size - 4, UTF32LE);
+  else if (size >= 3 && !memcmp (buf, bom_utf8, 3))
+  {
+    lexbuf += 3;
+    lexbuf_size -= 3;
+  }
+  else if (size >= 2 && !memcmp (buf, boms + 4, 2))
+    lex_convert (buf + 2, size - 2, UTF16BE);
+  else if (size >= 2 && !memcmp (buf, boms, 2))
+    lex_convert (buf + 2, size - 2, UTF16LE);
+
   lexbuf_pos  = 0;
   lex_mode    = NORMAL;
   in_comment  = 0;

@@ -1,3 +1,19 @@
+2007-12-17  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/xmllexer.c: (lex_convert), (lexer_init),
+	(lexer_get_token):
+	* plparse/xmllexer.h:
+	* plparse/xmlparser.c: (xml_parser_init),
+	(xml_parser_get_node_internal):
+	* plparse/xmlparser.h: Update from xine-lib-1.2, use the BOMs
+	in XML files to convert the data from unicode to UTF-8
+
+	* plparse/bswap.h: Added to allow compilation
+
+	* plparse/totem-pl-parser.c: (totem_pl_parser_is_iso8601_date),
+	(totem_pl_parser_can_parse_from_data): Add missing checks for
+	valid dates
+
 2007-12-11  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c: (totem_pl_parser_is_iso8601_date),

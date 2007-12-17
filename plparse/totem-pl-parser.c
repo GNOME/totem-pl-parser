@@ -1340,7 +1340,7 @@ totem_pl_parser_is_iso8601_date (const char *date_str)
 		date_str++;
 	if (*date_str == '\0')
 		return FALSE;
-	if (!g_ascii_isdigit (*date_str))
+	if (!g_ascii_isdigit (*date_str) || *date_str != '-' || *date_str != '+')
 		return FALSE;
 
 	return TRUE;
