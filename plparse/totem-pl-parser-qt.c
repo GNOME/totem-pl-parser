@@ -20,9 +20,7 @@
    Author: Bastien Nocera <hadess@hadess.net>
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif /* HAVE_CONFIG_H */
 
 #include <string.h>
 #include <glib.h>
@@ -39,6 +37,33 @@
 #include "totem-pl-parser-qt.h"
 #include "totem-pl-parser-smil.h"
 #include "totem-pl-parser-private.h"
+
+#define QT_NEEDLE "<?quicktime"
+
+gboolean
+totem_pl_parser_is_quicktime (const char *data, gsize len)
+{
+	if (len == 0)
+		return FALSE;
+	if (len > MIME_READ_CHUNK_SIZE)
+		len = MIME_READ_CHUNK_SIZE;
+
+	/* Check for RTSPtextRTSP Quicktime references */
+	if (len <= strlen ("RTSPtextRTSP://"))
+		return FALSE;
+	if (g_str_has_prefix (data, "RTSPtext") != FALSE
+			|| g_str_has_prefix (data, "rtsptext") != FALSE) {
+		return TRUE;
+	}
+	if (g_str_has_prefix (data, "SMILtext") != FALSE)
+		return TRUE;
+
+	if (memmem (QT_NEEDLE, strlen (QT_NEEDLE),
+		    data, len) != NULL)
+		return TRUE;
+
+	return FALSE;
+}
 
 #ifndef TOTEM_PL_PARSER_MINI
 
@@ -181,40 +206,4 @@ totem_pl_parser_add_quicktime (TotemPlParser *parser, const char *url,
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */
-
-gboolean
-totem_pl_parser_is_quicktime (const char *data, gsize len)
-{
-	char *buffer;
-
-	if (len == 0)
-		return FALSE;
-	if (len > MIME_READ_CHUNK_SIZE)
-		len = MIME_READ_CHUNK_SIZE;
-
-	/* Check for RTSPtextRTSP Quicktime references */
-	if (len <= strlen ("RTSPtextRTSP://"))
-		return FALSE;
-	if (g_str_has_prefix (data, "RTSPtext") != FALSE
-			|| g_str_has_prefix (data, "rtsptext") != FALSE) {
-		return TRUE;
-	}
-	if (g_str_has_prefix (data, "SMILtext") != FALSE)
-		return TRUE;
-
-	/* FIXME would be nicer to have an strnstr */
-	buffer = g_memdup (data, len);
-	if (buffer == NULL) {
-		g_warning ("Couldn't dup data in totem_pl_parser_is_quicktime");
-		return FALSE;
-	}
-	buffer[len - 1] = '\0';
-	if (strstr (buffer, "<?quicktime") != NULL) {
-		g_free (buffer);
-		return TRUE;
-	}
-	g_free (buffer);
-	return FALSE;
-}
-
 

@@ -19,9 +19,7 @@
    Author: Bastien Nocera <hadess@hadess.net>
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif /* HAVE_CONFIG_H */
 
 #include <string.h>
 #include <glib.h>
@@ -43,78 +41,52 @@
 #include "totem-pl-parser-podcast.h"
 #include "totem-pl-parser-private.h"
 
+#define RSS_NEEDLE "<rss "
+#define ATOM_NEEDLE "<feed "
+#define OPML_NEEDLE "<opml "
+
 gboolean
 totem_pl_parser_is_rss (const char *data, gsize len)
 {
-	char *buffer;
-
 	if (len == 0)
 		return FALSE;
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
-	/* FIXME would be nicer to have an strnstr */
-	buffer = g_memdup (data, len);
-	if (buffer == NULL) {
-		g_warning ("Couldn't dup data in totem_pl_parser_is_rss");
-		return FALSE;
-	}
-	buffer[len - 1] = '\0';
-	if (strstr (buffer, "<rss ") != NULL) {
-		g_free (buffer);
+	if (memmem (RSS_NEEDLE, strlen (RSS_NEEDLE),
+		    data, len) != NULL)
 		return TRUE;
-	}
-	g_free (buffer);
+
 	return FALSE;
 }
 
 gboolean
 totem_pl_parser_is_atom (const char *data, gsize len)
 {
-	char *buffer;
-
 	if (len == 0)
 		return FALSE;
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
-	/* FIXME would be nicer to have an strnstr */
-	buffer = g_memdup (data, len);
-	if (buffer == NULL) {
-		g_warning ("Couldn't dup data in totem_pl_parser_is_atom");
-		return FALSE;
-	}
-	buffer[len - 1] = '\0';
-	if (strstr (buffer, "<feed ") != NULL) {
-		g_free (buffer);
+	if (memmem (ATOM_NEEDLE, strlen (ATOM_NEEDLE),
+		    data, len) != NULL)
 		return TRUE;
-	}
-	g_free (buffer);
+
 	return FALSE;
 }
 
 gboolean
 totem_pl_parser_is_opml (const char *data, gsize len)
 {
-	char *buffer;
-
 	if (len == 0)
 		return FALSE;
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
-	/* FIXME would be nicer to have an strnstr */
-	buffer = g_memdup (data, len);
-	if (buffer == NULL) {
-		g_warning ("Couldn't dup data in totem_pl_parser_is_opml");
-		return FALSE;
-	}
-	buffer[len - 1] = '\0';
-	if (strstr (buffer, "<opml ") != NULL) {
-		g_free (buffer);
+	if (memmem (OPML_NEEDLE, strlen (OPML_NEEDLE),
+		    data, len) != NULL)
 		return TRUE;
-	}
-	g_free (buffer);
+
 	return FALSE;
 }
 

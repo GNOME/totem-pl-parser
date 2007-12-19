@@ -4,6 +4,7 @@ test_parser_SOURCES = test-parser.c
 
 test_parser_CPPFLAGS = \
 	-I$(top_srcdir)			\
+	-I$(top_srcdir)/lib		\
 	-I$(top_builddir)/src/plparser	\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"\
 	$(DISABLE_DEPRECATED)		\
@@ -142,6 +143,7 @@ libtotem_plparser_mini_la_SOURCES =		\
 
 libtotem_plparser_mini_la_CPPFLAGS = \
 	-I$(top_srcdir)			\
+	-I$(top_srcdir)/lib		\
 	-I$(top_builddir)/src/plparser	\
 	-DTOTEM_PL_PARSER_MINI		\
 	$(DISABLE_DEPRECATED)		\

@@ -1,3 +1,19 @@
+2007-12-19  Bastien Nocera  <hadess@hadess.net>
+
+	* configure.in:
+	* lib/Makefile.am:
+	* lib/memmem.c:
+	* lib/totem_internal.h: Add internal BSD version of memmem
+
+	* plparse/totem-pl-parser-podcast.c: (totem_pl_parser_is_rss),
+	(totem_pl_parser_is_atom), (totem_pl_parser_is_opml):
+	* plparse/totem-pl-parser-wm.c: (totem_pl_parser_is_asx),
+	(totem_pl_parser_is_asf):
+	* plparse/totem-pl-parser-qt.c: (totem_pl_parser_is_quicktime):
+	Use memmem instead of copying the buffers before checking them
+
+	* plparse/*.c: Remove conditional config.h include
+
 2007-12-17  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/xmllexer.c: (lex_convert), (lexer_init),

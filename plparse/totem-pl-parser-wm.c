@@ -20,9 +20,7 @@
    Author: Bastien Nocera <hadess@hadess.net>
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif /* HAVE_CONFIG_H */
 
 #include <string.h>
 #include <glib.h>
@@ -43,6 +41,43 @@
 #include "totem-pl-parser-wm.h"
 #include "totem-pl-parser-lines.h"
 #include "totem-pl-parser-private.h"
+
+#define ASX_NEEDLE "<ASX"
+#define ASX_NEEDLE2 "<asx"
+
+gboolean
+totem_pl_parser_is_asx (const char *data, gsize len)
+{
+	if (len == 0)
+		return FALSE;
+
+	if (len > MIME_READ_CHUNK_SIZE)
+		len = MIME_READ_CHUNK_SIZE;
+
+	if (memmem (ASX_NEEDLE, strlen (ASX_NEEDLE),
+		    data, len) != NULL)
+		return TRUE;
+	if (memmem (ASX_NEEDLE2, strlen (ASX_NEEDLE2),
+		    data, len) != NULL)
+		return TRUE;
+
+	return FALSE;
+}
+
+gboolean
+totem_pl_parser_is_asf (const char *data, gsize len)
+{
+	if (len == 0)
+		return FALSE;
+
+	if (g_str_has_prefix (data, "[Reference]") != FALSE
+			|| g_str_has_prefix (data, "ASF ") != FALSE
+			|| g_str_has_prefix (data, "[Address]") != FALSE) {
+		return TRUE;
+	}
+
+	return totem_pl_parser_is_asx (data, len);
+}
 
 #ifndef TOTEM_PL_PARSER_MINI
 
@@ -396,50 +431,4 @@ totem_pl_parser_add_asf (TotemPlParser *parser, const char *url,
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */
-
-gboolean
-totem_pl_parser_is_asx (const char *data, gsize len)
-{
-	char *buffer;
-
-	if (len == 0)
-		return FALSE;
-
-	if (g_ascii_strncasecmp (data, "<ASX", strlen ("<ASX")) == 0)
-		return TRUE;
-
-	if (len > MIME_READ_CHUNK_SIZE)
-		len = MIME_READ_CHUNK_SIZE;
-
-	/* FIXME would be nicer to have an strnstr */
-	buffer = g_memdup (data, len);
-	if (buffer == NULL) {
-		g_warning ("Couldn't dup data in totem_pl_parser_is_asx");
-		return FALSE;
-	}
-	buffer[len - 1] = '\0';
-	if (strstr (buffer, "<ASX") != NULL
-			|| strstr (buffer, "<asx") != NULL) {
-		g_free (buffer);
-		return TRUE;
-	}
-	g_free (buffer);
-
-	return FALSE;
-}
-
-gboolean
-totem_pl_parser_is_asf (const char *data, gsize len)
-{
-	if (len == 0)
-		return FALSE;
-
-	if (g_str_has_prefix (data, "[Reference]") != FALSE
-			|| g_str_has_prefix (data, "ASF ") != FALSE
-			|| g_str_has_prefix (data, "[Address]") != FALSE) {
-		return TRUE;
-	}
-
-	return totem_pl_parser_is_asx (data, len);
-}
 

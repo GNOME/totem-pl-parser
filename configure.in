@@ -10,6 +10,7 @@ AC_INIT([totem-pl-parser],
 
 AC_CONFIG_SRCDIR([plparse/totem-pl-parser.c])
 AC_CONFIG_HEADERS([config.h])
+AC_GNU_SOURCE
 
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 no-dist-gzip check-news subdir-objects])
 
@@ -25,10 +26,10 @@ AM_PROG_CC_C_O
 AC_PROG_LIBTOOL()
 PKG_PROG_PKG_CONFIG
 
-dnl Use local version of asprintf when not on the current system.
-AC_CHECK_FUNCS(asprintf)
+dnl Use local version of asprintf/memmem when not on the current system.
+AC_CHECK_FUNCS(asprintf memmem)
 AC_CONFIG_LIBOBJ_DIR([lib])
-AC_REPLACE_FUNCS([asprintf])
+AC_REPLACE_FUNCS([asprintf memmem])
 
 AC_PATH_PROG([GLIB_GENMARSHAL],[glib-genmarshal])
 AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])

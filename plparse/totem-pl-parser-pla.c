@@ -19,9 +19,7 @@
    Author: Jonathan Matthew <jonathan@kaolin.wh9.net>
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif /* HAVE_CONFIG_H */
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <string.h>

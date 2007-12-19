@@ -24,6 +24,7 @@
 #define TOTEM_PL_PARSER_PRIVATE_H
 
 #include <glib.h>
+#include "totem_internal.h"
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
