@@ -1,3 +1,15 @@
+2007-12-28  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/plparser.symbols: Add totem_pl_parser_relative to the
+	list of symbols to export, for the benefit of the parser test
+	program, this symbol isn't available in the headers
+	* plparse/test-parser.c: (test_relative_real), (test_relative),
+	(main): Re-add the relative path test, add 2 new tests
+	* plparse/totem-pl-parser.c: (totem_pl_parser_relative):
+	Fix problems with "overlapping" paths that aren't related
+	(ie. when the base for the output file contains the path to
+	 the media file) (Closes: #505906)
+
 2007-12-19  Bastien Nocera  <hadess@hadess.net>
 
 	* configure.in:

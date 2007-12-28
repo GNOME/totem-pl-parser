@@ -36,47 +36,66 @@ header (const char *message)
 
 #define error(x...) { g_warning (x); exit(1); }
 
-#if 0
 static void
-test_relative_real (const char *url, const char *output)
+test_relative_real (const char *url, const char *output, const char *expected)
 {
-	char *base, *dos;
+	char *base;
 
-	g_print ("url: %s\n", url);
-	g_print ("output: %s\n", output);
 	base = totem_pl_parser_relative (url, output);
-	if (base) {
-		g_print ("relative path: %s\n", base);
-	} else {
-		g_print ("no relative path\n");
+	if (base == NULL && expected == NULL) {
+		g_print ("Relative: '%s' with output '%s' has no relative path\n",
+			 url, output);
+		return;
 	}
-	dos = totem_pl_parser_url_to_dos (url, output);
-	g_print ("DOS path: %s\n", dos);
-	g_print ("\n");
 
-	g_free (base);
-	g_free (dos);
+	if ((base != NULL && expected == NULL)
+	    || (base == NULL && expected != NULL)
+	    || (strcmp (base, expected) != 0)) {
+	    	if (base == NULL) {
+			error ("Relative: '%s' with output '%s' got no relative path (expected '%s')",
+			       url, output, expected);
+		} else {
+			error ("Relative: '%s' with output '%s' got '%s' (expected '%s')",
+			       url, output, base, expected ? expected : "none");
+			g_free (base);
+		}
+		return;
+	}
+
+	g_print ("Relative: '%s' with output '%s' got '%s'\n", url, output, base);
+
+#if 0
+	{
+		char *dos;
+		dos = totem_pl_parser_url_to_dos (url, output);
+		g_print ("DOS path: %s\n", dos);
+		g_print ("\n");
+		g_free (dos);
+	}
+#endif
 }
 
 static void
 test_relative (void)
 {
-	header ("relative");
+	header ("Relative paths for playlist saving feature");
 
 	test_relative_real ("/home/hadess/test/test file.avi",
-			"/home/hadess/foobar.m3u");
+			    "/home/hadess/foobar.m3u", "test/test file.avi");
 	test_relative_real ("file:///home/hadess/test/test%20file.avi",
-			"/home/hadess/whatever.m3u");
+			    "/home/hadess/whatever.m3u", "test/test file.avi");
 	test_relative_real ("smb://server/share/file.mp3",
-			"/home/hadess/whatever again.m3u");
+			    "/home/hadess/whatever again.m3u", NULL);
 	test_relative_real ("smb://server/share/file.mp3",
-			"smb://server/share/file.m3u");
+			    "smb://server/share/file.m3u", "file.mp3");
 	test_relative_real ("/home/hadess/test.avi",
-			"/home/hadess/test/file.m3u");
+			    "/home/hadess/test/file.m3u", NULL);
 	test_relative_real ("http://foobar.com/test.avi",
-			"/home/hadess/test/file.m3u");
+			    "/home/hadess/test/file.m3u", NULL);
+	test_relative_real ("file:///home/jan.old.old/myfile.avi",
+			    "file:///home/jan/myplaylist.m3u", NULL);
+	test_relative_real ("/1", "/test", "1");
 }
-#endif
 
 static void
 test_resolve_real (const char *base, const char *url, const char *expected)
@@ -473,10 +492,8 @@ int main (int argc, char **argv)
 	if (files == NULL) {
 		test_duration ();
 		test_resolve ();
-		test_date ();
-#if 0
 		test_relative ();
-#endif
+		test_date ();
 		test_parsing ();
 	} else {
 		if (option_data) {

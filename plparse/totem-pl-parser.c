@@ -495,15 +495,19 @@ totem_pl_parser_relative (const char *url, const char *output)
 		if (newurl[strlen (output_base)] == '/') {
 			base = g_strdup (newurl + strlen (output_base) + 1);
 		} else {
-			base = g_strdup (newurl + strlen (output_base));
+			/* Special case when the output and file are at the root */
+			if (strchr (newurl + strlen (output_base), '/') == NULL)
+				base = g_strdup (newurl + strlen (output_base));
 		}
 		gnome_vfs_uri_unref (uri);
 		g_free (newurl);
 
-		/* And finally unescape the string */
-		newurl = gnome_vfs_unescape_string (base, NULL);
-		g_free (base);
-		base = newurl;
+		if (base != NULL) {
+			/* And finally unescape the string */
+			newurl = gnome_vfs_unescape_string (base, NULL);
+			g_free (base);
+			base = newurl;
+		}
 	}
 
 	g_free (url_base);
