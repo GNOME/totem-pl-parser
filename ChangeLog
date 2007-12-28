@@ -1,5 +1,10 @@
 2007-12-28  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser.c: (totem_pl_parser_is_iso8601_date):
+	Fix work-around for GLib bug #503029, the test was broken
+
+2007-12-28  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/plparser.symbols: Add totem_pl_parser_relative to the
 	list of symbols to export, for the benefit of the parser test
 	program, this symbol isn't available in the headers
