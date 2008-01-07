@@ -1,3 +1,11 @@
+============ Version 2.21.90
+
+2008-01-07  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.21.90
+	* plparse/Makefile.am: Fix distcheck
+
 2007-12-28  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c: (totem_pl_parser_is_iso8601_date):

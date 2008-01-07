@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.21.90:
+* Depend on Camel and newer glibs to parse dates from Atom and RSS feeds
+* Handle Byte-Order-Marks in Podcasts
+* Fix for redirections on Apple's trailer pages
+* Fix relative links when two paths have the same prefix
+* Don't copy buffers when checking for file types
+
 2.21.6:
 * Fix the library not detecting HAL
 * Fix contents of totem-pl-parser-mini.pc

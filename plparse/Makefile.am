@@ -5,7 +5,7 @@ test_parser_SOURCES = test-parser.c
 test_parser_CPPFLAGS = \
 	-I$(top_srcdir)			\
 	-I$(top_srcdir)/lib		\
-	-I$(top_builddir)/src/plparser	\
+	-I$(top_builddir)/plparse	\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"\
 	$(DISABLE_DEPRECATED)		\
 	$(AM_CPPFLAGS)
@@ -90,12 +90,13 @@ libtotem_plparser_la_SOURCES =			\
 	totem-pl-parser-xspf.c			\
 	totem-pl-parser-xspf.h			\
 	xmlparser.h xmlparser.c			\
-	xmllexer.h xmllexer.c
+	xmllexer.h xmllexer.c			\
+	bswap.h
 
 libtotem_plparser_la_CPPFLAGS = \
 	-I$(top_srcdir)				\
 	-I$(top_srcdir)/lib			\
-	-I$(top_builddir)/src/plparser		\
+	-I$(top_builddir)/plparse		\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"\
 	$(DISABLE_DEPRECATED)			\
 	$(AM_CPPFLAGS)
@@ -144,7 +145,7 @@ libtotem_plparser_mini_la_SOURCES =		\
 libtotem_plparser_mini_la_CPPFLAGS = \
 	-I$(top_srcdir)			\
 	-I$(top_srcdir)/lib		\
-	-I$(top_builddir)/src/plparser	\
+	-I$(top_builddir)/plparse	\
 	-DTOTEM_PL_PARSER_MINI		\
 	$(DISABLE_DEPRECATED)		\
 	$(AM_CPPFLAGS)
