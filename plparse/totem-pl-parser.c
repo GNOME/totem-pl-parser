@@ -161,7 +161,14 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 							       FALSE,
 							       G_PARAM_READWRITE));
 
-	/* Signals */
+	/**
+	 * TotemPlParser::entry-parsed:
+	 * @parser: the object which received the signal
+	 * @uri: the URI of the entry parsed
+	 * @metadata: a #GHashTable of metadata relating to the entry added
+	 *
+	 * The ::entry-parsed signal is emitted when a new entry is parsed.
+	 */
 	totem_pl_parser_table_signals[ENTRY_PARSED] =
 		g_signal_new ("entry-parsed",
 			      G_TYPE_FROM_CLASS (klass),
@@ -170,6 +177,18 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      NULL, NULL,
 			      totemplparser_marshal_VOID__STRING_POINTER,
 			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_POINTER);
+	/**
+	 * TotemPlParser::playlist-started:
+	 * @parser: the object which received the signal
+	 * @uri: the URI of the new playlist started
+	 * @metadata: a #GHashTable of metadata relating to the playlist that
+	 * started.
+	 *
+	 * The ::playlist-started signal is emitted when a playlist parsing has
+	 * started. This signal isn't emitted for all types of playlists, but
+	 * can be relied on to be called for playlists which support playlist
+	 * metadata, such as title.
+	 */
 	totem_pl_parser_table_signals[PLAYLIST_STARTED] =
 		g_signal_new ("playlist-started",
 			      G_TYPE_FROM_CLASS (klass),
@@ -178,6 +197,15 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      NULL, NULL,
 			      totemplparser_marshal_VOID__STRING_POINTER,
 			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_POINTER);
+	/**
+	 * TotemPlParser::playlist-ended:
+	 * @parser: the object which received the signal
+	 * @uri: the URI of the playlist that finished parsing.
+	 *
+	 * The ::playlist-ended signal is emitted when a playlist is finished
+	 * parsing. It is only called when #TotemPlParser::playlist-started
+	 * has been called for that playlist.
+	 */
 	totem_pl_parser_table_signals[PLAYLIST_ENDED] =
 		g_signal_new ("playlist-ended",
 			      G_TYPE_FROM_CLASS (klass),
@@ -265,6 +293,13 @@ totem_pl_parser_init_i18n (void)
 	}
 }
 
+/**
+ * totem_pl_parser_new
+ *
+ * Creates a #TotemPlParser object.
+ *
+ * Return value: a new #TotemPlParser
+ */
 TotemPlParser *
 totem_pl_parser_new (void)
 {
