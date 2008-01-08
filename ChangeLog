@@ -1,5 +1,13 @@
 2008-01-08  Bastien Nocera  <hadess@hadess.net>
 
+	* Makefile.am:
+	* configure.in:
+	* docs/reference/MODULE.types:
+	* docs/reference/Makefile.am: Add the beginnings of gtk-doc
+	support
+
+2008-01-08  Bastien Nocera  <hadess@hadess.net>
+
 	* configure.in: Fix HAL test, spotted by Saleem Abdulrasool
 	<compnerd@compnerd.org> (Closes: #507980)
 

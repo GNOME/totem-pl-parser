@@ -1,0 +1,3 @@
+#include <totem-pl-parser.h>
+
+totem_pl_parser_get_type

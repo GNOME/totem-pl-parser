@@ -102,6 +102,8 @@ AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_CXXFLAGS])
 AC_SUBST([AM_LDFLAGS])
 
+GTK_DOC_CHECK(1.0)
+
 AC_OUTPUT([
 Makefile
 totem-plparser.pc
@@ -112,6 +114,8 @@ lib/Makefile
 plparse/Makefile
 plparse/totem-pl-parser-features.h
 po/Makefile.in
+docs/Makefile
+docs/reference/Makefile
 ])
 
 AC_MSG_NOTICE([totem-pl-parser was configured with the following options:])
