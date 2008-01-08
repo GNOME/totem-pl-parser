@@ -1,5 +1,9 @@
 2008-01-08  Bastien Nocera  <hadess@hadess.net>
 
+	* docs/Makefile.am: Add missing file
+
+2008-01-08  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser.c: Add docs for _new() and the signals
 
 2008-01-08  Bastien Nocera  <hadess@hadess.net>
