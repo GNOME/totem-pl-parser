@@ -109,26 +109,55 @@ enum {
 };
 
 static int totem_pl_parser_table_signals[LAST_SIGNAL];
+static GParamSpecPool *totem_pl_parser_pspec_pool = NULL;
 static gboolean i18n_done = FALSE;
 
-static void totem_pl_parser_class_init (TotemPlParserClass *class);
-static void totem_pl_parser_init       (TotemPlParser      *parser);
+static void totem_pl_parser_class_init (TotemPlParserClass *klass);
+static void totem_pl_parser_base_class_finalize	(TotemPlParserClass *klass);
+static void totem_pl_parser_init       (TotemPlParser *parser);
 static void totem_pl_parser_finalize   (GObject *object);
 
-G_DEFINE_TYPE(TotemPlParser, totem_pl_parser, G_TYPE_OBJECT)
+static void totem_pl_parser_init       (TotemPlParser      *self);
+static void totem_pl_parser_class_init (TotemPlParserClass *klass);
+static gpointer totem_pl_parser_parent_class = NULL;
+
+GType
+totem_pl_parser_get_type (void)
+{
+	static volatile gsize g_define_type_id__volatile = 0;
+	if (g_once_init_enter (&g_define_type_id__volatile))
+	{
+		const GTypeInfo g_define_type_info = {
+			sizeof (TotemPlParserClass),
+			NULL,
+			(GBaseFinalizeFunc) totem_pl_parser_base_class_finalize,
+			(GClassInitFunc) totem_pl_parser_class_init,
+			NULL,
+			NULL,
+			sizeof (TotemPlParser),
+			0,
+			(GInstanceInitFunc) totem_pl_parser_init,
+		};
+		GType g_define_type_id = g_type_register_static (G_TYPE_OBJECT, "TotemPlParser", &g_define_type_info, 0); 
+		g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+	} 
+	return g_define_type_id__volatile; 
+}
 
 static void
 totem_pl_parser_class_init (TotemPlParserClass *klass)
 {
+	GParamSpec *pspec;
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+	totem_pl_parser_parent_class = g_type_class_peek_parent (klass);
 	g_type_class_add_private (klass, sizeof (TotemPlParserPrivate));
 
 	object_class->finalize = totem_pl_parser_finalize;
 	object_class->set_property = totem_pl_parser_set_property;
 	object_class->get_property = totem_pl_parser_get_property;
 
-	/* properties */
+	/* Properties */
 	g_object_class_install_property (object_class,
 					 PROP_RECURSE,
 					 g_param_spec_boolean ("recurse",
@@ -214,6 +243,113 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__STRING,
 			      G_TYPE_NONE, 1, G_TYPE_STRING);
+
+	/* param specs */
+	totem_pl_parser_pspec_pool = g_param_spec_pool_new (FALSE);
+	pspec = g_param_spec_string ("url", "url",
+				     "URL to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("title", "title",
+				     "Title of the item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("author", "author",
+				     "Author of the item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("genre", "genre",
+				     "Genre of the item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("base", "base",
+				     "Base URL of the item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("volume", "volume",
+				     "Default playback volume (in percents)", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("autoplay", "autoplay",
+				     "Whether or not to autoplay the stream", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("duration", "duration",
+				     "String representing the duration of the entry, used for still images", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("starttime", "starttime",
+				     "String representing the start time of the stream (initial seek)", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("copyright", "copyright",
+				     "Copyright of the item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("abstract", "abstract",
+				     "Abstract of the item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("moreinfo", "moreinfo",
+				     "URL to get more information for item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("screensize", "screensize",
+				     "String representing the default movie size (double, full or original)", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("ui-mode", "ui-mode",
+				     "String representing the default UI mode (only compact is supported)", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("endtime", "endtime",
+				     "String representing the end time of the stream", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_boolean ("is-playlist", "is-playlist",
+				      "Boolean saying whether the entry pushed is the top-level of a playlist", FALSE,
+				      G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("description", "description",
+				     "String representing the description of the stream", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("publication-date", "publication-date",
+				     "String representing the publication date of the stream", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("filesize", "filesize",
+				     "String representing the filesize of a file", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("language", "language",
+				     "String representing the language of a stream", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("contact", "contact",
+				     "String representing the contact for a playlist", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("image-url", "image-url",
+				     "String representing the location of an image for a playlist", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+}
+
+static void
+totem_pl_parser_base_class_finalize (TotemPlParserClass *klass)
+{
+	GList *list, *node;
+
+	list = g_param_spec_pool_list_owned (totem_pl_parser_pspec_pool, G_OBJECT_CLASS_TYPE (klass));
+	for (node = list; node; node = node->next)
+	{
+		GParamSpec *pspec = node->data;
+
+		g_param_spec_pool_remove (totem_pl_parser_pspec_pool, pspec);
+		g_param_spec_unref (pspec);
+	}
+	g_list_free (list);
 }
 
 static void
@@ -676,98 +812,7 @@ totem_pl_parser_read_ini_line_string (char **lines, const char *key, gboolean do
 static void
 totem_pl_parser_init (TotemPlParser *parser)
 {
-	GParamSpec *pspec;
 	parser->priv = G_TYPE_INSTANCE_GET_PRIVATE (parser, TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate);
-
-	parser->priv->pspec_pool = g_param_spec_pool_new (FALSE);
-	pspec = g_param_spec_string ("url", "url",
-				     "URL to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("title", "title",
-				     "Title of the item to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("author", "author",
-				     "Author of the item to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("genre", "genre",
-				     "Genre of the item to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("base", "base",
-				     "Base URL of the item to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("volume", "volume",
-				     "Default playback volume (in percents)", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("autoplay", "autoplay",
-				     "Whether or not to autoplay the stream", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("duration", "duration",
-				     "String representing the duration of the entry, used for still images", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("starttime", "starttime",
-				     "String representing the start time of the stream (initial seek)", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("copyright", "copyright",
-				     "Copyright of the item to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("abstract", "abstract",
-				     "Abstract of the item to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("moreinfo", "moreinfo",
-				     "URL to get more information for item to be added", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("screensize", "screensize",
-				     "String representing the default movie size (double, full or original)", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("ui-mode", "ui-mode",
-				     "String representing the default UI mode (only compact is supported)", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("endtime", "endtime",
-				     "String representing the end time of the stream", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_boolean ("is-playlist", "is-playlist",
-				      "Boolean saying whether the entry pushed is the top-level of a playlist", FALSE,
-				      G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("description", "description",
-				     "String representing the description of the stream", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("publication-date", "publication-date",
-				     "String representing the publication date of the stream", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("filesize", "filesize",
-				     "String representing the filesize of a file", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("language", "language",
-				     "String representing the language of a stream", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("contact", "contact",
-				     "String representing the contact for a playlist", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
-	pspec = g_param_spec_string ("image-url", "image-url",
-				     "String representing the location of an image for a playlist", NULL,
-				     G_PARAM_READABLE & G_PARAM_WRITABLE);
-	g_param_spec_pool_insert (parser->priv->pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 }
 
 static void
@@ -811,7 +856,7 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 		char *error = NULL;
 		const char *string;
 
-		pspec = g_param_spec_pool_lookup (parser->priv->pspec_pool,
+		pspec = g_param_spec_pool_lookup (totem_pl_parser_pspec_pool,
 						  name,
 						  G_OBJECT_TYPE (parser),
 						  FALSE);

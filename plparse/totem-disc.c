@@ -342,6 +342,9 @@ cd_cache_has_medium (CdCache *cache)
   if (devices != NULL && num_devices >= 1)
     retval = TRUE;
 
+  if (devices != NULL)
+    libhal_free_string_array (devices);
+
   if (dbus_error_is_set (&error)) {
     g_warning ("Error getting the children: %s", error.message);
     dbus_error_free (&error);
@@ -372,9 +375,6 @@ cd_cache_has_medium (CdCache *cache)
   } else {
     g_free (udi);
   }
-
-  if (devices != NULL)
-    libhal_free_string_array (devices);
 
   return retval;
 }

@@ -1,3 +1,14 @@
+2008-01-09  Philip Withnall  <pwithnall@svn.gnome.org>
+
+	* plparse/totem-disc.c: (cd_cache_has_medium):
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser.c: (totem_pl_parser_get_type),
+	(totem_pl_parser_class_init),
+	(totem_pl_parser_base_class_finalize), (totem_pl_parser_init),
+	(totem_pl_parser_add_url_valist): Make the property spec pool
+	static, and only instantiate it once (on base class init),
+	rather than every time a PlParser is initted. (Closes: #507909)
+
 2008-01-09  Bastien Nocera  <hadess@hadess.net>
 
 	* lib/memmem.c: The private function should be called

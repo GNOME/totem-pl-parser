@@ -40,9 +40,7 @@ struct TotemPlParserPrivate
 {
 	GList *ignore_schemes;
 	GList *ignore_mimetypes;
-#ifndef TOTEM_PL_PARSER_MINI
-	GParamSpecPool *pspec_pool;
-#endif
+
 	guint recurse_level;
 	guint fallback : 1;
 	guint recurse : 1;
