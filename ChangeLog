@@ -7,7 +7,8 @@
 	(totem_pl_parser_base_class_finalize), (totem_pl_parser_init),
 	(totem_pl_parser_add_url_valist): Make the property spec pool
 	static, and only instantiate it once (on base class init),
-	rather than every time a PlParser is initted. (Closes: #507909)
+	rather than every time a PlParser is initted. Also,
+	fix a small memory leak in totem-disc.c. (Closes: #507909)
 
 2008-01-09  Bastien Nocera  <hadess@hadess.net>
 
