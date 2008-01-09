@@ -1,3 +1,10 @@
+2008-01-09  Bastien Nocera  <hadess@hadess.net>
+
+	* lib/memmem.c: The private function should be called
+	totem_private_memmem, not memmem
+	* plparse/Makefile.am: Link the mini library to the glibc
+	replacement functions as well
+
 2008-01-08  Bastien Nocera  <hadess@hadess.net>
 
 	* docs/Makefile.am: Add missing file

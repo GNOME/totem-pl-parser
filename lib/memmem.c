@@ -50,7 +50,7 @@
  * Boyer R.S., Moore J.S. 1977, "A fast string searching algorithm",
  * Communications of ACM. 20:762-772.
  */
-void *memmem(s, slen, p, plen)
+void *totem_private_memmem(s, slen, p, plen)
 register const void *s, *p;
 size_t slen, plen;
 {

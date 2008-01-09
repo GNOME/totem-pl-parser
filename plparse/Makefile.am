@@ -155,8 +155,9 @@ libtotem_plparser_mini_la_CFLAGS = \
 	$(WARN_CFLAGS)			\
 	$(AM_CFLAGS)
 
-libtotem_plparser_mini_la_LIBADD = \
-	$(TOTEM_PLPARSER_MINI_LIBS)
+libtotem_plparser_mini_la_LIBADD =		\
+	$(TOTEM_PLPARSER_MINI_LIBS)		\
+	$(top_builddir)/lib/libtotem_glibc.la
 
 libtotem_plparser_mini_la_LDFLAGS =			\
 	-version-info $(PLPARSER_LT_VERSION)		\
