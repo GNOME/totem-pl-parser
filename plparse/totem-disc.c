@@ -27,6 +27,16 @@
  *
  */
 
+/**
+ * SECTION:totem-disc
+ * @short_description: disc utility functions
+ * @stability: Stable
+ * @include: totem-disc.h
+ *
+ * This file has various different disc utility functions for getting
+ * the media types and labels of discs.
+ **/
+
 #include "config.h"
 
 #include <fcntl.h>
@@ -685,6 +695,17 @@ cd_cache_disc_is_dvd (CdCache *cache,
   return MEDIA_TYPE_DATA;
 }
 
+/**
+ * totem_cd_mrl_from_type:
+ * @scheme: a scheme (e.g. "dvd")
+ * @dir: a directory URI
+ *
+ * Builds an MRL using the scheme @scheme and the given URI @dir,
+ * taking the filename from the URI if it's a <filename>file://</filename> and just
+ * using the whole URI otherwise.
+ *
+ * Return value: a newly-allocated string containing the MRL
+ **/
 char *
 totem_cd_mrl_from_type (const char *scheme, const char *dir)
 {
@@ -720,6 +741,18 @@ totem_cd_dir_get_parent (const char *dir)
     return parent;
 }
 
+/**
+ * totem_cd_detect_type_from_dir:
+ * @dir: a directory URI
+ * @url: return location for the disc's MRL, or %NULL
+ * @error: return location for a #GError, or %NULL
+ *
+ * Detects the disc's type, given its mount directory URI. If
+ * a string pointer is passed to @url, it will return the disc's
+ * MRL as from totem_cd_mrl_from_type().
+ *
+ * Return value: #TotemDiscMediaType corresponding to the disc's type, or #MEDIA_TYPE_ERROR on failure
+ **/
 TotemDiscMediaType
 totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
 {
@@ -771,6 +804,18 @@ totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
   return type;
 }
 
+/**
+ * totem_cd_detect_type_with_url:
+ * @device: a device node path
+ * @url: return location for the disc's MRL, or %NULL
+ * @error: return location for a #GError, or %NULL
+ *
+ * Detects the disc's type, given its device node path. If
+ * a string pointer is passed to @url, it will return the disc's
+ * MRL as from totem_cd_mrl_from_type().
+ *
+ * Return value: #TotemDiscMediaType corresponding to the disc's type, or #MEDIA_TYPE_ERROR on failure
+ **/
 TotemDiscMediaType
 totem_cd_detect_type_with_url (const char *device,
     			       char      **url,
@@ -827,6 +872,15 @@ totem_cd_detect_type_with_url (const char *device,
   return type;
 }
 
+/**
+ * totem_cd_detect_type:
+ * @device: a device node path
+ * @error: return location for a #GError, or %NULL
+ *
+ * Detects the disc's type, given its device node path.
+ *
+ * Return value: #TotemDiscMediaType corresponding to the disc's type, or #MEDIA_TYPE_ERROR on failure
+ **/
 TotemDiscMediaType
 totem_cd_detect_type (const char  *device,
 		      GError     **error)
@@ -834,6 +888,14 @@ totem_cd_detect_type (const char  *device,
   return totem_cd_detect_type_with_url (device, NULL, error);
 }
 
+/**
+ * totem_cd_has_medium:
+ * @device: a device node path
+ *
+ * Returns whether the disc has a physical medium.
+ *
+ * Return value: %TRUE if the disc physically exists
+ **/
 gboolean
 totem_cd_has_medium (const char *device)
 {
@@ -849,6 +911,15 @@ totem_cd_has_medium (const char *device)
   return retval;
 }
 
+/**
+ * totem_cd_get_human_readable_name:
+ * @type: a #TotemDiscMediaType
+ *
+ * Returns the human-readable name for the given
+ * #TotemDiscMediaType.
+ *
+ * Return value: the disc media type's readable name, which must not be freed, or %NULL for unhandled media types
+ **/
 const char *
 totem_cd_get_human_readable_name (TotemDiscMediaType type)
 {

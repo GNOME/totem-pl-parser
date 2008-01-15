@@ -1,3 +1,20 @@
+2008-01-15  Philip Withnall  <pwithnall@svn.gnome.org>
+
+	* Makefile.am:
+	* configure.in:
+	* docs/reference/Makefile.am:
+	* docs/reference/totem-pl-parser-docs.sgml:
+	* docs/reference/totem-pl-parser-sections.txt:
+	* docs/reference/totem-pl-parser.types:
+	* docs/reference/version.xml.in:
+	* plparse/totem-disc.c:
+	* plparse/totem-disc.h:
+	* plparse/totem-pl-parser.c: (totem_pl_parser_class_init),
+	(totem_pl_parser_num_entries):
+	* plparse/totem-pl-parser.h: Add full documentation for all
+	public symbols exposed by the library, excluding code samples
+	for the playlist parser. (Helps: #507995)
+
 2008-01-09  Philip Withnall  <pwithnall@svn.gnome.org>
 
 	* plparse/totem-disc.c: (cd_cache_has_medium):

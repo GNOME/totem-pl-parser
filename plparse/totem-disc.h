@@ -26,8 +26,21 @@
 
 G_BEGIN_DECLS
 
+/**
+ * TotemDiscMediaType:
+ * @MEDIA_TYPE_ERROR: there was an error determining the media's type
+ * @MEDIA_TYPE_DATA: data disc
+ * @MEDIA_TYPE_CDDA: audio CD
+ * @MEDIA_TYPE_VCD: video CD
+ * @MEDIA_TYPE_DVD: video DVD
+ * @MEDIA_TYPE_DVB: digital television
+ * @MEDIA_TYPE_NUM_TYPES: the number of supported media types
+ *
+ * Gives the media type of a disc, or %MEDIA_TYPE_ERROR if the media type
+ * could not be determined.
+ **/
 typedef enum {
-  MEDIA_TYPE_ERROR = -1, /* error */
+  MEDIA_TYPE_ERROR = -1,
   MEDIA_TYPE_DATA = 1,
   MEDIA_TYPE_CDDA,
   MEDIA_TYPE_VCD,

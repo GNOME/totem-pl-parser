@@ -37,6 +37,15 @@ G_BEGIN_DECLS
 #define TOTEM_IS_PL_PARSER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TOTEM_TYPE_PL_PARSER))
 #define TOTEM_IS_PL_PARSER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TOTEM_TYPE_PL_PARSER))
 
+/**
+ * TotemPlParserResult:
+ * @TOTEM_PL_PARSER_RESULT_UNHANDLED: The playlist could not be handled.
+ * @TOTEM_PL_PARSER_RESULT_ERROR: There was an error parsing the playlist.
+ * @TOTEM_PL_PARSER_RESULT_SUCCESS: The playlist was parsed successfully.
+ * @TOTEM_PL_PARSER_RESULT_IGNORED: The playlist was ignored due to its scheme or MIME type (see totem_pl_parser_add_ignored_scheme() and totem_pl_parser_add_ignored_mimetype()).
+ *
+ * Gives the result of parsing a playlist.
+ **/
 typedef enum
 {
 	TOTEM_PL_PARSER_RESULT_UNHANDLED,
@@ -55,29 +64,146 @@ struct TotemPlParser {
 };
 
 /* Known metadata fields */
-#define TOTEM_PL_PARSER_FIELD_URL		"url"
-#define TOTEM_PL_PARSER_FIELD_GENRE		"genre"
-#define TOTEM_PL_PARSER_FIELD_TITLE		"title"
-#define TOTEM_PL_PARSER_FIELD_AUTHOR		"author"
-#define TOTEM_PL_PARSER_FIELD_BASE		"base"
-#define TOTEM_PL_PARSER_FIELD_VOLUME		"volume"
-#define TOTEM_PL_PARSER_FIELD_AUTOPLAY		"autoplay"
-#define TOTEM_PL_PARSER_FIELD_DURATION		"duration"
-#define TOTEM_PL_PARSER_FIELD_STARTTIME		"starttime"
-#define TOTEM_PL_PARSER_FIELD_ENDTIME		"endtime"
-#define TOTEM_PL_PARSER_FIELD_COPYRIGHT		"copyright"
-#define TOTEM_PL_PARSER_FIELD_ABSTRACT		"abstract"
-#define TOTEM_PL_PARSER_FIELD_DESCRIPTION	"description"
-#define TOTEM_PL_PARSER_FIELD_SUMMARY		TOTEM_PL_PARSER_FIELD_DESCRIPTION
-#define TOTEM_PL_PARSER_FIELD_MOREINFO		"moreinfo"
-#define TOTEM_PL_PARSER_FIELD_SCREENSIZE	"screensize"
-#define TOTEM_PL_PARSER_FIELD_UI_MODE		"ui-mode"
-#define TOTEM_PL_PARSER_FIELD_PUB_DATE		"publication-date"
-#define TOTEM_PL_PARSER_FIELD_FILESIZE		"filesize"
-#define TOTEM_PL_PARSER_FIELD_LANGUAGE		"language"
-#define TOTEM_PL_PARSER_FIELD_CONTACT		"contact"
-#define TOTEM_PL_PARSER_FIELD_IMAGE_URL		"image-url"
 
+/**
+ * TOTEM_PL_PARSER_FIELD_URL:
+ *
+ * Metadata field for an entry's URL.
+ **/
+#define TOTEM_PL_PARSER_FIELD_URL		"url"
+/**
+ * TOTEM_PL_PARSER_FIELD_GENRE:
+ *
+ * Metadata field for an entry's genre.
+ **/
+#define TOTEM_PL_PARSER_FIELD_GENRE		"genre"
+/**
+ * TOTEM_PL_PARSER_FIELD_TITLE:
+ *
+ * Metadata field for an entry's displayable title.
+ **/
+#define TOTEM_PL_PARSER_FIELD_TITLE		"title"
+/**
+ * TOTEM_PL_PARSER_FIELD_AUTHOR:
+ *
+ * Metadata field for an entry's author/composer/director.
+ **/
+#define TOTEM_PL_PARSER_FIELD_AUTHOR		"author"
+/**
+ * TOTEM_PL_PARSER_FIELD_BASE:
+ *
+ * Metadata field for an entry's base path.
+ **/
+#define TOTEM_PL_PARSER_FIELD_BASE		"base"
+/**
+ * TOTEM_PL_PARSER_FIELD_VOLUME:
+ *
+ * Metadata field for an entry's playback volume.
+ **/
+#define TOTEM_PL_PARSER_FIELD_VOLUME		"volume"
+/**
+ * TOTEM_PL_PARSER_FIELD_AUTOPLAY:
+ *
+ * Metadata field for an entry's "autoplay" flag, which is %TRUE if the entry should play automatically.
+ **/
+#define TOTEM_PL_PARSER_FIELD_AUTOPLAY		"autoplay"
+/**
+ * TOTEM_PL_PARSER_FIELD_DURATION:
+ *
+ * Metadata field for an entry's playback duration, which should be parsed using totem_pl_parser_parse_duration().
+ **/
+#define TOTEM_PL_PARSER_FIELD_DURATION		"duration"
+/**
+ * TOTEM_PL_PARSER_FIELD_STARTTIME:
+ *
+ * Metadata field for an entry's playback start time, which should be parsed using totem_pl_parser_parse_duration().
+ **/
+#define TOTEM_PL_PARSER_FIELD_STARTTIME		"starttime"
+/**
+ * TOTEM_PL_PARSER_FIELD_ENDTIME:
+ *
+ * Metadata field for an entry's playback end time.
+ **/
+#define TOTEM_PL_PARSER_FIELD_ENDTIME		"endtime"
+/**
+ * TOTEM_PL_PARSER_FIELD_COPYRIGHT:
+ *
+ * Metadata field for an entry's copyright line.
+ **/
+#define TOTEM_PL_PARSER_FIELD_COPYRIGHT		"copyright"
+/**
+ * TOTEM_PL_PARSER_FIELD_ABSTRACT:
+ *
+ * Metadata field for an entry's abstract text.
+ **/
+#define TOTEM_PL_PARSER_FIELD_ABSTRACT		"abstract"
+/**
+ * TOTEM_PL_PARSER_FIELD_DESCRIPTION:
+ *
+ * Metadata field for an entry's description.
+ **/
+#define TOTEM_PL_PARSER_FIELD_DESCRIPTION	"description"
+/**
+ * TOTEM_PL_PARSER_FIELD_SUMMARY:
+ *
+ * Metadata field for an entry's summary. (In practice, identical to %TOTEM_PL_PARSER_FIELD_DESCRIPTION.)
+ **/
+#define TOTEM_PL_PARSER_FIELD_SUMMARY		TOTEM_PL_PARSER_FIELD_DESCRIPTION
+/**
+ * TOTEM_PL_PARSER_FIELD_MOREINFO:
+ *
+ * Metadata field for an entry's "more info" URL.
+ **/
+#define TOTEM_PL_PARSER_FIELD_MOREINFO		"moreinfo"
+/**
+ * TOTEM_PL_PARSER_FIELD_SCREENSIZE:
+ *
+ * Metadata field for an entry's preferred screen size.
+ **/
+#define TOTEM_PL_PARSER_FIELD_SCREENSIZE	"screensize"
+/**
+ * TOTEM_PL_PARSER_FIELD_UI_MODE:
+ *
+ * Metadata field for an entry's preferred UI mode.
+ **/
+#define TOTEM_PL_PARSER_FIELD_UI_MODE		"ui-mode"
+/**
+ * TOTEM_PL_PARSER_FIELD_PUB_DATE:
+ *
+ * Metadata field for an entry's publication date, which should be parsed using totem_pl_parser_parse_date().
+ **/
+#define TOTEM_PL_PARSER_FIELD_PUB_DATE		"publication-date"
+/**
+ * TOTEM_PL_PARSER_FIELD_FILESIZE:
+ *
+ * Metadata field for an entry's filesize in bytes. This is only advisory, and can sometimes not match the actual filesize of the stream.
+ **/
+#define TOTEM_PL_PARSER_FIELD_FILESIZE		"filesize"
+/**
+ * TOTEM_PL_PARSER_FIELD_LANGUAGE:
+ *
+ * Metadata field for an entry's audio language.
+ **/
+#define TOTEM_PL_PARSER_FIELD_LANGUAGE		"language"
+/**
+ * TOTEM_PL_PARSER_FIELD_CONTACT:
+ *
+ * Metadata field for an entry's contact details for the webmaster.
+ **/
+#define TOTEM_PL_PARSER_FIELD_CONTACT		"contact"
+/**
+ * TOTEM_PL_PARSER_FIELD_IMAGE_URL:
+ *
+ * Metadata field for an entry's thumbnail image URL.
+ **/
+#define TOTEM_PL_PARSER_FIELD_IMAGE_URL		"image-url"
+/**
+ * TOTEM_PL_PARSER_FIELD_IS_PLAYLIST:
+ *
+ * Metadata field used to tell the calling code that the parsing of a playlist
+ * started. It is only %TRUE for the metadata passed to #TotemPlParser::playlist-started or
+ * #TotemPlParser::playlist-ended signal handlers.
+ **/
 #define TOTEM_PL_PARSER_FIELD_IS_PLAYLIST	"is-playlist"
 
 struct TotemPlParserClass {
@@ -94,6 +220,16 @@ struct TotemPlParserClass {
 				const char *uri);
 };
 
+/**
+ * TotemPlParserType:
+ * @TOTEM_PL_PARSER_PLS: PLS parser
+ * @TOTEM_PL_PARSER_M3U: M3U parser
+ * @TOTEM_PL_PARSER_M3U_DOS: M3U (DOS linebreaks) parser
+ * @TOTEM_PL_PARSER_XSPF: XSPF parser
+ * @TOTEM_PL_PARSER_IRIVER_PLA: iRiver PLA parser
+ *
+ * The type of playlist a #TotemPlParser will parse.
+ **/
 typedef enum
 {
 	TOTEM_PL_PARSER_PLS,
@@ -103,6 +239,14 @@ typedef enum
 	TOTEM_PL_PARSER_IRIVER_PLA,
 } TotemPlParserType;
 
+/**
+ * TotemPlParserError:
+ * @TOTEM_PL_PARSER_ERROR_VFS_OPEN: Error on opening a file
+ * @TOTEM_PL_PARSER_ERROR_VFS_WRITE: Error on writing a file
+ *
+ * Allows you to differentiate between different
+ * errors occurring during file operations in a #TotemPlParser.
+ **/
 typedef enum
 {
 	TOTEM_PL_PARSER_ERROR_VFS_OPEN,
@@ -113,6 +257,21 @@ typedef enum
 
 GQuark totem_pl_parser_error_quark (void);
 
+/**
+ * TotemPlParserIterFunc:
+ * @model: a #GtkTreeModel containing the playlist entries
+ * @iter: a #GtkTreeIter pointing to the current row
+ * @uri: return location for the entry's URI, or %NULL
+ * @title: return location for the entry's title, or %NULL
+ * @custom_title: return location for a boolean which, if %TRUE, indicates that the entry's @title is custom; or %NULL
+ * @user_data: user data to pass to the function
+ *
+ * Functions such as totem_pl_parser_write() accept pointers to TotemPlParserIterFunc()s
+ * as callbacks to call for each entry in the playlist. These functions
+ * are specific to each use of the playlist API, and should set the entry's
+ * @uri, @title and @custom_title return values, getting the data from @model
+ * or otherwise.
+ **/
 typedef void (*TotemPlParserIterFunc) (GtkTreeModel *model, GtkTreeIter *iter,
 				       char **uri, char **title,
 				       gboolean *custom_title,

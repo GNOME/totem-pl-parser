@@ -18,8 +18,17 @@
    Boston, MA 02111-1307, USA.
 
    Authors: Bastien Nocera <hadess@hadess.net>
-
  */
+
+/**
+ * SECTION:totem-pl-parser
+ * @short_description: playlist parser
+ * @stability: Stable
+ * @include: totem-pl-parser.h
+ *
+ * #TotemPlParser is a general-purpose playlist parser and writer, with
+ * support for several different types of playlist.
+ **/
 
 #include "config.h"
 
@@ -158,6 +167,13 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	object_class->get_property = totem_pl_parser_get_property;
 
 	/* Properties */
+
+	/**
+	 * TotemPlParser:recurse:
+	 *
+	 * If %TRUE, the parser will recursively fetch playlists linked to by
+	 * the current one.
+	 **/
 	g_object_class_install_property (object_class,
 					 PROP_RECURSE,
 					 g_param_spec_boolean ("recurse",
@@ -166,6 +182,11 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 							       TRUE,
 							       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
+	/**
+	 * TotemPlParser:debug:
+	 *
+	 * If %TRUE, the parser will output debug information.
+	 **/
 	g_object_class_install_property (object_class,
 					 PROP_DEBUG,
 					 g_param_spec_boolean ("debug",
@@ -174,6 +195,12 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 							       FALSE,
 							       G_PARAM_READWRITE));
 
+	/**
+	 * TotemPlParser:force:
+	 *
+	 * If %TRUE, the parser will attempt to parse a playlist, even if it
+	 * appears to be unsupported (usually because of its filename extension).
+	 **/
 	g_object_class_install_property (object_class,
 					 PROP_FORCE,
 					 g_param_spec_boolean ("force",
@@ -182,6 +209,13 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 							       FALSE,
 							       G_PARAM_READWRITE));
 
+	/**
+	 * TotemPlParser:disable-unsafe:
+	 *
+	 * If %TRUE, the parser will not parse unsafe locations, such as local devices
+	 * and local files if the playlist isn't local. This is useful if the library
+	 * is parsing a playlist from a remote location such as a website.
+	 **/
 	g_object_class_install_property (object_class,
 					 PROP_DISABLE_UNSAFE,
 					 g_param_spec_boolean ("disable-unsafe",
@@ -430,7 +464,7 @@ totem_pl_parser_init_i18n (void)
 }
 
 /**
- * totem_pl_parser_new
+ * totem_pl_parser_new:
  *
  * Creates a #TotemPlParser object.
  *
@@ -443,6 +477,14 @@ totem_pl_parser_new (void)
 	return TOTEM_PL_PARSER (g_object_new (TOTEM_TYPE_PL_PARSER, NULL));
 }
 
+/**
+ * totem_pl_parser_playlist_end:
+ * @parser: a #TotemPlParser
+ * @playlist_uri: the playlist URI
+ *
+ * Emits the #TotemPlParser::playlist-ended signal on @parser for
+ * the playlist @playlist_uri.
+ **/
 void
 totem_pl_parser_playlist_end (TotemPlParser *parser, const char *playlist_uri)
 {
@@ -544,6 +586,14 @@ my_gnome_vfs_get_mime_type_with_data (const char *uri, gpointer *data, TotemPlPa
 	return g_strdup (mimetype);
 }
 
+/**
+ * totem_pl_parser_base_url:
+ * @url: a URI
+ *
+ * Returns the parent URI of @url.
+ *
+ * Return value: a newly-allocated string containing @url's parent URI, or %NULL
+ **/
 char *
 totem_pl_parser_base_url (const char *url)
 {
@@ -569,6 +619,15 @@ totem_pl_parser_base_url (const char *url)
 	return base;
 }
 
+/**
+ * totem_pl_parser_line_is_empty:
+ * @line: a playlist line to check
+ *
+ * Checks to see if the given string line is empty or %NULL,
+ * counting tabs and spaces, but not newlines, as "empty".
+ *
+ * Return value: %TRUE if @line is empty
+ **/
 gboolean
 totem_pl_parser_line_is_empty (const char *line)
 {
@@ -584,6 +643,16 @@ totem_pl_parser_line_is_empty (const char *line)
 	return TRUE;
 }
 
+/**
+ * totem_pl_parser_write_string:
+ * @handle: a #GnomeVFSHandle to an open file
+ * @buf: the string buffer to write out
+ * @error: return location for a #GError, or %NULL
+ *
+ * Writes the string @buf out to the file specified by @handle.
+ *
+ * Return value: %TRUE on success
+ **/
 gboolean
 totem_pl_parser_write_string (GnomeVFSHandle *handle, const char *buf, GError **error)
 {
@@ -593,6 +662,17 @@ totem_pl_parser_write_string (GnomeVFSHandle *handle, const char *buf, GError **
 	return totem_pl_parser_write_buffer (handle, buf, len, error);
 }
 
+/**
+ * totem_pl_parser_write_buffer:
+ * @handle: a #GnomeVFSHandle to an open file
+ * @buf: the string buffer to write out
+ * @len: the length of the string to write out
+ * @error: return location for a #GError, or %NULL
+ *
+ * Writes @len bytes of @buf to the file specified by @handle.
+ *
+ * Return value: %TRUE on success
+ **/
 gboolean
 totem_pl_parser_write_buffer (GnomeVFSHandle *handle, const char *buf, guint len, GError **error)
 {
@@ -613,6 +693,18 @@ totem_pl_parser_write_buffer (GnomeVFSHandle *handle, const char *buf, guint len
 	return TRUE;
 }
 
+/**
+ * totem_pl_parser_num_entries:
+ * @parser: a #TotemPlParser
+ * @model: a #GtkTreeModel
+ * @func: a pointer to a #TotemPlParserIterFunc callback function
+ * @user_data: a pointer to be passed to each call of @func
+ *
+ * Returns the number of entries in @parser's playlist, and calls
+ * @func for each valid entry in the playlist.
+ *
+ * Return value: the number of entries in the playlist
+ **/
 int
 totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
 			     TotemPlParserIterFunc func, gpointer user_data)
@@ -628,7 +720,7 @@ totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
 		char *url, *title;
 		gboolean custom_title;
 
-		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i -1) == FALSE)
+		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
 			return i - ignored;
 
 		func (model, &iter, &url, &title, &custom_title, user_data);
@@ -642,6 +734,19 @@ totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
 	return num_entries - ignored;
 }
 
+/**
+ * totem_pl_parser_relative:
+ * @url: a URI
+ * @output: a base path and filename
+ *
+ * Returns the URI of @url relative to @output if possible, and %NULL
+ * if not.
+ *
+ * <emphasis>See totem_pl_parser_resolve_url() to convert from relative URLs
+ * to absolute URLs.</emphasis>
+ *
+ * Return value: a newly-allocated relative URI string, or %NULL
+ **/
 char *
 totem_pl_parser_relative (const char *url, const char *output)
 {
@@ -688,6 +793,27 @@ totem_pl_parser_relative (const char *url, const char *output)
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
+/**
+ * totem_pl_parser_write_with_title:
+ * @parser: a #TotemPlParser
+ * @model: a #GtkTreeModel
+ * @func: a pointer to a #TotemPlParserIterFunc callback function
+ * @output: the output path and filename
+ * @title: the playlist title
+ * @type: a #TotemPlParserType for the ouputted playlist
+ * @user_data: a pointer to be passed to each call of @func
+ * @error: return location for a #GError, or %NULL
+ *
+ * Writes the playlist held by @parser and @model out to the file of
+ * path @output. The playlist is written in the format @type and is
+ * given the title @title.
+ *
+ * For each entry in the @model, the function @func is called (and passed
+ * @user_data), which gets various metadata values about the entry for
+ * the playlist writer.
+ *
+ * Return value: %TRUE on success
+ **/
 gboolean
 totem_pl_parser_write_with_title (TotemPlParser *parser, GtkTreeModel *model,
 				  TotemPlParserIterFunc func,
@@ -718,6 +844,26 @@ totem_pl_parser_write_with_title (TotemPlParser *parser, GtkTreeModel *model,
 	return FALSE;
 }
 
+/**
+ * totem_pl_parser_write:
+ * @parser: a #TotemPlParser
+ * @model: a #GtkTreeModel
+ * @func: a pointer to a #TotemPlParserIterFunc callback function
+ * @output: the output path and filename
+ * @type: a #TotemPlParserType for the ouputted playlist
+ * @user_data: a pointer to be passed to each call of @func
+ * @error: return location for a #GError, or %NULL
+ *
+ * Writes the playlist held by @parser and @model out to the file of
+ * path @output. The playlist is written in the format @type and is given
+ * a %NULL title.
+ *
+ * For each entry in the @model, the function @func is called (and passed
+ * @user_data), which gets various metadata values about the entry for
+ * the playlist writer.
+ *
+ * Return value: %TRUE on success
+ **/
 gboolean
 totem_pl_parser_write (TotemPlParser *parser, GtkTreeModel *model,
 		       TotemPlParserIterFunc func,
@@ -731,6 +877,16 @@ totem_pl_parser_write (TotemPlParser *parser, GtkTreeModel *model,
 
 #endif /* TOTEM_PL_PARSER_MINI */
 
+/**
+ * totem_pl_parser_read_ini_line_int:
+ * @lines: a NULL-terminated array of INI lines to read
+ * @key: the key to match
+ *
+ * Returns the first integer value case-insensitively matching the specified
+ * key as an integer. The parser ignores leading whitespace on lines.
+ *
+ * Return value: the integer value, or -1 on error
+ **/
 int
 totem_pl_parser_read_ini_line_int (char **lines, const char *key)
 {
@@ -763,6 +919,19 @@ totem_pl_parser_read_ini_line_int (char **lines, const char *key)
 	return retval;
 }
 
+/**
+ * totem_pl_parser_read_ini_line_string_with_sep:
+ * @lines: a NULL-terminated array of INI lines to read
+ * @key: the key to match
+ * @dos_mode: %TRUE if the returned string should end in \r\0, instead of \n\0
+ * @sep: the key-value separator
+ *
+ * Returns the first string value case-insensitively matching the specified
+ * key, where the two are separated by @sep. The parser ignores leading whitespace
+ * on lines.
+ *
+ * Return value: a newly-allocated string value, or %NULL
+ **/
 char*
 totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 		gboolean dos_mode, const char *sep)
@@ -803,6 +972,17 @@ totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 	return retval;
 }
 
+/**
+ * totem_pl_parser_read_ini_line_string:
+ * @lines: a NULL-terminated array of INI lines to read
+ * @key: the key to match
+ * @dos_mode: %TRUE if the returned string should end in \r\0, instead of \n\0
+ *
+ * Returns the first string value case-insensitively matching the
+ * specified key. The parser ignores leading whitespace on lines.
+ *
+ * Return value: a newly-allocated string value, or %NULL
+ **/
 char*
 totem_pl_parser_read_ini_line_string (char **lines, const char *key, gboolean dos_mode)
 {
@@ -929,6 +1109,16 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 	g_object_unref (G_OBJECT (parser));
 }
 
+/**
+ * totem_pl_parser_add_url:
+ * @parser: a #TotemPlParser
+ * @first_property_name: the first property name
+ * @Varargs: value for the first property, followed optionally by more
+ * name/value pairs, followed by %NULL
+ *
+ * Adds a URL to the playlist with the properties given in @first_property_name
+ * and @Varargs.
+ **/
 void
 totem_pl_parser_add_url (TotemPlParser *parser,
 			 const char *first_property_name,
@@ -940,6 +1130,14 @@ totem_pl_parser_add_url (TotemPlParser *parser,
 	va_end (var_args);
 }
 
+/**
+ * totem_pl_parser_add_one_url:
+ * @parser: a #TotemPlParser
+ * @url: the entry's URL
+ * @title: the entry's title
+ *
+ * Adds a single URL entry with only URL and title strings to the playlist.
+ **/
 void
 totem_pl_parser_add_one_url (TotemPlParser *parser, const char *url, const char *title)
 {
@@ -977,6 +1175,19 @@ totem_pl_parser_might_be_file (const char *url)
 	return TRUE;
 }
 
+/**
+ * totem_pl_parser_resolve_url:
+ * @base: a base path and filename
+ * @url: a URI
+ *
+ * Returns the absolute URI of @url, resolving any relative
+ * paths with respect to @base.
+ *
+ * <emphasis>See totem_pl_parser_relative() to convert from absolute URLs
+ * to relative URLs.</emphasis>
+ *
+ * Return value: a newly-allocated resolved URL
+ **/
 char *
 totem_pl_parser_resolve_url (const char *base, const char *url)
 {
@@ -1094,6 +1305,16 @@ static PlaylistTypes ignore_types[] = {
 	PLAYLIST_TYPE3 ("application/x-trash"),
 };
 
+/**
+ * totem_pl_parser_scheme_is_ignored:
+ * @parser: a #TotemPlParser
+ * @url: a URL
+ *
+ * Checks to see if @url's scheme is in the @parser's list of
+ * schemes to ignore.
+ *
+ * Return value: %TRUE if @url's scheme is ignored
+ **/
 gboolean
 totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, const char *url)
 {
@@ -1133,6 +1354,23 @@ totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 
 }
 
+/**
+ * totem_pl_parser_ignore:
+ * @parser: a #TotemPlParser
+ * @url: a URL
+ *
+ * Checks if the URL should be ignored. URLs are <emphasis>not</emphasis> ignored if:
+ * <itemizedlist>
+ *  <listitem><para>they have an unknown mimetype,</para></listitem>
+ *  <listitem><para>they have a special mimetype,</para></listitem>
+ *  <listitem><para>they have a mimetype which could be a video or a playlist.</para></listitem>
+ * </itemizedlist>
+ *
+ * URLs are automatically ignored if their scheme is ignored as per totem_pl_parser_scheme_is_ignored(),
+ * and are ignored if all the other tests are inconclusive.
+ *
+ * Return value: %TRUE if @url is to be ignored
+ **/
 gboolean
 totem_pl_parser_ignore (TotemPlParser *parser, const char *url)
 {
@@ -1318,6 +1556,19 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 	return ret;
 }
 
+/**
+ * totem_pl_parser_parse_with_base:
+ * @parser: a #TotemPlParser
+ * @url: the URL of the playlist to parse
+ * @base: the base path for relative filenames
+ * @fallback: %TRUE if the parser should add the playlist URL to the
+ * end of the playlist on parse failure
+ *
+ * Parses a playlist given by the absolute URL @url, using
+ * @base to resolve relative paths where appropriate.
+ *
+ * Return value: a #TotemPlParserResult
+ **/
 TotemPlParserResult
 totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *url,
 				 const char *base, gboolean fallback)
@@ -1336,6 +1587,17 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *url,
 	return totem_pl_parser_parse_internal (parser, url, base);
 }
 
+/**
+ * totem_pl_parser_parse:
+ * @parser: a #TotemPlParser
+ * @url: the URL of the playlist to parse
+ * @fallback: %TRUE if the parser should add the playlist URL to the
+ * end of the playlist on parse failure
+ *
+ * Parses a playlist given by the absolute URL @url.
+ *
+ * Return value: a #TotemPlParserResult
+ **/
 TotemPlParserResult
 totem_pl_parser_parse (TotemPlParser *parser, const char *url,
 		       gboolean fallback)
@@ -1343,6 +1605,14 @@ totem_pl_parser_parse (TotemPlParser *parser, const char *url,
 	return totem_pl_parser_parse_with_base (parser, url, NULL, fallback);
 }
 
+/**
+ * totem_pl_parser_add_ignored_scheme:
+ * @parser: a #TotemPlParser
+ * @scheme: the scheme to ignore
+ *
+ * Adds a scheme to the list of schemes to ignore, so that
+ * any URL using that scheme is ignored during playlist parsing.
+ **/
 void
 totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 		const char *scheme)
@@ -1353,6 +1623,14 @@ totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 		(parser->priv->ignore_schemes, g_strdup (scheme));
 }
 
+/**
+ * totem_pl_parser_add_ignored_mimetype:
+ * @parser: a #TotemPlParser
+ * @mimetype: the mimetype to ignore
+ *
+ * Adds a mimetype to the list of mimetypes to ignore, so that
+ * any URL of that mimetype is ignored during playlist parsing.
+ **/
 void
 totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 		const char *mimetype)
@@ -1363,6 +1641,16 @@ totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 		(parser->priv->ignore_mimetypes, g_strdup (mimetype));
 }
 
+/**
+ * totem_pl_parser_parse_duration:
+ * @duration: the duration string to parse
+ * @debug: %TRUE if debug statements should be printed
+ *
+ * Parses the given duration string and returns it as a <type>gint64</type>
+ * denoting the duration in seconds.
+ *
+ * Return value: the duration in seconds, or -1 on error
+ **/
 gint64
 totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 {
@@ -1428,6 +1716,16 @@ totem_pl_parser_is_iso8601_date (const char *date_str)
 	return TRUE;
 }
 
+/**
+ * totem_pl_parser_parse_date:
+ * @date_str: the date string to parse
+ * @debug: %TRUE if debug statements should be printed
+ *
+ * Parses the given date string and returns it as a <type>gint64</type>
+ * denoting the date in seconds since the UNIX Epoch.
+ *
+ * Return value: the date in seconds, or -1 on error
+ **/
 guint64
 totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 {
@@ -1450,6 +1748,17 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 
 #endif /* !TOTEM_PL_PARSER_MINI */
 
+/**
+ * totem_pl_parser_can_parse_from_data:
+ * @data: the data to check for parsability
+ * @len: the length of data to check
+ * @debug: %TRUE if debug statements should be printed
+ *
+ * Checks if the first @len bytes of @data can be parsed, using the same checks
+ * and precedences as totem_pl_parser_ignore().
+ *
+ * Return value: %TRUE if @data can be parsed
+ **/
 gboolean
 totem_pl_parser_can_parse_from_data (const char *data,
 				     gsize len,
@@ -1493,6 +1802,16 @@ totem_pl_parser_can_parse_from_data (const char *data,
 	return FALSE;
 }
 
+/**
+ * totem_pl_parser_can_parse_from_filename:
+ * @filename: the file to check for parsability
+ * @debug: %TRUE if debug statements should be printed
+ *
+ * Checks if the file can be parsed, using the same checks and precedences
+ * as totem_pl_parser_ignore().
+ *
+ * Return value: %TRUE if @filename can be parsed
+ **/
 gboolean
 totem_pl_parser_can_parse_from_filename (const char *filename, gboolean debug)
 {

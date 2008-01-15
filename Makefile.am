@@ -19,4 +19,4 @@ DISTCLEANFILES = intltool-extract intltool-merge intltool-update \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = totem-plparser.pc totem-plparser-mini.pc
 
-DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc
