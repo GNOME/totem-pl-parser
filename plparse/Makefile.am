@@ -107,6 +107,8 @@ libtotem_plparser_la_CFLAGS = \
 	$(DBUS_CFLAGS)			\
 	$(WARN_CFLAGS)			\
 	$(AM_CFLAGS)			\
+	-D_FILE_OFFSET_BITS=64		\
+	-D_LARGEFILE64_SOURCE		\
 	-I$(top_srcdir)/lib		\
 	-D_GNU_SOURCE
 
