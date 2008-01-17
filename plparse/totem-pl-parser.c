@@ -28,6 +28,69 @@
  *
  * #TotemPlParser is a general-purpose playlist parser and writer, with
  * support for several different types of playlist.
+ *
+ * <example>
+ *  <title>Reading a Playlist</title>
+ *  <programlisting>
+ * TotemPlParser *pl = totem_pl_parser_new ();
+ * g_object_set (pl, "recurse", FALSE, "disable-unsafe", TRUE, NULL);
+ * g_signal_connect (G_OBJECT (pl), "playlist-started", G_CALLBACK (playlist_started), NULL);
+ * g_signal_connect (G_OBJECT (pl), "entry-parsed", G_CALLBACK (entry_parsed), NULL);
+ *
+ * if (totem_pl_parser_parse (pl, "http://example.com/playlist.pls", FALSE) != TOTEM_PL_PARSER_RESULT_SUCCESS)
+ * 	g_error ("Playlist parsing failed.");
+ *
+ * g_object_unref (pl);
+ *  </programlisting>
+ * </example>
+ *
+ * <example>
+ *  <title>Getting Metadata from Entries</title>
+ *  <programlisting>
+ * static void
+ * entry_parsed (TotemPlParser *parser, const gchar *uri, GHashTable *metadata, gpointer user_data)
+ * {
+ * 	gchar *title = g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_TITLE);
+ * 	if (title != NULL)
+ * 		g_message ("Entry title: %s", title);
+ * 	else
+ * 		g_message ("Entry (URI: %s) has no title.", uri);
+ * }
+ *  </programlisting>
+ * </example>
+ *
+ * <example>
+ *  <title>Writing a Playlist</title>
+ *  <programlisting>
+ * void
+ * parser_func (GtkTreeModel *model, GtkTreeIter *iter, gchar **uri, gchar **title, gboolean *custom_title, gpointer user_data)
+ * {
+ * 	gtk_tree_model_get (model, iter,
+ * 		0, uri,
+ * 		1, title,
+ * 		2, custom_title,
+ * 		-1);
+ * }
+ *
+ * {
+ * 	TotemPlParser *pl;
+ * 	GtkTreeModel *tree_model;
+ *
+ * 	pl = totem_pl_parser_new ();
+ *
+ * 	&slash;* Your tree model can be as simple or as complex as you like;
+ * 	 * parser_func() will just have to return the entry title, URI and custom title flag from it. *&slash;
+ * 	tree_model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
+ * 	populate_model (tree_model);
+ *
+ * 	if (totem_pl_parser_write (pl, tree_model, parser_func, "/tmp/playlist.pls", TOTEM_PL_PARSER_PLS, NULL, NULL) != TRUE)
+ * 		g_error ("Playlist writing failed.");
+ *
+ * 	g_object_unref (tree_model);
+ * 	g_object_unref (pl);
+ * }
+ *  </programlisting>
+ * </example>
  **/
 
 #include "config.h"

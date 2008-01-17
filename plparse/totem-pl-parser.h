@@ -58,6 +58,11 @@ typedef struct TotemPlParser	       TotemPlParser;
 typedef struct TotemPlParserClass      TotemPlParserClass;
 typedef struct TotemPlParserPrivate    TotemPlParserPrivate;
 
+/**
+ * TotemPlParser:
+ *
+ * All the fields in the #TotemPlParser structure are private and should never be accessed directly.
+ **/
 struct TotemPlParser {
 	GObject parent;
 	TotemPlParserPrivate *priv;
@@ -206,6 +211,18 @@ struct TotemPlParser {
  **/
 #define TOTEM_PL_PARSER_FIELD_IS_PLAYLIST	"is-playlist"
 
+/**
+ * TotemPlParserClass:
+ * @parent_class: the parent class
+ * @entry_parsed: the generic signal handler for the #TotemPlParser::entry-parsed signal,
+ * which can be overridden by inheriting classes
+ * @playlist_started: the generic signal handler for the #TotemPlParser::playlist-started signal,
+ * which can be overridden by inheriting classes
+ * @playlist_ended: the generic signal handler for the #TotemPlParser::playlist-ended signal,
+ * which can be overridden by inheriting classes
+ *
+ * The class structure for the #TotemPlParser type.
+ **/
 struct TotemPlParserClass {
 	GObjectClass parent_class;
 

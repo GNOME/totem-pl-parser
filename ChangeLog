@@ -1,3 +1,12 @@
+2008-01-17  Philip Withnall  <pwithnall@svn.gnome.org>
+
+	* docs/reference/totem-pl-parser-docs.sgml:
+	* docs/reference/totem-pl-parser-sections.txt:
+	* plparse/totem-pl-parser.c:
+	* plparse/totem-pl-parser.h: Clean up the documentation order,
+	add some documentation for the TotemPlParser object, and add some
+	example code. (Closes: #507995)
+
 2008-01-15  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/Makefile.am: Use 64-bit versions of the

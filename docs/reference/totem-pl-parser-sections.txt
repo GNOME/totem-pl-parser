@@ -1,6 +1,21 @@
 <SECTION>
 <FILE>totem-pl-parser</FILE>
+TotemPlParser
+TotemPlParserClass
 TotemPlParserResult
+TotemPlParserType
+TotemPlParserError
+TotemPlParserIterFunc
+totem_pl_parser_new
+totem_pl_parser_parse
+totem_pl_parser_parse_with_base
+totem_pl_parser_write
+totem_pl_parser_write_with_title
+totem_pl_parser_parse_duration
+totem_pl_parser_parse_date
+totem_pl_parser_resolve_url
+totem_pl_parser_add_ignored_scheme
+totem_pl_parser_add_ignored_mimetype
 TOTEM_PL_PARSER_FIELD_URL
 TOTEM_PL_PARSER_FIELD_GENRE
 TOTEM_PL_PARSER_FIELD_TITLE
@@ -24,19 +39,6 @@ TOTEM_PL_PARSER_FIELD_LANGUAGE
 TOTEM_PL_PARSER_FIELD_CONTACT
 TOTEM_PL_PARSER_FIELD_IMAGE_URL
 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST
-TotemPlParserType
-TotemPlParserError
-TotemPlParserIterFunc
-totem_pl_parser_parse_duration
-totem_pl_parser_parse_date
-totem_pl_parser_resolve_url
-totem_pl_parser_write
-totem_pl_parser_write_with_title
-totem_pl_parser_add_ignored_scheme
-totem_pl_parser_add_ignored_mimetype
-totem_pl_parser_parse
-totem_pl_parser_parse_with_base
-totem_pl_parser_new
 <SUBSECTION Standard>
 TOTEM_PL_PARSER
 TOTEM_IS_PL_PARSER
@@ -47,12 +49,10 @@ TOTEM_IS_PL_PARSER_CLASS
 totem_pl_parser_error_quark
 TOTEM_PL_PARSER_ERROR
 <SUBSECTION Private>
-TotemPlParser
-TotemPlParserClass
 TotemPlParserPrivate
 entry_parsed
-playlist_started
 playlist_ended
+playlist_started
 </SECTION>
 
 <SECTION>
