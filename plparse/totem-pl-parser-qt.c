@@ -58,8 +58,8 @@ totem_pl_parser_is_quicktime (const char *data, gsize len)
 	if (g_str_has_prefix (data, "SMILtext") != FALSE)
 		return TRUE;
 
-	if (memmem (QT_NEEDLE, strlen (QT_NEEDLE),
-		    data, len) != NULL)
+	if (memmem (data, len,
+		    QT_NEEDLE, strlen (QT_NEEDLE)) != NULL)
 		return TRUE;
 
 	return FALSE;

@@ -54,11 +54,11 @@ totem_pl_parser_is_asx (const char *data, gsize len)
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
-	if (memmem (ASX_NEEDLE, strlen (ASX_NEEDLE),
-		    data, len) != NULL)
+	if (memmem (data, len,
+		    ASX_NEEDLE, strlen (ASX_NEEDLE)) != NULL)
 		return TRUE;
-	if (memmem (ASX_NEEDLE2, strlen (ASX_NEEDLE2),
-		    data, len) != NULL)
+	if (memmem (data, len,
+		    ASX_NEEDLE2, strlen (ASX_NEEDLE2)) != NULL)
 		return TRUE;
 
 	return FALSE;

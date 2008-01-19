@@ -1,3 +1,12 @@
+2008-01-19  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-podcast.c: (totem_pl_parser_is_rss),
+	(totem_pl_parser_is_atom), (totem_pl_parser_is_opml):
+	* plparse/totem-pl-parser-qt.c: (totem_pl_parser_is_quicktime):
+	* plparse/totem-pl-parser-wm.c: (totem_pl_parser_is_asx):
+	Fix memmem args order, fixes some playlist not being recognised
+	as such
+
 2008-01-17  Philip Withnall  <pwithnall@svn.gnome.org>
 
 	* docs/reference/totem-pl-parser-docs.sgml:
