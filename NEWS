@@ -1,5 +1,14 @@
 New features and significant updates in version...
 
+2.21.91:
+* Fix HAL test in the configure script, which could lead to HAL support not
+  being built in
+* Add API documentation, using gtk-doc
+* Fix memmem() replacement for non-glibc versions
+* Fix DVD ISOs bigger than 4GB not being recognised as such on 32-bit systems
+* Fix memmem usage so that Podcasts, ASX files and QuickTime links
+  are recognised again
+
 2.21.90:
 * Depend on Camel and newer glibs to parse dates from Atom and RSS feeds
 * Handle Byte-Order-Marks in Podcasts
