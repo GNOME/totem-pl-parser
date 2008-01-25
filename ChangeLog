@@ -1,3 +1,8 @@
+2008-01-25  Bastien Nocera  <hadess@hadess.net>
+
+	* lib/memmem.c: Patch from Damien Carbery <damien.carbery@sun.com>
+	to fix the build on Solaris (Closes: #512073)
+
 ============ Version 2.21.91
 
 2008-01-21  Bastien Nocera  <hadess@hadess.net>

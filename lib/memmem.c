@@ -31,8 +31,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+#ifndef __sun
 #include "bbs.h"
-#ifndef SOLARIS
 #include <sys/cdefs.h>
 #endif
 
