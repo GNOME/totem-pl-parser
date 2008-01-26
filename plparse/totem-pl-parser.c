@@ -644,6 +644,8 @@ my_gnome_vfs_get_mime_type_with_data (const char *uri, gpointer *data, TotemPlPa
 	if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
 		if (totem_pl_parser_is_uri_list (*data, total_bytes_read) != FALSE)
 			return g_strdup (TEXT_URI_TYPE);
+		else if (totem_pl_parser_is_rss (*data, total_bytes_read) != FALSE)
+			return g_strdup ("application/rss+xml");
 	}
 
 	return g_strdup (mimetype);
@@ -1326,7 +1328,7 @@ static PlaylistTypes special_types[] = {
 	PLAYLIST_TYPE ("text/google-video-pointer", totem_pl_parser_add_gvp, NULL, FALSE),
 	PLAYLIST_TYPE ("audio/x-iriver-pla", totem_pl_parser_add_pla, NULL, FALSE),
 	PLAYLIST_TYPE ("application/atom+xml", totem_pl_parser_add_atom, NULL, FALSE),
-	PLAYLIST_TYPE ("application/rss+xml", totem_pl_parser_add_rss, NULL, FALSE),
+	PLAYLIST_TYPE ("application/rss+xml", totem_pl_parser_add_rss, totem_pl_parser_is_rss, FALSE),
 	PLAYLIST_TYPE ("text/x-opml+xml", totem_pl_parser_add_opml, NULL, FALSE),
 #ifndef TOTEM_PL_PARSER_MINI
 	PLAYLIST_TYPE ("application/x-desktop", totem_pl_parser_add_desktop, NULL, TRUE),

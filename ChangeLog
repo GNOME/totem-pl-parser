@@ -1,3 +1,11 @@
+2008-01-26  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c:
+	(my_gnome_vfs_get_mime_type_with_data):
+	If we get text/plain as the mime-type at the end of the function,
+	check whether it could be an RSS feed, fixes parsing CBC podcasts
+	(Closes: #511627)
+
 2008-01-25  Bastien Nocera  <hadess@hadess.net>
 
 	* lib/memmem.c: Patch from Damien Carbery <damien.carbery@sun.com>
