@@ -45,35 +45,35 @@
 #define ASX_NEEDLE "<ASX"
 #define ASX_NEEDLE2 "<asx"
 
-gboolean
+const char *
 totem_pl_parser_is_asx (const char *data, gsize len)
 {
 	if (len == 0)
-		return FALSE;
+		return NULL;
 
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
 	if (memmem (data, len,
 		    ASX_NEEDLE, strlen (ASX_NEEDLE)) != NULL)
-		return TRUE;
+		return ASX_MIME_TYPE;
 	if (memmem (data, len,
 		    ASX_NEEDLE2, strlen (ASX_NEEDLE2)) != NULL)
-		return TRUE;
+		return ASX_MIME_TYPE;
 
 	return FALSE;
 }
 
-gboolean
+const char *
 totem_pl_parser_is_asf (const char *data, gsize len)
 {
 	if (len == 0)
-		return FALSE;
+		return NULL;
 
 	if (g_str_has_prefix (data, "[Reference]") != FALSE
 			|| g_str_has_prefix (data, "ASF ") != FALSE
 			|| g_str_has_prefix (data, "[Address]") != FALSE) {
-		return TRUE;
+		return ASF_REF_MIME_TYPE;
 	}
 
 	return totem_pl_parser_is_asx (data, len);

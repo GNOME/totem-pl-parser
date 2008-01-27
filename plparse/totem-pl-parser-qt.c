@@ -40,7 +40,7 @@
 
 #define QT_NEEDLE "<?quicktime"
 
-gboolean
+const char *
 totem_pl_parser_is_quicktime (const char *data, gsize len)
 {
 	if (len == 0)
@@ -50,19 +50,19 @@ totem_pl_parser_is_quicktime (const char *data, gsize len)
 
 	/* Check for RTSPtextRTSP Quicktime references */
 	if (len <= strlen ("RTSPtextRTSP://"))
-		return FALSE;
+		return NULL;
 	if (g_str_has_prefix (data, "RTSPtext") != FALSE
 			|| g_str_has_prefix (data, "rtsptext") != FALSE) {
-		return TRUE;
+		return QUICKTIME_META_MIME_TYPE;
 	}
 	if (g_str_has_prefix (data, "SMILtext") != FALSE)
-		return TRUE;
+		return QUICKTIME_META_MIME_TYPE;
 
 	if (memmem (data, len,
 		    QT_NEEDLE, strlen (QT_NEEDLE)) != NULL)
-		return TRUE;
+		return QUICKTIME_META_MIME_TYPE;
 
-	return FALSE;
+	return NULL;
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
@@ -197,7 +197,7 @@ TotemPlParserResult
 totem_pl_parser_add_quicktime (TotemPlParser *parser, const char *url,
 			       const char *base, gpointer data)
 {
-	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == FALSE) {
+	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == NULL) {
 		totem_pl_parser_add_one_url (parser, url, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}

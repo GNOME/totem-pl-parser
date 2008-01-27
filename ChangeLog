@@ -1,3 +1,33 @@
+2008-01-27  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-lines.c: (totem_pl_parser_add_ra),
+	(totem_pl_parser_is_uri_list):
+	* plparse/totem-pl-parser-lines.h:
+	* plparse/totem-pl-parser-podcast.c: (totem_pl_parser_is_rss),
+	(totem_pl_parser_is_atom), (totem_pl_parser_is_opml),
+	(totem_pl_parser_is_xml_feed), (parse_rss_items),
+	(totem_pl_parser_add_rss), (parse_atom_entries),
+	(parse_opml_outline):
+	* plparse/totem-pl-parser-podcast.h:
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser-qt.c: (totem_pl_parser_is_quicktime),
+	(totem_pl_parser_add_quicktime):
+	* plparse/totem-pl-parser-qt.h:
+	* plparse/totem-pl-parser-wm.c: (totem_pl_parser_is_asx),
+	(totem_pl_parser_is_asf), (parse_asx_entry):
+	* plparse/totem-pl-parser-wm.h:
+	* plparse/totem-pl-parser.c: (totem_pl_parser_set_property),
+	(totem_pl_parser_get_property),
+	(my_gnome_vfs_get_mime_type_with_data), (totem_pl_parser_base_url),
+	(totem_pl_parser_write_buffer), (totem_pl_parser_num_entries),
+	(totem_pl_parser_relative), (totem_pl_parser_write_with_title),
+	(totem_pl_parser_add_url_valist), (totem_pl_parser_parse_internal),
+	(totem_pl_parser_can_parse_from_data):
+	Return a mime-type from the _is_ functions, and use those functions
+	in my_gnome_vfs_get_mime_type_with_data to check undecided files,
+	such as RSS feeds with their magic too far in the file
+	(Closes: #512289)
+
 2008-01-26  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c:

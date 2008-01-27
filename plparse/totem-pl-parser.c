@@ -128,15 +128,10 @@
 
 #define READ_CHUNK_SIZE 8192
 #define RECURSE_LEVEL_MAX 4
-#define DIR_MIME_TYPE "x-directory/normal"
-#define BLOCK_DEVICE_TYPE "x-special/device-block"
-#define EMPTY_FILE_TYPE "application/x-zerosize"
-#define TEXT_URI_TYPE "text/uri-list"
-#define AUDIO_MPEG_TYPE "audio/mpeg"
 
 #define D(x) if (debug) x
 
-typedef gboolean (*PlaylistIdenCallback) (const char *data, gsize len);
+typedef const char * (*PlaylistIdenCallback) (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
 typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, const char *url, const char *base, gpointer data);
@@ -152,6 +147,64 @@ typedef struct {
 	guint unsafe : 1;
 #endif
 } PlaylistTypes;
+
+#ifndef TOTEM_PL_PARSER_MINI
+#define PLAYLIST_TYPE(mime,cb,identcb,unsafe) { mime, cb, identcb, unsafe }
+#define PLAYLIST_TYPE2(mime,cb,identcb) { mime, cb, identcb }
+#define PLAYLIST_TYPE3(mime) { mime, NULL, NULL, FALSE }
+#else
+#define PLAYLIST_TYPE(mime,cb,identcb,unsafe) { mime }
+#define PLAYLIST_TYPE2(mime,cb,identcb) { mime, identcb }
+#define PLAYLIST_TYPE3(mime) { mime }
+#endif
+
+/* These ones need a special treatment, mostly parser formats */
+static PlaylistTypes special_types[] = {
+	PLAYLIST_TYPE ("audio/x-mpegurl", totem_pl_parser_add_m3u, NULL, FALSE),
+	PLAYLIST_TYPE ("audio/playlist", totem_pl_parser_add_m3u, NULL, FALSE),
+	PLAYLIST_TYPE ("audio/x-scpls", totem_pl_parser_add_pls, NULL, FALSE),
+	PLAYLIST_TYPE ("application/x-smil", totem_pl_parser_add_smil, NULL, FALSE),
+	PLAYLIST_TYPE ("application/smil", totem_pl_parser_add_smil, NULL, FALSE),
+	PLAYLIST_TYPE ("video/x-ms-wvx", totem_pl_parser_add_asx, NULL, FALSE),
+	PLAYLIST_TYPE ("audio/x-ms-wax", totem_pl_parser_add_asx, NULL, FALSE),
+	PLAYLIST_TYPE ("application/xspf+xml", totem_pl_parser_add_xspf, NULL, FALSE),
+	PLAYLIST_TYPE ("text/uri-list", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list, FALSE),
+	PLAYLIST_TYPE ("text/x-google-video-pointer", totem_pl_parser_add_gvp, NULL, FALSE),
+	PLAYLIST_TYPE ("text/google-video-pointer", totem_pl_parser_add_gvp, NULL, FALSE),
+	PLAYLIST_TYPE ("audio/x-iriver-pla", totem_pl_parser_add_pla, NULL, FALSE),
+	PLAYLIST_TYPE ("application/atom+xml", totem_pl_parser_add_atom, NULL, FALSE),
+	PLAYLIST_TYPE ("application/rss+xml", totem_pl_parser_add_rss, totem_pl_parser_is_rss, FALSE),
+	PLAYLIST_TYPE ("text/x-opml+xml", totem_pl_parser_add_opml, NULL, FALSE),
+#ifndef TOTEM_PL_PARSER_MINI
+	PLAYLIST_TYPE ("application/x-desktop", totem_pl_parser_add_desktop, NULL, TRUE),
+	PLAYLIST_TYPE ("application/x-gnome-app-info", totem_pl_parser_add_desktop, NULL, TRUE),
+	PLAYLIST_TYPE ("application/x-cd-image", totem_pl_parser_add_iso, NULL, TRUE),
+	PLAYLIST_TYPE ("application/x-extension-img", totem_pl_parser_add_iso, NULL, TRUE),
+	PLAYLIST_TYPE ("application/x-cue", totem_pl_parser_add_cue, NULL, TRUE),
+	PLAYLIST_TYPE (DIR_MIME_TYPE, totem_pl_parser_add_directory, NULL, TRUE),
+	PLAYLIST_TYPE (BLOCK_DEVICE_TYPE, totem_pl_parser_add_block, NULL, TRUE),
+#endif
+};
+
+/* These ones are "dual" types, might be a video, might be a parser
+ * Please keep the same _is_ functions together */
+static PlaylistTypes dual_types[] = {
+	PLAYLIST_TYPE2 ("audio/x-real-audio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("audio/x-pn-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("application/ram", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("application/vnd.rn-realmedia", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("audio/x-pn-realaudio-plugin", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("audio/vnd.rn-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("audio/x-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("text/plain", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("audio/x-ms-asx", totem_pl_parser_add_asx, totem_pl_parser_is_asx),
+	PLAYLIST_TYPE2 ("video/x-ms-asf", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
+	PLAYLIST_TYPE2 ("video/x-ms-wmv", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
+	PLAYLIST_TYPE2 ("video/quicktime", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
+	PLAYLIST_TYPE2 ("application/x-quicktime-media-link", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
+	PLAYLIST_TYPE2 ("application/x-quicktimeplayer", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
+	PLAYLIST_TYPE2 ("application/xml", totem_pl_parser_add_xml_feed, totem_pl_parser_is_xml_feed),
+};
 
 #ifndef TOTEM_PL_PARSER_MINI
 
@@ -642,10 +695,21 @@ my_gnome_vfs_get_mime_type_with_data (const char *uri, gpointer *data, TotemPlPa
 	mimetype = gnome_vfs_get_mime_type_for_data (*data, total_bytes_read);
 
 	if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
-		if (totem_pl_parser_is_uri_list (*data, total_bytes_read) != FALSE)
-			return g_strdup (TEXT_URI_TYPE);
-		else if (totem_pl_parser_is_rss (*data, total_bytes_read) != FALSE)
-			return g_strdup ("application/rss+xml");
+		PlaylistIdenCallback func;
+		guint i;
+
+		func = NULL;
+
+		for (i = 0; i < G_N_ELEMENTS(dual_types); i++) {
+			const char *res;
+
+			if (func == dual_types[i].iden)
+				continue;
+			func = dual_types[i].iden;
+			res = func (*data, total_bytes_read);
+			if (res != NULL)
+				return g_strdup (res);
+		}
 	}
 
 	return g_strdup (mimetype);
@@ -1301,67 +1365,6 @@ totem_pl_parser_resolve_url (const char *base, const char *url)
 	return resolved;
 }
 
-#endif /* !TOTEM_PL_PARSER_MINI */
-
-#ifndef TOTEM_PL_PARSER_MINI
-#define PLAYLIST_TYPE(mime,cb,identcb,unsafe) { mime, cb, identcb, unsafe }
-#define PLAYLIST_TYPE2(mime,cb,identcb) { mime, cb, identcb }
-#define PLAYLIST_TYPE3(mime) { mime, NULL, NULL, FALSE }
-#else
-#define PLAYLIST_TYPE(mime,cb,identcb,unsafe) { mime }
-#define PLAYLIST_TYPE2(mime,cb,identcb) { mime, identcb }
-#define PLAYLIST_TYPE3(mime) { mime }
-#endif
-
-/* These ones need a special treatment, mostly parser formats */
-static PlaylistTypes special_types[] = {
-	PLAYLIST_TYPE ("audio/x-mpegurl", totem_pl_parser_add_m3u, NULL, FALSE),
-	PLAYLIST_TYPE ("audio/playlist", totem_pl_parser_add_m3u, NULL, FALSE),
-	PLAYLIST_TYPE ("audio/x-scpls", totem_pl_parser_add_pls, NULL, FALSE),
-	PLAYLIST_TYPE ("application/x-smil", totem_pl_parser_add_smil, NULL, FALSE),
-	PLAYLIST_TYPE ("application/smil", totem_pl_parser_add_smil, NULL, FALSE),
-	PLAYLIST_TYPE ("video/x-ms-wvx", totem_pl_parser_add_asx, NULL, FALSE),
-	PLAYLIST_TYPE ("audio/x-ms-wax", totem_pl_parser_add_asx, NULL, FALSE),
-	PLAYLIST_TYPE ("application/xspf+xml", totem_pl_parser_add_xspf, NULL, FALSE),
-	PLAYLIST_TYPE ("text/uri-list", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list, FALSE),
-	PLAYLIST_TYPE ("text/x-google-video-pointer", totem_pl_parser_add_gvp, NULL, FALSE),
-	PLAYLIST_TYPE ("text/google-video-pointer", totem_pl_parser_add_gvp, NULL, FALSE),
-	PLAYLIST_TYPE ("audio/x-iriver-pla", totem_pl_parser_add_pla, NULL, FALSE),
-	PLAYLIST_TYPE ("application/atom+xml", totem_pl_parser_add_atom, NULL, FALSE),
-	PLAYLIST_TYPE ("application/rss+xml", totem_pl_parser_add_rss, totem_pl_parser_is_rss, FALSE),
-	PLAYLIST_TYPE ("text/x-opml+xml", totem_pl_parser_add_opml, NULL, FALSE),
-#ifndef TOTEM_PL_PARSER_MINI
-	PLAYLIST_TYPE ("application/x-desktop", totem_pl_parser_add_desktop, NULL, TRUE),
-	PLAYLIST_TYPE ("application/x-gnome-app-info", totem_pl_parser_add_desktop, NULL, TRUE),
-	PLAYLIST_TYPE ("application/x-cd-image", totem_pl_parser_add_iso, NULL, TRUE),
-	PLAYLIST_TYPE ("application/x-extension-img", totem_pl_parser_add_iso, NULL, TRUE),
-	PLAYLIST_TYPE ("application/x-cue", totem_pl_parser_add_cue, NULL, TRUE),
-	PLAYLIST_TYPE (DIR_MIME_TYPE, totem_pl_parser_add_directory, NULL, TRUE),
-	PLAYLIST_TYPE (BLOCK_DEVICE_TYPE, totem_pl_parser_add_block, NULL, TRUE),
-#endif
-};
-
-/* These ones are "dual" types, might be a video, might be a parser */
-static PlaylistTypes dual_types[] = {
-	PLAYLIST_TYPE2 ("audio/x-real-audio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("audio/x-pn-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("application/ram", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("application/vnd.rn-realmedia", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("audio/x-pn-realaudio-plugin", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("audio/vnd.rn-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("audio/x-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("text/plain", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
-	PLAYLIST_TYPE2 ("audio/x-ms-asx", totem_pl_parser_add_asx, totem_pl_parser_is_asx),
-	PLAYLIST_TYPE2 ("video/x-ms-asf", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
-	PLAYLIST_TYPE2 ("video/x-ms-wmv", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
-	PLAYLIST_TYPE2 ("video/quicktime", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
-	PLAYLIST_TYPE2 ("application/x-quicktime-media-link", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
-	PLAYLIST_TYPE2 ("application/x-quicktimeplayer", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
-	PLAYLIST_TYPE2 ("application/xml", totem_pl_parser_add_xml_feed, totem_pl_parser_is_xml_feed),
-};
-
-#ifndef TOTEM_PL_PARSER_MINI
-
 static PlaylistTypes ignore_types[] = {
 	PLAYLIST_TYPE3 ("image/*"),
 	PLAYLIST_TYPE3 ("text/plain"),
@@ -1853,7 +1856,7 @@ totem_pl_parser_can_parse_from_data (const char *data,
 		if (strcmp (dual_types[i].mimetype, mimetype) == 0) {
 			D(g_message ("Should be dual type '%s', making sure now", mimetype));
 			if (dual_types[i].iden != NULL) {
-				gboolean retval = (* dual_types[i].iden) (data, len);
+				gboolean retval = ((* dual_types[i].iden) (data, len) != NULL);
 				D(g_message ("%s dual type '%s'",
 							retval ? "Is" : "Is not", mimetype));
 				return retval;

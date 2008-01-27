@@ -45,7 +45,7 @@
 #define ATOM_NEEDLE "<feed "
 #define OPML_NEEDLE "<opml "
 
-gboolean
+const char *
 totem_pl_parser_is_rss (const char *data, gsize len)
 {
 	if (len == 0)
@@ -55,12 +55,12 @@ totem_pl_parser_is_rss (const char *data, gsize len)
 
 	if (memmem (data, len,
 		    RSS_NEEDLE, strlen (RSS_NEEDLE)) != NULL)
-		return TRUE;
+		return RSS_MIME_TYPE;
 
-	return FALSE;
+	return NULL;
 }
 
-gboolean
+const char *
 totem_pl_parser_is_atom (const char *data, gsize len)
 {
 	if (len == 0)
@@ -70,12 +70,12 @@ totem_pl_parser_is_atom (const char *data, gsize len)
 
 	if (memmem (data, len,
 		    ATOM_NEEDLE, strlen (ATOM_NEEDLE)) != NULL)
-		return TRUE;
+		return ATOM_MIME_TYPE;
 
-	return FALSE;
+	return NULL;
 }
 
-gboolean
+const char *
 totem_pl_parser_is_opml (const char *data, gsize len)
 {
 	if (len == 0)
@@ -85,21 +85,21 @@ totem_pl_parser_is_opml (const char *data, gsize len)
 
 	if (memmem (data, len,
 		    OPML_NEEDLE, strlen (OPML_NEEDLE)) != NULL)
-		return TRUE;
+		return OPML_MIME_TYPE;
 
-	return FALSE;
+	return NULL;
 }
 
-gboolean
+const char *
 totem_pl_parser_is_xml_feed (const char *data, gsize len)
 {
-	if (totem_pl_parser_is_rss (data, len) != FALSE)
-		return TRUE;
-	if (totem_pl_parser_is_atom (data, len) != FALSE)
-		return TRUE;
-	if (totem_pl_parser_is_opml (data, len) != FALSE)
-		return TRUE;
-	return FALSE;
+	if (totem_pl_parser_is_rss (data, len) != NULL)
+		return RSS_MIME_TYPE;
+	if (totem_pl_parser_is_atom (data, len) != NULL)
+		return ATOM_MIME_TYPE;
+	if (totem_pl_parser_is_opml (data, len) != NULL)
+		return OPML_MIME_TYPE;
+	return NULL;
 }
 
 #ifndef TOTEM_PL_PARSER_MINI

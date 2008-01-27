@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 #include "totem-pl-parser-mini.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
 
-gboolean totem_pl_parser_is_quicktime (const char *data, gsize len);
+const char * totem_pl_parser_is_quicktime (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
 TotemPlParserResult totem_pl_parser_add_quicktime (TotemPlParser *parser,

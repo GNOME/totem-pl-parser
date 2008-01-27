@@ -470,7 +470,7 @@ TotemPlParserResult
 totem_pl_parser_add_ra (TotemPlParser *parser, const char *url,
 			const char *base, gpointer data)
 {
-	if (data == NULL || totem_pl_parser_is_uri_list (data, strlen (data)) == FALSE) {
+	if (data == NULL || totem_pl_parser_is_uri_list (data, strlen (data)) == NULL) {
 		totem_pl_parser_add_one_url (parser, url, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
@@ -481,9 +481,9 @@ totem_pl_parser_add_ra (TotemPlParser *parser, const char *url,
 
 #endif /* !TOTEM_PL_PARSER_MINI */
 
-#define CHECK_LEN if (i >= len) { return FALSE; }
+#define CHECK_LEN if (i >= len) { return NULL; }
 
-gboolean
+const char *
 totem_pl_parser_is_uri_list (const char *data, gsize len)
 {
 	guint i = 0;
@@ -512,13 +512,13 @@ totem_pl_parser_is_uri_list (const char *data, gsize len)
 	CHECK_LEN;
 
 	if (data[i] != '/')
-		return FALSE;
+		return NULL;
 	i++;
 	CHECK_LEN;
 
 	if (data[i] != '/')
-		return FALSE;
+		return NULL;
 
-	return TRUE;
+	return TEXT_URI_TYPE;
 }
 

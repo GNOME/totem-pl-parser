@@ -34,6 +34,18 @@
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 #define MIME_READ_CHUNK_SIZE 1024
+#define DIR_MIME_TYPE "x-directory/normal"
+#define BLOCK_DEVICE_TYPE "x-special/device-block"
+#define EMPTY_FILE_TYPE "application/x-zerosize"
+#define TEXT_URI_TYPE "text/uri-list"
+#define AUDIO_MPEG_TYPE "audio/mpeg"
+#define RSS_MIME_TYPE "application/rss+xml"
+#define ATOM_MIME_TYPE "application/atom+xml"
+#define OPML_MIME_TYPE "text/x-opml+xml"
+#define QUICKTIME_META_MIME_TYPE "application/x-quicktime-media-link"
+#define ASX_MIME_TYPE "audio/x-ms-asx"
+#define ASF_REF_MIME_TYPE "video/x-ms-asf"
+
 #define DEBUG(x) { if (parser->priv->debug) x; }
 
 struct TotemPlParserPrivate

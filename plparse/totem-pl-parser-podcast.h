@@ -30,10 +30,10 @@ G_BEGIN_DECLS
 #include "totem-pl-parser-mini.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
 
-gboolean totem_pl_parser_is_rss (const char *data, gsize len);
-gboolean totem_pl_parser_is_atom (const char *data, gsize len);
-gboolean totem_pl_parser_is_opml (const char *data, gsize len);
-gboolean totem_pl_parser_is_xml_feed (const char *data, gsize len);
+const char * totem_pl_parser_is_rss (const char *data, gsize len);
+const char * totem_pl_parser_is_atom (const char *data, gsize len);
+const char * totem_pl_parser_is_opml (const char *data, gsize len);
+const char * totem_pl_parser_is_xml_feed (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
 gboolean totem_pl_parser_is_itms_feed (const char *url);
