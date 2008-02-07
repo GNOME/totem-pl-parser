@@ -1,5 +1,11 @@
 2008-02-07  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-qt.c:
+	(totem_pl_parser_add_quicktime_rtsptext): Fix parsing of RTSPtext
+	playlist from http://mediathek.zdf.de/ (QuickTime selected)
+
+2008-02-07  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-wm.c: (totem_pl_parser_is_asx):
 	Also look for "<Asx" as a magic in ASX files
 	* plparse/totem-pl-parser.c: (my_gnome_vfs_get_mime_type_with_data),

@@ -93,6 +93,10 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 		(lines, "autoplay", dos_mode, "=");
 
 	rtspurl = g_strdup (lines[0] + strlen ("RTSPtext"));
+	if (rtspurl[0] == '\0') {
+		g_free (rtspurl);
+		rtspurl = g_strdup (lines[1]);
+	}
 	g_strstrip (rtspurl);
 
 	totem_pl_parser_add_url (parser,
