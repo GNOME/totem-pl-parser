@@ -206,6 +206,8 @@ static PlaylistTypes dual_types[] = {
 	PLAYLIST_TYPE2 ("application/xml", totem_pl_parser_add_xml_feed, totem_pl_parser_is_xml_feed),
 };
 
+static char *my_gnome_vfs_get_mime_type_for_data (gconstpointer data, int len);
+
 #ifndef TOTEM_PL_PARSER_MINI
 
 static void totem_pl_parser_set_property (GObject *object,
@@ -615,7 +617,6 @@ my_gnome_vfs_get_mime_type_with_data (const char *uri, gpointer *data, TotemPlPa
 	GnomeVFSResult result;
 	GnomeVFSHandle *handle;
 	char *buffer;
-	const char *mimetype;
 	GnomeVFSFileSize total_bytes_read;
 	GnomeVFSFileSize bytes_read;
 
@@ -692,27 +693,7 @@ my_gnome_vfs_get_mime_type_with_data (const char *uri, gpointer *data, TotemPlPa
 	buffer[total_bytes_read] = '\0';
 	*data = buffer;
 
-	mimetype = gnome_vfs_get_mime_type_for_data (*data, total_bytes_read);
-
-	if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
-		PlaylistIdenCallback func;
-		guint i;
-
-		func = NULL;
-
-		for (i = 0; i < G_N_ELEMENTS(dual_types); i++) {
-			const char *res;
-
-			if (func == dual_types[i].iden)
-				continue;
-			func = dual_types[i].iden;
-			res = func (*data, total_bytes_read);
-			if (res != NULL)
-				return g_strdup (res);
-		}
-	}
-
-	return g_strdup (mimetype);
+	return my_gnome_vfs_get_mime_type_for_data (*data, total_bytes_read);
 }
 
 /**
@@ -1816,6 +1797,34 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 
 #endif /* !TOTEM_PL_PARSER_MINI */
 
+static char *
+my_gnome_vfs_get_mime_type_for_data (gconstpointer data, int len)
+{
+	const char *mimetype;
+
+	mimetype = gnome_vfs_get_mime_type_for_data (data, len);
+
+	if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
+		PlaylistIdenCallback func;
+		guint i;
+
+		func = NULL;
+
+		for (i = 0; i < G_N_ELEMENTS(dual_types); i++) {
+			const char *res;
+
+			if (func == dual_types[i].iden)
+				continue;
+			func = dual_types[i].iden;
+			res = func (data, len);
+			if (res != NULL)
+				return g_strdup (res);
+		}
+	}
+
+	return g_strdup (mimetype);
+}
+
 /**
  * totem_pl_parser_can_parse_from_data:
  * @data: the data to check for parsability
@@ -1832,13 +1841,13 @@ totem_pl_parser_can_parse_from_data (const char *data,
 				     gsize len,
 				     gboolean debug)
 {
-	const char *mimetype;
+	char *mimetype;
 	guint i;
 
 	g_return_val_if_fail (data != NULL, FALSE);
 
 	/* Bad cast! */
-	mimetype = gnome_vfs_get_mime_type_for_data ((gpointer) data, (int) len);
+	mimetype = my_gnome_vfs_get_mime_type_for_data ((gpointer) data, (int) len);
 
 	if (mimetype == NULL || strcmp (GNOME_VFS_MIME_TYPE_UNKNOWN, mimetype) == 0) {
 		D(g_message ("totem_pl_parser_can_parse_from_data couldn't get mimetype"));
@@ -1858,7 +1867,7 @@ totem_pl_parser_can_parse_from_data (const char *data,
 			if (dual_types[i].iden != NULL) {
 				gboolean retval = ((* dual_types[i].iden) (data, len) != NULL);
 				D(g_message ("%s dual type '%s'",
-							retval ? "Is" : "Is not", mimetype));
+					     retval ? "Is" : "Is not", mimetype));
 				return retval;
 			}
 			return FALSE;

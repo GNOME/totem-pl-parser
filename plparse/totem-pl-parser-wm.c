@@ -44,6 +44,7 @@
 
 #define ASX_NEEDLE "<ASX"
 #define ASX_NEEDLE2 "<asx"
+#define ASX_NEEDLE3 "<Asx"
 
 const char *
 totem_pl_parser_is_asx (const char *data, gsize len)
@@ -59,6 +60,9 @@ totem_pl_parser_is_asx (const char *data, gsize len)
 		return ASX_MIME_TYPE;
 	if (memmem (data, len,
 		    ASX_NEEDLE2, strlen (ASX_NEEDLE2)) != NULL)
+		return ASX_MIME_TYPE;
+	if (memmem (data, len,
+		    ASX_NEEDLE3, strlen (ASX_NEEDLE3)) != NULL)
 		return ASX_MIME_TYPE;
 
 	return FALSE;

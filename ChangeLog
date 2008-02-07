@@ -1,3 +1,13 @@
+2008-02-07  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-wm.c: (totem_pl_parser_is_asx):
+	Also look for "<Asx" as a magic in ASX files
+	* plparse/totem-pl-parser.c: (my_gnome_vfs_get_mime_type_with_data),
+	(my_gnome_vfs_get_mime_type_for_data),
+	(totem_pl_parser_can_parse_from_data): When parsing from data,
+	fall-back to looking for a mime-type ourselves if all else
+	fails (Closes: #505398)
+
 2008-01-27  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-lines.c: (totem_pl_parser_add_ra),
