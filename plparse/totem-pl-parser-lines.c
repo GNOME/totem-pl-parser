@@ -41,6 +41,7 @@
 #ifndef TOTEM_PL_PARSER_MINI
 
 #define EXTINF "#EXTINF:"
+#define EXTVLCOPT "#EXTVLCOPT"
 
 static char *
 totem_pl_parser_url_to_dos (const char *url, const char *output)
@@ -309,31 +310,31 @@ totem_pl_parser_add_ram (TotemPlParser *parser, const char *url, gpointer data)
 }
 
 static const char *
-totem_pl_parser_get_extinfo_title (gboolean extinfo, char **lines, int i)
+totem_pl_parser_get_extinfo_title (const char *extinfo)
 {
-	const char *extinf, *sep;
+	const char *res, *sep;
 
-	if (extinfo == FALSE || lines == NULL || i <= 0)
+	if (extinfo == NULL)
 		return NULL;
 
 	/* It's bound to have an EXTINF if we have extinfo */
-	extinf = lines[i-1] + strlen(EXTINF);
-	if (extinf[0] == '\0')
+	res = extinfo + strlen(EXTINF);
+	if (res[0] == '\0')
 		return NULL;
 
 	/* Handle ':' as a field separator */
-	sep = strstr (extinf, ":");
+	sep = strstr (res, ":");
 	if (sep != NULL && sep[1] != '\0') {
 		sep++;
 		return sep;
 	}
 
 	/* Handle ',' as a field separator */
-	sep = strstr (extinf, ",");
+	sep = strstr (res, ",");
 	if (sep == NULL || sep[1] == '\0') {
-		if (extinf[1] == '\0')
+		if (res[1] == '\0')
 			return NULL;
-		return extinf;
+		return res;
 	}
 
 	sep++;
@@ -369,8 +370,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser, const char *url,
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, **lines;
 	int size, i;
-	const char *split_char;
-	gboolean extinfo;
+	const char *split_char, *extinfo;
 
 	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
@@ -384,8 +384,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser, const char *url,
 		return retval;
 	}
 
-	/* is TRUE if there's an EXTINF on the previous line */
-	extinfo = FALSE;
+	/* is non-NULL if there's an EXTINF on a preceding line */
+	extinfo = NULL;
 
 	/* figure out whether we're a unix m3u or dos m3u */
 	if (strstr(contents,"\x0d") == NULL)
@@ -404,7 +404,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser, const char *url,
 
 		/* Ignore comments, but mark it if we have extra info */
 		if (lines[i][0] == '#') {
-			extinfo = g_str_has_prefix (lines[i], EXTINF);
+			if (extinfo == NULL && g_str_has_prefix (lines[i], EXTINF) != FALSE)
+				extinfo = lines[i];
 			continue;
 		}
 
@@ -413,9 +414,9 @@ totem_pl_parser_add_m3u (TotemPlParser *parser, const char *url,
 				|| lines[i][0] == G_DIR_SEPARATOR) {
 			if (totem_pl_parser_parse_internal (parser, lines[i], NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				totem_pl_parser_add_one_url (parser, lines[i],
-						totem_pl_parser_get_extinfo_title (extinfo, lines, i));
+						totem_pl_parser_get_extinfo_title (extinfo));
 			}
-			extinfo = FALSE;
+			extinfo = NULL;
 		} else if (g_ascii_isalpha (lines[i][0]) != FALSE
 			   && g_str_has_prefix (lines[i] + 1, ":\\")) {
 			/* Path relative to a drive on Windows, we need to use
@@ -426,9 +427,9 @@ totem_pl_parser_add_m3u (TotemPlParser *parser, const char *url,
 			/* + 2, skip drive letter */
 			fullpath = totem_pl_parser_append_path (_base, lines[i] + 2);
 			totem_pl_parser_add_one_url (parser, fullpath,
-						     totem_pl_parser_get_extinfo_title (extinfo, lines, i));
+						     totem_pl_parser_get_extinfo_title (extinfo));
 			g_free (fullpath);
-			extinfo = FALSE;
+			extinfo = NULL;
 		} else if (lines[i][0] == '\\' && lines[i][1] == '\\') {
 			/* ... Or it's in the windows smb form
 			 * (\\machine\share\filename), Note drive names
@@ -440,8 +441,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser, const char *url,
 			tmpurl = g_strjoin (NULL, "smb:", lines[i], NULL);
 
 			totem_pl_parser_add_one_url (parser, lines[i],
-					totem_pl_parser_get_extinfo_title (extinfo, lines, i));
-			extinfo = FALSE;
+					totem_pl_parser_get_extinfo_title (extinfo));
+			extinfo = NULL;
 
 			g_free (tmpurl);
 		} else {
@@ -454,10 +455,10 @@ totem_pl_parser_add_m3u (TotemPlParser *parser, const char *url,
 				lines[i] = g_strdelimit (lines[i], "\\", '/');
 			fullpath = totem_pl_parser_append_path (base, lines[i]);
 			totem_pl_parser_add_one_url (parser, fullpath,
-						     totem_pl_parser_get_extinfo_title (extinfo, lines, i));
+						     totem_pl_parser_get_extinfo_title (extinfo));
 			g_free (fullpath);
 			g_free (base);
-			extinfo = FALSE;
+			extinfo = NULL;
 		}
 	}
 

@@ -1,3 +1,11 @@
+2008-02-13  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-lines.c:
+	(totem_pl_parser_get_extinfo_title), (totem_pl_parser_add_m3u):
+	Fix parsing of the VLC-specific playlist on the FreeBox, available
+	at http://mafreebox.freebox.fr/freeboxtv/playlist.m3u if you have
+	such a device
+
 2008-02-07  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-qt.c:
