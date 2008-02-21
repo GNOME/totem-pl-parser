@@ -1,3 +1,10 @@
+2008-02-21  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_mimetype_is_ignored),
+	(totem_pl_parser_parse_internal): Fix text/plain files getting
+	added even though they don't have a proper playlist mime-type,
+	spotted by Tim-Philipp Müller
+
 2008-02-13  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-lines.c:

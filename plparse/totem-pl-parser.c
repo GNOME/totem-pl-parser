@@ -1400,7 +1400,6 @@ totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 	}
 
 	return FALSE;
-
 }
 
 /**
@@ -1574,6 +1573,12 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 				if (data == NULL) {
 					g_free (mimetype);
 					mimetype = my_gnome_vfs_get_mime_type_with_data (url, &data, parser);
+					/* If it's _still_ a text/plain, we don't want it */
+					if (strcmp (mimetype, "text/plain") == 0) {
+						g_free (mimetype);
+						mimetype = NULL;
+						break;
+					}
 				}
 				ret = (* dual_types[i].func) (parser, url, base, data);
 				found = TRUE;
