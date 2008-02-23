@@ -146,6 +146,7 @@ test_duration (void)
 	test_duration_real ("00:00:00.01", 1);
 	test_duration_real ("01:00:01.01", 3601);
 	test_duration_real ("01:00.01", 60);
+	test_duration_real ("24.59", 1499);
 }
 
 #define DATE_BUFSIZE 512

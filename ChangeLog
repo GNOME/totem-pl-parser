@@ -1,5 +1,15 @@
 2008-02-23  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/test-parser.c (test_duration): Add test for the duration
+	being passed as a "float" (minutes.seconds), as used in
+	http://www.stephenfry.com/podcasts/rss.xml
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal),
+	(totem_pl_parser_parse_duration): Fix test above, fix crash
+	when my_gnome_vfs_get_mime_type_with_data returns a NULL mime-type
+	(Closes: #518242)
+
+2008-02-23  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-xspf.c (totem_pl_parser_write_xspf),
 	(parse_xspf_track):
 	* plparse/totem-pl-parser.c (totem_pl_parser_class_init):

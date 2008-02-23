@@ -1578,7 +1578,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 					g_free (mimetype);
 					mimetype = my_gnome_vfs_get_mime_type_with_data (url, &data, parser);
 					/* If it's _still_ a text/plain, we don't want it */
-					if (strcmp (mimetype, "text/plain") == 0) {
+					if (mimetype == NULL || strcmp (mimetype, "text/plain") == 0) {
 						g_free (mimetype);
 						mimetype = NULL;
 						break;
@@ -1746,6 +1746,10 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 	}
 	if (sscanf (duration, "%d:%d", &minutes, &seconds) == 2) {
 		D(g_print ("Used 00:00 format\n"));
+		return minutes * 60 + seconds;
+	}
+	if (sscanf (duration, "%d.%d", &minutes, &seconds) == 2) {
+		D(g_print ("Used broken float format (00.00)\n"));
 		return minutes * 60 + seconds;
 	}
 	/* PLS files format */
