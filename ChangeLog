@@ -1,3 +1,12 @@
+2008-02-23  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-xspf.c (totem_pl_parser_write_xspf),
+	(parse_xspf_track):
+	* plparse/totem-pl-parser.c (totem_pl_parser_class_init):
+	* plparse/totem-pl-parser.h: Give out much more metadata when parsing
+	XSPF playlists, as used on the new last.fm streaming system
+	(Helps: #518231)
+
 2008-02-21  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_mimetype_is_ignored),

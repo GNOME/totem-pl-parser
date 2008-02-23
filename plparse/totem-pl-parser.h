@@ -95,6 +95,12 @@ struct TotemPlParser {
  **/
 #define TOTEM_PL_PARSER_FIELD_AUTHOR		"author"
 /**
+ * TOTEM_PL_PARSER_FIELD_ALBUM:
+ *
+ * Metadata field for an entry's album.
+ **/
+#define TOTEM_PL_PARSER_FIELD_ALBUM		"album"
+/**
  * TOTEM_PL_PARSER_FIELD_BASE:
  *
  * Metadata field for an entry's base path.

@@ -414,6 +414,10 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     "Genre of the item to be added", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("album", "album",
+				     "Album of the item to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("base", "base",
 				     "Base URL of the item to be added", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);

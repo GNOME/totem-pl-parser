@@ -40,6 +40,8 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 
+#define SAFE_FREE(x) { if (x != NULL) xmlFree (x); }
+
 static xmlDocPtr
 totem_pl_parser_parse_xml_file (const char *url)
 {
@@ -179,12 +181,18 @@ parse_xspf_track (TotemPlParser *parser, char *base, xmlDocPtr doc,
 		xmlNodePtr parent)
 {
 	xmlNodePtr node;
-	xmlChar *title, *url;
-	gchar *fullpath;
+	xmlChar *title, *url, *image_url, *artist, *album, *duration, *moreinfo;
+	char *fullpath;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
 	
+	fullpath = NULL;
 	title = NULL;
 	url = NULL;
+	image_url = NULL;
+	artist = NULL;
+	album = NULL;
+	duration = NULL;
+	moreinfo = NULL;
 
 	for (node = parent->children; node != NULL; node = node->next)
 	{
@@ -196,22 +204,61 @@ parse_xspf_track (TotemPlParser *parser, char *base, xmlDocPtr doc,
 
 		if (g_ascii_strcasecmp ((char *)node->name, "title") == 0)
 			title = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+
+		if (g_ascii_strcasecmp ((char *)node->name, "image") == 0)
+			image_url = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+
+		/* Last.fm uses creator for the artist */
+		if (g_ascii_strcasecmp ((char *)node->name, "creator") == 0)
+			artist = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+
+		if (g_ascii_strcasecmp ((char *)node->name, "duration") == 0)
+			duration = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+
+		if (g_ascii_strcasecmp ((char *)node->name, "link") == 0) {
+			xmlChar *rel;
+
+			rel = xmlGetProp (node, (const xmlChar *) "rel");
+			if (rel != NULL) {
+				if (g_ascii_strcasecmp ((char *) rel, "http://www.last.fm/trackpage") == 0)
+					moreinfo = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+				xmlFree (rel);
+			} else {
+				/* If we don't have a rel="", then it's not a last.fm playlist */
+				moreinfo = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+			}
+		}
+
+		if (g_ascii_strcasecmp ((char *)node->name, "album") == 0)
+			album = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 	}
 
 	if (url == NULL) {
-		if (title)
-			xmlFree (title);
-		return TOTEM_PL_PARSER_RESULT_ERROR;
+		retval = TOTEM_PL_PARSER_RESULT_ERROR;
+		goto bail;
 	}
 
 	fullpath = totem_pl_parser_resolve_url (base, (char *)url);
-	totem_pl_parser_add_one_url (parser, fullpath, (char *)title);
+	totem_pl_parser_add_url (parser,
+				 TOTEM_PL_PARSER_FIELD_URL, fullpath,
+				 TOTEM_PL_PARSER_FIELD_TITLE, title,
+				 TOTEM_PL_PARSER_FIELD_DURATION, duration,
+				 TOTEM_PL_PARSER_FIELD_IMAGE_URL, image_url,
+				 TOTEM_PL_PARSER_FIELD_AUTHOR, artist,
+				 TOTEM_PL_PARSER_FIELD_ALBUM, album,
+				 TOTEM_PL_PARSER_FIELD_MOREINFO, moreinfo,
+				 NULL);
+
 	retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 
-	if (title)
-		xmlFree (title);
-	if (url)
-		xmlFree (url);
+bail:
+	SAFE_FREE (title);
+	SAFE_FREE (url);
+	SAFE_FREE (image_url);
+	SAFE_FREE (artist);
+	SAFE_FREE (album);
+	SAFE_FREE (duration);
+	SAFE_FREE (moreinfo);
 	g_free (fullpath);
 
 	return retval;
