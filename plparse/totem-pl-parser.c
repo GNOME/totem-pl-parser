@@ -431,7 +431,11 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("duration", "duration",
-				     "String representing the duration of the entry, used for still images", NULL,
+				     "String representing the duration of the entry", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("duration-ms", "duration-ms",
+				     "String representing the duration of the entry in milliseconds", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("starttime", "starttime",
@@ -488,6 +492,14 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("image-url", "image-url",
 				     "String representing the location of an image for a playlist", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("download-url", "download-url",
+				     "String representing the location of a download URL", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("id", "id",
+				     "String representing the identifier for an entry", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 }

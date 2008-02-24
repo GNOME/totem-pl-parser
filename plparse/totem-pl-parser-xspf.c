@@ -182,6 +182,7 @@ parse_xspf_track (TotemPlParser *parser, char *base, xmlDocPtr doc,
 {
 	xmlNodePtr node;
 	xmlChar *title, *url, *image_url, *artist, *album, *duration, *moreinfo;
+	xmlChar *download_url, *id;
 	char *fullpath;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
 	
@@ -193,6 +194,8 @@ parse_xspf_track (TotemPlParser *parser, char *base, xmlDocPtr doc,
 	album = NULL;
 	duration = NULL;
 	moreinfo = NULL;
+	download_url = NULL;
+	id = NULL;
 
 	for (node = parent->children; node != NULL; node = node->next)
 	{
@@ -201,36 +204,33 @@ parse_xspf_track (TotemPlParser *parser, char *base, xmlDocPtr doc,
 
 		if (g_ascii_strcasecmp ((char *)node->name, "location") == 0)
 			url = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
-
-		if (g_ascii_strcasecmp ((char *)node->name, "title") == 0)
+		else if (g_ascii_strcasecmp ((char *)node->name, "title") == 0)
 			title = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
-
-		if (g_ascii_strcasecmp ((char *)node->name, "image") == 0)
+		else if (g_ascii_strcasecmp ((char *)node->name, "image") == 0)
 			image_url = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
-
 		/* Last.fm uses creator for the artist */
-		if (g_ascii_strcasecmp ((char *)node->name, "creator") == 0)
+		else if (g_ascii_strcasecmp ((char *)node->name, "creator") == 0)
 			artist = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
-
-		if (g_ascii_strcasecmp ((char *)node->name, "duration") == 0)
+		else if (g_ascii_strcasecmp ((char *)node->name, "duration") == 0)
 			duration = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
-
-		if (g_ascii_strcasecmp ((char *)node->name, "link") == 0) {
+		else if (g_ascii_strcasecmp ((char *)node->name, "link") == 0) {
 			xmlChar *rel;
 
 			rel = xmlGetProp (node, (const xmlChar *) "rel");
 			if (rel != NULL) {
 				if (g_ascii_strcasecmp ((char *) rel, "http://www.last.fm/trackpage") == 0)
 					moreinfo = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+				else if (g_ascii_strcasecmp ((char *) rel, "http://www.last.fm/freeTrackURL") == 0)
+					download_url = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 				xmlFree (rel);
 			} else {
 				/* If we don't have a rel="", then it's not a last.fm playlist */
 				moreinfo = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 			}
-		}
-
-		if (g_ascii_strcasecmp ((char *)node->name, "album") == 0)
+		} else if (g_ascii_strcasecmp ((char *)node->name, "album") == 0)
 			album = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+		else if (g_ascii_strcasecmp ((char *)node->name, "trackauth") == 0)
+			id = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 	}
 
 	if (url == NULL) {
@@ -242,11 +242,13 @@ parse_xspf_track (TotemPlParser *parser, char *base, xmlDocPtr doc,
 	totem_pl_parser_add_url (parser,
 				 TOTEM_PL_PARSER_FIELD_URL, fullpath,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
-				 TOTEM_PL_PARSER_FIELD_DURATION, duration,
+				 TOTEM_PL_PARSER_FIELD_DURATION_MS, duration,
 				 TOTEM_PL_PARSER_FIELD_IMAGE_URL, image_url,
 				 TOTEM_PL_PARSER_FIELD_AUTHOR, artist,
 				 TOTEM_PL_PARSER_FIELD_ALBUM, album,
 				 TOTEM_PL_PARSER_FIELD_MOREINFO, moreinfo,
+				 TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL, download_url,
+				 TOTEM_PL_PARSER_FIELD_ID, id,
 				 NULL);
 
 	retval = TOTEM_PL_PARSER_RESULT_SUCCESS;

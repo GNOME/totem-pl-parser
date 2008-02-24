@@ -125,6 +125,14 @@ struct TotemPlParser {
  **/
 #define TOTEM_PL_PARSER_FIELD_DURATION		"duration"
 /**
+ * TOTEM_PL_PARSER_FIELD_DURATION_MS:
+ *
+ * Metadata field for an entry's playback duration, in milliseconds. It's only used when an entry's
+ * duration is available in that format, so one would get either the %TOTEM_PL_PARSER_FIELD_DURATION
+ * or %TOTEM_PL_PARSER_FIELD_DURATION_MS as metadata.
+ **/
+#define TOTEM_PL_PARSER_FIELD_DURATION_MS	"duration-ms"
+/**
  * TOTEM_PL_PARSER_FIELD_STARTTIME:
  *
  * Metadata field for an entry's playback start time, which should be parsed using totem_pl_parser_parse_duration().
@@ -208,6 +216,20 @@ struct TotemPlParser {
  * Metadata field for an entry's thumbnail image URL.
  **/
 #define TOTEM_PL_PARSER_FIELD_IMAGE_URL		"image-url"
+/**
+ * TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL:
+ *
+ * Metadata field for an entry's download URL. Only used if an alternate download
+ * location is available for the entry.
+ **/
+#define TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL	"download-url"
+/**
+ * TOTEM_PL_PARSER_FIELD_ID:
+ *
+ * Metadata field for an entry's identifier. Its use is dependent on the format
+ * of the playlist parsed, and its origin.
+ **/
+#define TOTEM_PL_PARSER_FIELD_ID		"id"
 /**
  * TOTEM_PL_PARSER_FIELD_IS_PLAYLIST:
  *

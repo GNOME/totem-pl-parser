@@ -1,3 +1,13 @@
+2008-02-24  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-xspf.c (parse_xspf_track):
+	* plparse/totem-pl-parser.c (totem_pl_parser_class_init):
+	* plparse/totem-pl-parser.h: Add support for the some last.fm
+	XSPF tags (lastfm:trackauth, duration in milliseconds, and
+	download URLs as TOTEM_PL_PARSER_FIELD_ID,
+	TOTEM_PL_PARSER_FIELD_DURATION_MS and
+	TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL respectively
+
 2008-02-23  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/test-parser.c (test_duration): Add test for the duration
