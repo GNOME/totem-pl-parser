@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.21.92:
+* Add support for more metadata when parsing XSPF files, as used on last.fm
+* Better detection of files that aren't recognised as Podcast feeds
+* Detect some additional ASX files
+* Fix parsing of RTSPtext playlist from http://mediathek.zdf.de/
+* Fix parsing of VLC-specific playlists from Freebox
+
 2.21.91:
 * Fix HAL test in the configure script, which could lead to HAL support not
   being built in
