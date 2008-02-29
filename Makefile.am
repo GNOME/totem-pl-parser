@@ -9,7 +9,8 @@ EXTRA_DIST =			\
 	AUTHORS NEWS		\
 	gtk-doc.make		\
 	totem-plparser.pc.in	\
-	totem-plparser-mini.pc
+	totem-plparser-mini.pc	\
+	totem-pl-parser.spec
 
 CLEANFILES = totem-plparser.pc
 

@@ -4,7 +4,7 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-PKG_NAME="totem"
+PKG_NAME="totem-pl-parser"
 
 (test -f $srcdir/configure.in) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"

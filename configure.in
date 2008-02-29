@@ -110,6 +110,7 @@ totem-plparser.pc
 totem-plparser-uninstalled.pc
 totem-plparser-mini.pc
 totem-plparser-mini-uninstalled.pc
+totem-pl-parser.spec
 lib/Makefile
 plparse/Makefile
 plparse/totem-pl-parser-features.h

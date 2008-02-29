@@ -1,3 +1,10 @@
+2008-02-29 Christian Schaller <christian.schaller@collabora.co.uk>
+
+	* Add totem-pl-parser.spec.in
+	* autogen.sh: fix name of package to be totem-pl-parser
+	* configure.in: add totem-pl-parser.spec
+	* Makefile.am: add totem-pl-parser.spec
+
 ============ Version 2.21.92
 
 2008-02-24  Bastien Nocera  <hadess@hadess.net>
