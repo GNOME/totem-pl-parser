@@ -36,6 +36,10 @@
 #include "totem-pl-parser-media.h"
 #include "totem-pl-parser-private.h"
 
+/* Files that start with these characters sort after files that don't. */
+#define SORT_LAST_CHAR1 '.'
+#define SORT_LAST_CHAR2 '#'
+
 #ifndef TOTEM_PL_PARSER_MINI
 /* Returns NULL if we don't have an ISO image,
  * or an empty string if it's non-UTF-8 data */
@@ -168,17 +172,37 @@ totem_pl_parser_add_cue (TotemPlParser *parser, const char *url,
 static int
 totem_pl_parser_dir_compare (GnomeVFSFileInfo *a, GnomeVFSFileInfo *b)
 {
+	const char *name_1, *name_2;
+	const char *key_1, *key_2;
+	gboolean sort_last_1, sort_last_2;
+	int compare;
+	
 	if (a->name == NULL) {
 		if (b->name == NULL)
-			return 0;
+			compare = 0;
 		else
-			return -1;
-	} else {
-		if (b->name == NULL)
-			return 1;
-		else
-			return strcmp (a->name, b->name);
+			compare = -1;
+	} else {	
+		name_1 = a->name;
+		name_2 = b->name;
+		
+		sort_last_1 = name_1[0] == SORT_LAST_CHAR1 || name_1[0] == SORT_LAST_CHAR2;
+		sort_last_2 = name_2[0] == SORT_LAST_CHAR1 || name_2[0] == SORT_LAST_CHAR2;
+		
+		if (sort_last_1 && !sort_last_2) {
+			compare = +1;
+		} else if (!sort_last_1 && sort_last_2) {
+			compare = -1;
+		} else {
+			key_1 = g_utf8_collate_key_for_filename (name_1, -1);
+			key_2 = g_utf8_collate_key_for_filename (name_2, -1);
+			compare = strcmp (key_1, key_2);
+			g_free (key_1);
+			g_free (key_2);
+		}
 	}
+
+	return compare;
 }
 
 TotemPlParserResult

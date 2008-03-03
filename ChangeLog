@@ -1,3 +1,10 @@
+2008-03-03  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-media.c (totem_pl_parser_iso_get_title),
+	(totem_pl_parser_dir_compare): Patch from Sebastian Pölsterl
+	<marduk@k-d-w.org> to sort filenames the same way nautilus does
+	(Closes: #518116)
+
 2008-02-29 Christian Schaller <christian.schaller@collabora.co.uk>
 
 	* Add totem-pl-parser.spec.in
