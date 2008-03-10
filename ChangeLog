@@ -1,3 +1,10 @@
+============ Version 2.22.0
+
+2008-03-10  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.22.0
+
 2008-03-03  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-media.c (totem_pl_parser_iso_get_title),

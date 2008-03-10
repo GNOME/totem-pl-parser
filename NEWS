@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+2.22.0:
+* Sort filenames like nautilus does when adding directories
+
 2.21.92:
 * Add support for more metadata when parsing XSPF files, as used on last.fm
 * Better detection of files that aren't recognised as Podcast feeds
