@@ -11,7 +11,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem-pl-parser HEAD\n"
+"Project-Id-Version: totem-pl-parser 2.22\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-03 18:38+0000\n"
 "PO-Revision-Date: 2007-11-26 20:42+0300\n"
