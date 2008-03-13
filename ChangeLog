@@ -1,5 +1,11 @@
 2008-03-13  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal),
+	(totem_pl_parser_can_parse_from_data): Add support for
+	feed:// URLs, as used by Firefox 3
+
+2008-03-13  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-media.c (totem_pl_parser_dir_compare):
 	Fix small warning
 

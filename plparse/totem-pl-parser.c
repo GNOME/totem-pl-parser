@@ -1508,9 +1508,10 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 
-	/* Fix up itpc, see http://www.apple.com/itunes/store/podcaststechspecs.html */
-	if (g_str_has_prefix (url, "itpc") != FALSE) {
-		DEBUG(g_print ("URL '%s' is getting special cased for ITPC parsing\n", url));
+	/* Fix up itpc, see http://www.apple.com/itunes/store/podcaststechspecs.html
+	 * as well as feed:// as used by Firefox */
+	if (g_str_has_prefix (url, "itpc") != FALSE || g_str_has_prefix (url, "feed") != FALSE) {
+		DEBUG(g_print ("URL '%s' is getting special cased for ITPC/FEED parsing\n", url));
 		return totem_pl_parser_add_itpc (parser, url, base, NULL);
 	}
 	/* Try itms Podcast references, see itunes.py in PenguinTV */
