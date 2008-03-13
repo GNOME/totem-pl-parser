@@ -1,3 +1,8 @@
+2008-03-13  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-media.c (totem_pl_parser_dir_compare):
+	Fix small warning
+
 ============ Version 2.22.1
 
 2008-03-10  Bastien Nocera  <hadess@hadess.net>

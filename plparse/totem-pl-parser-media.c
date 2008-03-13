@@ -173,7 +173,7 @@ static int
 totem_pl_parser_dir_compare (GnomeVFSFileInfo *a, GnomeVFSFileInfo *b)
 {
 	const char *name_1, *name_2;
-	const char *key_1, *key_2;
+	char *key_1, *key_2;
 	gboolean sort_last_1, sort_last_2;
 	int compare;
 	
