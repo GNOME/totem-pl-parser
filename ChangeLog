@@ -1,3 +1,8 @@
+2008-03-17  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-features.h.in: Fix license
+	(Closes: #522790)
+
 ============ Version 2.22.0
 
 2008-03-10  Bastien Nocera  <hadess@hadess.net>
