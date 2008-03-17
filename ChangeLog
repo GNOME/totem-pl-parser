@@ -1,3 +1,13 @@
+2008-03-17  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_is_rss),
+	(totem_pl_parser_add_rss): Handle feeds with "<rss\n" as the
+	document name (work-around XML parser bug), as seen in
+	http://spanishpod.com/lessons/feed/ (Closes: #522968)
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
+	More debug when ignoring unsafe playlist types
+
 2008-03-13  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal),
