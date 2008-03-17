@@ -42,6 +42,7 @@
 #include "totem-pl-parser-private.h"
 
 #define RSS_NEEDLE "<rss "
+#define RSS_NEEDLE2 "<rss\n"
 #define ATOM_NEEDLE "<feed "
 #define OPML_NEEDLE "<opml "
 
@@ -55,6 +56,9 @@ totem_pl_parser_is_rss (const char *data, gsize len)
 
 	if (memmem (data, len,
 		    RSS_NEEDLE, strlen (RSS_NEEDLE)) != NULL)
+		return RSS_MIME_TYPE;
+	if (memmem (data, len,
+		    RSS_NEEDLE2, strlen (RSS_NEEDLE2)) != NULL)
 		return RSS_MIME_TYPE;
 
 	return NULL;
@@ -249,12 +253,14 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 
 	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
 	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+		g_message ("can't parse the file");
 		g_free (contents);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 	/* If the document has no name */
 	if (doc->name == NULL
-	    || g_ascii_strcasecmp (doc->name , "rss") != 0) {
+	    || (g_ascii_strcasecmp (doc->name , "rss") != 0
+	    	&& g_ascii_strcasecmp (doc->name , "rss\n") != 0)) {
 		g_free (contents);
 		xml_parser_free_tree (doc);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
