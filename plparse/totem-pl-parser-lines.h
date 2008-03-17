@@ -27,6 +27,7 @@ G_BEGIN_DECLS
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
+#include <gio/gio.h>
 #else
 #include "totem-pl-parser-mini.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -42,15 +43,15 @@ gboolean totem_pl_parser_write_m3u (TotemPlParser *parser,
 				    gpointer user_data,
 				    GError **error);
 TotemPlParserResult totem_pl_parser_add_ram (TotemPlParser *parser,
-					     const char *url,
+					     GFile *file,
 					     gpointer data);
 TotemPlParserResult totem_pl_parser_add_m3u (TotemPlParser *parser,
-					     const char *url,
-					     const char *base,
+					     GFile *file,
+					     GFile *base_file,
 					     gpointer data);
 TotemPlParserResult totem_pl_parser_add_ra (TotemPlParser *parser,
-					    const char *url,
-					    const char *base,
+					    GFile *file,
+					    GFile *base_file,
 					    gpointer data);
 #endif /* !TOTEM_PL_PARSER_MINI */
 

@@ -148,9 +148,12 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 }
 
 TotemPlParserResult
-totem_pl_parser_add_pls_with_contents (TotemPlParser *parser, const char *url,
-				       const char *base, const char *contents)
+totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
+				       GFile *file,
+				       GFile *base_file,
+				       const char *contents)
 {
+#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char **lines;
 	int i, num_entries;
@@ -299,12 +302,16 @@ bail:
 	g_strfreev (lines);
 
 	return retval;
+#endif
 }
 
 TotemPlParserResult
-totem_pl_parser_add_pls (TotemPlParser *parser, const char *url,
-			 const char *base, gpointer data)
+totem_pl_parser_add_pls (TotemPlParser *parser,
+			 GFile *file,
+			 GFile *base_file,
+			 gpointer data)
 {
+#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents;
 	int size;
@@ -321,6 +328,7 @@ totem_pl_parser_add_pls (TotemPlParser *parser, const char *url,
 	g_free (contents);
 
 	return retval;
+#endif
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

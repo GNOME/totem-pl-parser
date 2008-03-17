@@ -89,7 +89,7 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	strncpy (buffer + TITLE_OFFSET, title, TITLE_SIZE);
 	if (totem_pl_parser_write_buffer (handle, buffer, RECORD_SIZE, error) == FALSE)
 	{
-		DEBUG(g_print ("Couldn't write header block"));
+		DEBUG(NULL, g_print ("Couldn't write header block"));
 		gnome_vfs_close (handle);
 		g_free (buffer);
 		return FALSE;
@@ -118,7 +118,7 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 		path = g_filename_from_uri (uri, NULL, error);
 		if (path == NULL)
 		{
-			DEBUG(g_print ("Couldn't convert URI '%s' to a filename: %s\n", uri, (*error)->message));
+			DEBUG(NULL, g_print ("Couldn't convert URI '%s' to a filename: %s\n", uri, (*error)->message));
 			g_free (uri);
 			ret = FALSE;
 			break;
@@ -132,7 +132,7 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 		converted = g_convert (path, -1, "UTF-16BE", "UTF-8", NULL, &written, error);
 		if (converted == NULL)
 		{
-			DEBUG(g_print ("Couldn't convert filename '%s' to UTF-16BE\n", path));
+			DEBUG(NULL, g_print ("Couldn't convert filename '%s' to UTF-16BE\n", path));
 			g_free (path);
 			ret = FALSE;
 			break;
@@ -147,7 +147,7 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 
 		if (totem_pl_parser_write_buffer (handle, buffer, RECORD_SIZE, error) == FALSE)
 		{
-			DEBUG(g_print ("Couldn't write entry %d to the file\n", i));
+			DEBUG(NULL, g_print ("Couldn't write entry %d to the file\n", i));
 			ret = FALSE;
 			break;
 		}
@@ -159,9 +159,12 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 }
 
 TotemPlParserResult
-totem_pl_parser_add_pla (TotemPlParser *parser, const char *url,
-			 const char *base, gpointer data)
+totem_pl_parser_add_pla (TotemPlParser *parser,
+			 GFile *file,
+			 GFile *base_file,
+			 gpointer data)
 {
+#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, *title;
 	int size, offset, max_entries, entry;
@@ -243,6 +246,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser, const char *url,
 	g_free (contents);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+#endif
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

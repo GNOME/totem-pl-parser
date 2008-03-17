@@ -1,5 +1,10 @@
 2008-03-17  Bastien Nocera  <hadess@hadess.net>
 
+	* *: First pass at porting to GIO. Completely broken, please
+	bear with me.
+
+2008-03-17  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-features.h.in: Fix license
 	(Closes: #522790)
 

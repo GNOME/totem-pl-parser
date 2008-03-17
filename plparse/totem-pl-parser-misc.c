@@ -42,9 +42,12 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 TotemPlParserResult
-totem_pl_parser_add_gvp (TotemPlParser *parser, const char *url,
-			 const char *base, gpointer data)
+totem_pl_parser_add_gvp (TotemPlParser *parser,
+			 GFile *url,
+			 GFile *base_file,
+			 gpointer data)
 {
+#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, **lines, *title, *link, *version;
 	int size;
@@ -86,12 +89,16 @@ totem_pl_parser_add_gvp (TotemPlParser *parser, const char *url,
 	g_strfreev (lines);
 
 	return retval;
+#endif
 }
 
 TotemPlParserResult
-totem_pl_parser_add_desktop (TotemPlParser *parser, const char *url,
-			     const char *base, gpointer data)
+totem_pl_parser_add_desktop (TotemPlParser *parser,
+			     GFile *file,
+			     GFile *base_file,
+			     gpointer data)
 {
+#if 0
 	char *contents, **lines;
 	const char *path, *display_name, *type;
 	int size;
@@ -132,6 +139,7 @@ bail:
 	g_strfreev (lines);
 
 	return res;
+#endif
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

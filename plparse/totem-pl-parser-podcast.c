@@ -235,10 +235,11 @@ parse_rss_items (TotemPlParser *parser, const char *url, xml_node_t *parent)
 
 TotemPlParserResult
 totem_pl_parser_add_rss (TotemPlParser *parser,
-			 const char *url,
-			 const char *base,
+			 GFile *file,
+			 GFile *base_file,
 			 gpointer data)
 {
+#if 0
 	xml_node_t* doc, *channel;
 	char *contents;
 	int size;
@@ -269,17 +270,18 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
-
+#endif
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
 /* http://www.apple.com/itunes/store/podcaststechspecs.html */
 TotemPlParserResult
 totem_pl_parser_add_itpc (TotemPlParser *parser,
-			  const char *url,
-			  const char *base,
+			  GFile *file,
+			  GFile *base_file,
 			  gpointer data)
 {
+#if 0
 	TotemPlParserResult ret;
 	char *new_url;
 
@@ -289,6 +291,7 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 	g_free (new_url);
 
 	return ret;
+#endif
 }
 
 /* Atom docs:
@@ -423,10 +426,11 @@ parse_atom_entries (TotemPlParser *parser, const char *url, xml_node_t *parent)
 
 TotemPlParserResult
 totem_pl_parser_add_atom (TotemPlParser *parser,
-			  const char *url,
-			  const char *base,
+			  GFile *file,
+			  GFile *base_file,
 			  gpointer data)
 {
+#if 0
 	xml_node_t* doc;
 	char *contents;
 	int size;
@@ -451,14 +455,14 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
-
+#endif
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
 TotemPlParserResult
 totem_pl_parser_add_xml_feed (TotemPlParser *parser,
-			      const char *url,
-			      const char *base,
+			      GFile *file,
+			      GFile *base_file,
 			      gpointer data)
 {
 	guint len;
@@ -469,11 +473,11 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 	len = strlen (data);
 
 	if (totem_pl_parser_is_rss (data, len) != FALSE)
-		return totem_pl_parser_add_rss (parser, url, base, data);
+		return totem_pl_parser_add_rss (parser, file, base_file, data);
 	if (totem_pl_parser_is_atom (data, len) != FALSE)
-		return totem_pl_parser_add_atom (parser, url, base, data);
+		return totem_pl_parser_add_atom (parser, file, base_file, data);
 	if (totem_pl_parser_is_opml (data, len) != FALSE)
-		return totem_pl_parser_add_opml (parser, url, base, data);
+		return totem_pl_parser_add_opml (parser, file, base_file, data);
 
 	return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 }
@@ -642,10 +646,11 @@ totem_pl_parser_get_itms_url (const char *data)
 
 TotemPlParserResult
 totem_pl_parser_add_itms (TotemPlParser *parser,
-			  const char *url,
-			  const char *base,
+			  GFile *file,
+			  GFile *base_file,
 			  gpointer data)
 {
+#if 0
 	char *contents, *uncompressed, *itms_url, *feed_url;
 	TotemPlParserResult ret;
 	int size;
@@ -689,14 +694,16 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	g_free (feed_url);
 
 	return ret;
+#endif
 }
 
 gboolean
-totem_pl_parser_is_itms_feed (const char *url)
+totem_pl_parser_is_itms_feed (GFile *file)
 {
+#if 0
 	g_return_val_if_fail (url != NULL, FALSE);
 
-	if (g_str_has_prefix (url, "itms:") != FALSE
+	if (g_file_has_uri_scheme (file, "itms:") != FALSE
 	    && strstr (url, "phobos.apple.com") != NULL
 	    && strstr (url, "viewPodcast") != NULL)
 		return TRUE;
@@ -705,7 +712,7 @@ totem_pl_parser_is_itms_feed (const char *url)
 		return TRUE;
 	if (strstr (url, "itunes.com/podcast") != NULL)
 		return TRUE;
-
+#endif
 	return FALSE;
 }
 
@@ -766,10 +773,11 @@ parse_opml_head_body (TotemPlParser *parser, const char *url, xml_node_t *parent
 
 TotemPlParserResult
 totem_pl_parser_add_opml (TotemPlParser *parser,
-			  const char *url,
-			  const char *base,
+			  GFile *file,
+			  GFile *base_file,
 			  gpointer data)
 {
+#if 0
 	xml_node_t* doc;
 	char *contents;
 	int size;
@@ -794,7 +802,7 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
-
+#endif
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 

@@ -69,10 +69,11 @@ totem_pl_parser_is_quicktime (const char *data, gsize len)
 
 static TotemPlParserResult
 totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
-					const char *url,
-					const char *base,
+					GFile *file,
+					GFile *base_file,
 					gpointer data)
 {
+#if 0
 	char *contents = NULL;
 	gboolean dos_mode = FALSE;
 	char *volume, *autoplay, *rtspurl;
@@ -108,14 +109,16 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 	g_free (volume);
 	g_free (autoplay);
 	g_strfreev (lines);
-
+#endif
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
 static TotemPlParserResult
-totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser, const char *url,
-					const char *base, gpointer data)
+totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
+					GFile *file,
+					GFile *base_file, gpointer data)
 {
+#if 0
 	xml_node_t *doc, *node;
 	int size;
 	char *contents;
@@ -193,20 +196,23 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser, const char *url,
 				 TOTEM_PL_PARSER_FIELD_AUTOPLAY, autoplay,
 				 NULL);
 	xml_parser_free_tree (doc);
-
+#endif
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
 TotemPlParserResult
-totem_pl_parser_add_quicktime (TotemPlParser *parser, const char *url,
-			       const char *base, gpointer data)
+totem_pl_parser_add_quicktime (TotemPlParser *parser,
+			       GFile *file,
+			       GFile *base_file,
+			       gpointer data)
 {
+#if 0
 	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == NULL) {
 		totem_pl_parser_add_one_url (parser, url, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
-
-	return totem_pl_parser_add_quicktime_metalink (parser, url, base, data);
+#endif
+	return totem_pl_parser_add_quicktime_metalink (parser, file, base_file, data);
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

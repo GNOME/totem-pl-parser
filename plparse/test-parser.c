@@ -3,11 +3,12 @@
 #include <locale.h>
 
 #include <glib.h>
+#include <gio/gio.h>
+
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
-#include <libgnomevfs/gnome-vfs.h>
 
 #include "totem-pl-parser.h"
 #include "totem-pl-parser-mini.h"
@@ -117,6 +118,7 @@ test_resolve (void)
 {
 	header ("Resolve URL");
 
+	test_resolve_real ("http://localhost:12345/foobar/", "another_file", "http://localhost:12345/foobar/another_file");
 	test_resolve_real ("http://localhost:12345/foobar", "/leopard.mov", "http://localhost:12345/leopard.mov");
 	test_resolve_real ("file:///home/hadess/Movies", "Movies/mymovie.mov", "file:///home/hadess/Movies/Movies/mymovie.mov");
 	test_resolve_real ("http://localhost/video.dir/video.mpg?param1=foo&param2=bar", "dir/image.jpg", "http://localhost/video.dir/dir/image.jpg");
@@ -294,62 +296,43 @@ push_parser (gpointer data)
 static char *
 test_data_get_data (const char *uri, guint *len)
 {
-	GnomeVFSResult result;
-	GnomeVFSHandle *handle;
+	gssize bytes_read;
+	GFileInputStream *stream;
+	GFile *file;
+	GError *error = NULL;
 	char *buffer;
-	GnomeVFSFileSize total_bytes_read;
-	GnomeVFSFileSize bytes_read;
 
 	*len = 0;
 
+	file = g_file_new_for_uri (uri);
+
 	/* Open the file. */
-	result = gnome_vfs_open (&handle, uri, GNOME_VFS_OPEN_READ);
-	if (result != GNOME_VFS_OK)
+	stream = g_file_read (file, NULL, &error);
+	if (stream == NULL) {
+		g_print ("URL '%s' couldn't be opened in test_data_get_data: '%s'\n", uri, error->message);
+		g_error_free (error);
 		return NULL;
+	}
 
-	/* Read the whole thing, up to MIME_READ_CHUNK_SIZE */
-	buffer = NULL;
-	total_bytes_read = 0;
-	do {
-		buffer = g_realloc (buffer, total_bytes_read
-				+ MIME_READ_CHUNK_SIZE);
-		result = gnome_vfs_read (handle,
-				buffer + total_bytes_read,
-				MIME_READ_CHUNK_SIZE,
-				&bytes_read);
-		if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF) {
-			g_free (buffer);
-			gnome_vfs_close (handle);
-			return NULL;
-		}
+	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
+	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
+	g_input_stream_close (G_INPUT_STREAM (stream), NULL, NULL);
+	if (bytes_read == -1) {
+		g_free (buffer);
+		return NULL;
+	}
 
-		/* Check for overflow. */
-		if (total_bytes_read + bytes_read < total_bytes_read) {
-			g_free (buffer);
-			gnome_vfs_close (handle);
-			return NULL;
-		}
-
-		total_bytes_read += bytes_read;
-	} while (result == GNOME_VFS_OK
-			&& total_bytes_read < MIME_READ_CHUNK_SIZE);
-
-	/* Close the file but don't overwrite the possible error */
-	if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF)
-		gnome_vfs_close (handle);
-	else
-		result = gnome_vfs_close (handle);
-
-	if (result != GNOME_VFS_OK) {
-		g_message ("URL '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'\n", uri, gnome_vfs_result_to_string (result));
+	if (bytes_read == -1) {
+		g_message ("URL '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'\n", uri, error->message);
+		g_error_free (error);
 		g_free (buffer);
 		return NULL;
 	}
 
 	/* Return the file null-terminated. */
-	buffer = g_realloc (buffer, total_bytes_read + 1);
-	buffer[total_bytes_read] = '\0';
-	*len = total_bytes_read;
+	buffer = g_realloc (buffer, bytes_read + 1);
+	buffer[bytes_read] = '\0';
+	*len = bytes_read;
 
 	return buffer;
 }
@@ -443,6 +426,7 @@ int main (int argc, char **argv)
 	setlocale (LC_ALL, "");
 
 	g_thread_init (NULL);
+	g_type_init ();
 
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, option_entries, NULL);
@@ -457,8 +441,6 @@ int main (int argc, char **argv)
 		g_print ("Usage: %s <-n | --no-recurse> <-d | --debug> <-h | --help> <-t | --data > <-u | --disable-unsafe> <url>\n", argv[0]);
 		exit (1);
 	}
-
-	gnome_vfs_init();
 
 	if (g_fatal_warnings) {
 		GLogLevelFlags fatal_mask;
@@ -492,9 +474,9 @@ int main (int argc, char **argv)
 
 	if (files == NULL) {
 		test_duration ();
-		test_resolve ();
-		test_relative ();
 		test_date ();
+		test_relative ();
+		test_resolve ();
 		test_parsing ();
 	} else {
 		if (option_data) {

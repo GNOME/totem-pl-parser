@@ -29,6 +29,8 @@
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
 #include <glib-object.h>
+#include <gio/gio.h>
+#include <gio/gio.h>
 #else
 #include "totem-pl-parser-mini.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -46,7 +48,26 @@
 #define ASX_MIME_TYPE "audio/x-ms-asx"
 #define ASF_REF_MIME_TYPE "video/x-ms-asf"
 
+#define TOTEM_PL_PARSER_FIELD_FILE		"gfile-object"
+
+#ifndef TOTEM_PL_PARSER_MINI
+#define DEBUG(file, x) {					\
+	if (parser->priv->debug) {				\
+		if (file != NULL) {				\
+			char *uri;				\
+								\
+			uri = g_file_get_uri (file);		\
+			x;					\
+			g_free (uri);				\
+		} else {					\
+			const char *uri = "empty";		\
+			x;					\
+		}						\
+	}							\
+}
+#else
 #define DEBUG(x) { if (parser->priv->debug) x; }
+#endif
 
 struct TotemPlParserPrivate
 {
@@ -61,14 +82,13 @@ struct TotemPlParserPrivate
 	guint disable_unsafe : 1;
 };
 
+#ifndef TOTEM_PL_PARSER_MINI
 char *totem_pl_parser_read_ini_line_string	(char **lines, const char *key,
 						 gboolean dos_mode);
 int   totem_pl_parser_read_ini_line_int		(char **lines, const char *key);
 char *totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 						     gboolean dos_mode, const char *sep);
-char *totem_pl_parser_base_url			(const char *url);
-
-#ifndef TOTEM_PL_PARSER_MINI
+char *totem_pl_parser_base_url			(GFile *file);
 void totem_pl_parser_playlist_end		(TotemPlParser *parser,
 						 const char *playlist_title);
 int totem_pl_parser_num_entries			(TotemPlParser *parser,
@@ -76,22 +96,25 @@ int totem_pl_parser_num_entries			(TotemPlParser *parser,
 						 TotemPlParserIterFunc func,
 						 gpointer user_data);
 gboolean totem_pl_parser_scheme_is_ignored	(TotemPlParser *parser,
-						 const char *url);
+						 GFile *file);
 gboolean totem_pl_parser_line_is_empty		(const char *line);
-gboolean totem_pl_parser_write_string		(GnomeVFSHandle *handle,
+gboolean totem_pl_parser_write_string		(GOutputStream *stream,
 						 const char *buf,
 						 GError **error);
-gboolean totem_pl_parser_write_buffer		(GnomeVFSHandle *handle,
+gboolean totem_pl_parser_write_buffer		(GOutputStream *stream,
 						 const char *buf,
 						 guint size,
 						 GError **error);
 char * totem_pl_parser_relative			(const char *url,
 						 const char *output);
 TotemPlParserResult totem_pl_parser_parse_internal (TotemPlParser *parser,
-						    const char *url,
-						    const char *base);
+						    GFile *file,
+						    GFile *base_file);
 void totem_pl_parser_add_one_url		(TotemPlParser *parser,
 						 const char *url,
+						 const char *title);
+void totem_pl_parser_add_one_file		(TotemPlParser *parser,
+						 GFile *file,
 						 const char *title);
 void totem_pl_parser_add_url			(TotemPlParser *parser,
 						 const char *first_property_name,

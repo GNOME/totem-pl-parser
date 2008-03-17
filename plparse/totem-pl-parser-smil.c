@@ -25,7 +25,7 @@
 #ifndef TOTEM_PL_PARSER_MINI
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
+#include <gio/gio.h>
 #include "xmlparser.h"
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
@@ -147,8 +147,8 @@ parse_smil_entries (TotemPlParser *parser, char *base, xml_node_t *doc)
 }
 
 static TotemPlParserResult
-totem_pl_parser_add_smil_with_doc (TotemPlParser *parser, const char *url,
-				   const char *_base, xml_node_t *doc)
+totem_pl_parser_add_smil_with_doc (TotemPlParser *parser, GFile *file,
+				   GFile *_base_file, xml_node_t *doc)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *base;
@@ -159,7 +159,7 @@ totem_pl_parser_add_smil_with_doc (TotemPlParser *parser, const char *url,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
-	base = totem_pl_parser_base_url (url);
+	base = totem_pl_parser_base_url (file);
 
 	retval = parse_smil_entries (parser, base, doc);
 
@@ -169,25 +169,29 @@ totem_pl_parser_add_smil_with_doc (TotemPlParser *parser, const char *url,
 }
 
 TotemPlParserResult
-totem_pl_parser_add_smil (TotemPlParser *parser, const char *url,
-			  const char *_base, gpointer data)
+totem_pl_parser_add_smil (TotemPlParser *parser,
+			  GFile *file,
+			  GFile *base_file, gpointer data)
 {
 	char *contents;
-	int size;
+	gsize size;
 	TotemPlParserResult retval;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	retval = totem_pl_parser_add_smil_with_data (parser, url,
-						     _base, contents, size);
+	retval = totem_pl_parser_add_smil_with_data (parser, file,
+						     base_file, contents, size);
 	g_free (contents);
+
 	return retval;
 }
 
 TotemPlParserResult
-totem_pl_parser_add_smil_with_data (TotemPlParser *parser, const char *url,
-				    const char *_base, const char *contents, int size)
+totem_pl_parser_add_smil_with_data (TotemPlParser *parser,
+				    GFile *file,
+				    GFile *base_file,
+				    const char *contents, int size)
 {
 	xml_node_t* doc;
 	TotemPlParserResult retval;
@@ -196,7 +200,7 @@ totem_pl_parser_add_smil_with_data (TotemPlParser *parser, const char *url,
 	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	retval = totem_pl_parser_add_smil_with_doc (parser, url, _base, doc);
+	retval = totem_pl_parser_add_smil_with_doc (parser, file, base_file, doc);
 	xml_parser_free_tree (doc);
 
 	return retval;

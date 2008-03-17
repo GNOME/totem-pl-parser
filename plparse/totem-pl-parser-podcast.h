@@ -26,6 +26,7 @@ G_BEGIN_DECLS
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
+#include <gio/gio.h>
 #else
 #include "totem-pl-parser-mini.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -36,31 +37,31 @@ const char * totem_pl_parser_is_opml (const char *data, gsize len);
 const char * totem_pl_parser_is_xml_feed (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
-gboolean totem_pl_parser_is_itms_feed (const char *url);
+gboolean totem_pl_parser_is_itms_feed (GFile *file);
 
 TotemPlParserResult totem_pl_parser_add_xml_feed (TotemPlParser *parser,
-						  const char *url,
-						  const char *base,
+						  GFile *file,
+						  GFile *base_file,
 						  gpointer data);
 TotemPlParserResult totem_pl_parser_add_atom (TotemPlParser *parser,
-					      const char *url,
-					      const char *base,
+					      GFile *file,
+					      GFile *base_file,
 					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_rss (TotemPlParser *parser,
-					     const char *url,
-					     const char *base,
+					     GFile *file,
+					     GFile *base_file,
 					     gpointer data);
 TotemPlParserResult totem_pl_parser_add_itpc (TotemPlParser *parser,
-					      const char *url,
-					      const char *base,
+					      GFile *file,
+					      GFile *base_file,
 					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_itms (TotemPlParser *parser,
-					      const char *url,
-					      const char *base,
+					      GFile *file,
+					      GFile *base_file,
 					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_opml (TotemPlParser *parser,
-					      const char *url,
-					      const char *base,
+					      GFile *file,
+					      GFile *base_file,
 					      gpointer data);
 
 #endif /* !TOTEM_PL_PARSER_MINI */

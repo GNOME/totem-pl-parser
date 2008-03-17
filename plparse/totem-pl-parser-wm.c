@@ -87,9 +87,11 @@ totem_pl_parser_is_asf (const char *data, gsize len)
 
 static TotemPlParserResult
 totem_pl_parser_add_asf_reference_parser (TotemPlParser *parser,
-					  const char *url, const char *base,
+					  GFile *file,
+					  GFile *base_file,
 					  gpointer data)
 {
+#if 0
 	char *contents, **lines, *ref, *split_char;
 	int size;
 
@@ -123,15 +125,17 @@ totem_pl_parser_add_asf_reference_parser (TotemPlParser *parser,
 	 * supposed to be a fallback */
 
 	g_strfreev (lines);
-
+#endif
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
 static TotemPlParserResult
 totem_pl_parser_add_asf_parser (TotemPlParser *parser,
-				const char *url, const char *base,
+				GFile *file,
+				GFile *base_file,
 				gpointer data)
 {
+#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, *ref;
 	int size;
@@ -161,7 +165,9 @@ totem_pl_parser_add_asf_parser (TotemPlParser *parser,
 	}
 
 	g_free (contents);
+
 	return retval;
+#endif
 }
 
 static gboolean
@@ -264,7 +270,8 @@ parse_asx_entry (TotemPlParser *parser, const char *base, xml_node_t *parent)
 	fullpath = totem_pl_parser_resolve_url (base, url);
 
 	/* .asx files can contain references to other .asx files */
-	retval = totem_pl_parser_parse_internal (parser, fullpath, NULL);
+	//FIXME
+	//retval = totem_pl_parser_parse_internal (parser, fullpath, NULL);
 	if (retval != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 		totem_pl_parser_add_url (parser,
 					 TOTEM_PL_PARSER_FIELD_URL, fullpath,
@@ -372,10 +379,11 @@ parse_asx_entries (TotemPlParser *parser, const char *url, const char *_base, xm
 
 TotemPlParserResult
 totem_pl_parser_add_asx (TotemPlParser *parser,
-			 const char *url,
-			 const char *base,
+			 GFile *file,
+			 GFile *base_file,
 			 gpointer data)
 {
+#if 0
 	xml_node_t* doc;
 	char *_base, *contents;
 	int size;
@@ -415,12 +423,16 @@ totem_pl_parser_add_asx (TotemPlParser *parser,
 	xml_parser_free_tree (doc);
 
 	return retval;
+#endif
 }
 
 TotemPlParserResult
-totem_pl_parser_add_asf (TotemPlParser *parser, const char *url,
-			 const char *base, gpointer data)
+totem_pl_parser_add_asf (TotemPlParser *parser,
+			 GFile *file,
+			 GFile *base_file,
+			 gpointer data)
 {
+#if 0
 	if (data == NULL) {
 		totem_pl_parser_add_one_url (parser, url, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
@@ -430,8 +442,8 @@ totem_pl_parser_add_asf (TotemPlParser *parser, const char *url,
 		totem_pl_parser_add_one_url (parser, url, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
-
-	return totem_pl_parser_add_asf_parser (parser, url, base, data);
+#endif
+	return totem_pl_parser_add_asf_parser (parser, file, base_file, data);
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

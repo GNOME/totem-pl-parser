@@ -25,9 +25,10 @@
 
 G_BEGIN_DECLS
 
-#ifdef TOTEM_PL_PARSER_MINI
-#include "totem-pl-parser-mini.h"
-#endif /* TOTEM_PL_PARSER_MINI */
+#ifndef TOTEM_PL_PARSER_MINI
+#include "totem-pl-parser.h"
+#include <gio/gio.h>
+#endif /* !TOTEM_PL_PARSER_MINI */
 
 #ifndef TOTEM_PL_PARSER_MINI
 gboolean totem_pl_parser_write_pls				(TotemPlParser *parser,
@@ -38,12 +39,12 @@ gboolean totem_pl_parser_write_pls				(TotemPlParser *parser,
 								 gpointer user_data,
 								 GError **error);
 TotemPlParserResult totem_pl_parser_add_pls_with_contents	(TotemPlParser *parser,
-								 const char *url,
-								 const char *base,
+								 GFile *file,
+								 GFile *base_file,
 								 const char *contents);
 TotemPlParserResult totem_pl_parser_add_pls			(TotemPlParser *parser,
-								 const char *url,
-								 const char *base,
+								 GFile *file,
+								 GFile *base_file,
 								 gpointer data);
 #endif /* !TOTEM_PL_PARSER_MINI */
 

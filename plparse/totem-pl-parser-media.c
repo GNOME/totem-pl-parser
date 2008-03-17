@@ -44,8 +44,10 @@
 /* Returns NULL if we don't have an ISO image,
  * or an empty string if it's non-UTF-8 data */
 static char *
-totem_pl_parser_iso_get_title (const char *url)
+totem_pl_parser_iso_get_title (GFile *file)
 {
+	//FIXME
+#if 0
 	char *fname;
 	FILE  *file;
 #define BUFFER_SIZE 128
@@ -111,20 +113,25 @@ totem_pl_parser_iso_get_title (const char *url)
 	}
 
 	return str;
+#endif
+	return NULL;
 }
 
 TotemPlParserResult
-totem_pl_parser_add_iso (TotemPlParser *parser, const char *url,
-			 const char *base, gpointer data)
+totem_pl_parser_add_iso (TotemPlParser *parser,
+			 GFile *file,
+			 GFile *base_file,
+			 gpointer data)
 {
-	GnomeVFSFileInfo *info;
+	GFileInfo *info;
+//	GnomeVFSFileInfo *info;
 	char *item, *label;
 
 	/* This is a hack, it could be a VCD or DVD */
-	if (g_str_has_prefix (url, "file://") == FALSE)
+	if (g_file_has_uri_scheme (file, "file") == FALSE)
 		return TOTEM_PL_PARSER_RESULT_IGNORED;
 
-	label = totem_pl_parser_iso_get_title (url);
+	label = totem_pl_parser_iso_get_title (file);
 	if (label == NULL) {
 		/* Not an ISO image */
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
@@ -134,32 +141,36 @@ totem_pl_parser_add_iso (TotemPlParser *parser, const char *url,
 		label = NULL;
 	}
 
-	info = gnome_vfs_file_info_new ();
-	if (gnome_vfs_get_file_info (url, info, GNOME_VFS_FILE_INFO_FOLLOW_LINKS) != GNOME_VFS_OK) {
-		gnome_vfs_file_info_unref (info);
+	info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SIZE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+	if (info == NULL) {
+		g_free (label);
 		return TOTEM_PL_PARSER_RESULT_IGNORED;
 	}
 
+#if 0
 	/* Less than 700 megs, and it's a VCD */
-	if (info->size < 700 * 1024 * 1024) {
+	if (g_file_info_get_size (info) < 700 * 1024 * 1024) {
 		item = totem_cd_mrl_from_type ("vcd", url);
 	} else {
 		item = totem_cd_mrl_from_type ("dvd", url);
 	}
-
-	gnome_vfs_file_info_unref (info);
-
+#endif
+	g_object_unref (info);
+#if 0
 	totem_pl_parser_add_one_url (parser, item, label);
+#endif
 	g_free (label);
-	g_free (item);
+//	g_free (item);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
 TotemPlParserResult
-totem_pl_parser_add_cue (TotemPlParser *parser, const char *url,
-			 const char *base, gpointer data)
+totem_pl_parser_add_cue (TotemPlParser *parser,
+			 GFile *file,
+			 GFile *base_file, gpointer data)
 {
+#if 0
 	char *vcdurl;
 
 	vcdurl = totem_cd_mrl_from_type ("vcd", url);
@@ -167,6 +178,7 @@ totem_pl_parser_add_cue (TotemPlParser *parser, const char *url,
 	g_free (vcdurl);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+#endif
 }
 
 static int
@@ -206,9 +218,12 @@ totem_pl_parser_dir_compare (GnomeVFSFileInfo *a, GnomeVFSFileInfo *b)
 }
 
 TotemPlParserResult
-totem_pl_parser_add_directory (TotemPlParser *parser, const char *url,
-			       const char *base, gpointer data)
+totem_pl_parser_add_directory (TotemPlParser *parser,
+			       GFile *file,
+			       GFile *base_file,
+			       gpointer data)
 {
+#if 0
 	TotemDiscMediaType type;
 	GList *list, *l;
 	GnomeVFSResult res;
@@ -265,12 +280,16 @@ totem_pl_parser_add_directory (TotemPlParser *parser, const char *url,
 	g_list_free (list);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+#endif
 }
 
 TotemPlParserResult
-totem_pl_parser_add_block (TotemPlParser *parser, const char *url,
-			   const char *base, gpointer data)
+totem_pl_parser_add_block (TotemPlParser *parser,
+			   GFile *file,
+			   GFile *base_file,
+			   gpointer data)
 {
+#if 0
 	TotemDiscMediaType type;
 	char *media_url;
 	GError *err = NULL;
@@ -288,6 +307,7 @@ totem_pl_parser_add_block (TotemPlParser *parser, const char *url,
 	totem_pl_parser_add_one_url (parser, media_url, NULL);
 	g_free (media_url);
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+#endif
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

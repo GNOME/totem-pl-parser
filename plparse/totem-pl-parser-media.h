@@ -27,24 +27,25 @@ G_BEGIN_DECLS
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
+#include <gio/gio.h>
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 #ifndef TOTEM_PL_PARSER_MINI
 TotemPlParserResult totem_pl_parser_add_iso (TotemPlParser *parser,
-					     const char *url,
-					     const char *base,
+					     GFile *file,
+					     GFile *base_file,
 					     gpointer data);
 TotemPlParserResult totem_pl_parser_add_cue (TotemPlParser *parser,
-					     const char *url,
-					     const char *base,
+					     GFile *file,
+					     GFile *base_file,
 					     gpointer data);
 TotemPlParserResult totem_pl_parser_add_directory (TotemPlParser *parser,
-						   const char *url,
-						   const char *base,
+						   GFile *file,
+						   GFile *base_file,
 						   gpointer data);
 TotemPlParserResult totem_pl_parser_add_block (TotemPlParser *parser,
-					       const char *url,
-					       const char *base,
+					       GFile *file,
+					       GFile *base_file,
 					       gpointer data);
 #endif /* !TOTEM_PL_PARSER_MINI */
 

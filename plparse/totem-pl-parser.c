@@ -98,14 +98,11 @@
 #include <string.h>
 #include <glib.h>
 #include <glib/gi18n-lib.h>
-#include <libgnomevfs/gnome-vfs-mime-utils.h>
+#include <gio/gio.h>
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <gobject/gvaluecollector.h>
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
-#include <libgnomevfs/gnome-vfs-mime.h>
-#include <libgnomevfs/gnome-vfs-utils.h>
 #include <camel/camel-mime-utils.h>
 
 #include "totem-pl-parser.h"
@@ -134,7 +131,7 @@
 typedef const char * (*PlaylistIdenCallback) (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
-typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, const char *url, const char *base, gpointer data);
+typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, GFile *url, GFile *base_file, gpointer data);
 #endif
 
 typedef struct {
@@ -206,7 +203,7 @@ static PlaylistTypes dual_types[] = {
 	PLAYLIST_TYPE2 ("application/xml", totem_pl_parser_add_xml_feed, totem_pl_parser_is_xml_feed),
 };
 
-static char *my_gnome_vfs_get_mime_type_for_data (gconstpointer data, int len);
+static char *totem_pl_parser_mime_type_from_data (gconstpointer data, int len);
 
 #ifndef TOTEM_PL_PARSER_MINI
 
@@ -494,6 +491,10 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     "String representing the location of an image for a playlist", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_object ("gfile-object", "gfile-object",
+				     "Object representing the GFile for an entry", G_TYPE_FILE,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("download-url", "download-url",
 				     "String representing the location of a download URL", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
@@ -510,8 +511,7 @@ totem_pl_parser_base_class_finalize (TotemPlParserClass *klass)
 	GList *list, *node;
 
 	list = g_param_spec_pool_list_owned (totem_pl_parser_pspec_pool, G_OBJECT_CLASS_TYPE (klass));
-	for (node = list; node; node = node->next)
-	{
+	for (node = list; node; node = node->next) {
 		GParamSpec *pspec = node->data;
 
 		g_param_spec_pool_remove (totem_pl_parser_pspec_pool, pspec);
@@ -628,88 +628,63 @@ totem_pl_parser_playlist_end (TotemPlParser *parser, const char *playlist_uri)
 }
 
 static char *
-my_gnome_vfs_get_mime_type_with_data (const char *uri, gpointer *data, TotemPlParser *parser)
+my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlParser *parser)
 {
-	GnomeVFSResult result;
-	GnomeVFSHandle *handle;
 	char *buffer;
-	GnomeVFSFileSize total_bytes_read;
-	GnomeVFSFileSize bytes_read;
+	gssize bytes_read;
+	GFileInputStream *stream;
+	GError *error = NULL;
 
 	*data = NULL;
 
 	/* Stat for a block device, we're screwed as far as speed
 	 * is concerned now */
-	if (g_str_has_prefix (uri, "file://") != FALSE) {
-		struct stat buf;
-		if (stat (uri + strlen ("file://"), &buf) == 0) {
-			if (S_ISBLK (buf.st_mode))
-				return g_strdup (BLOCK_DEVICE_TYPE);
+	if (g_file_has_uri_scheme (file, "file") != FALSE) {
+		GFileInfo *info;
+		info = g_file_query_info (file, G_FILE_ATTRIBUTE_UNIX_DEVICE,
+					  G_FILE_QUERY_INFO_NONE, NULL, NULL);
+		if (info != NULL && g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_UNIX_DEVICE)) {
+			g_object_unref (info);
+			return g_strdup (BLOCK_DEVICE_TYPE);
 		}
+		g_object_unref (info);
 	}
 
 	/* Open the file. */
-	result = gnome_vfs_open (&handle, uri, GNOME_VFS_OPEN_READ);
-	if (result != GNOME_VFS_OK) {
-		if (result == GNOME_VFS_ERROR_IS_DIRECTORY)
+	stream = g_file_read (file, NULL, &error);
+	if (stream == NULL) {
+		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY) != FALSE) {
+			g_error_free (error);
 			return g_strdup (DIR_MIME_TYPE);
-		DEBUG(g_print ("URL '%s' couldn't be opened in _get_mime_type_with_data: '%s'\n", uri, gnome_vfs_result_to_string (result)));
+		}
+		DEBUG(file, g_print ("URL '%s' couldn't be opened in _get_mime_type_with_data: '%s'\n", uri, error->message));
+		g_error_free (error);
 		return NULL;
 	}
-	DEBUG(g_print ("URL '%s' was opened successfully in _get_mime_type_with_data:\n", uri));
+	DEBUG(file, g_print ("URL '%s' was opened successfully in _get_mime_type_with_data:\n", uri));
 
 	/* Read the whole thing, up to MIME_READ_CHUNK_SIZE */
-	buffer = NULL;
-	total_bytes_read = 0;
-	bytes_read = 0;
-	do {
-		buffer = g_realloc (buffer, total_bytes_read
-				+ MIME_READ_CHUNK_SIZE);
-		result = gnome_vfs_read (handle,
-				buffer + total_bytes_read,
-				MIME_READ_CHUNK_SIZE,
-				&bytes_read);
-		if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF) {
-			g_free (buffer);
-			gnome_vfs_close (handle);
-			return NULL;
-		}
-
-		/* Check for overflow. */
-		if (total_bytes_read + bytes_read < total_bytes_read) {
-			g_free (buffer);
-			gnome_vfs_close (handle);
-			return NULL;
-		}
-
-		total_bytes_read += bytes_read;
-	} while (result == GNOME_VFS_OK
-			&& total_bytes_read < MIME_READ_CHUNK_SIZE);
-
-	/* Close the file but don't overwrite the possible error */
-	if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF)
-		gnome_vfs_close (handle);
-	else
-		result = gnome_vfs_close (handle);
-
-	if (result != GNOME_VFS_OK) {
-		DEBUG(g_print ("URL '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'\n", uri, gnome_vfs_result_to_string (result)));
+	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
+	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
+	g_input_stream_close (G_INPUT_STREAM (stream), NULL, NULL);
+	if (bytes_read == -1) {
 		g_free (buffer);
 		return NULL;
 	}
 
 	/* Empty file */
-	if (total_bytes_read == 0) {
-		DEBUG(g_print ("URL '%s' is empty in _get_mime_type_with_data\n", uri));
+	if (bytes_read == 0) {
+		g_free (buffer);
+		DEBUG(file, g_print ("URL '%s' is empty in _get_mime_type_with_data\n", uri));
 		return g_strdup (EMPTY_FILE_TYPE);
 	}
 
 	/* Return the file null-terminated. */
-	buffer = g_realloc (buffer, total_bytes_read + 1);
-	buffer[total_bytes_read] = '\0';
+	buffer = g_realloc (buffer, bytes_read + 1);
+	buffer[bytes_read] = '\0';
 	*data = buffer;
 
-	return my_gnome_vfs_get_mime_type_for_data (*data, total_bytes_read);
+	return totem_pl_parser_mime_type_from_data (*data, bytes_read);
 }
 
 /**
@@ -721,28 +696,16 @@ my_gnome_vfs_get_mime_type_with_data (const char *uri, gpointer *data, TotemPlPa
  * Return value: a newly-allocated string containing @url's parent URI, or %NULL
  **/
 char *
-totem_pl_parser_base_url (const char *url)
+totem_pl_parser_base_url (GFile *file)
 {
-	/* Yay, let's reconstruct the base by hand */
-	GnomeVFSURI *uri, *parent;
-	char *base;
+	GFile *parent;
+	char *ret;
 
-	uri = gnome_vfs_uri_new (url);
-	if (uri == NULL)
-		return NULL;
+	parent = g_file_get_parent (file);
+	ret = g_file_get_uri (parent);
+	g_object_unref (file);
 
-	parent = gnome_vfs_uri_get_parent (uri);
-	if (!parent) {
-		parent = uri;
-	}
-	base = gnome_vfs_uri_to_string (parent, 0);
-
-	gnome_vfs_uri_unref (uri);
-	if (parent != uri) {
-		gnome_vfs_uri_unref (parent);
-	}
-
-	return base;
+	return ret;
 }
 
 /**
@@ -771,7 +734,7 @@ totem_pl_parser_line_is_empty (const char *line)
 
 /**
  * totem_pl_parser_write_string:
- * @handle: a #GnomeVFSHandle to an open file
+ * @handle: a #GFileOutputStream to an open file
  * @buf: the string buffer to write out
  * @error: return location for a #GError, or %NULL
  *
@@ -780,12 +743,12 @@ totem_pl_parser_line_is_empty (const char *line)
  * Return value: %TRUE on success
  **/
 gboolean
-totem_pl_parser_write_string (GnomeVFSHandle *handle, const char *buf, GError **error)
+totem_pl_parser_write_string (GOutputStream *stream, const char *buf, GError **error)
 {
 	guint len;
 
 	len = strlen (buf);
-	return totem_pl_parser_write_buffer (handle, buf, len, error);
+	return totem_pl_parser_write_buffer (stream, buf, len, error);
 }
 
 /**
@@ -800,19 +763,15 @@ totem_pl_parser_write_string (GnomeVFSHandle *handle, const char *buf, GError **
  * Return value: %TRUE on success
  **/
 gboolean
-totem_pl_parser_write_buffer (GnomeVFSHandle *handle, const char *buf, guint len, GError **error)
+totem_pl_parser_write_buffer (GOutputStream *stream, const char *buf, guint len, GError **error)
 {
-	GnomeVFSResult res;
-	GnomeVFSFileSize written;
+	gsize bytes_written;
 
-	res = gnome_vfs_write (handle, buf, len, &written);
-	if (res != GNOME_VFS_OK || written < len) {
-		g_set_error (error,
-			     TOTEM_PL_PARSER_ERROR,
-			     TOTEM_PL_PARSER_ERROR_VFS_WRITE,
-			     _("Couldn't write parser: %s"),
-			     gnome_vfs_result_to_string (res));
-		gnome_vfs_close (handle);
+	if (g_output_stream_write_all (stream,
+				       buf, len,
+				       &bytes_written,
+				       NULL, error) == FALSE) {
+		g_output_stream_close (stream, NULL, NULL);
 		return FALSE;
 	}
 
@@ -844,15 +803,18 @@ totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
 	{
 		GtkTreeIter iter;
 		char *url, *title;
+		GFile *file;
 		gboolean custom_title;
 
 		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
 			return i - ignored;
 
 		func (model, &iter, &url, &title, &custom_title, user_data);
-		if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE)
+		file = g_file_new_for_uri (url);
+		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE)
 			ignored++;
 
+		g_object_unref (file);
 		g_free (url);
 		g_free (title);
 	}
@@ -876,46 +838,24 @@ totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
 char *
 totem_pl_parser_relative (const char *url, const char *output)
 {
-	char *url_base, *output_base;
-	char *base, *needle;
+	GFile *parent, *descendant, *out_file;
+	char *retval;
 
-	base = NULL;
-	url_base = totem_pl_parser_base_url (url);
-	if (url_base == NULL)
+	out_file = g_file_new_for_commandline_arg (output);
+	parent = g_file_get_parent (out_file);
+	if (parent == NULL) {
+		g_object_unref (out_file);
 		return NULL;
-
-	output_base = totem_pl_parser_base_url (output);
-
-	needle = strstr (url_base, output_base);
-	if (needle != NULL)
-	{
-		GnomeVFSURI *uri;
-		char *newurl;
-
-		uri = gnome_vfs_uri_new (url);
-		newurl = gnome_vfs_uri_to_string (uri, 0);
-		if (newurl[strlen (output_base)] == '/') {
-			base = g_strdup (newurl + strlen (output_base) + 1);
-		} else {
-			/* Special case when the output and file are at the root */
-			if (strchr (newurl + strlen (output_base), '/') == NULL)
-				base = g_strdup (newurl + strlen (output_base));
-		}
-		gnome_vfs_uri_unref (uri);
-		g_free (newurl);
-
-		if (base != NULL) {
-			/* And finally unescape the string */
-			newurl = gnome_vfs_unescape_string (base, NULL);
-			g_free (base);
-			base = newurl;
-		}
 	}
+	g_object_unref (out_file);
+	descendant = g_file_new_for_commandline_arg (url);
 
-	g_free (url_base);
-	g_free (output_base);
+	retval = g_file_get_relative_path (parent, descendant);
 
-	return base;
+	g_object_unref (parent);
+	g_object_unref (descendant);
+
+	return retval;
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
@@ -1076,7 +1016,7 @@ totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 
 		if (g_ascii_strncasecmp (line, key, strlen (key)) == 0) {
 			char **bits;
-			ssize_t len;
+			glong len;
 
 			bits = g_strsplit (line, sep, 2);
 			if (bits[0] == NULL || bits [1] == NULL) {
@@ -1180,9 +1120,20 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 			break;
 		}
 
-		if (strcmp (name, TOTEM_PL_PARSER_FIELD_URL) == 0)
-			url = g_value_dup_string (&value);
-		else if (strcmp (name, TOTEM_PL_PARSER_FIELD_IS_PLAYLIST) == 0) {
+		if (strcmp (name, TOTEM_PL_PARSER_FIELD_URL) == 0) {
+			if (url == NULL)
+				url = g_value_dup_string (&value);
+		} else if (strcmp (name, TOTEM_PL_PARSER_FIELD_FILE) == 0) {
+			GFile *file;
+
+			file = g_value_get_object (&value);
+			url = g_file_get_uri (file);
+			g_object_unref (file);
+
+			g_value_unset (&value);
+			name = va_arg (var_args, char*);
+			continue;
+		} else if (strcmp (name, TOTEM_PL_PARSER_FIELD_IS_PLAYLIST) == 0) {
 			is_playlist = g_value_get_boolean (&value);
 			g_value_unset (&value);
 			name = va_arg (var_args, char*);
@@ -1273,30 +1224,57 @@ totem_pl_parser_add_one_url (TotemPlParser *parser, const char *url, const char 
 				 NULL);
 }
 
+void
+totem_pl_parser_add_one_file (TotemPlParser *parser, GFile *file, const char *title)
+{
+	totem_pl_parser_add_url (parser,
+				 TOTEM_PL_PARSER_FIELD_FILE, file,
+				 TOTEM_PL_PARSER_FIELD_TITLE, title,
+				 NULL);
+}
+
 static char *
 totem_pl_parser_remove_filename (const char *url)
 {
-	char *no_frag, *no_file, *no_qmark, *qmark;
+	char *no_frag, *no_file, *no_qmark, *qmark, *fragment;
+	GFile *file;
 
-	no_frag = gnome_vfs_make_uri_canonical_strip_fragment (url);
+	/* Remove fragment */
+	fragment = strchr (url, '#');
+	if (fragment != NULL)
+		no_frag = g_strndup (url, fragment - url);
+	else
+		no_frag = g_strdup (url);
+
+	/* Remove parameters */
 	qmark = strrchr (no_frag, '?');
-	if (qmark == NULL)
-		return no_frag;
-	no_qmark = g_strndup (no_frag, qmark - no_frag);
-	no_file = totem_pl_parser_base_url (no_qmark);
+	if (qmark != NULL)
+		no_qmark = g_strndup (no_frag, qmark - no_frag);
+	else
+		no_qmark = g_strdup (no_frag);
+
+	/* Remove the filename */
+	file = g_file_new_for_uri (no_qmark);
+	no_file = totem_pl_parser_base_url (file);
+	g_object_unref (file);
+
 	g_free (no_qmark);
 	g_free (no_frag);
 
 	return no_file;
 }
 
+#define GNOME_VFS_MIME_TYPE_UNKNOWN "bleh"
+
 static gboolean
 totem_pl_parser_might_be_file (const char *url)
 {
-	const char *mimetype;
+	char *content_type;
 
-	mimetype = gnome_vfs_get_mime_type_for_name (url);
-	if (mimetype == NULL || strcmp (mimetype, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0)
+	content_type = g_content_type_guess (url, NULL, 0, NULL);
+	g_message ("content type %s", content_type);
+	//FIXME leak
+	if (content_type == NULL || strcmp (content_type, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0)
 		return FALSE;
 	return TRUE;
 }
@@ -1317,8 +1295,9 @@ totem_pl_parser_might_be_file (const char *url)
 char *
 totem_pl_parser_resolve_url (const char *base, const char *url)
 {
-	GnomeVFSURI *base_uri, *new;
-	char *resolved, *base_no_frag;
+	//char *resolved, *base_no_frag;
+	char *base_no_frag;
+	GFile *file, *rel;
 
 	g_return_val_if_fail (url != NULL, NULL);
 	g_return_val_if_fail (base != NULL, g_strdup (url));
@@ -1329,7 +1308,14 @@ totem_pl_parser_resolve_url (const char *base, const char *url)
 
 	/* Strip fragment and filename */
 	base_no_frag = totem_pl_parser_remove_filename (base);
+	g_message ("base no frag: %s", base_no_frag);
 
+	file = g_file_new_for_uri (base_no_frag);
+	g_free (base_no_frag);
+	rel = g_file_resolve_relative_path (file, url);
+
+	return g_file_get_uri (rel);
+#if 0
 	/* gnome_vfs_uri_append_path is trying to be clever and
 	 * merges paths that look like they're the same */
 	if (totem_pl_parser_might_be_file (base) != FALSE) {
@@ -1360,6 +1346,7 @@ totem_pl_parser_resolve_url (const char *base, const char *url)
 	gnome_vfs_uri_unref (new);
 
 	return resolved;
+#endif
 }
 
 static PlaylistTypes ignore_types[] = {
@@ -1381,24 +1368,22 @@ static PlaylistTypes ignore_types[] = {
  * Return value: %TRUE if @url's scheme is ignored
  **/
 gboolean
-totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, const char *url)
+totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, GFile *file)
 {
 	GList *l;
 
 	if (parser->priv->ignore_schemes == NULL)
 		return FALSE;
 
-	for (l = parser->priv->ignore_schemes; l != NULL; l = l->next)
-	{
+	for (l = parser->priv->ignore_schemes; l != NULL; l = l->next) {
 		const char *scheme = l->data;
-		if (g_str_has_prefix (url, scheme) != FALSE)
+		if (g_file_has_uri_scheme (file, scheme) != FALSE)
 			return TRUE;
 	}
 
 	return FALSE;
 }
 
-//FIXME remove ?
 static gboolean
 totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 				     const char *mimetype)
@@ -1438,33 +1423,59 @@ totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 gboolean
 totem_pl_parser_ignore (TotemPlParser *parser, const char *url)
 {
-	const char *mimetype;
+	char *mimetype;
+	GFile *file;
 	guint i;
 
-	if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE)
+	file = g_file_new_for_path (url);
+	if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
+		g_object_unref (file);
 		return TRUE;
+	}
+	g_object_unref (file);
 
-	mimetype = gnome_vfs_get_file_mime_type (url, NULL, TRUE);
-	if (mimetype == NULL || strcmp (mimetype, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0)
+	//FIXME wrong for win32
+	mimetype = g_content_type_guess (url, NULL, 0, NULL);
+	if (mimetype == NULL || strcmp (mimetype, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0) {
+		g_free (mimetype);
 		return FALSE;
+	}
 
-	for (i = 0; i < G_N_ELEMENTS (special_types); i++)
-		if (strcmp (special_types[i].mimetype, mimetype) == 0)
+	for (i = 0; i < G_N_ELEMENTS (special_types); i++) {
+		if (strcmp (special_types[i].mimetype, mimetype) == 0) {
+			g_free (mimetype);
 			return FALSE;
+		}
+	}
 
-	for (i = 0; i < G_N_ELEMENTS (dual_types); i++)
-		if (strcmp (dual_types[i].mimetype, mimetype) == 0)
+	for (i = 0; i < G_N_ELEMENTS (dual_types); i++) {
+		if (strcmp (dual_types[i].mimetype, mimetype) == 0) {
+			g_free (mimetype);
 			return FALSE;
+		}
+	}
+
+	g_free (mimetype);
 
 	return TRUE;
 }
 
+//FIXME this probably doesn't work on Windows
 static gboolean
 totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetype)
 {
-	char *super;
+//	char *super;
 	guint i;
 
+	for (i = 0; i < G_N_ELEMENTS (ignore_types); i++) {
+		if (g_content_type_is_a (mimetype, ignore_types[i].mimetype) != FALSE)
+			return TRUE;
+		if (g_content_type_equals (mimetype, ignore_types[i].mimetype) != FALSE)
+			return TRUE;
+	}
+
+	return FALSE;
+#if 0
 	super = gnome_vfs_get_supertype_from_mime_type (mimetype);
 	for (i = 0; i < G_N_ELEMENTS (ignore_types) && super != NULL; i++) {
 		if (gnome_vfs_mime_type_is_supertype (ignore_types[i].mimetype) != FALSE) {
@@ -1485,11 +1496,13 @@ totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetyp
 	g_free (super);
 
 	return FALSE;
+#endif
 }
 
 TotemPlParserResult
-totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
-				const char *base)
+totem_pl_parser_parse_internal (TotemPlParser *parser,
+				GFile *file,
+				GFile *base_file)
 {
 	char *mimetype;
 	guint i;
@@ -1500,41 +1513,54 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 	if (parser->priv->recurse_level > RECURSE_LEVEL_MAX)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	/* Shouldn't gnome-vfs have a list of schemes it supports? */
-	if (g_str_has_prefix (url, "mms") != FALSE
-			|| g_str_has_prefix (url, "rtsp") != FALSE
-			|| g_str_has_prefix (url, "icy") != FALSE) {
-		DEBUG(g_print ("URL '%s' is MMS, RTSP or ICY, ignoring\n", url));
+	if (g_file_has_uri_scheme (file, "mms") != FALSE
+			|| g_file_has_uri_scheme (file, "rtsp") != FALSE
+			|| g_file_has_uri_scheme (file, "icy") != FALSE) {
+		DEBUG(file, g_print ("URL '%s' is MMS, RTSP or ICY, ignoring\n", uri));
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 
-	/* Fix up itpc, see http://www.apple.com/itunes/store/podcaststechspecs.html */
-	if (g_str_has_prefix (url, "itpc") != FALSE) {
-		DEBUG(g_print ("URL '%s' is getting special cased for ITPC parsing\n", url));
-		return totem_pl_parser_add_itpc (parser, url, base, NULL);
+	/* Fix up itpc, see http://www.apple.com/itunes/store/podcaststechspecs.html,
+	 * as well as feed:// as used by Firefox 3 */
+	if (g_file_has_uri_scheme (file, "itpc") != FALSE || g_file_has_uri_scheme (file, "feed") != FALSE) {
+		DEBUG(file, g_print ("URL '%s' is getting special cased for ITPC/FEED parsing\n", uri));
+		return totem_pl_parser_add_itpc (parser, file, base_file, NULL);
 	}
 	/* Try itms Podcast references, see itunes.py in PenguinTV */
-	if (totem_pl_parser_is_itms_feed (url) != FALSE) {
-	    	DEBUG(g_print ("URL '%s' is getting special cased for ITMS parsing\n", url));
-	    	return totem_pl_parser_add_itms (parser, url, NULL, NULL);
+	if (totem_pl_parser_is_itms_feed (file) != FALSE) {
+	    	DEBUG(file, g_print ("URL '%s' is getting special cased for ITMS parsing\n", uri));
+	    	return totem_pl_parser_add_itms (parser, file, NULL, NULL);
 	}
 
-	if (!parser->priv->recurse && parser->priv->recurse_level > 0) {
+	if (!parser->priv->recurse && parser->priv->recurse_level > 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
-	}
 
 	/* In force mode we want to get the data */
 	if (parser->priv->force != FALSE) {
-		mimetype = my_gnome_vfs_get_mime_type_with_data (url, &data, parser);
+		mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
 	} else {
-		mimetype = g_strdup (gnome_vfs_get_mime_type_for_name (url));
+		char *uri;
+
+		uri = g_file_get_uri (file);
+#ifdef G_OS_WIN32
+		{
+			char *content_type;
+			content_type = g_content_type_guess (uri, NULL, 0, NULL);
+			mimetype = g_content_type_get_mime_type (content_type);
+			g_free (content_type);
+		}
+#else
+		mimetype = g_content_type_guess (uri, NULL, 0, NULL);
+#endif
+
+		g_free (uri);
 	}
 
-	DEBUG(g_print ("_get_mime_type_for_name for '%s' returned '%s'\n", url, mimetype));
+	DEBUG(file, g_print ("_get_mime_type_for_name for '%s' returned '%s'\n", uri, mimetype));
 	if (mimetype == NULL || strcmp (GNOME_VFS_MIME_TYPE_UNKNOWN, mimetype) == 0) {
 		g_free (mimetype);
-		mimetype = my_gnome_vfs_get_mime_type_with_data (url, &data, parser);
-		DEBUG(g_print ("_get_mime_type_with_data for '%s' returned '%s'\n", url, mimetype ? mimetype : "NULL"));
+		mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
+		DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned '%s'\n", uri, mimetype ? mimetype : "NULL"));
 	}
 
 	if (mimetype == NULL) {
@@ -1552,12 +1578,12 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 	 * data from the playlist parser */
 	if (strcmp (mimetype, AUDIO_MPEG_TYPE) == 0 && parser->priv->recurse_level == 0 && data == NULL) {
 		char *tmp;
-		tmp = my_gnome_vfs_get_mime_type_with_data (url, &data, parser);
+		tmp = my_g_file_info_get_mime_type_with_data (file, &data, parser);
 		if (tmp != NULL) {
 			g_free (mimetype);
 			mimetype = tmp;
 		}
-		DEBUG(g_print ("_get_mime_type_with_data for '%s' returned '%s' (was %s)\n", url, mimetype, AUDIO_MPEG_TYPE));
+		DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned '%s' (was %s)\n", uri, mimetype, AUDIO_MPEG_TYPE));
 	}
 
 	if (totem_pl_parser_mimetype_is_ignored (parser, mimetype) != FALSE) {
@@ -1571,13 +1597,13 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 
 		for (i = 0; i < G_N_ELEMENTS(special_types); i++) {
 			if (strcmp (special_types[i].mimetype, mimetype) == 0) {
-				DEBUG(g_print ("URL '%s' is special type '%s'\n", url, mimetype));
+				DEBUG(file, g_print ("URL '%s' is special type '%s'\n", uri, mimetype));
 				if (parser->priv->disable_unsafe != FALSE && special_types[i].unsafe != FALSE) {
 					g_free (mimetype);
 					g_free (data);
 					return TOTEM_PL_PARSER_RESULT_IGNORED;
 				}
-				ret = (* special_types[i].func) (parser, url, base, data);
+				ret = (* special_types[i].func) (parser, file, base_file, data);
 				found = TRUE;
 				break;
 			}
@@ -1585,10 +1611,10 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 
 		for (i = 0; i < G_N_ELEMENTS(dual_types) && found == FALSE; i++) {
 			if (strcmp (dual_types[i].mimetype, mimetype) == 0) {
-				DEBUG(g_print ("URL '%s' is dual type '%s'\n", url, mimetype));
+				DEBUG(file, g_print ("URL '%s' is dual type '%s'\n", uri, mimetype));
 				if (data == NULL) {
 					g_free (mimetype);
-					mimetype = my_gnome_vfs_get_mime_type_with_data (url, &data, parser);
+					mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
 					/* If it's _still_ a text/plain, we don't want it */
 					if (mimetype == NULL || strcmp (mimetype, "text/plain") == 0) {
 						g_free (mimetype);
@@ -1596,7 +1622,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 						break;
 					}
 				}
-				ret = (* dual_types[i].func) (parser, url, base, data);
+				ret = (* dual_types[i].func) (parser, file, base_file, data);
 				found = TRUE;
 				break;
 			}
@@ -1619,7 +1645,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser, const char *url,
 	g_free (mimetype);
 
 	if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS && parser->priv->fallback) {
-		totem_pl_parser_add_one_url (parser, url, NULL);
+		totem_pl_parser_add_one_file (parser, file, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
@@ -1643,18 +1669,33 @@ TotemPlParserResult
 totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *url,
 				 const char *base, gboolean fallback)
 {
+	GFile *file, *base_file;
+	TotemPlParserResult retval;
+
 	g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
 	g_return_val_if_fail (url != NULL, TOTEM_PL_PARSER_RESULT_UNHANDLED);
-
-	if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE)
-		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
-
 	g_return_val_if_fail (strstr (url, "://") != NULL,
 			TOTEM_PL_PARSER_RESULT_ERROR);
 
+	file = g_file_new_for_uri (url);
+	base_file = NULL;
+
+	if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
+		g_object_unref (file);
+		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
+	}
+
 	parser->priv->recurse_level = 0;
 	parser->priv->fallback = fallback != FALSE;
-	return totem_pl_parser_parse_internal (parser, url, base);
+	if (base != NULL)
+		base_file = g_file_new_for_uri (base);
+	retval = totem_pl_parser_parse_internal (parser, file, base_file);
+
+	g_object_unref (file);
+	if (base_file != NULL)
+		g_object_unref (base_file);
+
+	return retval;
 }
 
 /**
@@ -1775,21 +1816,6 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 	return -1;
 }
 
-/* FIXME remove when http://bugzilla.gnome.org/show_bug.cgi?id=503029
- * is fixed */
-static gboolean
-totem_pl_parser_is_iso8601_date (const char *date_str)
-{
-	while (g_ascii_isspace (*date_str))
-		date_str++;
-	if (*date_str == '\0')
-		return FALSE;
-	if (!g_ascii_isdigit (*date_str) && *date_str != '-' && *date_str != '+')
-		return FALSE;
-
-	return TRUE;
-}
-
 /**
  * totem_pl_parser_parse_date:
  * @date_str: the date string to parse
@@ -1809,8 +1835,7 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 
 	memset (&val, 0, sizeof(val));
 	/* Try to parse as an ISO8601/RFC3339 date */
-	if (totem_pl_parser_is_iso8601_date (date_str) != FALSE
-	    && g_time_val_from_iso8601 (date_str, &val) != FALSE) {
+	if (g_time_val_from_iso8601 (date_str, &val) != FALSE) {
 		D(g_message ("Parsed duration '%s' using the ISO8601 parser", date_str));
 		return val.tv_sec;
 	}
@@ -1823,13 +1848,30 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 static char *
-my_gnome_vfs_get_mime_type_for_data (gconstpointer data, int len)
+totem_pl_parser_mime_type_from_data (gconstpointer data, int len)
 {
-	const char *mimetype;
+	char *mime_type;
+	gboolean uncertain;
 
-	mimetype = gnome_vfs_get_mime_type_for_data (data, len);
+#ifdef G_OS_WIN32
+	char *content_type;
 
-	if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
+	content_type = g_content_type_guess (NULL, data, len, &uncertain);
+	if (uncertain == FALSE) {
+		mime_type = g_content_type_get_mime_type (content_type);
+		g_free (content_type);
+	} else {
+		mime_type = NULL;
+	}
+#else
+	mime_type = g_content_type_guess (NULL, data, len, &uncertain);
+	if (uncertain != FALSE) {
+		g_free (mime_type);
+		mime_type = NULL;
+	}
+#endif
+
+	if (mime_type != NULL && strcmp (mime_type, "text/plain") == 0) {
 		PlaylistIdenCallback func;
 		guint i;
 
@@ -1842,12 +1884,14 @@ my_gnome_vfs_get_mime_type_for_data (gconstpointer data, int len)
 				continue;
 			func = dual_types[i].iden;
 			res = func (data, len);
-			if (res != NULL)
+			if (res != NULL) {
+				g_free (mime_type);
 				return g_strdup (res);
+			}
 		}
 	}
 
-	return g_strdup (mimetype);
+	return mime_type;
 }
 
 /**
@@ -1872,9 +1916,9 @@ totem_pl_parser_can_parse_from_data (const char *data,
 	g_return_val_if_fail (data != NULL, FALSE);
 
 	/* Bad cast! */
-	mimetype = my_gnome_vfs_get_mime_type_for_data ((gpointer) data, (int) len);
+	mimetype = totem_pl_parser_mime_type_from_data ((gpointer) data, (int) len);
 
-	if (mimetype == NULL || strcmp (GNOME_VFS_MIME_TYPE_UNKNOWN, mimetype) == 0) {
+	if (mimetype == NULL) {
 		D(g_message ("totem_pl_parser_can_parse_from_data couldn't get mimetype"));
 		return FALSE;
 	}

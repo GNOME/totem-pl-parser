@@ -306,9 +306,12 @@ parse_xspf_entries (TotemPlParser *parser, char *base, xmlDocPtr doc,
 }
 
 TotemPlParserResult
-totem_pl_parser_add_xspf (TotemPlParser *parser, const char *url,
-			  const char *_base, gpointer data)
+totem_pl_parser_add_xspf (TotemPlParser *parser,
+			  GFile *file,
+			  GFile *_base_file,
+			  gpointer data)
 {
+#if 0
 	xmlDocPtr doc;
 	xmlNodePtr node;
 	char *base;
@@ -335,6 +338,7 @@ totem_pl_parser_add_xspf (TotemPlParser *parser, const char *url,
 	g_free (base);
 	xmlFreeDoc(doc);
 	return retval;
+#endif
 }
 #endif /* !TOTEM_PL_PARSER_MINI */
 
