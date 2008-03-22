@@ -1599,7 +1599,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 			if (strcmp (special_types[i].mimetype, mimetype) == 0) {
 				DEBUG(file, g_print ("URL '%s' is special type '%s'\n", uri, mimetype));
 				if (parser->priv->disable_unsafe != FALSE && special_types[i].unsafe != FALSE) {
-					DEBUG(g_print ("URL '%s' is unsafe so was ignored\n", url));
+					DEBUG(file, g_print ("URL '%s' is unsafe so was ignored\n", uri));
 					g_free (mimetype);
 					g_free (data);
 					return TOTEM_PL_PARSER_RESULT_IGNORED;
