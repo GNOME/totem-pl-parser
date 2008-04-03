@@ -1,3 +1,7 @@
+2008-04-03  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/disc-test.c (main): Port to GIO
+
 2008-03-22  Marc-Andre Lureau  <marcandre.lureau@gmail.com>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):

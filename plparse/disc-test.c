@@ -20,7 +20,7 @@
 #include "config.h"
 
 #include <glib.h>
-#include <libgnomevfs/gnome-vfs.h>
+#include <gio/gio.h>
 
 #include "totem-disc.h"
 
@@ -34,15 +34,15 @@ main (gint   argc,
   char *url = NULL;
   gboolean is_dir = FALSE;
   GList *or, *list;
-  GnomeVFSVolumeMonitor *mon;
+  GVolumeMonitor *mon;
 
   if (argc != 2) {
     g_print ("Usage: %s <device>\n", argv[0]);
     return -1;
   }
 
+  g_thread_init (NULL);
   g_type_init ();
-  gnome_vfs_init ();
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING);
 
   if (g_file_test (argv[1], G_FILE_TEST_IS_DIR) != FALSE) {
@@ -54,32 +54,33 @@ main (gint   argc,
 
   switch (type) {
     case MEDIA_TYPE_ERROR:
-      mon = gnome_vfs_get_volume_monitor ();
+      mon = g_volume_monitor_get ();
       g_print ("Error: %s\n", error ? error->message : "unknown reason");
       g_print ("\n");
       g_print ("List of connected drives:\n");
-      for (or = list = gnome_vfs_volume_monitor_get_connected_drives (mon);
-		      list != NULL; list = list->next) {
+      for (or = list = g_volume_monitor_get_connected_drives (mon); list != NULL; list = list->next) {
         char *device;
-	device = gnome_vfs_drive_get_device_path ((GnomeVFSDrive *) list->data);
+        device = g_drive_get_identifier ((GDrive *) list->data, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
         g_print ("%s\n", device);
 	g_free (device);
       }
       if (or == NULL)
         g_print ("No connected drives!\n");
 
-      g_print ("List of mounted volumes:\n");
-      for (or = list = gnome_vfs_volume_monitor_get_mounted_volumes (mon);
-		      list != NULL; list = list->next) {
+      g_print ("List of volumes:\n");
+      for (or = list = g_volume_monitor_get_volumes (mon); list != NULL; list = list->next) {
         char *device;
 
-	device = gnome_vfs_volume_get_device_path ((GnomeVFSVolume *) list->data);
-	g_print ("%s\n", device);
+	device = g_volume_get_identifier ((GVolume *) list->data, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+	g_print ("%s", device);
+	if (g_volume_get_mount ((GVolume *) list->data) == NULL)
+	  g_print ("\n");
+	else
+	  g_print (" (mounted)\n");
 	g_free (device);
       }
       if (or == NULL)
-        g_print ("No mounted volumes!\n");
-
+        g_print ("No volumes!\n");
       return -1;
     case MEDIA_TYPE_DATA:
       type_s = "Data CD";
