@@ -1,5 +1,10 @@
 2008-04-03  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-disc.c (cd_cache_new): Better
+	error message
+
+2008-04-03  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/disc-test.c (main): Fix some memleaks
 
 	* plparse/totem-disc.c (totem_resolve_symlink),

@@ -242,7 +242,7 @@ cd_cache_new (const char *dev,
   found = cd_cache_get_dev_from_volumes (mon, device, &mountpoint, &volume);
   if (!found) {
     g_set_error (error, 0, 0,
-	_("Failed to find mountpoint for device %s"),
+	_("No media in drive for device '%s'"),
 	device);
     g_free (device);
     return NULL;
