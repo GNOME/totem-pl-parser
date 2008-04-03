@@ -1,5 +1,16 @@
 2008-04-03  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/disc-test.c (main): Fix some memleaks
+
+	* plparse/totem-disc.c (totem_resolve_symlink),
+	(cd_cache_get_dev_from_volumes), (cd_cache_new),
+	(cd_cache_has_medium), (cd_cache_mount_callback),
+	(cd_cache_open_mountpoint), (cd_cache_free),
+	(cd_cache_disc_is_cdda), (totem_cd_dir_get_parent):
+	Port to GIO
+
+2008-04-03  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/disc-test.c (main): Port to GIO
 
 2008-03-22  Marc-Andre Lureau  <marcandre.lureau@gmail.com>

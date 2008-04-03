@@ -43,7 +43,7 @@ main (gint   argc,
 
   g_thread_init (NULL);
   g_type_init ();
-  g_log_set_always_fatal (G_LOG_LEVEL_WARNING);
+  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
   if (g_file_test (argv[1], G_FILE_TEST_IS_DIR) != FALSE) {
     type = totem_cd_detect_type_from_dir (argv[1], &url, &error);
@@ -63,9 +63,12 @@ main (gint   argc,
         device = g_drive_get_identifier ((GDrive *) list->data, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
         g_print ("%s\n", device);
 	g_free (device);
+	g_object_unref (list->data);
       }
       if (or == NULL)
         g_print ("No connected drives!\n");
+      else
+        g_list_free (or);
 
       g_print ("List of volumes:\n");
       for (or = list = g_volume_monitor_get_volumes (mon); list != NULL; list = list->next) {
@@ -78,9 +81,12 @@ main (gint   argc,
 	else
 	  g_print (" (mounted)\n");
 	g_free (device);
+	g_object_unref (list->data);
       }
       if (or == NULL)
         g_print ("No volumes!\n");
+      else
+        g_list_free (or);
       return -1;
     case MEDIA_TYPE_DATA:
       type_s = "Data CD";

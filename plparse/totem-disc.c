@@ -49,7 +49,7 @@
 
 #include <glib.h>
 #include <glib/gi18n.h>
-#include <libgnomevfs/gnome-vfs.h>
+#include <gio/gio.h>
 
 #ifdef HAVE_HAL
 #include <libhal.h>
@@ -61,7 +61,7 @@
 typedef struct _CdCache {
   /* device node and mountpoint */
   char *device, *mountpoint;
-  GnomeVFSDrive *drive;
+  GVolume *volume;
 
 #ifdef HAVE_HAL
   LibHalContext *ctx;
@@ -103,7 +103,11 @@ totem_resolve_symlink (const char *device, GError **error)
   }
 
   if (f != NULL) {
-    f1 = gnome_vfs_make_path_name_canonical (f);
+    GFile *file;
+
+    file = g_file_new_for_path (f);
+    f1 = g_file_get_path (file);
+    g_object_unref (file);
     g_free (f);
     f = f1;
   }
@@ -111,21 +115,21 @@ totem_resolve_symlink (const char *device, GError **error)
 }
 
 static gboolean
-cd_cache_get_dev_from_volumes (GnomeVFSVolumeMonitor *mon, const char *device,
-			      char **mountpoint)
+cd_cache_get_dev_from_volumes (GVolumeMonitor *mon, const char *device,
+			      char **mountpoint, GVolume **v)
 {
   gboolean found;
-  GnomeVFSVolume *volume = NULL;
+  GVolume *volume = NULL;
   GList *list, *or;
 
   found = FALSE;
 
-  for (or = list = gnome_vfs_volume_monitor_get_mounted_volumes (mon);
+  for (or = list = g_volume_monitor_get_volumes (mon);
        list != NULL; list = list->next) {
     char *pdev, *pdev2;
 
     volume = list->data;
-    if (!(pdev = gnome_vfs_volume_get_device_path (volume)))
+    if (!(pdev = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE)))
       continue;
     pdev2 = totem_resolve_symlink (pdev, NULL);
     if (!pdev2) {
@@ -135,77 +139,29 @@ cd_cache_get_dev_from_volumes (GnomeVFSVolumeMonitor *mon, const char *device,
     g_free (pdev);
 
     if (strcmp (pdev2, device) == 0) {
-      char *mnt;
+      GMount *mount;
 
-      mnt = gnome_vfs_volume_get_activation_uri (volume);
-      if (mnt && strncmp (mnt, "file://", 7) == 0) {
-	g_free (pdev2);
-        *mountpoint = g_strdup (mnt + 7);
-        g_free (mnt);
-	found = TRUE;
-        break;
-      } else if (mnt && strncmp (mnt, "cdda://", 7) == 0) {
-	g_free (pdev2);
-	*mountpoint = NULL;
-	g_free (mnt);
-	found = TRUE;
-	break;
+      mount = g_volume_get_mount (volume);
+      if (mount) {
+	GFile *file;
+
+	file = g_mount_get_root (mount);
+	*mountpoint = g_file_get_path (file);
+	g_object_unref (file);
+	g_object_unref (mount);
       }
-      g_free (mnt);
-    }
-    g_free (pdev2);
-  }
-  g_list_foreach (or, (GFunc) gnome_vfs_volume_unref, NULL);
-  g_list_free (or);
 
-  return found;
-}
-
-static gboolean
-cd_cache_get_dev_from_drives (GnomeVFSVolumeMonitor *mon, const char *device,
-			      char **mountpoint, GnomeVFSDrive **d)
-{
-  gboolean found;
-  GnomeVFSDrive *drive = NULL;
-  GList *list, *or;
-
-  found = FALSE;
-
-  for (or = list = gnome_vfs_volume_monitor_get_connected_drives (mon);
-       list != NULL; list = list->next) {
-    char *pdev, *pdev2;
-
-    drive = list->data;
-    if (!(pdev = gnome_vfs_drive_get_device_path (drive)))
-      continue;
-    pdev2 = totem_resolve_symlink (pdev, NULL);
-    if (!pdev2) {
-      g_free (pdev);
-      continue;
-    }
-    g_free (pdev);
-
-    if (strcmp (pdev2, device) == 0) {
-      char *mnt;
-
-      mnt = gnome_vfs_drive_get_activation_uri (drive);
-      if (mnt && strncmp (mnt, "file://", 7) == 0) {
-        *mountpoint = g_strdup (mnt + 7);
-      } else {
-	*mountpoint = NULL;
-      }
       found = TRUE;
+      g_object_ref (volume);
       g_free (pdev2);
-      g_free (mnt);
-      gnome_vfs_drive_ref (drive);
       break;
     }
     g_free (pdev2);
   }
-  g_list_foreach (or, (GFunc) gnome_vfs_drive_unref, NULL);
+  g_list_foreach (or, (GFunc) g_object_unref, NULL);
   g_list_free (or);
 
-  *d = drive;
+  *v = volume;
 
   return found;
 }
@@ -255,8 +211,8 @@ cd_cache_new (const char *dev,
 {
   CdCache *cache;
   char *mountpoint = NULL, *device, *local;
-  GnomeVFSVolumeMonitor *mon;
-  GnomeVFSDrive *drive = NULL;
+  GVolumeMonitor *mon;
+  GVolume *volume = NULL;
 #ifdef HAVE_HAL
   LibHalContext *ctx = NULL;
 #endif
@@ -277,18 +233,13 @@ cd_cache_new (const char *dev,
     return cache;
   }
 
-  /* retrieve mountpoint from gnome-vfs volumes and drives */
+  /* retrieve mountpoint from gio volumes */
   device = totem_resolve_symlink (local, error);
   g_free (local);
   if (!device)
     return NULL;
-  mon = gnome_vfs_get_volume_monitor ();
-  found = cd_cache_get_dev_from_drives (mon, device, &mountpoint, &drive);
-  if (!found) {
-    drive = NULL;
-    found = cd_cache_get_dev_from_volumes (mon, device, &mountpoint);
-  }
-
+  mon = g_volume_monitor_get ();
+  found = cd_cache_get_dev_from_volumes (mon, device, &mountpoint, &volume);
   if (!found) {
     g_set_error (error, 0, 0,
 	_("Failed to find mountpoint for device %s"),
@@ -312,7 +263,10 @@ cd_cache_new (const char *dev,
   cache->device = device;
   cache->mountpoint = mountpoint;
   cache->self_mounted = FALSE;
-  cache->drive = drive;
+  cache->volume = volume;
+#ifdef HAVE_HAL
+  cache->disc_udi = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_HAL_UDI);
+#endif
   cache->is_media = TRUE;
 #ifdef HAVE_HAL
   cache->ctx = ctx;
@@ -321,74 +275,21 @@ cd_cache_new (const char *dev,
   return cache;
 }
 
-#ifndef HAVE_HAL
 static gboolean
 cd_cache_has_medium (CdCache *cache)
 {
-  return TRUE;
-}
-#endif
+  GDrive *drive;
+  gboolean retval;
 
-#ifdef HAVE_HAL
-static gboolean
-cd_cache_has_medium (CdCache *cache)
-{
-  char **devices;
-  int num_devices;
-  char *udi;
-  gboolean retval = FALSE;
-  DBusError error;
-
-  if (cache->drive == NULL)
+  if (cache->volume == NULL)
     return FALSE;
 
-  udi = gnome_vfs_drive_get_hal_udi (cache->drive);
-  if (udi == NULL)
-    return FALSE;
-
-  dbus_error_init (&error);
-  devices = libhal_manager_find_device_string_match (cache->ctx,
-      "info.parent", udi, &num_devices, &error);
-  if (devices != NULL && num_devices >= 1)
-    retval = TRUE;
-
-  if (devices != NULL)
-    libhal_free_string_array (devices);
-
-  if (dbus_error_is_set (&error)) {
-    g_warning ("Error getting the children: %s", error.message);
-    dbus_error_free (&error);
-    g_free (udi);
-    return FALSE;
-  }
-
-  if (retval == FALSE) {
-    dbus_bool_t volume;
-
-    if (libhal_device_property_exists (cache->ctx,
-	  udi, "volume.is_disc", NULL) == FALSE) {
-      g_free (udi);
-      return FALSE;
-    }
-
-    volume = libhal_device_get_property_bool (cache->ctx,
-	udi, "volume.is_disc", &error);
-    if (dbus_error_is_set (&error)) {
-      g_warning ("Error checking whether the volume is a disc: %s",
-	  error.message);
-      dbus_error_free (&error);
-      g_free (udi);
-      return FALSE;
-    }
-    retval = TRUE;
-    cache->disc_udi = udi;
-  } else {
-    g_free (udi);
-  }
+  drive = g_volume_get_drive (cache->volume);
+  retval = g_drive_has_media (drive);
+  g_object_unref (drive);
 
   return retval;
 }
-#endif
 
 static gboolean
 cd_cache_open_device (CdCache *cache,
@@ -412,69 +313,76 @@ cd_cache_open_device (CdCache *cache,
 typedef struct _CdCacheCallbackData {
   CdCache *cache;
   gboolean called;
+  gboolean result;
+  GError *error;
 } CdCacheCallbackData;
 
 static void
-cb_mount_done (gboolean success, char * error,
-               char * detail, CdCacheCallbackData * data)
+cd_cache_mount_callback (GObject *source_object,
+			 GAsyncResult *res,
+			 CdCacheCallbackData *data)
 {
+  data->result = g_volume_mount_finish (data->cache->volume, res, &data->error);
   data->called = TRUE;
-  data->cache->mounted = success != FALSE;
+
+  g_message ("Called now, result is %d", data->result);
 }
 
 static gboolean
 cd_cache_open_mountpoint (CdCache *cache,
 			  GError **error)
 {
-  CdCacheCallbackData data;
+  GMount *mount;
+  GFile *root;
 
   /* already opened? */
   if (cache->mounted || cache->is_media == FALSE)
     return TRUE;
 
   /* check for mounting - assume we'll mount ourselves */
-  if (cache->drive == NULL)
+  if (cache->volume == NULL)
     return TRUE;
-  cache->self_mounted = !gnome_vfs_drive_is_mounted (cache->drive);
+
+  mount = g_volume_get_mount (cache->volume);
+  cache->self_mounted = (mount == NULL);
 
   /* mount if we have to */
   if (cache->self_mounted) {
-    /* mount - wait for callback */
+    CdCacheCallbackData data;
+    data.error = NULL;
     data.called = FALSE;
     data.cache = cache;
-    gnome_vfs_drive_mount (cache->drive,
-	(GnomeVFSVolumeOpCallback) cb_mount_done, &data);
+    data.result = FALSE;
+
+    /* mount - wait for callback */
+    g_volume_mount (cache->volume,
+		    G_MOUNT_MOUNT_NONE,
+		    NULL,
+		    NULL,
+		    (GAsyncReadyCallback) cd_cache_mount_callback,
+		    &data);
+    /* FIXME wait until it's done, any better way? */
     while (!data.called) g_main_context_iteration (NULL, TRUE);
 
-    if (!cache->mounted) {
-      g_set_error (error, 0, 0,
-	  _("Failed to mount %s"), cache->device);
+    if (!data.result) {
+      if (data.error) {
+	g_propagate_error (error, data.error);
+	g_error_free (data.error);
+      } else {
+	g_set_error (error, 0, 0,
+		     _("Failed to mount %s"), cache->device);
+      }
       return FALSE;
+    } else {
+      cache->mounted = TRUE;
+      mount = g_volume_get_mount (cache->volume);
     }
   }
 
   if (!cache->mountpoint) {
-    GList *vol, *item;
-
-    for (vol = item = gnome_vfs_drive_get_mounted_volumes (cache->drive);
-	item != NULL; item = item->next) {
-      char *mnt = gnome_vfs_volume_get_activation_uri (item->data);
-
-      if (mnt && strncmp (mnt, "file://", 7) == 0) {
-	cache->mountpoint = g_strdup (mnt + 7);
-	g_free (mnt);
-	break;
-      }
-      g_free (mnt);
-    }
-    g_list_foreach (vol, (GFunc) gnome_vfs_volume_unref, NULL);
-    g_list_free (vol);
-
-    if (!cache->mountpoint) {
-      g_set_error (error, 0, 0,
-	  _("Failed to find mountpoint for %s"), cache->device);
-      return FALSE;
-    }
+    root = g_mount_get_root (mount);
+    cache->mountpoint = g_file_get_path (root);
+    g_object_unref (root);
   }
 
   return TRUE;
@@ -499,8 +407,8 @@ cd_cache_free (CdCache *cache)
 #endif /* HAVE_HAL */
 
   /* free mem */
-  if (cache->drive)
-    gnome_vfs_drive_unref (cache->drive);
+  if (cache->volume)
+    g_object_unref (cache->volume);
   g_free (cache->mountpoint);
   g_free (cache->device);
   g_free (cache);
@@ -539,22 +447,20 @@ cd_cache_disc_is_cdda (CdCache *cache,
   }
 #else
   {
-    GList *vol, *item;
+    GMount *mount;
+    GFile *root;
 
     type = MEDIA_TYPE_DATA;
 
-    for (vol = item = gnome_vfs_drive_get_mounted_volumes (cache->drive);
-	item != NULL; item = item->next) {
-      char *mnt = gnome_vfs_volume_get_activation_uri (item->data);
-      if (mnt && strncmp (mnt, "cdda://", 7) == 0) {
-	g_free (mnt);
-	type = MEDIA_TYPE_CDDA;
-	break;
-      }
-      g_free (mnt);
-    }
-    g_list_foreach (vol, (GFunc) gnome_vfs_volume_unref, NULL);
-    g_list_free (vol);
+    mount = g_volume_get_mount (cache->volume);
+    if (!mount)
+      return type;
+
+    root = g_mount_get_root (mount);
+    if (g_file_has_uri_scheme (root, "cdda"))
+      type = MEDIA_TYPE_CDDA;
+
+    g_object_unref (root);
   }
 
   return type;
@@ -725,20 +631,17 @@ totem_cd_mrl_from_type (const char *scheme, const char *dir)
 static char *
 totem_cd_dir_get_parent (const char *dir)
 {
-    GnomeVFSURI *uri, *parent_uri;
-    char *parent;
+  GFile *file, *parent_file;
+  char *parent;
 
-    uri = gnome_vfs_uri_new (dir);
-    if (uri == NULL)
-      return NULL;
-    parent_uri = gnome_vfs_uri_get_parent (uri);
-    gnome_vfs_uri_unref (uri);
-    if (parent_uri == NULL)
-      return NULL;
-    parent = gnome_vfs_uri_to_string (parent_uri, GNOME_VFS_URI_HIDE_NONE);
-    gnome_vfs_uri_unref (parent_uri);
+  file = g_file_new_for_path (dir);
+  parent_file = g_file_get_parent (file);
+  g_object_unref (file);
 
-    return parent;
+  parent = g_file_get_path (parent_file);
+  g_object_unref (parent_file);
+
+  return parent;
 }
 
 /**
