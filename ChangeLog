@@ -1,5 +1,10 @@
 2008-04-04  Bastien Nocera  <hadess@hadess.net>
 
+	* configure.in: Add missing gio linkage for the mini
+	pl-parser
+
+2008-04-04  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-disc.c (totem_cd_detect_type_with_url):
 	Give out gvfs compatible CDDA URLs instead of gnome-vfs
 	style ones
