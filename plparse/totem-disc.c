@@ -760,8 +760,16 @@ totem_cd_detect_type_with_url (const char *device,
 				   cache->mountpoint : device);
     break;
   case MEDIA_TYPE_CDDA:
-    *url = totem_cd_mrl_from_type ("cdda", cache->device ?
-				   cache->device : device);
+    {
+      const char *dev;
+      char *element;
+
+      dev = cache->device ? cache->device : device;
+      if (g_str_has_prefix (dev, "/dev/") != FALSE)
+	*url = totem_cd_mrl_from_type ("cdda", dev + 5);
+      else
+	*url = totem_cd_mrl_from_type ("cdda", dev);
+    }
     break;
   case MEDIA_TYPE_DATA:
     *url = g_strdup (cache->mountpoint);

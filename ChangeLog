@@ -1,3 +1,9 @@
+2008-04-04  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-disc.c (totem_cd_detect_type_with_url):
+	Give out gvfs compatible CDDA URLs instead of gnome-vfs
+	style ones
+
 2008-04-03  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-disc.c (cd_cache_new): Better
