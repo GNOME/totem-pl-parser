@@ -1,3 +1,13 @@
+2008-04-07  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-disc.c (cd_cache_local_file_to_archive),
+	(cd_cache_mount_archive_callback), (cd_cache_new),
+	(cd_cache_mount_callback), (cd_cache_open_mountpoint),
+	(cd_cache_unmount_callback), (cd_cache_free),
+	(cd_cache_disc_is_dvd), (totem_cd_detect_type_from_dir),
+	(totem_cd_detect_type_with_url): Add support for detecting
+	DVD ISOs, as well as remote DVDs trees, and remote DVD ISOs
+
 2008-04-04  Bastien Nocera  <hadess@hadess.net>
 
 	* configure.in: Add missing gio linkage for the mini

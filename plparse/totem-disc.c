@@ -69,6 +69,8 @@ typedef struct _CdCache {
   char *disc_udi;
 #endif
 
+  GFile *iso_file;
+
   /* Whether we have a medium */
   guint has_medium : 1;
   /* if we're checking a media, or a dir */
@@ -78,7 +80,19 @@ typedef struct _CdCache {
    * was already mounted. */
   guint self_mounted : 1;
   guint mounted : 1;
+
+  /* Whether it's a local ISO file */
+  guint is_iso : 1;
 } CdCache;
+
+typedef struct _CdCacheCallbackData {
+  CdCache *cache;
+  gboolean called;
+  gboolean result;
+  GError *error;
+} CdCacheCallbackData;
+
+static void cd_cache_free (CdCache *cache);
 
 static char *
 totem_resolve_symlink (const char *device, GError **error)
@@ -205,6 +219,29 @@ cd_cache_new_hal_ctx (void)
 }
 #endif
 
+static char *
+cd_cache_local_file_to_archive (const char *filename)
+{
+  char *escaped, *retval, *uri;
+
+  uri = g_filename_to_uri (filename, NULL, NULL);
+  escaped = g_uri_escape_string (uri, NULL, FALSE);
+  g_free (uri);
+  retval = g_strdup_printf ("archive://%s", escaped);
+  g_free (escaped);
+
+  return retval;
+}
+
+static void
+cd_cache_mount_archive_callback (GObject *source_object,
+				 GAsyncResult *res,
+				 CdCacheCallbackData *data)
+{
+  data->result = g_file_mount_enclosing_volume_finish (G_FILE (source_object), res, &data->error);
+  data->called = TRUE;
+}
+
 static CdCache *
 cd_cache_new (const char *dev,
 	      GError     **error)
@@ -218,12 +255,20 @@ cd_cache_new (const char *dev,
 #endif
   gboolean found;
 
-  if (g_str_has_prefix (dev, "file://") != FALSE)
-    local = g_filename_from_uri (dev, NULL, NULL);
-  else
+  if (dev[0] == '/')
     local = g_strdup (dev);
+  else {
+    GFile *file;
 
-  g_assert (local != NULL);
+    file = g_file_new_for_commandline_arg (dev);
+    local = g_file_get_path (file);
+    g_object_unref (file);
+  }
+
+  if (local == NULL) {
+    /* No error, just no cache */
+    return NULL;
+  }
 
   if (g_file_test (local, G_FILE_TEST_IS_DIR) != FALSE) {
     cache = g_new0 (CdCache, 1);
@@ -231,9 +276,61 @@ cd_cache_new (const char *dev,
     cache->is_media = FALSE;
 
     return cache;
+  } else if (g_file_test (local, G_FILE_TEST_IS_REGULAR)) {
+    GMount *mount;
+    GError *err = NULL;
+    char *archive_path;
+
+    cache = g_new0 (CdCache, 1);
+    cache->is_iso = TRUE;
+    cache->is_media = FALSE;
+
+    archive_path = cd_cache_local_file_to_archive (local);
+    cache->device = local;
+
+    cache->iso_file = g_file_new_for_uri (archive_path);
+    g_free (archive_path);
+
+    mount = g_file_find_enclosing_mount (cache->iso_file, NULL, &err);
+    if (mount == NULL && g_error_matches (err, G_IO_ERROR, G_IO_ERROR_NOT_MOUNTED)) {
+      CdCacheCallbackData data;
+
+      memset (&data, 0, sizeof(data));
+      data.cache = cache;
+      g_file_mount_enclosing_volume (cache->iso_file,
+				     G_MOUNT_MOUNT_NONE,
+				     NULL,
+				     NULL,
+				     (GAsyncReadyCallback) cd_cache_mount_archive_callback,
+				     &data);
+      while (!data.called) g_main_context_iteration (NULL, TRUE);
+
+      if (!data.result) {
+	if (data.error) {
+	  g_propagate_error (error, data.error);
+	  g_error_free (data.error);
+	} else {
+	  g_set_error (error, 0, 0,
+		       _("Failed to mount %s"), cache->device);
+	}
+	cd_cache_free (cache);
+	return FALSE;
+      }
+    } else if (mount == NULL) {
+      cd_cache_free (cache);
+      return FALSE;
+    } else {
+      g_object_unref (mount);
+    }
+
+    cache->mountpoint = g_file_get_path (cache->iso_file);
+    cache->mounted = TRUE;
+
+    return cache;
   }
 
-  /* retrieve mountpoint from gio volumes */
+  /* We have a local device
+   * retrieve mountpoint and volume from gio volumes */
   device = totem_resolve_symlink (local, error);
   g_free (local);
   if (!device)
@@ -310,13 +407,6 @@ cd_cache_open_device (CdCache *cache,
   return TRUE;
 }
 
-typedef struct _CdCacheCallbackData {
-  CdCache *cache;
-  gboolean called;
-  gboolean result;
-  GError *error;
-} CdCacheCallbackData;
-
 static void
 cd_cache_mount_callback (GObject *source_object,
 			 GAsyncResult *res,
@@ -324,8 +414,6 @@ cd_cache_mount_callback (GObject *source_object,
 {
   data->result = g_volume_mount_finish (data->cache->volume, res, &data->error);
   data->called = TRUE;
-
-  g_message ("Called now, result is %d", data->result);
 }
 
 static gboolean
@@ -349,10 +437,9 @@ cd_cache_open_mountpoint (CdCache *cache,
   /* mount if we have to */
   if (cache->self_mounted) {
     CdCacheCallbackData data;
-    data.error = NULL;
-    data.called = FALSE;
+
+    memset (&data, 0, sizeof(data));
     data.cache = cache;
-    data.result = FALSE;
 
     /* mount - wait for callback */
     g_volume_mount (cache->volume,
@@ -389,8 +476,20 @@ cd_cache_open_mountpoint (CdCache *cache,
 }
 
 static void
+cd_cache_unmount_callback (GObject *source_object,
+			   GAsyncResult *res,
+			   CdCacheCallbackData *data)
+{
+  data->result = g_mount_unmount_finish (G_MOUNT (source_object),
+					 res, NULL);
+  data->called = TRUE;
+}
+
+static void
 cd_cache_free (CdCache *cache)
 {
+  GMount *mount;
+
 #ifdef HAVE_HAL
   if (cache->ctx != NULL) {
     DBusConnection *conn;
@@ -405,6 +504,25 @@ cd_cache_free (CdCache *cache)
     g_free (cache->disc_udi);
   }
 #endif /* HAVE_HAL */
+
+  if (cache->iso_file) {
+    mount = g_file_find_enclosing_mount (cache->iso_file,
+					 NULL, NULL);
+    if (mount) {
+      CdCacheCallbackData data;
+
+      memset (&data, 0, sizeof(data));
+
+      g_mount_unmount (mount,
+		       G_MOUNT_UNMOUNT_NONE,
+		       NULL,
+		      (GAsyncReadyCallback) cd_cache_unmount_callback,
+		      &data);
+      while (!data.called) g_main_context_iteration (NULL, TRUE);
+      g_object_unref (mount);
+    }
+    g_object_unref (cache->iso_file);
+  }
 
   /* free mem */
   if (cache->volume)
@@ -597,6 +715,9 @@ cd_cache_disc_is_dvd (CdCache *cache,
 #endif
   if (cd_cache_file_exists (cache, "VIDEO_TS", "VIDEO_TS.IFO"))
     return MEDIA_TYPE_DVD;
+  /* FIXME bug in libarchive? */
+  if (cd_cache_file_exists (cache, "VIDEO_TS", "VIDEO_TS.IFO;1"))
+    return MEDIA_TYPE_DVD;
 
   return MEDIA_TYPE_DATA;
 }
@@ -663,9 +784,6 @@ totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
   TotemDiscMediaType type;
 
   g_return_val_if_fail (dir != NULL, MEDIA_TYPE_ERROR);
-
-  if (dir[0] != '/' && g_str_has_prefix (dir, "file://") == FALSE)
-    return MEDIA_TYPE_ERROR;
 
   if (!(cache = cd_cache_new (dir, error)))
     return MEDIA_TYPE_ERROR;
@@ -752,17 +870,30 @@ totem_cd_detect_type_with_url (const char *device,
 
   switch (type) {
   case MEDIA_TYPE_DVD:
-    *url = totem_cd_mrl_from_type ("dvd", cache->mountpoint ? 
-				   cache->mountpoint : device);
+    {
+      const char *str;
+
+      if (!cache->is_iso)
+	str = cache->mountpoint ? cache->mountpoint : device;
+      else
+	str = cache->device;
+      *url = totem_cd_mrl_from_type ("dvd", str);
+    }
     break;
   case MEDIA_TYPE_VCD:
-    *url = totem_cd_mrl_from_type ("vcd", cache->mountpoint ?
-				   cache->mountpoint : device);
+    {
+      const char *str;
+
+      if (!cache->is_iso)
+	str = cache->mountpoint ? cache->mountpoint : device;
+      else
+	str = cache->device;
+      *url = totem_cd_mrl_from_type ("vcd", str);
+    }
     break;
   case MEDIA_TYPE_CDDA:
     {
       const char *dev;
-      char *element;
 
       dev = cache->device ? cache->device : device;
       if (g_str_has_prefix (dev, "/dev/") != FALSE)
@@ -772,7 +903,12 @@ totem_cd_detect_type_with_url (const char *device,
     }
     break;
   case MEDIA_TYPE_DATA:
-    *url = g_strdup (cache->mountpoint);
+    if (cache->is_iso) {
+      type = MEDIA_TYPE_ERROR;
+      /* No error, it's just not usable */
+    } else {
+      *url = g_strdup (cache->mountpoint);
+    }
     break;
   default:
     break;
