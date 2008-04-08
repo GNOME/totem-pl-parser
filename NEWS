@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+2.22.2:
+* Add support for feed:// URLs as used by Firefox 3
+* Work-around for feeds with a linefeed straight after "<rss"
+
 2.22.1:
 * Update translations
 
