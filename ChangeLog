@@ -1,3 +1,10 @@
+2008-04-08  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (my_gnome_vfs_get_mime_type_for_data):
+	When getting a text/plain mime-type to look at further, return
+	NULL if we fail to get a real mime-type, otherwise the file
+	will be added during fallback (Closes: #524475)
+
 ============ Version 2.22.2
 
 2008-04-08  Bastien Nocera  <hadess@hadess.net>

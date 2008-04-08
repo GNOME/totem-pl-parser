@@ -1847,6 +1847,8 @@ my_gnome_vfs_get_mime_type_for_data (gconstpointer data, int len)
 			if (res != NULL)
 				return g_strdup (res);
 		}
+
+		return NULL;
 	}
 
 	return g_strdup (mimetype);
