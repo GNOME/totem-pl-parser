@@ -36,7 +36,8 @@
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 #define MIME_READ_CHUNK_SIZE 1024
-#define DIR_MIME_TYPE "x-directory/normal"
+#define UNKNOWN_TYPE "application/octet-stream"
+#define DIR_MIME_TYPE "inode/directory"
 #define BLOCK_DEVICE_TYPE "x-special/device-block"
 #define EMPTY_FILE_TYPE "application/x-zerosize"
 #define TEXT_URI_TYPE "text/uri-list"

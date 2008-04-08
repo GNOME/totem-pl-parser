@@ -1264,8 +1264,6 @@ totem_pl_parser_remove_filename (const char *url)
 	return no_file;
 }
 
-#define GNOME_VFS_MIME_TYPE_UNKNOWN "bleh"
-
 static gboolean
 totem_pl_parser_might_be_file (const char *url)
 {
@@ -1274,7 +1272,7 @@ totem_pl_parser_might_be_file (const char *url)
 	content_type = g_content_type_guess (url, NULL, 0, NULL);
 	g_message ("content type %s", content_type);
 	//FIXME leak
-	if (content_type == NULL || strcmp (content_type, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0)
+	if (content_type == NULL || strcmp (content_type, UNKNOWN_TYPE) == 0)
 		return FALSE;
 	return TRUE;
 }
@@ -1436,7 +1434,7 @@ totem_pl_parser_ignore (TotemPlParser *parser, const char *url)
 
 	//FIXME wrong for win32
 	mimetype = g_content_type_guess (url, NULL, 0, NULL);
-	if (mimetype == NULL || strcmp (mimetype, GNOME_VFS_MIME_TYPE_UNKNOWN) == 0) {
+	if (mimetype == NULL || strcmp (mimetype, UNKNOWN_TYPE) == 0) {
 		g_free (mimetype);
 		return FALSE;
 	}
@@ -1557,7 +1555,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	}
 
 	DEBUG(file, g_print ("_get_mime_type_for_name for '%s' returned '%s'\n", uri, mimetype));
-	if (mimetype == NULL || strcmp (GNOME_VFS_MIME_TYPE_UNKNOWN, mimetype) == 0) {
+	if (mimetype == NULL || strcmp (UNKNOWN_TYPE, mimetype) == 0) {
 		g_free (mimetype);
 		mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
 		DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned '%s'\n", uri, mimetype ? mimetype : "NULL"));

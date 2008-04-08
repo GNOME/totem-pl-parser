@@ -1,5 +1,18 @@
 2008-04-07  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-media.c (totem_pl_parser_iso_get_title),
+	(totem_pl_parser_add_iso), (totem_pl_parser_add_cue),
+	(totem_pl_parser_dir_compare), (totem_pl_parser_load_directory),
+	(totem_pl_parser_add_directory), (totem_pl_parser_add_block):
+	Finish porting to GIO (Closes: #520912)
+
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser.c (totem_pl_parser_might_be_file),
+	(totem_pl_parser_ignore), (totem_pl_parser_parse_internal):
+	Remove use of GNOME_VFS_MIME_TYPE_UNKNOWN
+
+2008-04-07  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-disc.c (cd_cache_local_file_to_archive),
 	(cd_cache_mount_archive_callback), (cd_cache_new),
 	(cd_cache_mount_callback), (cd_cache_open_mountpoint),
