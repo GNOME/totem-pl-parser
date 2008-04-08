@@ -1,3 +1,10 @@
+2008-04-08  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_mime_type_from_data):
+	When getting a text/plain mime-type to look at further, return
+	NULL if we fail to get a real mime-type, otherwise the file
+	will be added during fallback (Closes: #524475)
+
 2008-04-07  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-media.c (totem_pl_parser_iso_get_title),

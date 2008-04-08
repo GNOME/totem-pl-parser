@@ -1888,6 +1888,8 @@ totem_pl_parser_mime_type_from_data (gconstpointer data, int len)
 				return g_strdup (res);
 			}
 		}
+
+		return NULL;
 	}
 
 	return mime_type;
