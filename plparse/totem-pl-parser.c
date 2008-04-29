@@ -1154,10 +1154,18 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 				}
 			}
 
+			/* Remove trailing spaces from titles */
+			if (strcmp (name, "title") == 0) {
+				if (fixed == NULL)
+					fixed = g_strchomp (g_strdup (string));
+				else
+					g_strchomp (fixed);
+			}
+
 			/* Add other values to the metadata hashtable */
 			g_hash_table_insert (metadata,
 					     g_strdup (name),
-					     g_strdup (fixed ? fixed : string));
+					     fixed ? fixed : g_strdup (string));
 		}
 
 		g_value_unset (&value);

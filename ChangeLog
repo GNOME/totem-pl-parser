@@ -1,3 +1,9 @@
+2008-04-30  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_add_url_valist):
+	Remove trailing spaces from titles, to avoid new lines creeping up in
+	UIs such as Rhythmbox' podcast list (Closes: #527854)
+
 2008-04-24  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/bswap.h:
