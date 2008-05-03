@@ -1,3 +1,10 @@
+2008-05-04  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_mime_type_from_data):
+	Also force application/octet-stream mime-types through our home-made
+	detection, fixes problems parsing a DOS text file at
+	http://www.la-bas.org/podcast.php3 (Closes: #531289)
+
 2008-04-30  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_add_url_valist):
