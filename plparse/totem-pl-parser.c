@@ -1839,7 +1839,8 @@ my_gnome_vfs_get_mime_type_for_data (gconstpointer data, int len)
 
 	mimetype = gnome_vfs_get_mime_type_for_data (data, len);
 
-	if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
+	if (mimetype != NULL &&
+	    (strcmp (mimetype, "text/plain") == 0 || strcmp (mimetype, "application/octet-stream") == 0)) {
 		PlaylistIdenCallback func;
 		guint i;
 
