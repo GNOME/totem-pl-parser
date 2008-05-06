@@ -42,7 +42,6 @@
 #include "totem-pl-parser-private.h"
 
 #define RSS_NEEDLE "<rss "
-#define RSS_NEEDLE2 "<rss\n"
 #define ATOM_NEEDLE "<feed "
 #define OPML_NEEDLE "<opml "
 
@@ -56,9 +55,6 @@ totem_pl_parser_is_rss (const char *data, gsize len)
 
 	if (memmem (data, len,
 		    RSS_NEEDLE, strlen (RSS_NEEDLE)) != NULL)
-		return RSS_MIME_TYPE;
-	if (memmem (data, len,
-		    RSS_NEEDLE2, strlen (RSS_NEEDLE2)) != NULL)
 		return RSS_MIME_TYPE;
 
 	return NULL;

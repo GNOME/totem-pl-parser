@@ -443,6 +443,8 @@ int lexer_get_token(char * tok, int tok_size) {
 	  case '\"': /* " */
 	  case ' ':
 	  case '\t':
+	  case '\n':
+	  case '\r':
 	  case '=':
 	  case '/':
 	    tok[tok_pos] = '\0';
