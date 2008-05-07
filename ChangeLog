@@ -1,5 +1,14 @@
 2008-05-07  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-wm.c
+	(totem_pl_parser_add_asf_reference_parser),
+	(totem_pl_parser_add_asf_parser), (parse_asx_entry),
+	(parse_asx_entryref), (totem_pl_parser_add_asx),
+	(totem_pl_parser_add_asf): Port the Windows Media playlist format
+	parsers to GIO
+
+2008-05-07  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-qt.c
 	(totem_pl_parser_add_quicktime_rtsptext),
 	(totem_pl_parser_add_quicktime_metalink),
