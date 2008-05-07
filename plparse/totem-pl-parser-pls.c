@@ -40,11 +40,10 @@
 gboolean
 totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 			   TotemPlParserIterFunc func, 
-			   const char *output, const char *title,
+			   GFile *output, const char *title,
 			   gpointer user_data, GError **error)
 {
-	GnomeVFSHandle *handle;
-	GnomeVFSResult res;
+	GFileOutputStream *stream;
 	int num_entries_total, num_entries, i;
 	char *buf;
 	gboolean success;
@@ -52,49 +51,29 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 	num_entries = totem_pl_parser_num_entries (parser, model, func, user_data);
 	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
 
-	res = gnome_vfs_open (&handle, output, GNOME_VFS_OPEN_WRITE);
-	if (res == GNOME_VFS_ERROR_NOT_FOUND) {
-		res = gnome_vfs_create (&handle, output,
-				GNOME_VFS_OPEN_WRITE, FALSE,
-				GNOME_VFS_PERM_USER_WRITE
-				| GNOME_VFS_PERM_USER_READ
-				| GNOME_VFS_PERM_GROUP_READ);
-	}
-
-	if (res != GNOME_VFS_OK) {
-		g_set_error(error,
-			    TOTEM_PL_PARSER_ERROR,
-			    TOTEM_PL_PARSER_ERROR_VFS_OPEN,
-			    _("Couldn't open file '%s': %s"),
-			    output, gnome_vfs_result_to_string (res));
+	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
+	if (stream == NULL)
 		return FALSE;
-	}
 
 	buf = g_strdup ("[playlist]\n");
-	success = totem_pl_parser_write_string (handle, buf, error);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 	g_free (buf);
 	if (success == FALSE)
 		return FALSE;
 
 	if (title != NULL) {
 		buf = g_strdup_printf ("X-GNOME-Title=%s\n", title);
-		success = totem_pl_parser_write_string (handle, buf, error);
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (buf);
 		if (success == FALSE)
-		{
-			gnome_vfs_close (handle);
 			return FALSE;
-		}
 	}
 
 	buf = g_strdup_printf ("NumberOfEntries=%d\n", num_entries);
-	success = totem_pl_parser_write_string (handle, buf, error);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 	g_free (buf);
 	if (success == FALSE)
-	{
-		gnome_vfs_close (handle);
 		return FALSE;
-	}
 
 	for (i = 1; i <= num_entries_total; i++) {
 		GtkTreeIter iter;
@@ -118,11 +97,9 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 				relative ? relative : url);
 		g_free (relative);
 		g_free (url);
-		success = totem_pl_parser_write_string (handle, buf, error);
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (buf);
-		if (success == FALSE)
-		{
-			gnome_vfs_close (handle);
+		if (success == FALSE) {
 			g_free (title);
 			return FALSE;
 		}
@@ -133,17 +110,14 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 		}
 
 		buf = g_strdup_printf ("Title%d=%s\n", i, title);
-		success = totem_pl_parser_write_string (handle, buf, error);
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (buf);
 		g_free (title);
 		if (success == FALSE)
-		{
-			gnome_vfs_close (handle);
 			return FALSE;
-		}
 	}
 
-	gnome_vfs_close (handle);
+	g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
 	return TRUE;
 }
 
@@ -153,7 +127,6 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 				       GFile *base_file,
 				       const char *contents)
 {
-#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char **lines;
 	int i, num_entries;
@@ -190,7 +163,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	if (playlist_title != NULL) {
 		totem_pl_parser_add_url (parser,
 					 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
-					 TOTEM_PL_PARSER_FIELD_URL, url,
+					 TOTEM_PL_PARSER_FIELD_FILE, file,
 					 TOTEM_PL_PARSER_FIELD_TITLE, playlist_title,
 					 NULL);
 	}
@@ -261,13 +234,13 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
 							 TOTEM_PL_PARSER_FIELD_GENRE, genre,
 							 TOTEM_PL_PARSER_FIELD_DURATION, length,
-							 TOTEM_PL_PARSER_FIELD_BASE, base, NULL);
+							 TOTEM_PL_PARSER_FIELD_BASE_FILE, base_file, NULL);
 			}
 		} else {
 			char *base;
 
 			/* Try with a base */
-			base = totem_pl_parser_base_url (url);
+			base = totem_pl_parser_base_url (file);
 
 			if (length_num < 0 || totem_pl_parser_parse_internal (parser, file, base) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				char *escaped, *uri;
@@ -302,7 +275,6 @@ bail:
 	g_strfreev (lines);
 
 	return retval;
-#endif
 }
 
 TotemPlParserResult
@@ -311,12 +283,11 @@ totem_pl_parser_add_pls (TotemPlParser *parser,
 			 GFile *base_file,
 			 gpointer data)
 {
-#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents;
-	int size;
+	gsize size;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	if (size == 0) {
@@ -324,11 +295,10 @@ totem_pl_parser_add_pls (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
-	retval = totem_pl_parser_add_pls_with_contents (parser, url, base, contents);
+	retval = totem_pl_parser_add_pls_with_contents (parser, file, base_file, contents);
 	g_free (contents);
 
 	return retval;
-#endif
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

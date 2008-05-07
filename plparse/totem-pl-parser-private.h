@@ -50,6 +50,7 @@
 #define ASF_REF_MIME_TYPE "video/x-ms-asf"
 
 #define TOTEM_PL_PARSER_FIELD_FILE		"gfile-object"
+#define TOTEM_PL_PARSER_FIELD_BASE_FILE		"gfile-object-base"
 
 #ifndef TOTEM_PL_PARSER_MINI
 #define DEBUG(file, x) {					\
@@ -121,6 +122,7 @@ void totem_pl_parser_add_url			(TotemPlParser *parser,
 						 const char *first_property_name,
 						 ...);
 gboolean totem_pl_parser_ignore (TotemPlParser *parser, const char *url);
+
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 G_END_DECLS

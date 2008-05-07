@@ -708,19 +708,32 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 gboolean
 totem_pl_parser_is_itms_feed (GFile *file)
 {
-#if 0
-	g_return_val_if_fail (url != NULL, FALSE);
+	char *url;
+
+	g_return_val_if_fail (file != NULL, FALSE);
+
+	url = g_file_get_uri (file);
 
 	if (g_file_has_uri_scheme (file, "itms:") != FALSE
 	    && strstr (url, "phobos.apple.com") != NULL
-	    && strstr (url, "viewPodcast") != NULL)
+	    && strstr (url, "viewPodcast") != NULL) {
+	    	g_free (url);
 		return TRUE;
+	}
+
 	if (strstr (url, "phobos.apple.com/") != NULL
-	    && strstr (url, "viewPodcast") != NULL)
+	    && strstr (url, "viewPodcast") != NULL) {
+	    	g_free (url);
 		return TRUE;
-	if (strstr (url, "itunes.com/podcast") != NULL)
+	}
+
+	if (strstr (url, "itunes.com/podcast") != NULL) {
+		g_free (url);
 		return TRUE;
-#endif
+	}
+
+	g_free (url);
+
 	return FALSE;
 }
 

@@ -48,11 +48,10 @@
 gboolean
 totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 			   TotemPlParserIterFunc func, 
-			   const char *output, const char *title,
+			   GFile *output, const char *title,
 			   gpointer user_data, GError **error)
 {
-	GnomeVFSHandle *handle;
-	GnomeVFSResult res;
+	GFileOutputStream *stream;
 	int num_entries_total, num_entries, i;
 	char *buffer;
 	gboolean ret;
@@ -60,23 +59,9 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	num_entries = totem_pl_parser_num_entries (parser, model, func, user_data);
 	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
 
-	res = gnome_vfs_open (&handle, output, GNOME_VFS_OPEN_WRITE);
-	if (res == GNOME_VFS_ERROR_NOT_FOUND) {
-		res = gnome_vfs_create (&handle, output,
-				GNOME_VFS_OPEN_WRITE, FALSE,
-				GNOME_VFS_PERM_USER_WRITE
-				| GNOME_VFS_PERM_USER_READ
-				| GNOME_VFS_PERM_GROUP_READ);
-	}
-
-	if (res != GNOME_VFS_OK) {
-		g_set_error(error,
-			    TOTEM_PL_PARSER_ERROR,
-			    TOTEM_PL_PARSER_ERROR_VFS_OPEN,
-			    _("Couldn't open file '%s': %s"),
-			    output, gnome_vfs_result_to_string (res));
+	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
+	if (stream == NULL)
 		return FALSE;
-	}
 
 	/* write the header */
 	buffer = g_malloc0 (RECORD_SIZE);
@@ -87,10 +72,9 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	 * the 'quick list' name there.
 	 */
 	strncpy (buffer + TITLE_OFFSET, title, TITLE_SIZE);
-	if (totem_pl_parser_write_buffer (handle, buffer, RECORD_SIZE, error) == FALSE)
+	if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, error) == FALSE)
 	{
-		DEBUG(NULL, g_print ("Couldn't write header block"));
-		gnome_vfs_close (handle);
+		DEBUG(NULL, g_print ("Couldn't write header block for '%s'", uri));
 		g_free (buffer);
 		return FALSE;
 	}
@@ -145,7 +129,7 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 		memcpy (buffer + PATH_OFFSET, converted, written);
 		g_free (converted);
 
-		if (totem_pl_parser_write_buffer (handle, buffer, RECORD_SIZE, error) == FALSE)
+		if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, error) == FALSE)
 		{
 			DEBUG(NULL, g_print ("Couldn't write entry %d to the file\n", i));
 			ret = FALSE;
@@ -154,7 +138,8 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	}
 
 	g_free (buffer);
-	gnome_vfs_close (handle);
+	g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
+
 	return ret;
 }
 
@@ -164,18 +149,18 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 			 GFile *base_file,
 			 gpointer data)
 {
-#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, *title;
-	int size, offset, max_entries, entry;
+	guint offset, max_entries, entry;
+	gsize size;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	if (size < RECORD_SIZE)
 	{
 		g_free (contents);
-		DEBUG(g_print ("playlist '%s' is too short: %d\n", url, size));
+		DEBUG(file, g_print ("playlist '%s' is too short: %d\n", uri, size));
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
@@ -184,7 +169,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 	if (strcmp (contents + FORMAT_ID_OFFSET, "iriver UMS PLA") != 0)
 	{
 		g_free (contents);
-		DEBUG(g_print ("playlist '%s' signature doesn't match: %s\n", url, contents + 4));
+		DEBUG(file, g_print ("playlist '%s' signature doesn't match: %s\n", uri, contents + 4));
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
@@ -195,7 +180,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 		title = contents + TITLE_OFFSET;
 		totem_pl_parser_add_url (parser,
 					 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
-					 TOTEM_PL_PARSER_FIELD_URL, url,
+					 TOTEM_PL_PARSER_FIELD_FILE, file,
 					 TOTEM_PL_PARSER_FIELD_TITLE, title,
 					 NULL);
 	}
@@ -213,7 +198,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 				  NULL, NULL, &error);
 		if (path == NULL)
 		{
-			DEBUG(g_print ("error converting entry %d to UTF-8: %s\n", entry, error->message));
+			DEBUG(NULL, g_print ("error converting entry %d to UTF-8: %s\n", entry, error->message));
 			g_error_free (error);
 			retval = TOTEM_PL_PARSER_RESULT_ERROR;
 			break;
@@ -226,7 +211,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 		uri = g_filename_to_uri (path, NULL, NULL);
 		if (uri == NULL)
 		{
-			DEBUG(g_print ("error converting path %s to URI: %s\n", path, error->message));
+			DEBUG(file, g_print ("error converting path %s to URI: %s\n", path, error->message));
 			g_error_free (error);
 			retval = TOTEM_PL_PARSER_RESULT_ERROR;
 			break;
@@ -246,7 +231,6 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 	g_free (contents);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
-#endif
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

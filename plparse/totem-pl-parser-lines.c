@@ -45,18 +45,24 @@
 #define EXTVLCOPT "#EXTVLCOPT"
 
 static char *
-totem_pl_parser_url_to_dos (const char *url, const char *output)
+totem_pl_parser_url_to_dos (const char *url, GFile *output)
 {
+	GFile *url_file, *parent;
 	char *retval, *i;
 
-	retval = totem_pl_parser_relative (url, output);
+	parent = g_file_get_parent (output);
+	url_file = g_file_new_for_uri (url);
+
+	retval = g_file_get_relative_path (parent, url_file);
+
+	g_object_unref (parent);
+	g_object_unref (url_file);
 
 	if (retval == NULL)
 		retval = g_strdup (url);
 
 	/* Don't change URIs, but change smb:// */
-	if (g_str_has_prefix (retval, "smb://") != FALSE)
-	{
+	if (g_str_has_prefix (retval, "smb://") != FALSE) {
 		char *tmp;
 		tmp = g_strdup (retval + strlen ("smb:"));
 		g_free (retval);
@@ -79,23 +85,18 @@ totem_pl_parser_url_to_dos (const char *url, const char *output)
 
 gboolean
 totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
-			   TotemPlParserIterFunc func, const char *output,
+			   TotemPlParserIterFunc func, GFile *output,
 			   gboolean dos_compatible, gpointer user_data, GError **error)
 {
-	GFile *out;
 	GFileOutputStream *stream;
 	int num_entries_total, i;
 	gboolean success;
 	char *buf;
 	char *cr;
 
-	out = g_file_new_for_commandline_arg (output);
-	stream = g_file_replace (out, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
-	if (stream == NULL) {
-		g_object_unref (out);
+	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
+	if (stream == NULL)
 		return FALSE;
-	}
-	g_object_unref (out);
 
 	cr = dos_compatible ? "\r\n" : "\n";
 	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
@@ -136,8 +137,15 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 		g_free (title);
 
 		if (dos_compatible == FALSE) {
+			GFile *parent, *url_file;
 			char *tmp;
-			tmp = totem_pl_parser_relative (url, output);
+
+			parent = g_file_get_parent (output);
+			url_file = g_file_new_for_uri (url);
+			tmp = g_file_get_relative_path (parent, url_file);
+			g_object_unref (parent);
+			g_object_unref (url_file);
+
 			if (tmp == NULL && g_str_has_prefix (url, "file:")) {
 				path2 = g_filename_from_uri (url, NULL, NULL);
 			} else {
@@ -341,50 +349,26 @@ totem_pl_parser_get_extinfo_title (const char *extinfo)
 	return sep;
 }
 
-static char *
-totem_pl_parser_append_path (const char *base, const char *path)
-{
-#if 0
-	GnomeVFSURI *new, *baseuri;
-	char *fullpath;
-
-	baseuri = gnome_vfs_uri_new (base);
-	if (baseuri == NULL)
-		goto bail;
-	new = gnome_vfs_uri_append_path (baseuri, path);
-	gnome_vfs_uri_unref (baseuri);
-	if (new == NULL)
-		goto bail;
-	fullpath = gnome_vfs_uri_to_string (new, 0);
-	gnome_vfs_uri_unref (new);
-
-	return fullpath;
-
-bail:
-	return g_strdup_printf ("%s/%s", base, path);
-#endif
-}
-
 TotemPlParserResult
 totem_pl_parser_add_m3u (TotemPlParser *parser,
 			 GFile *file,
-			 GFile *_base_file,
+			 GFile *base_file,
 			 gpointer data)
 {
-#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, **lines;
-	int size, i;
+	gsize size;
+	int i;
 	const char *split_char, *extinfo;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	/* .pls files with a .m3u extension, the nasties */
 	if (g_str_has_prefix (contents, "[playlist]") != FALSE
 			|| g_str_has_prefix (contents, "[Playlist]") != FALSE
 			|| g_str_has_prefix (contents, "[PLAYLIST]") != FALSE) {
-		retval = totem_pl_parser_add_pls_with_contents (parser, url, _base, contents);
+		retval = totem_pl_parser_add_pls_with_contents (parser, file, base_file, contents);
 		g_free (contents);
 		return retval;
 	}
@@ -417,23 +401,27 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		/* Either it's a URI, or it has a proper path ... */
 		if (strstr(lines[i], "://") != NULL
 				|| lines[i][0] == G_DIR_SEPARATOR) {
-			if (totem_pl_parser_parse_internal (parser, lines[i], NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+			GFile *url;
+
+			url = g_file_new_for_commandline_arg (lines[i]);
+			if (totem_pl_parser_parse_internal (parser, url, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				totem_pl_parser_add_one_url (parser, lines[i],
 						totem_pl_parser_get_extinfo_title (extinfo));
 			}
+			g_object_unref (url);
 			extinfo = NULL;
 		} else if (g_ascii_isalpha (lines[i][0]) != FALSE
 			   && g_str_has_prefix (lines[i] + 1, ":\\")) {
 			/* Path relative to a drive on Windows, we need to use
 			 * the base that was passed to us */
-			char *fullpath;
+			GFile *url;
 
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
 			/* + 2, skip drive letter */
-			fullpath = totem_pl_parser_append_path (_base, lines[i] + 2);
-			totem_pl_parser_add_one_url (parser, fullpath,
+			url = g_file_get_child (base_file, lines[i] + 2);
+			totem_pl_parser_add_one_file (parser, url,
 						     totem_pl_parser_get_extinfo_title (extinfo));
-			g_free (fullpath);
+			g_object_unref (url);
 			extinfo = NULL;
 		} else if (lines[i][0] == '\\' && lines[i][1] == '\\') {
 			/* ... Or it's in the windows smb form
@@ -452,17 +440,18 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			g_free (tmpurl);
 		} else {
 			/* Try with a base */
-			char *fullpath, *base, sep;
+			GFile *url, *_base_file;
+			char sep;
 
-			base = totem_pl_parser_base_url (url);
+			_base_file = g_file_get_parent (file);
 			sep = (split_char[0] == '\n' ? '/' : '\\');
 			if (sep == '\\')
 				lines[i] = g_strdelimit (lines[i], "\\", '/');
-			fullpath = totem_pl_parser_append_path (base, lines[i]);
-			totem_pl_parser_add_one_url (parser, fullpath,
+			url = g_file_get_child (_base_file, lines[i]);
+			g_object_unref (_base_file);
+			totem_pl_parser_add_one_file (parser, url,
 						     totem_pl_parser_get_extinfo_title (extinfo));
-			g_free (fullpath);
-			g_free (base);
+			g_object_unref (url);
 			extinfo = NULL;
 		}
 	}
@@ -470,7 +459,6 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	g_strfreev (lines);
 
 	return retval;
-#endif
 }
 
 TotemPlParserResult

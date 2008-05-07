@@ -38,7 +38,7 @@
 #ifndef TOTEM_PL_PARSER_MINI
 static TotemPlParserResult
 parse_smil_entry (TotemPlParser *parser,
-		  char *base,
+		  GFile *base_file,
 		  xml_node_t *doc,
 		  xml_node_t *parent,
 		  const char *parent_title)
@@ -71,11 +71,11 @@ parse_smil_entry (TotemPlParser *parser,
 			copyright = xml_parser_get_property (node, "copyright");
 
 			if (url != NULL) {
-				char *fullpath;
+				GFile *resolved;
 
-				fullpath = totem_pl_parser_resolve_url (base, url);
+				resolved = g_file_resolve_relative_path (base_file, url);
 				totem_pl_parser_add_url (parser,
-							 TOTEM_PL_PARSER_FIELD_URL, fullpath,
+							 TOTEM_PL_PARSER_FIELD_FILE, resolved,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title ? title : parent_title,
 							 TOTEM_PL_PARSER_FIELD_ABSTRACT, abstract,
 							 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
@@ -83,12 +83,12 @@ parse_smil_entry (TotemPlParser *parser,
 							 TOTEM_PL_PARSER_FIELD_STARTTIME, clip_begin,
 							 TOTEM_PL_PARSER_FIELD_DURATION, dur,
 							 NULL);
-				g_free (fullpath);
+				g_object_unref (resolved);
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 			}
 		} else {
 			if (parse_smil_entry (parser,
-						base, doc, node, parent_title) != FALSE)
+						base_file, doc, node, parent_title) != FALSE)
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 		}
 	}
@@ -120,7 +120,7 @@ parse_smil_head (TotemPlParser *parser, xml_node_t *doc, xml_node_t *parent)
 }
 
 static TotemPlParserResult
-parse_smil_entries (TotemPlParser *parser, char *base, xml_node_t *doc)
+parse_smil_entries (TotemPlParser *parser, GFile *base_file, xml_node_t *doc)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
 	const char *title;
@@ -133,7 +133,7 @@ parse_smil_entries (TotemPlParser *parser, char *base, xml_node_t *doc)
 			continue;
 
 		if (g_ascii_strcasecmp (node->name, "body") == 0) {
-			if (parse_smil_entry (parser, base,
+			if (parse_smil_entry (parser, base_file,
 					      doc, node, title) != FALSE) {
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 			}
@@ -148,10 +148,9 @@ parse_smil_entries (TotemPlParser *parser, char *base, xml_node_t *doc)
 
 static TotemPlParserResult
 totem_pl_parser_add_smil_with_doc (TotemPlParser *parser, GFile *file,
-				   GFile *_base_file, xml_node_t *doc)
+				   GFile *base_file, xml_node_t *doc)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
-	char *base;
 
 	/* If the document has no root, or no name */
 	if(doc->name == NULL
@@ -159,11 +158,7 @@ totem_pl_parser_add_smil_with_doc (TotemPlParser *parser, GFile *file,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
-	base = totem_pl_parser_base_url (file);
-
-	retval = parse_smil_entries (parser, base, doc);
-
-	g_free (base);
+	retval = parse_smil_entries (parser, base_file, doc);
 
 	return retval;
 }

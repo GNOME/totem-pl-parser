@@ -887,25 +887,31 @@ totem_pl_parser_write_with_title (TotemPlParser *parser, GtkTreeModel *model,
 				  TotemPlParserType type,
 				  gpointer user_data, GError **error)
 {
+	GFile *file;
+
+	file = g_file_new_for_commandline_arg (output);
+
 	switch (type)
 	{
 	case TOTEM_PL_PARSER_PLS:
 		return totem_pl_parser_write_pls (parser, model, func,
-				output, title, user_data, error);
+				file, title, user_data, error);
 	case TOTEM_PL_PARSER_M3U:
 	case TOTEM_PL_PARSER_M3U_DOS:
 		return totem_pl_parser_write_m3u (parser, model, func,
-				output, (type == TOTEM_PL_PARSER_M3U_DOS),
+				file, (type == TOTEM_PL_PARSER_M3U_DOS),
                                 user_data, error);
 	case TOTEM_PL_PARSER_XSPF:
 		return totem_pl_parser_write_xspf (parser, model, func,
-				output, title, user_data, error);
+				file, title, user_data, error);
 	case TOTEM_PL_PARSER_IRIVER_PLA:
 		return totem_pl_parser_write_pla (parser, model, func,
-				output, title, user_data, error);
+				file, title, user_data, error);
 	default:
 		g_assert_not_reached ();
 	}
+
+	g_object_unref (file);
 
 	return FALSE;
 }
@@ -1133,6 +1139,21 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 			g_value_unset (&value);
 			name = va_arg (var_args, char*);
 			continue;
+		} else if (strcmp (name, TOTEM_PL_PARSER_FIELD_BASE_FILE) == 0) {
+			GFile *file;
+			char *base_url;
+
+			file = g_value_get_object (&value);
+			base_url = g_file_get_uri (file);
+			g_object_unref (file);
+
+			g_hash_table_insert (metadata,
+					     g_strdup (TOTEM_PL_PARSER_FIELD_BASE),
+					     base_url);
+
+			g_value_unset (&value);
+			name = va_arg (var_args, char*);
+			continue;
 		} else if (strcmp (name, TOTEM_PL_PARSER_FIELD_IS_PLAYLIST) == 0) {
 			is_playlist = g_value_get_boolean (&value);
 			g_value_unset (&value);
@@ -1239,120 +1260,6 @@ totem_pl_parser_add_one_file (TotemPlParser *parser, GFile *file, const char *ti
 				 TOTEM_PL_PARSER_FIELD_FILE, file,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
 				 NULL);
-}
-
-static char *
-totem_pl_parser_remove_filename (const char *url)
-{
-	char *no_frag, *no_file, *no_qmark, *qmark, *fragment;
-	GFile *file;
-
-	/* Remove fragment */
-	fragment = strchr (url, '#');
-	if (fragment != NULL)
-		no_frag = g_strndup (url, fragment - url);
-	else
-		no_frag = g_strdup (url);
-
-	/* Remove parameters */
-	qmark = strrchr (no_frag, '?');
-	if (qmark != NULL)
-		no_qmark = g_strndup (no_frag, qmark - no_frag);
-	else
-		no_qmark = g_strdup (no_frag);
-
-	/* Remove the filename */
-	file = g_file_new_for_uri (no_qmark);
-	no_file = totem_pl_parser_base_url (file);
-	g_object_unref (file);
-
-	g_free (no_qmark);
-	g_free (no_frag);
-
-	return no_file;
-}
-
-static gboolean
-totem_pl_parser_might_be_file (const char *url)
-{
-	char *content_type;
-
-	content_type = g_content_type_guess (url, NULL, 0, NULL);
-	g_message ("content type %s", content_type);
-	//FIXME leak
-	if (content_type == NULL || strcmp (content_type, UNKNOWN_TYPE) == 0)
-		return FALSE;
-	return TRUE;
-}
-
-/**
- * totem_pl_parser_resolve_url:
- * @base: a base path and filename
- * @url: a URI
- *
- * Returns the absolute URI of @url, resolving any relative
- * paths with respect to @base.
- *
- * <emphasis>See totem_pl_parser_relative() to convert from absolute URLs
- * to relative URLs.</emphasis>
- *
- * Return value: a newly-allocated resolved URL
- **/
-char *
-totem_pl_parser_resolve_url (const char *base, const char *url)
-{
-	//char *resolved, *base_no_frag;
-	char *base_no_frag;
-	GFile *file, *rel;
-
-	g_return_val_if_fail (url != NULL, NULL);
-	g_return_val_if_fail (base != NULL, g_strdup (url));
-
-	/* If the URI isn't relative, just leave */
-	if (strstr (url, "://") != NULL)
-		return g_strdup (url);
-
-	/* Strip fragment and filename */
-	base_no_frag = totem_pl_parser_remove_filename (base);
-	g_message ("base no frag: %s", base_no_frag);
-
-	file = g_file_new_for_uri (base_no_frag);
-	g_free (base_no_frag);
-	rel = g_file_resolve_relative_path (file, url);
-
-	return g_file_get_uri (rel);
-#if 0
-	/* gnome_vfs_uri_append_path is trying to be clever and
-	 * merges paths that look like they're the same */
-	if (totem_pl_parser_might_be_file (base) != FALSE) {
-		GnomeVFSURI *new;
-		
-		new = gnome_vfs_uri_new (base_no_frag);
-		base_uri = gnome_vfs_uri_get_parent (new);
-		gnome_vfs_uri_unref (new);
-	} else if (url[0] != '/') {
-		char *newbase = g_strdup_printf ("%s/", base_no_frag);
-		base_uri = gnome_vfs_uri_new (newbase);
-		g_free (newbase);
-	} else {
-		base_uri = gnome_vfs_uri_new (base_no_frag);
-	}
-	g_free (base_no_frag);
-
-	g_return_val_if_fail (base_uri != NULL, g_strdup (url));
-
-	if (url[0] == '/')
-		new = gnome_vfs_uri_resolve_symbolic_link (base_uri, url);
-	else
-		new = gnome_vfs_uri_append_path (base_uri, url);
-
-	g_return_val_if_fail (new != NULL, g_strdup (url));
-	gnome_vfs_uri_unref (base_uri);
-	resolved = gnome_vfs_uri_to_string (new, GNOME_VFS_URI_HIDE_NONE);
-	gnome_vfs_uri_unref (new);
-
-	return resolved;
-#endif
 }
 
 static PlaylistTypes ignore_types[] = {

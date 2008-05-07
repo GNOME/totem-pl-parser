@@ -38,7 +38,7 @@ const char * totem_pl_parser_is_uri_list (const char *data, gsize len);
 gboolean totem_pl_parser_write_m3u (TotemPlParser *parser,
 				    GtkTreeModel *model,
 				    TotemPlParserIterFunc func,
-				    const char *output,
+				    GFile *output,
 				    gboolean dos_compatible,
 				    gpointer user_data,
 				    GError **error);

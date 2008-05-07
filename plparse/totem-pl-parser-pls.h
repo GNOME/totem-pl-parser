@@ -34,7 +34,7 @@ G_BEGIN_DECLS
 gboolean totem_pl_parser_write_pls				(TotemPlParser *parser,
 								 GtkTreeModel *model,
 								 TotemPlParserIterFunc func, 
-								 const char *output,
+								 GFile *file,
 								 const char *title,
 								 gpointer user_data,
 								 GError **error);
