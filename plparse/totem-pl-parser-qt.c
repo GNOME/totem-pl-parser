@@ -28,7 +28,6 @@
 #ifndef TOTEM_PL_PARSER_MINI
 #include "xmlparser.h"
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -73,14 +72,13 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 					GFile *base_file,
 					gpointer data)
 {
-#if 0
 	char *contents = NULL;
 	gboolean dos_mode = FALSE;
 	char *volume, *autoplay, *rtspurl;
-	int size;
+	gsize size;
 	char **lines;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	if (strstr(contents,"\x0d") != NULL)
@@ -109,7 +107,7 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 	g_free (volume);
 	g_free (autoplay);
 	g_strfreev (lines);
-#endif
+
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
@@ -118,34 +116,33 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 					GFile *file,
 					GFile *base_file, gpointer data)
 {
-#if 0
 	xml_node_t *doc, *node;
-	int size;
+	gsize size;
 	char *contents;
 	const char *item_url, *autoplay;
 	gboolean found;
 
 	if (g_str_has_prefix (data, "RTSPtext") != FALSE
 			|| g_str_has_prefix (data, "rtsptext") != FALSE) {
-		return totem_pl_parser_add_quicktime_rtsptext (parser, url, base, data);
+		return totem_pl_parser_add_quicktime_rtsptext (parser, file, base_file, data);
 	}
 	if (g_str_has_prefix (data, "SMILtext") != FALSE) {
 		char *contents;
-		int size;
+		gsize size;
 		TotemPlParserResult retval;
 
-		if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+		if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 			return TOTEM_PL_PARSER_RESULT_ERROR;
 
 		retval = totem_pl_parser_add_smil_with_data (parser,
-							     url, base,
+							     file, base_file,
 							     contents + strlen ("SMILtext"),
 							     size - strlen ("SMILtext"));
 		g_free (contents);
 		return retval;
 	}
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
@@ -196,7 +193,7 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 				 TOTEM_PL_PARSER_FIELD_AUTOPLAY, autoplay,
 				 NULL);
 	xml_parser_free_tree (doc);
-#endif
+
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
@@ -206,12 +203,15 @@ totem_pl_parser_add_quicktime (TotemPlParser *parser,
 			       GFile *base_file,
 			       gpointer data)
 {
-#if 0
 	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == NULL) {
+		char *url;
+
+		url = g_file_get_uri (file);
 		totem_pl_parser_add_one_url (parser, url, NULL);
+		g_free (url);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
-#endif
+
 	return totem_pl_parser_add_quicktime_metalink (parser, file, base_file, data);
 }
 

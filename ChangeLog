@@ -1,5 +1,12 @@
 2008-05-07  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-qt.c
+	(totem_pl_parser_add_quicktime_rtsptext),
+	(totem_pl_parser_add_quicktime_metalink),
+	(totem_pl_parser_add_quicktime): Port the Quicktime parsers to GIO
+
+2008-05-07  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-podcast.c: Remove unused includes
 
 2008-05-07  Bastien Nocera  <hadess@hadess.net>
