@@ -239,12 +239,11 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 			 GFile *base_file,
 			 gpointer data)
 {
-#if 0
 	xml_node_t* doc, *channel;
 	char *contents;
-	int size;
+	gsize size;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
@@ -264,7 +263,12 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 
 	for (channel = doc->child; channel != NULL; channel = channel->next) {
 		if (g_ascii_strcasecmp (channel->name, "channel") == 0) {
+			char *url;
+
+			url = g_file_get_uri (file);
 			parse_rss_items (parser, url, channel);
+			g_free (url);
+
 			/* One channel per file */
 			break;
 		}
@@ -272,7 +276,7 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
-#endif
+
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
@@ -283,17 +287,20 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
-#if 0
 	TotemPlParserResult ret;
 	char *new_url;
+	GFile *new_file;
 
-	new_url = g_strdup (url);
+	new_url = g_file_get_uri (file);
 	memcpy (new_url, "http", 4);
-	ret = totem_pl_parser_add_rss (parser, new_url, base, data);
+	new_file = g_file_new_for_uri (new_url);
 	g_free (new_url);
 
+	ret = totem_pl_parser_add_rss (parser, new_file, base_file, data);
+
+	g_object_unref (new_file);
+
 	return ret;
-#endif
 }
 
 /* Atom docs:
@@ -432,12 +439,11 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
-#if 0
 	xml_node_t* doc;
-	char *contents;
-	int size;
+	char *contents, *url;
+	gsize size;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
@@ -453,11 +459,13 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
+	url = g_file_get_uri (file);
 	parse_atom_entries (parser, url, doc);
+	g_free (url);
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
-#endif
+
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 
@@ -592,12 +600,12 @@ totem_pl_parser_parse_itms_doc (xml_node_t *item)
 	return NULL;
 }
 
-static char *
+static GFile *
 totem_pl_parser_get_feed_url (const char *data, gsize len)
 {
 	xml_node_t* doc;
 	const char *url;
-	char *ret;
+	GFile *ret;
 
 	url = NULL;
 
@@ -618,7 +626,7 @@ totem_pl_parser_get_feed_url (const char *data, gsize len)
 		return NULL;
 	}
 
-	ret = g_strdup (url);
+	ret = g_file_new_for_uri (url);
 	xml_parser_free_tree (doc);
 
 	return ret;
@@ -652,14 +660,14 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
-#if 0
-	char *contents, *uncompressed, *itms_url, *feed_url;
+	char *contents, *uncompressed, *itms_url;
+	GFile *itms_file, *feed_url;
 	TotemPlParserResult ret;
-	int size;
+	gsize size;
 
-	if (g_str_has_prefix (url, "itms") == FALSE) {
+	if (g_file_has_uri_scheme (file, "itms") == FALSE) {
 		/* Get the webpage */
-		if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+		if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 			return TOTEM_PL_PARSER_RESULT_ERROR;
 
 		uncompressed = decompress_gzip (contents, size);
@@ -671,16 +679,19 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 		itms_url = totem_pl_parser_get_itms_url (uncompressed);
 		g_free (uncompressed);
 	} else {
-		itms_url= g_strdup (url);
+		itms_url= g_file_get_uri (file);
 		memcpy (itms_url, "http", 4);
 	}
 
 	/* Get the phobos linked, in some weird iTunes only format */
-	if (gnome_vfs_read_entire_file (itms_url, &size, &contents) != GNOME_VFS_OK) {
-		g_free (itms_url);
+	itms_file = g_file_new_for_uri (itms_url);
+	g_free (itms_url);
+
+	if (g_file_load_contents (itms_file, NULL, &contents, &size, NULL, NULL) == FALSE) {
+		g_object_unref (itms_file);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
-	g_free (itms_url);
+	g_object_unref (itms_file);
 
 	uncompressed = decompress_gzip (contents, size);
 	g_free (contents);
@@ -693,10 +704,9 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	ret = totem_pl_parser_add_rss (parser, feed_url, NULL, NULL);
-	g_free (feed_url);
+	g_object_unref (feed_url);
 
 	return ret;
-#endif
 }
 
 gboolean
@@ -779,12 +789,11 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
-#if 0
 	xml_node_t* doc;
-	char *contents;
-	int size;
+	char *contents, *url;
+	gsize size;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
@@ -800,11 +809,13 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
+	url = g_file_get_uri (file);
 	parse_opml_head_body (parser, url, doc);
+	g_free (url);
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
-#endif
+
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 

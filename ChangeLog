@@ -1,3 +1,11 @@
+2008-05-07  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-media.c: Remove unused gnome-vfs include
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss),
+	(totem_pl_parser_add_itpc), (totem_pl_parser_add_atom),
+	(totem_pl_parser_get_feed_url), (totem_pl_parser_add_itms),
+	(totem_pl_parser_add_opml): Port Podcast parsing to GIO
+
 2008-05-06  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/xmllexer.c (lexer_get_token): Update from xine-lib 1.2

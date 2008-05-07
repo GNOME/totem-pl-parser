@@ -26,7 +26,6 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #include "totem-disc.h"
