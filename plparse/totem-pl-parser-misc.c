@@ -24,13 +24,9 @@
 
 #include <string.h>
 #include <glib.h>
-#include <libgnomevfs/gnome-vfs-mime-utils.h>
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
-#include <libgnomevfs/gnome-vfs-mime.h>
-#include <libgnomevfs/gnome-vfs-utils.h>
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #include "totem-disc.h"
@@ -43,16 +39,15 @@
 #ifndef TOTEM_PL_PARSER_MINI
 TotemPlParserResult
 totem_pl_parser_add_gvp (TotemPlParser *parser,
-			 GFile *url,
+			 GFile *file,
 			 GFile *base_file,
 			 gpointer data)
 {
-#if 0
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, **lines, *title, *link, *version;
-	int size;
+	gsize size;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	if (g_str_has_prefix (contents, "#.download.the.free.Google.Video.Player") == FALSE && g_str_has_prefix (contents, "# download the free Google Video Player") == FALSE) {
@@ -89,7 +84,6 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 	g_strfreev (lines);
 
 	return retval;
-#endif
 }
 
 TotemPlParserResult
@@ -98,13 +92,13 @@ totem_pl_parser_add_desktop (TotemPlParser *parser,
 			     GFile *base_file,
 			     gpointer data)
 {
-#if 0
 	char *contents, **lines;
 	const char *path, *display_name, *type;
-	int size;
+	GFile *target;
+	gsize size;
 	TotemPlParserResult res = TOTEM_PL_PARSER_RESULT_ERROR;
 
-	if (gnome_vfs_read_entire_file (url, &size, &contents) != GNOME_VFS_OK)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return res;
 
 	lines = g_strsplit (contents, "\n", 0);
@@ -122,15 +116,16 @@ totem_pl_parser_add_desktop (TotemPlParser *parser,
 	path = totem_pl_parser_read_ini_line_string (lines, "URL", FALSE);
 	if (path == NULL)
 		goto bail;
+	target = g_file_new_for_uri (path);
 
 	display_name = totem_pl_parser_read_ini_line_string (lines, "Name", FALSE);
 
 	if (totem_pl_parser_ignore (parser, path) == FALSE
 	    && g_ascii_strcasecmp (type, "FSDevice") != 0) {
-		totem_pl_parser_add_one_url (parser, path, display_name);
+		totem_pl_parser_add_one_file (parser, target, display_name);
 	} else {
-		if (totem_pl_parser_parse_internal (parser, path, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS)
-			totem_pl_parser_add_one_url (parser, path, display_name);
+		if (totem_pl_parser_parse_internal (parser, target, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS)
+			totem_pl_parser_add_one_file (parser, target, display_name);
 	}
 
 	res = TOTEM_PL_PARSER_RESULT_SUCCESS;
@@ -139,7 +134,6 @@ bail:
 	g_strfreev (lines);
 
 	return res;
-#endif
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

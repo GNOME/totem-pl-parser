@@ -1,5 +1,10 @@
 2008-05-07  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-misc.c (totem_pl_parser_add_gvp),
+	(totem_pl_parser_add_desktop): Port the left-over parsers to GIO
+
+2008-05-07  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-wm.c
 	(totem_pl_parser_add_asf_reference_parser),
 	(totem_pl_parser_add_asf_parser), (parse_asx_entry),
