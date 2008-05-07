@@ -1,5 +1,9 @@
 2008-05-07  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/plparser.symbols: Fix build
+
+2008-05-07  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/plparser.symbols:
 	* plparse/test-parser.c (main):
 	* plparse/totem-pl-parser-lines.c (totem_pl_parser_url_to_dos),
