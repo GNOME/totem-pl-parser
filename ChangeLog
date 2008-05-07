@@ -1,5 +1,9 @@
 2008-05-07  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-podcast.c: Remove unused includes
+
+2008-05-07  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-media.c: Remove unused gnome-vfs include
 	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss),
 	(totem_pl_parser_add_itpc), (totem_pl_parser_add_atom),
