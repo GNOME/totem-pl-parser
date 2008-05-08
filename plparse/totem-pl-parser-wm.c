@@ -260,7 +260,10 @@ parse_asx_entry (TotemPlParser *parser, GFile *base_file, xml_node_t *parent)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 
-	resolved = g_file_resolve_relative_path (base_file, url);
+	if (base_file != NULL)
+		resolved = g_file_resolve_relative_path (base_file, url);
+	else
+		resolved = g_file_new_for_uri (url);
 
 	/* .asx files can contain references to other .asx files */
 	retval = totem_pl_parser_parse_internal (parser, resolved, NULL);
@@ -295,7 +298,10 @@ parse_asx_entryref (TotemPlParser *parser, GFile *base_file, xml_node_t *node)
 	if (url == NULL)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	resolved = g_file_resolve_relative_path (base_file, url);
+	if (base_file != NULL)
+		resolved = g_file_resolve_relative_path (base_file, url);
+	else
+		resolved = g_file_new_for_uri (url);
 
 	/* .asx files can contain references to other .asx files */
 	retval = totem_pl_parser_parse_internal (parser, resolved, NULL);

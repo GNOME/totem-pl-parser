@@ -647,7 +647,8 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 			g_object_unref (info);
 			return g_strdup (BLOCK_DEVICE_TYPE);
 		}
-		g_object_unref (info);
+		if (info != NULL)
+			g_object_unref (info);
 	}
 
 	/* Open the file. */
@@ -1115,7 +1116,6 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 
 			file = g_value_get_object (&value);
 			url = g_file_get_uri (file);
-			g_object_unref (file);
 
 			g_value_unset (&value);
 			name = va_arg (var_args, char*);
@@ -1126,7 +1126,6 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 
 			file = g_value_get_object (&value);
 			base_url = g_file_get_uri (file);
-			g_object_unref (file);
 
 			g_hash_table_insert (metadata,
 					     g_strdup (TOTEM_PL_PARSER_FIELD_BASE),
@@ -1358,6 +1357,9 @@ static gboolean
 totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetype)
 {
 	guint i;
+
+	if (mimetype == NULL)
+		return FALSE;
 
 	for (i = 0; i < G_N_ELEMENTS (ignore_types); i++) {
 		if (g_content_type_is_a (mimetype, ignore_types[i].mimetype) != FALSE)

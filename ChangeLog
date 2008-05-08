@@ -1,5 +1,30 @@
 2008-05-08  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss):
+	Remove debug
+
+	* plparse/totem-pl-parser-smil.c (parse_smil_entry):
+	* plparse/totem-pl-parser-xspf.c (parse_xspf_track):
+	* plparse/totem-pl-parser-wm.c (parse_asx_entry),
+	(parse_asx_entryref): Fix use of g_file_resolve_relative_path
+	when there's no base_file
+
+	* plparse/totem-pl-parser.c
+	(my_g_file_info_get_mime_type_with_data),
+	(totem_pl_parser_add_url_valist),
+	(totem_pl_parser_ignore_from_mimetype):
+	Only unref the info we get from the file if there's actually info
+	(ie. don't warn on non-existant files)
+
+	Don't unref file and base_file in _add_url_valist, as those
+	aren't ref'ed for us
+
+	Don't ignore files for which we can't get a mime-type
+
+	Fixes warning running the test-parser test-suite
+
+2008-05-08  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-pls.c
 	(totem_pl_parser_add_pls_with_contents):
 	Fix usage of totem_pl_parser_base_url(), and remove last use
