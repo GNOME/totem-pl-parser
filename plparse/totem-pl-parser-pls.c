@@ -121,10 +121,11 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 TotemPlParserResult
 totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 				       GFile *file,
-				       GFile *base_file,
+				       GFile *_base_file,
 				       const char *contents)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
+	GFile *base_file;
 	char **lines;
 	int i, num_entries;
 	char *split_char, *playlist_title;
@@ -183,10 +184,16 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 			goto bail;
 	}
 
+	/* Base? */
+	if (_base_file == NULL)
+		base_file = g_file_get_parent (file);
+	else
+		base_file = g_object_ref (_base_file);
+
 	retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 
 	for (i = 1; i <= num_entries; i++) {
-		char *file, *title, *genre, *length;
+		char *file_str, *title, *genre, *length;
 		char *file_key, *title_key, *genre_key, *length_key;
 		gint64 length_num;
 
@@ -197,7 +204,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		/* Genre is our own little extension */
 		genre_key = g_strdup_printf ("genre%d", i);
 
-		file = totem_pl_parser_read_ini_line_string (lines, (const char*)file_key, dos_mode);
+		file_str = totem_pl_parser_read_ini_line_string (lines, (const char*)file_key, dos_mode);
 		title = totem_pl_parser_read_ini_line_string (lines, (const char*)title_key, dos_mode);
 		genre = totem_pl_parser_read_ini_line_string (lines, (const char*)genre_key, dos_mode);
 		length = totem_pl_parser_read_ini_line_string (lines, (const char*)length_key, dos_mode);
@@ -207,8 +214,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		g_free (genre_key);
 		g_free (length_key);
 
-		if (file == NULL)
-		{
+		if (file_str == NULL) {
 			g_free (title);
 			g_free (genre);
 			g_free (length);
@@ -224,41 +230,39 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		if (length != NULL)
 			length_num = totem_pl_parser_parse_duration (length, parser->priv->debug);
 
-		if (strstr (file, "://") != NULL || file[0] == G_DIR_SEPARATOR) {
-			if (length_num < 0 || totem_pl_parser_parse_internal (parser, file, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+		if (strstr (file_str, "://") != NULL || file_str[0] == G_DIR_SEPARATOR) {
+			GFile *target;
+
+			target = g_file_new_for_commandline_arg (file_str);
+			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				totem_pl_parser_add_url (parser,
-							 TOTEM_PL_PARSER_FIELD_URL, file,
+							 TOTEM_PL_PARSER_FIELD_URL, file_str,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
 							 TOTEM_PL_PARSER_FIELD_GENRE, genre,
 							 TOTEM_PL_PARSER_FIELD_DURATION, length,
 							 TOTEM_PL_PARSER_FIELD_BASE_FILE, base_file, NULL);
 			}
+			g_object_unref (target);
 		} else {
-			char *base;
+			GFile *target;
 
-			/* Try with a base */
-			base = totem_pl_parser_base_url (file);
+			target = g_file_get_child_for_display_name (base_file, file_str, NULL);
 
-			if (length_num < 0 || totem_pl_parser_parse_internal (parser, file, base) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
-				char *escaped, *uri;
+			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, base_file) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 
-				escaped = gnome_vfs_escape_path_string (file);
-				uri = g_strdup_printf ("%s/%s", base, escaped);
-				g_free (escaped);
 				totem_pl_parser_add_url (parser,
-							 TOTEM_PL_PARSER_FIELD_URL, uri,
+							 TOTEM_PL_PARSER_FIELD_FILE, target,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
 							 TOTEM_PL_PARSER_FIELD_GENRE, genre,
 							 TOTEM_PL_PARSER_FIELD_DURATION, length,
-							 TOTEM_PL_PARSER_FIELD_BASE, base, NULL);
-				g_free (uri);
+							 TOTEM_PL_PARSER_FIELD_BASE_FILE, base_file, NULL);
 			}
 
-			g_free (base);
+			g_object_unref (target);
 		}
 
 		parser->priv->fallback = fallback;
-		g_free (file);
+		g_free (file_str);
 		g_free (title);
 		g_free (genre);
 		g_free (length);
@@ -266,6 +270,8 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 
 	if (playlist_title != NULL)
 		totem_pl_parser_playlist_end (parser, playlist_title);
+
+	g_object_unref (base_file);
 
 bail:
 	g_free (playlist_title);

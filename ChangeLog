@@ -1,5 +1,16 @@
 2008-05-08  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-pls.c
+	(totem_pl_parser_add_pls_with_contents):
+	Fix usage of totem_pl_parser_base_url(), and remove last use
+	of gnome-vfs
+
+	* configure.in: Remove gnome-vfs dependency (Closes: #512581)
+
+	Still a lot of bugs, but we're starting again
+
+2008-05-08  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-pla.c (totem_pl_parser_add_pla):
 	Remove unneeded include, fix warning
 
