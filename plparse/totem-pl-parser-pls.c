@@ -27,7 +27,6 @@
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -85,16 +84,14 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 
 		func (model, &iter, &url, &title, &custom_title, user_data);
 
-		if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE)
-		{
+		if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE) {
 			g_free (url);
 			g_free (title);
 			continue;
 		}
 
-		relative = totem_pl_parser_relative (url, output);
-		buf = g_strdup_printf ("File%d=%s\n", i,
-				relative ? relative : url);
+		relative = totem_pl_parser_relative (output, url);
+		buf = g_strdup_printf ("File%d=%s\n", i, relative ? relative : url);
 		g_free (relative);
 		g_free (url);
 		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);

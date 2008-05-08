@@ -40,9 +40,13 @@ header (const char *message)
 static void
 test_relative_real (const char *url, const char *output, const char *expected)
 {
+	GFile *output_file;
 	char *base;
 
-	base = totem_pl_parser_relative (url, output);
+	output_file = g_file_new_for_commandline_arg (output);
+	base = totem_pl_parser_relative (output_file, url);
+	g_object_unref (output_file);
+
 	if (base == NULL && expected == NULL) {
 		g_print ("Relative: '%s' with output '%s' has no relative path\n",
 			 url, output);

@@ -822,38 +822,19 @@ totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
 	return num_entries - ignored;
 }
 
-/**
- * totem_pl_parser_relative:
- * @url: a URI
- * @output: a base path and filename
- *
- * Returns the URI of @url relative to @output if possible, and %NULL
- * if not.
- *
- * <emphasis>See totem_pl_parser_resolve_url() to convert from relative URLs
- * to absolute URLs.</emphasis>
- *
- * Return value: a newly-allocated relative URI string, or %NULL
- **/
 char *
-totem_pl_parser_relative (const char *url, const char *output)
+totem_pl_parser_relative (GFile *output, const char *filepath)
 {
-	GFile *parent, *descendant, *out_file;
+	GFile *parent, *file;
 	char *retval;
 
-	out_file = g_file_new_for_commandline_arg (output);
-	parent = g_file_get_parent (out_file);
-	if (parent == NULL) {
-		g_object_unref (out_file);
-		return NULL;
-	}
-	g_object_unref (out_file);
-	descendant = g_file_new_for_commandline_arg (url);
+	parent = g_file_get_parent (output);
+	file = g_file_new_for_commandline_arg (filepath);
 
-	retval = g_file_get_relative_path (parent, descendant);
+	retval = g_file_get_relative_path (parent, file);
 
 	g_object_unref (parent);
-	g_object_unref (descendant);
+	g_object_unref (file);
 
 	return retval;
 }
@@ -1373,11 +1354,9 @@ totem_pl_parser_ignore (TotemPlParser *parser, const char *url)
 	return TRUE;
 }
 
-//FIXME this probably doesn't work on Windows
 static gboolean
 totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetype)
 {
-//	char *super;
 	guint i;
 
 	for (i = 0; i < G_N_ELEMENTS (ignore_types); i++) {
@@ -1388,28 +1367,6 @@ totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetyp
 	}
 
 	return FALSE;
-#if 0
-	super = gnome_vfs_get_supertype_from_mime_type (mimetype);
-	for (i = 0; i < G_N_ELEMENTS (ignore_types) && super != NULL; i++) {
-		if (gnome_vfs_mime_type_is_supertype (ignore_types[i].mimetype) != FALSE) {
-			if (strcmp (super, ignore_types[i].mimetype) == 0) {
-				g_free (super);
-				return TRUE;
-			}
-		} else {
-			GnomeVFSMimeEquivalence eq;
-
-			eq = gnome_vfs_mime_type_get_equivalence (mimetype, ignore_types[i].mimetype);
-			if (eq == GNOME_VFS_MIME_PARENT || eq == GNOME_VFS_MIME_IDENTICAL) {
-				g_free (super);
-				return TRUE;
-			}
-		}
-	}
-	g_free (super);
-
-	return FALSE;
-#endif
 }
 
 TotemPlParserResult

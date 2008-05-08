@@ -107,8 +107,8 @@ gboolean totem_pl_parser_write_buffer		(GOutputStream *stream,
 						 const char *buf,
 						 guint size,
 						 GError **error);
-char * totem_pl_parser_relative			(const char *url,
-						 const char *output);
+char * totem_pl_parser_relative			(GFile *output,
+						 const char *filepath);
 TotemPlParserResult totem_pl_parser_parse_internal (TotemPlParser *parser,
 						    GFile *file,
 						    GFile *base_file);

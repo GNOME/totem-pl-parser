@@ -26,7 +26,6 @@
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -160,7 +159,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 	if (size < RECORD_SIZE)
 	{
 		g_free (contents);
-		DEBUG(file, g_print ("playlist '%s' is too short: %d\n", uri, size));
+		DEBUG(file, g_print ("playlist '%s' is too short: %d\n", uri, (unsigned int) size));
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 

@@ -47,16 +47,10 @@
 static char *
 totem_pl_parser_url_to_dos (const char *url, GFile *output)
 {
-	GFile *url_file, *parent;
 	char *retval, *i;
 
-	parent = g_file_get_parent (output);
-	url_file = g_file_new_for_uri (url);
-
-	retval = g_file_get_relative_path (parent, url_file);
-
-	g_object_unref (parent);
-	g_object_unref (url_file);
+	/* Get a relative URL if there is one */
+	retval = totem_pl_parser_relative (output, url);
 
 	if (retval == NULL)
 		retval = g_strdup (url);
@@ -137,14 +131,9 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 		g_free (title);
 
 		if (dos_compatible == FALSE) {
-			GFile *parent, *url_file;
 			char *tmp;
 
-			parent = g_file_get_parent (output);
-			url_file = g_file_new_for_uri (url);
-			tmp = g_file_get_relative_path (parent, url_file);
-			g_object_unref (parent);
-			g_object_unref (url_file);
+			tmp = totem_pl_parser_relative (output, url);
 
 			if (tmp == NULL && g_str_has_prefix (url, "file:")) {
 				path2 = g_filename_from_uri (url, NULL, NULL);

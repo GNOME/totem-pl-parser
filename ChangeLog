@@ -1,3 +1,24 @@
+2008-05-08  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-pla.c (totem_pl_parser_add_pla):
+	Remove unneeded include, fix warning
+
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser.c (totem_pl_parser_relative),
+	(totem_pl_parser_ignore_from_mimetype):
+	Update totem_pl_parser_relative() to take in a GFile as the output
+	target, and simplify
+	Remove old code in totem_pl_parser_ignore_from_mimetype()
+
+	* plparse/test-parser.c (test_relative_real):
+	Fix usage of totem_pl_parser_relative()
+
+	* plparse/totem-pl-parser-lines.c (totem_pl_parser_url_to_dos),
+	(totem_pl_parser_write_m3u):
+	* plparse/totem-pl-parser-pls.c (totem_pl_parser_write_pls):
+	* plparse/totem-pl-parser-xspf.c (totem_pl_parser_write_xspf):
+	Use totem_pl_parser_relative() where needed, and fix usage
+
 2008-05-07  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/plparser.symbols: Fix build

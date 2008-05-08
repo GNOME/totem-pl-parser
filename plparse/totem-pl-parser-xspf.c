@@ -29,7 +29,6 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <gtk/gtk.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -117,7 +116,7 @@ totem_pl_parser_write_xspf (TotemPlParser *parser, GtkTreeModel *model,
 			continue;
 		}
 
-		relative = totem_pl_parser_relative (url, output);
+		relative = totem_pl_parser_relative (output, url);
 		url_escaped = g_markup_escape_text (relative ? relative : url, -1);
 		buf = g_strdup_printf ("  <track>\n"
 					"   <location>%s</location>\n", url_escaped);
