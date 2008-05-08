@@ -1,5 +1,9 @@
 2008-05-08  Bastien Nocera  <hadess@hadess.net>
 
+	* configure.in: Up the soname and the version
+
+2008-05-08  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss):
 	Remove debug
 
