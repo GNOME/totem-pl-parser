@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+2.22.3:
+* Fix the playlist parser trying to parse RCS files
+* Fix parsing of file that appear to be DOS text files but are Podcasts
+* Fix linefeeds appearing in titles
+
 2.22.2:
 * Add support for feed:// URLs as used by Firefox 3
 * Work-around for feeds with a linefeed straight after "<rss"
