@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.23.1:
+* Port to GIO/GVFS, and remove gnome-vfs dependency
+* Fix handling of XML-ish files with linefeeds after the document head
+* Add support for parsing remote DVDs (ISOs and directories)
+* Check mime-type by hand when we get application/octect-stream as a mime-type
+* Remove trailing linefeeds from titles
+
 2.22.0:
 * Sort filenames like nautilus does when adding directories
 

@@ -1,3 +1,10 @@
+============ Version 2.23.1
+
+2008-05-09  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.23.1
+
 2008-05-09  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_is_rss):
