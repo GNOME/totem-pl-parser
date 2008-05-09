@@ -1,6 +1,8 @@
-2008-05-08  Bastien Nocera  <hadess@hadess.net>
+2008-05-09  Bastien Nocera  <hadess@hadess.net>
 
-	* configure.in: Up the soname and the version
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_is_rss):
+	Re-add detection of linefeeds after "<rss" otherwise the spanish
+	lesson feed doesn't work anymore
 
 2008-05-08  Bastien Nocera  <hadess@hadess.net>
 
