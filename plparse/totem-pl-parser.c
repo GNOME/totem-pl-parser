@@ -754,7 +754,7 @@ totem_pl_parser_write_string (GOutputStream *stream, const char *buf, GError **e
 
 /**
  * totem_pl_parser_write_buffer:
- * @handle: a #GnomeVFSHandle to an open file
+ * @stream: a #GFileOutputStream to an open file
  * @buf: the string buffer to write out
  * @len: the length of the string to write out
  * @error: return location for a #GError, or %NULL

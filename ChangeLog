@@ -1,3 +1,14 @@
+2008-05-21  Bastien Nocera  <hadess@hadess.net>
+
+	* configure.in:
+	* plparse/totem-pl-parser.c:
+	* totem-plparser-mini-uninstalled.pc.in:
+	* totem-plparser-mini.pc.in:
+	* totem-plparser-uninstalled.pc.in:
+	* totem-plparser.pc.in: Patch from  Saleem Abdulrasool
+	<compnerd@compnerd.org> to remove the last bits of gnome-vfs
+	from here (Closes: #534128)
+
 ============ Version 2.23.1
 
 2008-05-09  Bastien Nocera  <hadess@hadess.net>
