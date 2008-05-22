@@ -35,7 +35,7 @@ msgstr ""
 #: ../plparse/totem-disc.c:352
 #, c-format
 msgid "Could not connect to the HAL daemon"
-msgstr "لم يمكن الاتصال بخادم HAL"
+msgstr "لم يمكن الاتصال بخادوم HAL"
 
 #: ../plparse/totem-disc.c:402
 #, c-format
@@ -925,7 +925,7 @@ msgstr "تلفزيون رقمي"
 #~ "using a sound server."
 #~ msgstr ""
 #~ "خرْج الصوت مستخدم من قبل برنامخ اخر. رجاء اختر خرْج صوت اخر من نظام تعدد "
-#~ "الوسائط ( Multimedia systems Selector ). ربما تحتاج ان تستخدم خادم صوت."
+#~ "الوسائط ( Multimedia systems Selector ). ربما تحتاج ان تستخدم خادوم صوت."
 
 #~ msgid ""
 #~ "The playback of this movie requires a %s plugin which is not installed."
@@ -995,7 +995,7 @@ msgstr "تلفزيون رقمي"
 #~ "another audio output in the Multimedia Systems Selector."
 #~ msgstr ""
 #~ "فشل في فتح خرْج الصوت. ربما انت لاتملك الصلاحيات لفتح اداة خرْج الصوت او "
-#~ "خادم الصوت لا يعمل. رجاء اختر خرْج صوت اخر في  نظام تعدد الوسائط "
+#~ "خادوم الصوت لا يعمل. رجاء اختر خرْج صوت اخر في  نظام تعدد الوسائط "
 #~ "( Multimedia systems Selector )"
 
 #~ msgid ""
@@ -1020,16 +1020,16 @@ msgstr "تلفزيون رقمي"
 #~ msgstr "لا خرْج فيديو متوفر. الرجاء التأكد من أن البرنامج مثبّت بسلامة."
 
 #~ msgid "The server you are trying to connect to is not known."
-#~ msgstr "الخادم الذي تحاول الإتصال به مجهول."
+#~ msgstr "الخادوم الذي تحاول الاتصال به مجهول."
 
 #~ msgid "The device name you specified (%s) seems to be invalid."
-#~ msgstr "يبدو أن إسم الجهاز الذي حددته (%s) غير صالح."
+#~ msgstr "يبدو أن اسم الجهاز الذي حددته (%s) غير صالح."
 
 #~ msgid "The server you are trying to connect to (%s) is unreachable."
-#~ msgstr "لا يمكن الوصول للخادم (%s) الّذي تحاول الوصول إليه. "
+#~ msgstr "لا يمكن الوصول للخادوم (%s) الّذي تحاول الوصول إليه. "
 
 #~ msgid "The connection to this server was refused."
-#~ msgstr "رُفِض الإتصال بهذا الخادم."
+#~ msgstr "رُفِض الاتصال بهذا الخادوم."
 
 #~ msgid "The specified movie could not be found."
 #~ msgstr "لا يمكن إيجاد هذا الفيلم."
@@ -1066,7 +1066,7 @@ msgstr "تلفزيون رقمي"
 #~ msgstr "ليس مسموحا لك بفتح هذا الملف."
 
 #~ msgid "The server refused access to this file or stream."
-#~ msgstr "رفض الخادم الوصول لهذا الملف."
+#~ msgstr "رفض الخادوم الوصول لهذا الملف."
 
 #~ msgid "The file you tried to play is an empty file."
 #~ msgstr "الملف الذي تحاول تشغيله فارغ."
@@ -1195,10 +1195,10 @@ msgstr "تلفزيون رقمي"
 #~ msgstr "بدون عنوان-%d"
 
 #~ msgid "Totem Bemused Server"
-#~ msgstr "خادم Totem Bemused"
+#~ msgstr "خادوم Totem Bemused"
 
 #~ msgid "Totem Bemused Server version 1.0"
-#~ msgstr "خادم Totem Bemused  نسخة  1.0"
+#~ msgstr "خادوم Totem Bemused  نسخة  1.0"
 
 #~ msgid "Instant Messenger status"
 #~ msgstr "حالة المِرْسال الفوري"
@@ -1234,19 +1234,19 @@ msgstr "تلفزيون رقمي"
 #~ msgstr "تسجيلات MythTV"
 
 #~ msgid "IP address of the local MythTV server"
-#~ msgstr "عنوان الخادم المحلي لـ MythTV"
+#~ msgstr "عنوان الخادوم المحلي لـ MythTV"
 
 #~ msgid "Name of the database for the local MythTV server"
-#~ msgstr "اسم قاعدة البيانات للخادم المحلي لـ MythTV"
+#~ msgstr "اسم قاعدة البيانات للخادوم المحلي لـ MythTV"
 
 #~ msgid "Password to access the local MythTV server"
-#~ msgstr "كلمة السر للنفاذ للخادم المحلي لـ MythTV"
+#~ msgstr "كلمة السر للنفاذ للخادوم المحلي لـ MythTV"
 
 #~ msgid "Port to access the local MythTV server"
-#~ msgstr "المنفذ للنفاذ للخادم المحلي لـ MythTV"
+#~ msgstr "المنفذ للنفاذ للخادوم المحلي لـ MythTV"
 
 #~ msgid "Username to access the local MythTV server"
-#~ msgstr "اسم المستخدم للنفاذ للخادم المحلي لـ MythTV"
+#~ msgstr "اسم المستخدم للنفاذ للخادوم المحلي لـ MythTV"
 
 #~ msgid "Always On Top"
 #~ msgstr "دائما فوق الكل"
