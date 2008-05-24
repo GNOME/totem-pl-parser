@@ -639,16 +639,16 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 
 	/* Stat for a block device, we're screwed as far as speed
 	 * is concerned now */
-	if (g_file_has_uri_scheme (file, "file") != FALSE) {
-		GFileInfo *info;
-		info = g_file_query_info (file, G_FILE_ATTRIBUTE_UNIX_DEVICE,
-					  G_FILE_QUERY_INFO_NONE, NULL, NULL);
-		if (info != NULL && g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_UNIX_DEVICE)) {
-			g_object_unref (info);
+	if (g_file_is_native (file) != FALSE) {
+		struct stat buf;
+		char *path;
+
+		path = g_file_get_path (file);
+		if (stat (path, &buf) == 0 && S_ISBLK (buf.st_mode)) {
+			g_free (path);
 			return g_strdup (BLOCK_DEVICE_TYPE);
 		}
-		if (info != NULL)
-			g_object_unref (info);
+		g_free (path);
 	}
 
 	/* Open the file. */
@@ -1477,7 +1477,14 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 					g_free (data);
 					return TOTEM_PL_PARSER_RESULT_IGNORED;
 				}
-				ret = (* special_types[i].func) (parser, file, base_file ? base_file : file, data);
+				if (base_file == NULL)
+					base_file = g_file_get_parent (file);
+				else
+					base_file = g_object_ref (base_file);
+
+				ret = (* special_types[i].func) (parser, file, base_file, data);
+
+				g_object_unref (base_file);
 
 				found = TRUE;
 				break;
@@ -1497,7 +1504,15 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 						break;
 					}
 				}
+				if (base_file == NULL)
+					base_file = g_file_get_parent (file);
+				else
+					base_file = g_object_ref (base_file);
+
 				ret = (* dual_types[i].func) (parser, file, base_file ? base_file : file, data);
+
+				g_object_unref (base_file);
+
 				found = TRUE;
 				break;
 			}

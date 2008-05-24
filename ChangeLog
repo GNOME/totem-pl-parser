@@ -1,5 +1,26 @@
 2008-05-24  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser-smil.c (parse_smil_entry):
+	* plparse/totem-pl-parser-wm.c (parse_asx_entry),
+	(parse_asx_entryref):
+	* plparse/totem-pl-parser-xspf.c (parse_xspf_track):
+	Don't try to resolve absolute URIs
+
+	* plparse/totem-pl-parser.c
+	(my_g_file_info_get_mime_type_with_data),
+	(totem_pl_parser_parse_internal): Revert code for the
+	block device detection, the GIO code wasn't working as expected (there
+	doesn't seem to be a way to detect whether a file is a block device
+	using GIO)
+	Also make sure we pass a base_file to parsing function, based on the
+	URL to parse, if we weren't provided one
+
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_is_itms_feed):
+	Fix bad detection of the itms URI scheme
+
+2008-05-24  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
 	When we have a base-file, use the file itself as the base
 	for resolving relative paths, fixes parsing of

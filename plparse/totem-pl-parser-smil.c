@@ -73,7 +73,7 @@ parse_smil_entry (TotemPlParser *parser,
 			if (url != NULL) {
 				GFile *resolved;
 
-				if (base_file != NULL)
+				if (base_file != NULL && strstr (url, "://") == NULL)
 					resolved = g_file_resolve_relative_path (base_file, url);
 				else
 					resolved = g_file_new_for_uri (url);

@@ -214,7 +214,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 		goto bail;
 	}
 
-	if (base_file != NULL)
+	if (base_file != NULL && strstr (url, "://") == NULL)
 		resolved = g_file_resolve_relative_path (base_file, (const char *) url);
 	else
 		resolved = g_file_new_for_uri ((const char *) url);

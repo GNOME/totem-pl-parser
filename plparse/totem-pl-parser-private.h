@@ -31,6 +31,7 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 #include <gio/gio.h>
+#include <string.h>
 #else
 #include "totem-pl-parser-mini.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
