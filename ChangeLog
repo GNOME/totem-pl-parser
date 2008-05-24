@@ -1,6 +1,13 @@
 2008-05-24  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
+	When we have a base-file, use the file itself as the base
+	for resolving relative paths, fixes parsing of
+	http://localhost:12345/playlist.asx in the test suite
+
+2008-05-24  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
 	Also ignore pnm:// URLs
 
 2008-05-21  Bastien Nocera  <hadess@hadess.net>

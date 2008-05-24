@@ -1477,7 +1477,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 					g_free (data);
 					return TOTEM_PL_PARSER_RESULT_IGNORED;
 				}
-				ret = (* special_types[i].func) (parser, file, base_file, data);
+				ret = (* special_types[i].func) (parser, file, base_file ? base_file : file, data);
+
 				found = TRUE;
 				break;
 			}
@@ -1496,7 +1497,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 						break;
 					}
 				}
-				ret = (* dual_types[i].func) (parser, file, base_file, data);
+				ret = (* dual_types[i].func) (parser, file, base_file ? base_file : file, data);
 				found = TRUE;
 				break;
 			}
