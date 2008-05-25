@@ -196,6 +196,7 @@ cd_cache_new_hal_ctx (void)
   conn = dbus_bus_get_private (DBUS_BUS_SYSTEM, &error);
 
   if (conn != NULL && !dbus_error_is_set (&error)) {
+    dbus_connection_set_exit_on_disconnect (conn, FALSE);
     if (!libhal_ctx_set_dbus_connection (ctx, conn)) {
       libhal_ctx_free (ctx);
       return NULL;

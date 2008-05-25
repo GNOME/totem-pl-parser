@@ -1,3 +1,10 @@
+2008-05-25  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-disc.c (cd_cache_new_hal_ctx): Call
+	dbus_connection_set_exit_on_disconnect() with FALSE, so we don't
+	exit if the session message bus is going away under us, spotted
+	by Matthias Clasen <mclasen@redhat.com> (Closes: #528780)
+
 2008-05-24  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
