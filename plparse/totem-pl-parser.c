@@ -353,8 +353,8 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (TotemPlParserClass, entry_parsed),
 			      NULL, NULL,
-			      totemplparser_marshal_VOID__STRING_POINTER,
-			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_POINTER);
+			      totemplparser_marshal_VOID__STRING_BOXED,
+			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_HASH_TABLE);
 	/**
 	 * TotemPlParser::playlist-started:
 	 * @parser: the object which received the signal
@@ -373,8 +373,8 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (TotemPlParserClass, playlist_started),
 			      NULL, NULL,
-			      totemplparser_marshal_VOID__STRING_POINTER,
-			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_POINTER);
+			      totemplparser_marshal_VOID__STRING_BOXED,
+			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_HASH_TABLE);
 	/**
 	 * TotemPlParser::playlist-ended:
 	 * @parser: the object which received the signal
@@ -1189,7 +1189,7 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 		}
 	}
 
-	g_hash_table_destroy (metadata);
+	g_hash_table_unref (metadata);
 
 	g_free (url);
 	g_object_unref (G_OBJECT (parser));
