@@ -1,5 +1,13 @@
 New features and significant updates in version...
 
+2.23.2:
+* Remove lingering gnome-vfs requirements
+* Ignore pnm:// URLs that are passed to us
+* Fix block device detection code
+* Fix bad detection of itms feeds
+* Work-around problems with filenames when passed .php or .asp files
+  by the web browser
+
 2.23.1:
 * Port to GIO/GVFS, and remove gnome-vfs dependency
 * Fix handling of XML-ish files with linefeeds after the document head

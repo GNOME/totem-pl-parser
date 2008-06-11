@@ -102,19 +102,22 @@ totem_pl_parser_write_xspf (TotemPlParser *parser, GtkTreeModel *model,
 	for (i = 1; i <= num_entries_total; i++) {
 		GtkTreeIter iter;
 		char *url, *url_escaped, *relative, *title;
+		GFile *file;
 		gboolean custom_title;
 
 		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
 			continue;
 
 		func (model, &iter, &url, &title, &custom_title, user_data);
+		file = g_file_new_for_uri (url);
 
-		if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE)
-		{
+		if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE) {
+			g_object_unref (file);
 			g_free (url);
 			g_free (title);
 			continue;
 		}
+		g_object_unref (file);
 
 		relative = totem_pl_parser_relative (output, url);
 		url_escaped = g_markup_escape_text (relative ? relative : url, -1);

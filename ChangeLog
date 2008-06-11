@@ -1,3 +1,12 @@
+============ Version 2.23.2
+
+2008-06-11  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.23.2
+	* plparse/totem-pl-parser-xspf.c (totem_pl_parser_write_xspf):
+	Fix warning
+
 2008-06-10  Christian Persch  <chpe@gnome.org>
 
 	* plparse/totem-pl-parser.c: (totem_pl_parser_class_init),
