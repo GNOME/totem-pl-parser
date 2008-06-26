@@ -1,3 +1,9 @@
+2008-06-27  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-disc.c (cd_cache_new), (cd_cache_open_mountpoint):
+	When propagating errors, don't free the original error, spotted in
+	https://bugzilla.redhat.com/show_bug.cgi?id=453020#c3
+
 ============ Version 2.23.2
 
 2008-06-11  Bastien Nocera  <hadess@hadess.net>

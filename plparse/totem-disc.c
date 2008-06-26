@@ -309,7 +309,6 @@ cd_cache_new (const char *dev,
       if (!data.result) {
 	if (data.error) {
 	  g_propagate_error (error, data.error);
-	  g_error_free (data.error);
 	} else {
 	  g_set_error (error, 0, 0,
 		       _("Failed to mount %s"), cache->device);
@@ -455,7 +454,6 @@ cd_cache_open_mountpoint (CdCache *cache,
     if (!data.result) {
       if (data.error) {
 	g_propagate_error (error, data.error);
-	g_error_free (data.error);
       } else {
 	g_set_error (error, 0, 0,
 		     _("Failed to mount %s"), cache->device);
