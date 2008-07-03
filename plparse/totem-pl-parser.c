@@ -95,9 +95,9 @@
 
 #include "config.h"
 
-#include <sys/stat.h>
 #include <string.h>
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <glib/gi18n-lib.h>
 #include <gio/gio.h>
 
@@ -645,7 +645,7 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 		char *path;
 
 		path = g_file_get_path (file);
-		if (stat (path, &buf) == 0 && S_ISBLK (buf.st_mode)) {
+		if (g_stat (path, &buf) == 0 && S_ISBLK (buf.st_mode)) {
 			g_free (path);
 			return g_strdup (BLOCK_DEVICE_TYPE);
 		}
