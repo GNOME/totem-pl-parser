@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+2.23.3:
+* Fix a possible crasher when detecting the media type of an optical
+  media, and an error occurs (such the device not being an audio CD)
+* Fix compilation with some setups
+
 2.23.2:
 * Remove lingering gnome-vfs requirements
 * Ignore pnm:// URLs that are passed to us
