@@ -1,3 +1,10 @@
+2008-07-17  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* docs/reference/totem-pl-parser-docs.sgml:
+
+	Use friendly name as documentation title (shows up in
+	the contents pane of DevHelp)
+
 ============ Version 2.23.3
 
 2008-07-14  Bastien Nocera  <hadess@hadess.net>
