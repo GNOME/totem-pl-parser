@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: totem\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-03 12:40-0200\n"
-"PO-Revision-Date: 2007-11-03 13:13-0200\n"
-"Last-Translator: Vladimir Melo <vladimirmelo@foresightlinux.org>\n"
+"PO-Revision-Date: 2008-07-22 11:42-0300\n"
+"Last-Translator: Vladimir Melo <vladimirmelo.psi@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -328,15 +328,15 @@ msgstr ""
 
 #: ../data/totem.schemas.in.h:5
 msgid "Default location for the \"Take Screenshot\" dialogues"
-msgstr "Local padrão para os diálogos \"Capturar Tela\""
+msgstr "Local padrão para os diálogos \"Capturar imagem da tela\""
 
 #: ../data/totem.schemas.in.h:6
 msgid ""
 "Default location for the \"Take Screenshot\" dialogues, default is the "
 "Pictures directory"
 msgstr ""
-"Local padrão para os diálogos \"Capturar Tela\" (o padrão é o diretório "
-"Fotos)"
+"Local padrão para os diálogos \"Capturar imagem da tela\" (o padrão é o "
+"diretório Fotos)"
 
 #: ../data/totem.schemas.in.h:7
 msgid "Enable deinterlacing"
@@ -637,11 +637,11 @@ msgstr "_Editar"
 
 #: ../src/totem-menu.c:1228
 msgid "Take _Screenshot..."
-msgstr "Capturar _Tela..."
+msgstr "Capturar imagem da _tela..."
 
 #: ../src/totem-menu.c:1228
 msgid "Take a screenshot"
-msgstr "Captura uma tela"
+msgstr "Captura uma imagem da tela"
 
 #: ../src/totem-menu.c:1229
 msgid "_Clear Playlist"
@@ -835,19 +835,19 @@ msgstr "Afastar"
 
 #: ../src/totem-menu.c:1269 ../src/totem-menu.c:1274
 msgid "Skip _Forward"
-msgstr "Saltar para _frente"
+msgstr "Pular para _frente"
 
 #: ../src/totem-menu.c:1269 ../src/totem-menu.c:1274
 msgid "Skip forward"
-msgstr "Salta para frente"
+msgstr "Pula para frente"
 
 #: ../src/totem-menu.c:1270 ../src/totem-menu.c:1275
 msgid "Skip _Backwards"
-msgstr "Saltar para _trás"
+msgstr "Pular para _trás"
 
 #: ../src/totem-menu.c:1270 ../src/totem-menu.c:1275
 msgid "Skip backwards"
-msgstr "Salta para trás"
+msgstr "Pula para trás"
 
 #: ../src/totem-menu.c:1279
 msgid "_Repeat Mode"
@@ -1121,11 +1121,11 @@ msgstr "Áudio/Vídeo"
 #: ../src/totem-screenshot.c:59 ../src/totem-screenshot.c:69
 #, c-format
 msgid "Screenshot%d.png"
-msgstr "TelaCapturada%d.png"
+msgstr "Capturadetela%d.png"
 
 #: ../src/totem-screenshot.c:92
 msgid "Screenshot.png"
-msgstr "TelaCapturada.png"
+msgstr "Capturadetela.png"
 
 #: ../src/totem-screenshot.c:168
 msgid "There was an error saving the screenshot."
@@ -1133,7 +1133,7 @@ msgstr "Ocorreu um erro ao salvar a captura de tela."
 
 #: ../src/totem-screenshot.c:218
 msgid "Save Screenshot"
-msgstr "Salvar Captura de Tela"
+msgstr "Salvar captura de tela"
 
 #: ../src/totem-statusbar.c:106
 msgid "0:00 / 0:00"
@@ -1420,11 +1420,12 @@ msgstr "Sem motivo."
 
 #: ../src/totem.c:778 ../src/totem.c:786
 msgid "Totem could not get a screenshot of that film."
-msgstr "O Totem não pôde capturar um quadro do filme."
+msgstr "O Totem não pôde capturar uma imagem do filme."
 
 #: ../src/totem.c:786
 msgid "This is not supposed to happen; please file a bug report."
-msgstr "Isto não deveria ter acontecido; por favor, envie um relatório de erro."
+msgstr ""
+"Isto não deveria ter acontecido; por favor, envie um relatório de erro."
 
 #: ../src/totem.c:965
 msgid "No error message"
@@ -1461,7 +1462,7 @@ msgstr "Não foi possível inicializar as bibliotecas thread-safe."
 
 #: ../src/totem.c:3044
 msgid "Verify your system installation. Totem will now exit."
-msgstr "Verifique a instalação do seu sistema. O Totem fechará agora."
+msgstr "Verifique a instalação do seu sistema. O Totem sairá agora."
 
 #. Handle command line arguments
 #: ../src/totem.c:3052
@@ -1505,8 +1506,8 @@ msgid ""
 "applications, or select another video output in the Multimedia Systems "
 "Selector."
 msgstr ""
-"A saída de vídeo está sendo utilizada por outra aplicação. Por favor, feche "
-"a outra aplicação de vídeo ou selecione outra saída de vídeo no Seletor de "
+"A saída de vídeo está sendo utilizada por outro aplicativo. Por favor, feche "
+"o outro aplicativo de vídeo ou selecione outra saída de vídeo no Seletor de "
 "Sistemas Multimídia."
 
 #: ../src/backend/bacon-video-widget-gst-0.10.c:2436
@@ -1515,7 +1516,7 @@ msgid ""
 "audio output in the Multimedia Systems Selector. You may want to consider "
 "using a sound server."
 msgstr ""
-"A saída de áudio está sendo utilizada por outra aplicação. Por favor, "
+"A saída de áudio está sendo utilizada por outro aplicativo. Por favor, "
 "selecione outra saída de vídeo no Seletor de Sistemas Multimídia. Você pode "
 "considerar o uso de um servidor de som."
 
@@ -1702,7 +1703,7 @@ msgstr "Por razões de segurança, este filme não pode ser reproduzido."
 #: ../src/backend/bacon-video-widget-xine.c:1397
 msgid "The audio device is busy. Is another application using it?"
 msgstr ""
-"O dispositivo de áudio está ocupado. Alguma outra aplicação o está usando?"
+"O dispositivo de áudio está ocupado. Ele está em uso por outro aplicativo?"
 
 #: ../src/backend/bacon-video-widget-xine.c:1402
 msgid "You are not allowed to open this file."
@@ -2041,15 +2042,15 @@ msgstr "%d Hz"
 
 #: ../src/plugins/skipto/totem-skipto.c:185
 msgid "Skip to"
-msgstr "Saltar para"
+msgstr "Pular para"
 
 #: ../src/plugins/skipto/totem-skipto-plugin.c:221
 msgid "_Skip to..."
-msgstr "_Saltar para..."
+msgstr "Pu_lar para..."
 
 #: ../src/plugins/skipto/totem-skipto-plugin.c:221
 msgid "Skip to a specific time"
-msgstr "Saltar para um tempo específico"
+msgstr "Pula para um tempo específico"
 
 #: ../src/plugins/skipto/totem-skipto-plugin.c:227
 #, c-format
@@ -2058,7 +2059,7 @@ msgstr "Não foi possível carregar o diálogo de interface \"Pular para\"."
 
 #: ../src/plugins/skipto/skipto.ui.h:2
 msgid "_Skip to:"
-msgstr "_Saltar para:"
+msgstr "Pu_lar para:"
 
 #: ../src/plugins/skipto/skipto.ui.h:3
 msgid "seconds"
@@ -2114,9 +2115,7 @@ msgstr "Não foi possível inicializar as bibliotecas thread-safe."
 
 #: ../browser-plugin/totem-plugin-viewer.c:2166
 msgid "Verify your system installation. The Totem plugin will now exit."
-msgstr ""
-"Verifique a instalação do seu sistema. O plug-in do Totem vai ser fechado "
-"agora."
+msgstr "Verifique a instalação do seu sistema. O plug-in do Totem sairá agora."
 
 #~ msgid "Automatically _load subtitle files when movie is loaded"
 #~ msgstr "_Carregar automaticamente arquivos de legenda ao carregar o filme"
@@ -2430,7 +2429,7 @@ msgstr ""
 #~ "Verify your system installation. Vanity will now exit."
 #~ msgstr ""
 #~ "Não foi possível inicializar as bibliotecas thread-safe.\n"
-#~ "Verifique a instalação do seu sistema. O Vanity vai fechar agora."
+#~ "Verifique a instalação do seu sistema. O Vanity sairá agora."
 
 #~ msgid "Vanity Webcam Utility"
 #~ msgstr "Utilitário para Webcam Vanity"
@@ -2627,7 +2626,7 @@ msgstr ""
 #~ msgstr "<span size=\"medium\"><b>Nenhum Arquivo</b></span>"
 
 #~ msgid "Exit Fullscreen"
-#~ msgstr "Sair da Tela Cheia"
+#~ msgstr "Sair da tela cheia"
 
 #~ msgid "Play a Video or Audio Disc"
 #~ msgstr "Reproduz um Disco de Vídeo ou de Áudio"
@@ -2893,4 +2892,4 @@ msgstr ""
 #~ "O Totem não será capaz de tocá-lo."
 
 #~ msgid "Only start if there isn't already a Totem application running"
-#~ msgstr "Iniciar apenas se não houver outra a aplicação Totem executando"
+#~ msgstr "Iniciar apenas se não houver outro aplicativo Totem executando"
