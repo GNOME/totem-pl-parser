@@ -122,7 +122,9 @@ void totem_pl_parser_add_one_file		(TotemPlParser *parser,
 void totem_pl_parser_add_url			(TotemPlParser *parser,
 						 const char *first_property_name,
 						 ...);
-gboolean totem_pl_parser_ignore (TotemPlParser *parser, const char *url);
+gboolean totem_pl_parser_ignore			(TotemPlParser *parser,
+						 const char *url);
+void totem_pl_parser_cleanup_xml		(char *string);
 
 #endif /* !TOTEM_PL_PARSER_MINI */
 

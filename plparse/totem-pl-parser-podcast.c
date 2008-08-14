@@ -246,6 +246,7 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
+	totem_pl_parser_cleanup_xml (contents);
 	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
 	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
 		g_free (contents);

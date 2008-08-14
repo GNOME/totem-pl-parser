@@ -1,3 +1,21 @@
+2008-08-14  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_cleanup_xml),
+	(totem_pl_parser_parse_internal),
+	(totem_pl_parser_mime_type_from_data): When we get an XML file,
+	try to use our own indentification functions as well, to double-check
+	whether we have a podcast or not
+	* plparse/totem-pl-parser-private.h:
+	Add totem_pl_parser_cleanup_xml() to remove HTML comments without
+	spaces before the closing statement
+
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss):
+	Use totem_pl_parser_cleanup_xml(), fixes parsing of podcasts at
+	http://www.chyz.qc.ca/ (Closes: #541405)
+
+	* plparse/totem-pl-parser-xspf.c (totem_pl_parser_write_xspf),
+	(parse_xspf_track): Fix some warnings
+
 2008-07-17  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* docs/reference/totem-pl-parser-docs.sgml:

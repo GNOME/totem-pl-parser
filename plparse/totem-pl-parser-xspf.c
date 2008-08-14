@@ -111,7 +111,7 @@ totem_pl_parser_write_xspf (TotemPlParser *parser, GtkTreeModel *model,
 		func (model, &iter, &url, &title, &custom_title, user_data);
 		file = g_file_new_for_uri (url);
 
-		if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE) {
+		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
 			g_object_unref (file);
 			g_free (url);
 			g_free (title);
@@ -217,7 +217,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 		goto bail;
 	}
 
-	if (base_file != NULL && strstr (url, "://") == NULL)
+	if (base_file != NULL && strstr ((char *) url, "://") == NULL)
 		resolved = g_file_resolve_relative_path (base_file, (const char *) url);
 	else
 		resolved = g_file_new_for_uri ((const char *) url);

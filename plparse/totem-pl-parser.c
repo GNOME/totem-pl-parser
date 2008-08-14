@@ -1354,6 +1354,28 @@ totem_pl_parser_ignore (TotemPlParser *parser, const char *url)
 	return TRUE;
 }
 
+/**
+ * totem_pl_parser_cleanup_xml:
+ * @contents: the contents of the file
+ *
+ * Removes HTML comments from a string representing the contents of an XML file.
+ * The function modifies the string in place.
+ */
+void
+totem_pl_parser_cleanup_xml (char *contents)
+{
+	char *needle;
+
+	while ((needle = strstr (contents, "<!--")) != NULL) {
+		while (strncmp (needle, "-->", 3) != 0) {
+			*needle = ' ';
+			needle++;
+			if (*needle == '\0')
+				break;
+		}
+	}
+}
+
 static gboolean
 totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetype)
 {
@@ -1484,6 +1506,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				else
 					base_file = g_object_ref (base_file);
 
+				DEBUG (file, g_print ("Using %s function for '%s'\n", special_types[i].mimetype, uri));
 				ret = (* special_types[i].func) (parser, file, base_file, data);
 
 				g_object_unref (base_file);
@@ -1764,7 +1787,9 @@ totem_pl_parser_mime_type_from_data (gconstpointer data, int len)
 #endif
 
 	if (mime_type != NULL &&
-	    (strcmp (mime_type, "text/plain") == 0 || strcmp (mime_type, "application/octet-stream") == 0)) {
+	    (strcmp (mime_type, "text/plain") == 0 ||
+	     strcmp (mime_type, "application/octet-stream") == 0 ||
+	     strcmp (mime_type, "application/xml") == 0)) {
 		PlaylistIdenCallback func;
 		guint i;
 
