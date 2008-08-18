@@ -77,6 +77,7 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 	for (i = 1; i <= num_entries_total; i++) {
 		GtkTreeIter iter;
 		char *url, *title, *relative;
+		GFile *file;
 		gboolean custom_title;
 
 		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
@@ -84,11 +85,14 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 
 		func (model, &iter, &url, &title, &custom_title, user_data);
 
-		if (totem_pl_parser_scheme_is_ignored (parser, url) != FALSE) {
+		file = g_file_new_for_uri (url);
+		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
 			g_free (url);
 			g_free (title);
+			g_object_unref (file);
 			continue;
 		}
+		g_object_unref (file);
 
 		relative = totem_pl_parser_relative (output, url);
 		buf = g_strdup_printf ("File%d=%s\n", i, relative ? relative : url);

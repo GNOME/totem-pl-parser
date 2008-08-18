@@ -496,6 +496,10 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     "Object representing the GFile for an entry", G_TYPE_FILE,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_object ("gfile-object-base", "gfile-object-base",
+				     "Object representing the GFile for base URI of an entry", G_TYPE_FILE,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("download-url", "download-url",
 				     "String representing the location of a download URL", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
