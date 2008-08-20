@@ -1,3 +1,7 @@
+2008-08-20  Christian Persch  <chpe@gnome.org>
+
+	* plparse/Makefile.am: Don't export the marshalers. Bug #536473.
+
 2008-08-20  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/test-parser.c (test_data_get_data):

@@ -46,9 +46,9 @@ MARSHALFILES = totemplparser-marshal.c totemplparser-marshal.h
 BUILT_SOURCES = $(MARSHALFILES)
 
 totemplparser-marshal.c: totemplparser-marshal.h
-	 ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --body > totemplparser-marshal.c )
+	 ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --body --internal > totemplparser-marshal.c )
 totemplparser-marshal.h: totemplparser-marshal.list
-	( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header > totemplparser-marshal.h )
+	( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --internal > totemplparser-marshal.h )
 
 plparserincludedir = $(pkgincludedir)/1/plparser
 plparserinclude_HEADERS =			\
