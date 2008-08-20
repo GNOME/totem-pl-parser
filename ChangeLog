@@ -1,3 +1,11 @@
+2008-08-20  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/test-parser.c (test_data_get_data):
+	* plparse/totem-pl-parser.c
+	(my_g_file_info_get_mime_type_with_data),
+	(totem_pl_parser_write_buffer): Really free the resources
+	used by the streams by unref'ing them
+
 2008-08-18  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-pls.c (totem_pl_parser_write_pls):

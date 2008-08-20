@@ -292,7 +292,7 @@ test_data_get_data (const char *uri, guint *len)
 
 	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
 	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
-	g_input_stream_close (G_INPUT_STREAM (stream), NULL, NULL);
+	g_object_unref (G_INPUT_STREAM (stream));
 	if (bytes_read == -1) {
 		g_free (buffer);
 		return NULL;

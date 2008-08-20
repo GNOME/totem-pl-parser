@@ -672,7 +672,7 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 	/* Read the whole thing, up to MIME_READ_CHUNK_SIZE */
 	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
 	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
-	g_input_stream_close (G_INPUT_STREAM (stream), NULL, NULL);
+	g_object_unref (G_INPUT_STREAM (stream));
 	if (bytes_read == -1) {
 		g_free (buffer);
 		return NULL;
@@ -777,7 +777,7 @@ totem_pl_parser_write_buffer (GOutputStream *stream, const char *buf, guint len,
 				       buf, len,
 				       &bytes_written,
 				       NULL, error) == FALSE) {
-		g_output_stream_close (stream, NULL, NULL);
+		g_object_unref (stream);
 		return FALSE;
 	}
 
