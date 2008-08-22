@@ -355,7 +355,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      G_STRUCT_OFFSET (TotemPlParserClass, entry_parsed),
 			      NULL, NULL,
 			      totemplparser_marshal_VOID__STRING_BOXED,
-			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_HASH_TABLE);
+			      G_TYPE_NONE, 2, G_TYPE_STRING, TOTEM_TYPE_PL_PARSER_METADATA);
 	/**
 	 * TotemPlParser::playlist-started:
 	 * @parser: the object which received the signal
@@ -375,7 +375,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      G_STRUCT_OFFSET (TotemPlParserClass, playlist_started),
 			      NULL, NULL,
 			      totemplparser_marshal_VOID__STRING_BOXED,
-			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_HASH_TABLE);
+			      G_TYPE_NONE, 2, G_TYPE_STRING, TOTEM_TYPE_PL_PARSER_METADATA);
 	/**
 	 * TotemPlParser::playlist-ended:
 	 * @parser: the object which received the signal
@@ -1905,5 +1905,21 @@ totem_pl_parser_can_parse_from_filename (const char *filename, gboolean debug)
 	g_mapped_file_free (map);
 
 	return retval;
+}
+
+
+GType
+totem_pl_parser_metadata_get_type (void)
+{
+	static volatile gsize g_define_type_id__volatile = 0;
+	if (g_once_init_enter (&g_define_type_id__volatile))
+	{ 
+		GType g_define_type_id = g_boxed_type_register_static (
+		    g_intern_static_string ("TotemPlParserMetadata"),
+		    (GBoxedCopyFunc) g_hash_table_ref,
+		    (GBoxedFreeFunc) g_hash_table_unref);
+		g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+	}
+	return g_define_type_id__volatile;
 }
 

@@ -1,3 +1,11 @@
+2008-06-29  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_metadata_get_type),
+	* plparse/totem-pl-parser.h: Define a new
+	TOTEM_TYPE_PL_PARSER_METADATA, identical to G_TYPE_HASH_TABLE; Use
+	it instead of G_TYPE_HASH_TABLE so that Python bindings can safely
+	convert metadata signal parameters.  Closes #536060.
+
 2008-08-20  Christian Persch  <chpe@gnome.org>
 
 	* plparse/Makefile.am: Don't export the marshalers. Bug #536473.

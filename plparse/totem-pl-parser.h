@@ -356,6 +356,9 @@ TotemPlParserResult totem_pl_parser_parse_with_base (TotemPlParser *parser,
 
 TotemPlParser *totem_pl_parser_new (void);
 
+GType totem_pl_parser_metadata_get_type (void) G_GNUC_CONST;
+#define TOTEM_TYPE_PL_PARSER_METADATA (totem_pl_parser_metadata_get_type())
+
 G_END_DECLS
 
 #endif /* TOTEM_PL_PARSER_H */
