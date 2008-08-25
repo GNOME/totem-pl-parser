@@ -1,3 +1,9 @@
+2008-08-25  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c: Also parse video/mp4 files as possible
+	QuickTime metalinks, as used on http://www.sporza.be
+	(Closes: #549186)
+
 2008-06-29  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_metadata_get_type),
