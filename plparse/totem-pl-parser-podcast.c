@@ -284,13 +284,51 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 			  gpointer data)
 {
 	TotemPlParserResult ret;
-	char *new_url;
+	char *url, *new_url, *uri_scheme;
 	GFile *new_file;
 
-	new_url = g_file_get_uri (file);
-	memcpy (new_url, "http", 4);
+	url = g_file_get_uri (file);
+	uri_scheme = g_file_get_uri_scheme (file);
+	new_url = g_strdup_printf ("http%s", url + strlen (uri_scheme));
+	g_free (url);
+	g_free (uri_scheme);
+
 	new_file = g_file_new_for_uri (new_url);
 	g_free (new_url);
+
+	ret = totem_pl_parser_add_rss (parser, new_file, base_file, data);
+
+	g_object_unref (new_file);
+
+	return ret;
+}
+
+TotemPlParserResult
+totem_pl_parser_add_zune (TotemPlParser *parser,
+			  GFile *file,
+			  GFile *base_file,
+			  gpointer data)
+{
+	TotemPlParserResult ret;
+	char *url, *new_url;
+	GFile *new_file;
+
+	url = g_file_get_uri (file);
+	if (g_str_has_prefix (url, "zune://subscribe/?") == FALSE) {
+		g_free (url);
+		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
+	}
+
+	new_url = strchr (url + strlen ("zune://subscribe/?"), '=');
+	if (new_url == NULL) {
+		g_free (url);
+		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
+	}
+	/* Skip over the '=' */
+	new_url++;
+
+	new_file = g_file_new_for_uri (new_url);
+	g_free (url);
 
 	ret = totem_pl_parser_add_rss (parser, new_file, base_file, data);
 

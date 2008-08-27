@@ -1,5 +1,13 @@
 2008-08-27  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_itpc),
+	(totem_pl_parser_add_zune):
+	* plparse/totem-pl-parser-podcast.h:
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
+	Add support for zune:// and zcast:// URLs (Closes: #549032)
+
+2008-08-27  Bastien Nocera  <hadess@hadess.net>
+
 	* configure.in:
 	* lib/Makefile.am:
 	* lib/memmem.c:

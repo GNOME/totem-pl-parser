@@ -1422,10 +1422,17 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	}
 
 	/* Fix up itpc, see http://www.apple.com/itunes/store/podcaststechspecs.html,
-	 * as well as feed:// as used by Firefox 3 */
-	if (g_file_has_uri_scheme (file, "itpc") != FALSE || g_file_has_uri_scheme (file, "feed") != FALSE) {
-		DEBUG(file, g_print ("URL '%s' is getting special cased for ITPC/FEED parsing\n", uri));
+	 * feed:// as used by Firefox 3,
+	 * as well as zcast:// as used by ZENCast */
+	if (g_file_has_uri_scheme (file, "itpc") != FALSE
+	    || g_file_has_uri_scheme (file, "feed") != FALSE
+	    || g_file_has_uri_scheme (file, "zcast") != FALSE) {
+		DEBUG(file, g_print ("URL '%s' is getting special cased for ITPC/FEED/ZCAST parsing\n", uri));
 		return totem_pl_parser_add_itpc (parser, file, base_file, NULL);
+	}
+	if (g_file_has_uri_scheme (file, "zune") != FALSE) {
+		DEBUG(file, g_print ("URL '%s' is getting special cased for ZUNE parsing\n", uri));
+		return totem_pl_parser_add_zune (parser, file, base_file, NULL);
 	}
 	/* Try itms Podcast references, see itunes.py in PenguinTV */
 	if (totem_pl_parser_is_itms_feed (file) != FALSE) {

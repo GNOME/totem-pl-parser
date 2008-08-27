@@ -55,6 +55,10 @@ TotemPlParserResult totem_pl_parser_add_itpc (TotemPlParser *parser,
 					      GFile *file,
 					      GFile *base_file,
 					      gpointer data);
+TotemPlParserResult totem_pl_parser_add_zune (TotemPlParser *parser,
+					      GFile *file,
+					      GFile *base_file,
+					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_itms (TotemPlParser *parser,
 					      GFile *file,
 					      GFile *base_file,
