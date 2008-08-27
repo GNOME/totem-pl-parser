@@ -1,3 +1,16 @@
+2008-08-27  Bastien Nocera  <hadess@hadess.net>
+
+	* configure.in:
+	* lib/Makefile.am:
+	* lib/memmem.c:
+	* lib/totem_internal.h:
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_is_rss),
+	(totem_pl_parser_is_atom), (totem_pl_parser_is_opml):
+	* plparse/totem-pl-parser-qt.c (totem_pl_parser_is_quicktime):
+	* plparse/totem-pl-parser-wm.c (totem_pl_parser_is_asx):
+	Remove internal copy, and use of, memmem, use glib's g_strstr_len()
+	instead (Closes: #548612)
+
 2008-08-25  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c: Also parse video/mp4 files as possible

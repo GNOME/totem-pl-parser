@@ -11,5 +11,5 @@ noinst_HEADERS = totem_internal.h
 libtotem_glibc_la_SOURCES =
 libtotem_glibc_la_LIBADD = @LTLIBOBJS@
 
-EXTRA_DIST = asprintf.c memmem.c
+EXTRA_DIST = asprintf.c
 

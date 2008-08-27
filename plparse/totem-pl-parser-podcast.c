@@ -50,11 +50,9 @@ totem_pl_parser_is_rss (const char *data, gsize len)
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
-	if (memmem (data, len,
-		    RSS_NEEDLE, strlen (RSS_NEEDLE)) != NULL)
+	if (g_strstr_len (data, len, RSS_NEEDLE) != NULL)
 		return RSS_MIME_TYPE;
-	if (memmem (data, len,
-		    RSS_NEEDLE2, strlen (RSS_NEEDLE2)) != NULL)
+	if (g_strstr_len (data, len, RSS_NEEDLE2) != NULL)
 		return RSS_MIME_TYPE;
 
 	return NULL;
@@ -68,8 +66,7 @@ totem_pl_parser_is_atom (const char *data, gsize len)
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
-	if (memmem (data, len,
-		    ATOM_NEEDLE, strlen (ATOM_NEEDLE)) != NULL)
+	if (g_strstr_len (data, len, ATOM_NEEDLE) != NULL)
 		return ATOM_MIME_TYPE;
 
 	return NULL;
@@ -83,8 +80,7 @@ totem_pl_parser_is_opml (const char *data, gsize len)
 	if (len > MIME_READ_CHUNK_SIZE)
 		len = MIME_READ_CHUNK_SIZE;
 
-	if (memmem (data, len,
-		    OPML_NEEDLE, strlen (OPML_NEEDLE)) != NULL)
+	if (g_strstr_len (data, len, OPML_NEEDLE) != NULL)
 		return OPML_MIME_TYPE;
 
 	return NULL;

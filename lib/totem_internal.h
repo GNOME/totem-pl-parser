@@ -14,8 +14,3 @@
 int totem_private_asprintf(char **string, const char *format, ...);
 #endif
 
-#ifndef HAVE_MEMMEM
-#define memmem(s, slen, p, plen) totem_private_memmem(s, slen, p, plen)
-
-void *totem_private_memmem(register const void *s, size_t slen, register const void *p, size_t plen);
-#endif

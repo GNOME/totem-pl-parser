@@ -57,8 +57,7 @@ totem_pl_parser_is_quicktime (const char *data, gsize len)
 	if (g_str_has_prefix (data, "SMILtext") != FALSE)
 		return QUICKTIME_META_MIME_TYPE;
 
-	if (memmem (data, len,
-		    QT_NEEDLE, strlen (QT_NEEDLE)) != NULL)
+	if (g_strstr_len (data, len, QT_NEEDLE) != NULL)
 		return QUICKTIME_META_MIME_TYPE;
 
 	return NULL;
