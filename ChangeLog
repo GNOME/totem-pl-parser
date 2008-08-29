@@ -1,3 +1,10 @@
+============ Version 2.23.91
+
+2008-08-29  Bastien Nocera  <hadess@hadess.net>
+
+	* configure.in: 2.23.91
+	* NEWS: upd
+
 2008-08-27  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_itpc),

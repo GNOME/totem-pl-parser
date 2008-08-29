@@ -1,5 +1,14 @@
 New features and significant updates in version...
 
+2.23.91:
+* Add support for parsing Zune and ZENCast URLs
+* Fix parsing broken podcasts with HTML comments in them
+* Better detection of Podcasts
+* Fix parsing of QuickTime metalinks masquerading as MPEG-4 files
+* Fix a few memleaks from GIO porting
+* Fixes for the Python bindings
+* Use a nice title for the developer documentation
+
 2.23.3:
 * Fix a possible crasher when detecting the media type of an optical
   media, and an error occurs (such the device not being an audio CD)
