@@ -1,3 +1,13 @@
+2008-08-30  Bastien Nocera  <hadess@hadess.net>
+
+	* configure.in: Remove hal dependency
+
+	* plparse/totem-disc.c (cd_cache_has_content_type), (cd_cache_new),
+	(cd_cache_free), (cd_cache_disc_is_cdda), (cd_cache_disc_is_vcd),
+	(cd_cache_disc_is_dvd): Use g_mount_guess_content_type() and
+	g_content_type_guess_for_tree() to detect disc types, removing
+	a lot of D-Bus code (Closes: #543865)
+
 ============ Version 2.23.91
 
 2008-08-29  Bastien Nocera  <hadess@hadess.net>

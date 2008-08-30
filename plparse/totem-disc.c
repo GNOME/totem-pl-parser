@@ -51,11 +51,6 @@
 #include <glib/gi18n.h>
 #include <gio/gio.h>
 
-#ifdef HAVE_HAL
-#include <libhal.h>
-#include <dbus/dbus.h>
-#endif
-
 #include "totem-disc.h"
 
 typedef struct _CdCache {
@@ -63,11 +58,7 @@ typedef struct _CdCache {
   char *device, *mountpoint;
   GVolume *volume;
 
-#ifdef HAVE_HAL
-  LibHalContext *ctx;
-  /* If the disc is a media, have the UDI available here */
-  char *disc_udi;
-#endif
+  char **content_types;
 
   GFile *iso_file;
 
@@ -180,45 +171,23 @@ cd_cache_get_dev_from_volumes (GVolumeMonitor *mon, const char *device,
   return found;
 }
 
-#ifdef HAVE_HAL
-static LibHalContext *
-cd_cache_new_hal_ctx (void)
+static gboolean
+cd_cache_has_content_type (CdCache *cache, const char *content_type)
 {
-  LibHalContext *ctx;
-  DBusConnection *conn;
-  DBusError error;
+  guint i;
 
-  ctx = libhal_ctx_new ();
-  if (ctx == NULL)
-    return NULL;
-
-  dbus_error_init (&error);
-  conn = dbus_bus_get_private (DBUS_BUS_SYSTEM, &error);
-
-  if (conn != NULL && !dbus_error_is_set (&error)) {
-    dbus_connection_set_exit_on_disconnect (conn, FALSE);
-    if (!libhal_ctx_set_dbus_connection (ctx, conn)) {
-      libhal_ctx_free (ctx);
-      return NULL;
-    }
-    if (libhal_ctx_init (ctx, &error))
-      return ctx;
+  if (cache->content_types == NULL) {
+    g_message ("no content type");
+    return FALSE;
   }
 
-  if (dbus_error_is_set (&error)) {
-    g_warning ("Couldn't get the system D-Bus: %s", error.message);
-    dbus_error_free (&error);
+  for (i = 0; cache->content_types[i] != NULL; i++) {
+    g_message ("type: %s", cache->content_types[i]);
+    if (g_str_equal (cache->content_types[i], content_type) != FALSE)
+      return TRUE;
   }
-
-  libhal_ctx_free (ctx);
-  if (conn != NULL) {
-    dbus_connection_close (conn);
-    dbus_connection_unref (conn);
-  }
-
-  return NULL;
+  return FALSE;
 }
-#endif
 
 static char *
 cd_cache_local_file_to_archive (const char *filename)
@@ -251,23 +220,20 @@ cd_cache_new (const char *dev,
   char *mountpoint = NULL, *device, *local;
   GVolumeMonitor *mon;
   GVolume *volume = NULL;
-#ifdef HAVE_HAL
-  LibHalContext *ctx = NULL;
-#endif
+  GFile *file;
   gboolean found;
 
-  if (dev[0] == '/')
+  if (dev[0] == '/') {
     local = g_strdup (dev);
-  else {
-    GFile *file;
-
+    file = g_file_new_for_path (dev);
+  } else {
     file = g_file_new_for_commandline_arg (dev);
     local = g_file_get_path (file);
-    g_object_unref (file);
   }
 
   if (local == NULL) {
     /* No error, just no cache */
+    g_object_unref (file);
     return NULL;
   }
 
@@ -275,12 +241,16 @@ cd_cache_new (const char *dev,
     cache = g_new0 (CdCache, 1);
     cache->mountpoint = local;
     cache->is_media = FALSE;
+    cache->content_types = g_content_type_guess_for_tree (file);
+    g_object_unref (file);
 
     return cache;
   } else if (g_file_test (local, G_FILE_TEST_IS_REGULAR)) {
     GMount *mount;
     GError *err = NULL;
     char *archive_path;
+
+    g_object_unref (file);
 
     cache = g_new0 (CdCache, 1);
     cache->is_iso = TRUE;
@@ -329,6 +299,8 @@ cd_cache_new (const char *dev,
     return cache;
   }
 
+  g_object_unref (file);
+
   /* We have a local device
    * retrieve mountpoint and volume from gio volumes */
   device = totem_resolve_symlink (local, error);
@@ -345,29 +317,21 @@ cd_cache_new (const char *dev,
     return NULL;
   }
 
-#ifdef HAVE_HAL
-  ctx = cd_cache_new_hal_ctx ();
-  if (!ctx) {
-    g_set_error (error, 0, 0,
-	_("Could not connect to the HAL daemon"));
-    g_free (device);
-    return NULL;
-  }
-#endif
-
   /* create struture */
   cache = g_new0 (CdCache, 1);
   cache->device = device;
   cache->mountpoint = mountpoint;
   cache->self_mounted = FALSE;
   cache->volume = volume;
-#ifdef HAVE_HAL
-  cache->disc_udi = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_HAL_UDI);
-#endif
   cache->is_media = TRUE;
-#ifdef HAVE_HAL
-  cache->ctx = ctx;
-#endif
+
+  {
+    GMount *mount;
+
+    mount = g_volume_get_mount (volume);
+    cache->content_types = g_mount_guess_content_type_sync (mount, FALSE, NULL, NULL);
+    g_object_unref (mount);
+  }
 
   return cache;
 }
@@ -489,20 +453,7 @@ cd_cache_free (CdCache *cache)
 {
   GMount *mount;
 
-#ifdef HAVE_HAL
-  if (cache->ctx != NULL) {
-    DBusConnection *conn;
-
-    conn = libhal_ctx_get_dbus_connection (cache->ctx);
-    libhal_ctx_shutdown (cache->ctx, NULL);
-    libhal_ctx_free(cache->ctx);
-    /* Close the connection before doing the last unref */
-    dbus_connection_close (conn);
-    dbus_connection_unref (conn);
-
-    g_free (cache->disc_udi);
-  }
-#endif /* HAVE_HAL */
+  g_strfreev (cache->content_types);
 
   if (cache->iso_file) {
     mount = g_file_find_enclosing_mount (cache->iso_file,
@@ -535,102 +486,18 @@ static TotemDiscMediaType
 cd_cache_disc_is_cdda (CdCache *cache,
 		       GError **error)
 {
-  TotemDiscMediaType type;
-
   /* We can't have audio CDs on disc, yet */
-  if (cache->is_media == FALSE)
+  if (cache->is_media == FALSE) {
+    g_message ("has no media");
     return MEDIA_TYPE_DATA;
+  }
   if (!cd_cache_open_device (cache, error))
     return MEDIA_TYPE_ERROR;
 
-#ifdef HAVE_HAL
-  {
-    DBusError error;
-    dbus_bool_t is_cdda;
+  if (cd_cache_has_content_type (cache, "x-content/audio-cdda") != FALSE)
+    return MEDIA_TYPE_CDDA;
 
-    dbus_error_init (&error);
-
-    is_cdda = libhal_device_get_property_bool (cache->ctx,
-	cache->disc_udi, "volume.disc.has_audio", &error);
-    type = is_cdda ? MEDIA_TYPE_CDDA : MEDIA_TYPE_DATA;
-
-    if (dbus_error_is_set (&error)) {
-      g_warning ("Error checking whether the volume is an audio CD: %s",
-	  error.message);
-      dbus_error_free (&error);
-      return MEDIA_TYPE_ERROR;
-    }
-    return type;
-  }
-#else
-  {
-    GMount *mount;
-    GFile *root;
-
-    type = MEDIA_TYPE_DATA;
-
-    mount = g_volume_get_mount (cache->volume);
-    if (!mount)
-      return type;
-
-    root = g_mount_get_root (mount);
-    if (g_file_has_uri_scheme (root, "cdda"))
-      type = MEDIA_TYPE_CDDA;
-
-    g_object_unref (root);
-  }
-
-  return type;
-#endif
-}
-
-static gboolean
-cd_cache_file_exists (CdCache *cache, const char *subdir, const char *filename)
-{
-  char *path, *dir;
-  gboolean ret;
-
-  dir = NULL;
-
-  /* Check whether the directory exists, for a start */
-  path = g_build_filename (cache->mountpoint, subdir, NULL);
-  ret = g_file_test (path, G_FILE_TEST_IS_DIR);
-  if (ret == FALSE) {
-    char *subdir_low;
-
-    g_free (path);
-    subdir_low = g_ascii_strdown (subdir, -1);
-    path = g_build_filename (cache->mountpoint, subdir_low, NULL);
-    ret = g_file_test (path, G_FILE_TEST_IS_DIR);
-    g_free (path);
-    if (ret) {
-      dir = subdir_low;
-    } else {
-      g_free (subdir_low);
-      return FALSE;
-    }
-  } else {
-    g_free (path);
-    dir = g_strdup (subdir);
-  }
-
-  /* And now the file */
-  path = g_build_filename (cache->mountpoint, dir, filename, NULL);
-  ret = g_file_test (path, G_FILE_TEST_IS_REGULAR);
-  if (ret == FALSE) {
-    char *fname_low;
-
-    g_free (path);
-    fname_low = g_ascii_strdown (filename, -1);
-    path = g_build_filename (cache->mountpoint, dir, fname_low, NULL);
-    ret = g_file_test (path, G_FILE_TEST_IS_REGULAR);
-    g_free (fname_low);
-  }
-
-  g_free (dir);
-  g_free (path);
-
-  return ret;
+  return MEDIA_TYPE_DATA;
 }
 
 static TotemDiscMediaType
@@ -644,39 +511,10 @@ cd_cache_disc_is_vcd (CdCache *cache,
     return MEDIA_TYPE_ERROR;
   if (!cache->mountpoint)
     return MEDIA_TYPE_ERROR;
-#ifdef HAVE_HAL
-  if (cache->is_media != FALSE) {
-    DBusError error;
-    dbus_bool_t is_vcd;
 
-    dbus_error_init (&error);
-
-    is_vcd = libhal_device_get_property_bool (cache->ctx,
-	cache->disc_udi, "volume.disc.is_vcd", &error);
-
-    if (dbus_error_is_set (&error)) {
-      g_warning ("Error checking whether the volume is a VCD: %s",
-	  error.message);
-      dbus_error_free (&error);
-      return MEDIA_TYPE_ERROR;
-    }
-    if (is_vcd != FALSE)
-      return MEDIA_TYPE_VCD;
-    is_vcd = libhal_device_get_property_bool (cache->ctx,
-	cache->disc_udi, "volume.disc.is_svcd", &error);
-
-    if (dbus_error_is_set (&error)) {
-      g_warning ("Error checking whether the volume is an SVCD: %s",
-	  error.message);
-      dbus_error_free (&error);
-      return MEDIA_TYPE_ERROR;
-    }
-    return is_vcd ? MEDIA_TYPE_VCD : MEDIA_TYPE_DATA;
-  }
-#endif
-  /* first is VCD, second is SVCD */
-  if (cd_cache_file_exists (cache, "MPEGAV", "AVSEQ01.DAT") ||
-      cd_cache_file_exists (cache, "MPEG2", "AVSEQ01.MPG"))
+  if (cd_cache_has_content_type (cache, "x-content/video-vcd") != FALSE)
+    return MEDIA_TYPE_VCD;
+  if (cd_cache_has_content_type (cache, "x-content/video-svcd") != FALSE)
     return MEDIA_TYPE_VCD;
 
   return MEDIA_TYPE_DATA;
@@ -693,29 +531,8 @@ cd_cache_disc_is_dvd (CdCache *cache,
     return MEDIA_TYPE_ERROR;
   if (!cache->mountpoint)
     return MEDIA_TYPE_ERROR;
-#ifdef HAVE_HAL
-  if (cache->is_media != FALSE) {
-    DBusError error;
-    dbus_bool_t is_dvd;
 
-    dbus_error_init (&error);
-
-    is_dvd = libhal_device_get_property_bool (cache->ctx,
-	cache->disc_udi, "volume.disc.is_videodvd", &error);
-
-    if (dbus_error_is_set (&error)) {
-      g_warning ("Error checking whether the volume is a DVD: %s",
-	  error.message);
-      dbus_error_free (&error);
-      return MEDIA_TYPE_ERROR;
-    }
-    return is_dvd ? MEDIA_TYPE_DVD : MEDIA_TYPE_DATA;
-  }
-#endif
-  if (cd_cache_file_exists (cache, "VIDEO_TS", "VIDEO_TS.IFO"))
-    return MEDIA_TYPE_DVD;
-  /* FIXME bug in libarchive? */
-  if (cd_cache_file_exists (cache, "VIDEO_TS", "VIDEO_TS.IFO;1"))
+  if (cd_cache_has_content_type (cache, "x-content/video-dvd") != FALSE)
     return MEDIA_TYPE_DVD;
 
   return MEDIA_TYPE_DATA;

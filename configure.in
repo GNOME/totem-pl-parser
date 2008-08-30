@@ -55,28 +55,8 @@ AC_SUBST(TOTEM_PL_PARSER_VERSION_MAJOR)
 AC_SUBST(TOTEM_PL_PARSER_VERSION_MINOR)
 AC_SUBST(TOTEM_PL_PARSER_VERSION_MICRO)
 
-dnl ***
-dnl HAL
-dnl ***
-
-AC_ARG_WITH(hal,
-	      AC_HELP_STRING([--without-hal],
-			     [Disable HAL support]))
-if test "x$with_hal" != "xno"; then
-  PKG_CHECK_MODULES(HAL, hal >= 0.5 hal < 0.6 dbus-1 >= $DBUS_REQS, enable_hal05=yes, enable_hal05=no)
-  if test x$enable_hal05 = xyes; then
-      with_hal=yes
-      AC_DEFINE(HAVE_HAL, 1, [Define if you HAL support])
-  else
-    if test "x$with_hal" = "xyes"; then
-	  AC_MSG_ERROR([HAL support explicitly requested but HAL couldn't be found])
-    fi
-  fi
-fi
-AM_CONDITIONAL(HAVE_HAL, test x"$with_hal" = xyes)
-
 dnl Check for packages for building libtotem-plparser.la
-PKG_CHECK_MODULES(TOTEM_PLPARSER, [glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 camel-1.2 gio-2.0])
+PKG_CHECK_MODULES(TOTEM_PLPARSER, [glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 camel-1.2 gio-2.0 >= 2.17.0])
 
 PKG_CHECK_MODULES([TOTEM_PLPARSER_MINI], [gio-2.0])
 
@@ -118,11 +98,4 @@ docs/Makefile
 docs/reference/Makefile
 docs/reference/version.xml
 ])
-
-AC_MSG_NOTICE([totem-pl-parser was configured with the following options:])
-if test x$with_hal = xyes ; then
-	AC_MSG_NOTICE([** HAL support enabled])
-else
-	AC_MSG_NOTICE([   HAL support disabled])
-fi
 
