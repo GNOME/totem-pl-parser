@@ -11,9 +11,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem-pl-parser HEAD\n"
+"Project-Id-Version: totem-pl-parser 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-03 20:07+0100\n"
+"POT-Creation-Date: 2008-08-31 03:17+0000\n"
 "PO-Revision-Date: 2008-04-16 06:44+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -22,44 +22,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../plparse/totem-disc.c:245
-#, c-format
-msgid "No media in drive for device '%s'"
-msgstr "Seadmes '%s' pole meediumit"
-
-#: ../plparse/totem-disc.c:255
-#, c-format
-msgid "Could not connect to the HAL daemon"
-msgstr "HAL deemoniga pole võimalik ühendust luua"
-
-#: ../plparse/totem-disc.c:305
-#, c-format
-msgid "Please check that a disc is present in the drive."
-msgstr "Palun veendu, et plaat on seadmes."
-
-#: ../plparse/totem-disc.c:373
+#: ../plparse/totem-disc.c:314 ../plparse/totem-disc.c:459
 #, c-format
 msgid "Failed to mount %s"
 msgstr "Tõrge %s külgehaakimisel"
 
-#: ../plparse/totem-disc.c:832
+#: ../plparse/totem-disc.c:342
+#, c-format
+msgid "No media in drive for device '%s'"
+msgstr "Seadmes '%s' pole meediumit"
+
+#: ../plparse/totem-disc.c:352
+#, c-format
+msgid "Could not connect to the HAL daemon"
+msgstr "HAL deemoniga pole võimalik ühendust luua"
+
+#: ../plparse/totem-disc.c:402
+#, c-format
+msgid "Please check that a disc is present in the drive."
+msgstr "Palun veendu, et plaat on seadmes."
+
+#: ../plparse/totem-disc.c:975
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: ../plparse/totem-disc.c:834
+#: ../plparse/totem-disc.c:977
 msgid "Video CD"
 msgstr "Video VCD"
 
-#: ../plparse/totem-disc.c:836
+#: ../plparse/totem-disc.c:979
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:838
+#: ../plparse/totem-disc.c:981
 msgid "Digital Television"
 msgstr "Digitaaltelevisioon"
 
-#: ../plparse/totem-pl-parser-pla.c:76 ../plparse/totem-pl-parser-pls.c:68
-#: ../plparse/totem-pl-parser-xspf.c:105
-#, c-format
-msgid "Couldn't open file '%s': %s"
-msgstr "Faili '%s' pole võimalik avada: %s"
+#~ msgid "Couldn't open file '%s': %s"
+#~ msgstr "Faili '%s' pole võimalik avada: %s"
