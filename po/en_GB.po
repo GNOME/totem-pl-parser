@@ -3,72 +3,68 @@
 # This file is distributed under the same license as the totem-pl-parser package.
 # Abigail Brady <morwen@evilmagic.org>, Bastien Nocera <hadess@hadess.net>, 2005.
 # David Lodge <dave@cirt.net>, 2008.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-02 16:00+0000\n"
+"POT-Creation-Date: 2008-09-06 14:34+0100\n"
 "PO-Revision-Date: 2008-03-02 16:01+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: English/GB <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../plparse/totem-disc.c:294
-#, c-format
-msgid "Failed to find mountpoint for device %s"
-msgstr "Failed to find mountpoint for device %s"
-
-#: ../plparse/totem-disc.c:304
-#, c-format
-msgid "Could not connect to the HAL daemon"
-msgstr "Could not connect to the HAL daemon"
-
-#: ../plparse/totem-disc.c:404
-#, c-format
-msgid "Please check that a disc is present in the drive."
-msgstr "Please check that a disc is present in the drive."
-
-#: ../plparse/totem-disc.c:451
+#: ../plparse/totem-disc.c:314 ../plparse/totem-disc.c:459
 #, c-format
 msgid "Failed to mount %s"
 msgstr "Failed to mount %s"
 
-#: ../plparse/totem-disc.c:475
+#: ../plparse/totem-disc.c:342
 #, c-format
-msgid "Failed to find mountpoint for %s"
-msgstr "Failed to find mountpoint for %s"
+msgid "No media in drive for device '%s'"
+msgstr "No media in drive for device '%s'"
 
-#: ../plparse/totem-disc.c:929
+#: ../plparse/totem-disc.c:352
+#, c-format
+msgid "Could not connect to the HAL daemon"
+msgstr "Could not connect to the HAL daemon"
+
+#: ../plparse/totem-disc.c:402
+#, c-format
+msgid "Please check that a disc is present in the drive."
+msgstr "Please check that a disc is present in the drive."
+
+#: ../plparse/totem-disc.c:975
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: ../plparse/totem-disc.c:931
+#: ../plparse/totem-disc.c:977
 msgid "Video CD"
 msgstr "Video CD"
 
-#: ../plparse/totem-disc.c:933
+#: ../plparse/totem-disc.c:979
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:935
+#: ../plparse/totem-disc.c:981
 msgid "Digital Television"
 msgstr "Digital Television"
 
-#: ../plparse/totem-pl-parser.c:813
-#, c-format
-msgid "Couldn't write parser: %s"
-msgstr "Couldn't write parser: %s"
+#~ msgid "Failed to find mountpoint for device %s"
+#~ msgstr "Failed to find mountpoint for device %s"
 
-#: ../plparse/totem-pl-parser-lines.c:104 ../plparse/totem-pl-parser-pla.c:76
-#: ../plparse/totem-pl-parser-pls.c:68 ../plparse/totem-pl-parser-xspf.c:105
-#, c-format
-msgid "Couldn't open file '%s': %s"
-msgstr "Couldn't open file '%s': %s"
+#~ msgid "Failed to find mountpoint for %s"
+#~ msgstr "Failed to find mountpoint for %s"
+
+#~ msgid "Couldn't write parser: %s"
+#~ msgstr "Couldn't write parser: %s"
+
+#~ msgid "Couldn't open file '%s': %s"
+#~ msgstr "Couldn't open file '%s': %s"
 
 #~ msgid "Add..."
 #~ msgstr "Add..."
