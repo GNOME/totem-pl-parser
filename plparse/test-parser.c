@@ -163,6 +163,8 @@ test_date (void)
 	/* RSS */
 	test_date_real ("28 Mar 2007 10:28:18 GMT", 1175077698);
 	test_date_real ("01 may 2007 12:34:19 GMT", 1178022859);
+	/* From http://www.rtve.es/podcast/SSATEL.xml */
+	test_date_real ("09-09-2008 03:21", 1220930460);
 	/* Atom */
 	test_date_real ("2003-12-13T18:30:02Z", 1071340202);
 	test_date_real ("1990-12-31T15:59:60-08:00", 662688000);
