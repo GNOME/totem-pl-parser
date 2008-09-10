@@ -1,5 +1,14 @@
 2008-09-10  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-disc.c (cd_cache_get_best_mount_for_drive),
+	(cd_cache_get_dev_from_volumes), (cd_cache_has_medium):
+	Fix possible crasher in cd_cache_has_medium(),
+	Handle GDrives having multiples GVolumes when looking for the
+	volume matching a unix device, fixes detection of mixed CDs as
+	audio CDs (Closes: #550988)
+
+2008-09-10  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/test-parser.c (test_date): Remove test from
 	http://www.rtve.es/podcast/SSATEL.xml it is too broken indeed
 

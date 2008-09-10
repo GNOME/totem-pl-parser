@@ -120,53 +120,88 @@ totem_resolve_symlink (const char *device, GError **error)
 }
 
 static gboolean
-cd_cache_get_dev_from_volumes (GVolumeMonitor *mon, const char *device,
-			      char **mountpoint, GVolume **v)
+cd_cache_get_best_mount_for_drive (GDrive *drive,
+				   char **mountpoint,
+				   GVolume **volume)
 {
+  GList *list, *l;
+  int rank;
+
+  rank = 0;
+  list = g_drive_get_volumes (drive);
+  for (l = list; l != NULL; l = l->next) {
+    GVolume *v;
+    GMount *m;
+    GFile *file;
+    int new_rank;
+
+    new_rank = 0;
+    v = l->data;
+
+    m = g_volume_get_mount (v);
+    if (m == NULL)
+      continue;
+
+    file = g_mount_get_root (m);
+    if (g_file_has_uri_scheme (file, "cdda"))
+      new_rank = 100;
+    else
+      new_rank = 50;
+
+    if (new_rank > rank) {
+      if (*mountpoint)
+	g_free (*mountpoint);
+      if (*volume)
+	g_object_unref (volume);
+
+      *volume = g_object_ref (v);
+      *mountpoint = g_file_get_path (file);
+      rank = new_rank;
+    }
+
+    g_object_unref (file);
+    g_object_unref (m);
+  }
+
+  g_list_foreach (list, (GFunc) g_object_unref, NULL);
+  g_list_free (list);
+
+  return rank > 0;
+}
+
+static gboolean
+cd_cache_get_dev_from_volumes (GVolumeMonitor *mon, const char *device,
+			      char **mountpoint, GVolume **volume)
+{
+  GList *list, *l;
   gboolean found;
-  GVolume *volume = NULL;
-  GList *list, *or;
 
   found = FALSE;
+  list = g_volume_monitor_get_connected_drives (mon);
+  for (l = list; l != NULL; l = l->next) {
+    GDrive *drive;
+    char *ddev, *resolved;
 
-  for (or = list = g_volume_monitor_get_volumes (mon);
-       list != NULL; list = list->next) {
-    char *pdev, *pdev2;
+    drive = l->data;
+    ddev = g_drive_get_identifier (drive, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+    if (ddev == NULL)
+      continue;
+    resolved = totem_resolve_symlink (ddev, NULL);
+    g_free (ddev);
+    if (resolved == NULL)
+      continue;
 
-    volume = list->data;
-    if (!(pdev = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE)))
-      continue;
-    pdev2 = totem_resolve_symlink (pdev, NULL);
-    if (!pdev2) {
-      g_free (pdev);
-      continue;
+    if (strcmp (resolved, device) == 0) {
+      found = cd_cache_get_best_mount_for_drive (drive, mountpoint, volume);
     }
-    g_free (pdev);
 
-    if (strcmp (pdev2, device) == 0) {
-      GMount *mount;
-
-      mount = g_volume_get_mount (volume);
-      if (mount) {
-	GFile *file;
-
-	file = g_mount_get_root (mount);
-	*mountpoint = g_file_get_path (file);
-	g_object_unref (file);
-	g_object_unref (mount);
-      }
-
-      found = TRUE;
-      g_object_ref (volume);
-      g_free (pdev2);
+    g_free (resolved);
+    if (found != FALSE)
       break;
-    }
-    g_free (pdev2);
   }
-  g_list_foreach (or, (GFunc) g_object_unref, NULL);
-  g_list_free (or);
 
-  *v = volume;
+  g_list_foreach (list, (GFunc) g_object_unref, NULL);
+  g_list_free (list);
 
   return found;
 }
@@ -346,6 +381,8 @@ cd_cache_has_medium (CdCache *cache)
     return FALSE;
 
   drive = g_volume_get_drive (cache->volume);
+  if (drive == NULL)
+    return FALSE;
   retval = g_drive_has_media (drive);
   g_object_unref (drive);
 
