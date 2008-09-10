@@ -1,5 +1,10 @@
 2008-09-10  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/test-parser.c (test_date): Remove test from
+	http://www.rtve.es/podcast/SSATEL.xml it is too broken indeed
+
+2008-09-10  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-lines.c (totem_pl_parser_write_m3u):
 	* plparse/totem-pl-parser-pla.c (totem_pl_parser_write_pla):
 	* plparse/totem-pl-parser-pls.c (totem_pl_parser_write_pls):
