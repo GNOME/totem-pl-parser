@@ -137,7 +137,7 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	}
 
 	g_free (buffer);
-	g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
+	g_object_unref (stream);
 
 	return ret;
 }

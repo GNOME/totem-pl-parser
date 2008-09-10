@@ -151,7 +151,7 @@ totem_pl_parser_write_xspf (TotemPlParser *parser, GtkTreeModel *model,
 	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 	g_free (buf);
 
-	g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
+	g_object_unref (stream);
 
 	return success;
 }

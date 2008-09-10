@@ -118,7 +118,7 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 			return FALSE;
 	}
 
-	g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
+	g_object_unref (stream);
 	return TRUE;
 }
 
