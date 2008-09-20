@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: totem\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-20 04:15+0200\n"
-"PO-Revision-Date: 2008-09-20 04:16+0100\n"
+"POT-Creation-Date: 2008-09-20 04:20+0200\n"
+"PO-Revision-Date: 2008-09-20 04:20+0100\n"
 "Last-Translator: Goran Rakić <grakic@devbase.net>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,35 +23,40 @@ msgstr ""
 "X-Poedit-Country: SERBIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../plparse/totem-disc.c:319
-#: ../plparse/totem-disc.c:460
+#: ../plparse/totem-disc.c:314
+#: ../plparse/totem-disc.c:459
 #, c-format
 msgid "Failed to mount %s"
 msgstr "Neuspešno priključenje %s"
 
-#: ../plparse/totem-disc.c:349
+#: ../plparse/totem-disc.c:342
 #, c-format
 msgid "No media in drive for device '%s'"
 msgstr "Nema medija u uređaju „%s“"
 
-#: ../plparse/totem-disc.c:403
+#: ../plparse/totem-disc.c:352
+#, c-format
+msgid "Could not connect to the HAL daemon"
+msgstr "Ne mogu da se povežem na HAL pozadinski program"
+
+#: ../plparse/totem-disc.c:402
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Proverite da li je disk prisutan u uređaju."
 
-#: ../plparse/totem-disc.c:829
+#: ../plparse/totem-disc.c:975
 msgid "Audio CD"
 msgstr "Zvučni CD"
 
-#: ../plparse/totem-disc.c:831
+#: ../plparse/totem-disc.c:977
 msgid "Video CD"
 msgstr "Video CD"
 
-#: ../plparse/totem-disc.c:833
+#: ../plparse/totem-disc.c:979
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:835
+#: ../plparse/totem-disc.c:981
 msgid "Digital Television"
 msgstr "Digitalna televizija"
 
