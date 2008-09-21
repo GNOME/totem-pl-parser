@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+2.24.0:
+* Updated translations
+
 2.23.91:
 * Add support for parsing Zune and ZENCast URLs
 * Fix parsing broken podcasts with HTML comments in them
