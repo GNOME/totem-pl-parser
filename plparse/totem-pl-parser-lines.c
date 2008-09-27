@@ -350,7 +350,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, **lines;
 	gsize size;
-	int i;
+	guint i, num_lines;
+	gboolean dos;
 	const char *split_char, *extinfo;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
@@ -369,13 +370,19 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	extinfo = NULL;
 
 	/* figure out whether we're a unix m3u or dos m3u */
-	if (strstr(contents,"\x0d") == NULL)
+	if (strstr(contents,"\x0d") == NULL) {
 		split_char = "\n";
-	else
+		dos = FALSE;
+	} else {
 		split_char = "\x0d\n";
+		dos = TRUE;
+	}
 
 	lines = g_strsplit (contents, split_char, 0);
 	g_free (contents);
+	num_lines = g_strv_length (lines);
+	/* We don't count the terminating NULL */
+	num_lines--;
 
 	for (i = 0; lines[i] != NULL; i++) {
 		if (lines[i][0] == '\0')
@@ -389,6 +396,11 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 				extinfo = lines[i];
 			continue;
 		}
+
+		/* If we're on the last line, and we're a DOS M3U,
+		 * remove the terminating \n if it's there */
+		if (dos != FALSE && i == num_lines)
+			g_strchomp (lines[i]);
 
 		/* Either it's a URI, or it has a proper path ... */
 		if (strstr(lines[i], "://") != NULL
