@@ -1521,7 +1521,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				DEBUG (file, g_print ("Using %s function for '%s'\n", special_types[i].mimetype, uri));
 				ret = (* special_types[i].func) (parser, file, base_file, data);
 
-				g_object_unref (base_file);
+				if (base_file != NULL)
+					g_object_unref (base_file);
 
 				found = TRUE;
 				break;
@@ -1548,7 +1549,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 				ret = (* dual_types[i].func) (parser, file, base_file ? base_file : file, data);
 
-				g_object_unref (base_file);
+				if (base_file != NULL)
+					g_object_unref (base_file);
 
 				found = TRUE;
 				break;
