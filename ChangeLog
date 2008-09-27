@@ -1,5 +1,10 @@
 2008-09-27  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
+	Fix possible warnings
+
+2008-09-27  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-lines.c (totem_pl_parser_add_m3u):
 	Fix parsing of DOS M3U files where the last line finishes with
 	a carriage return but no line feed (Closes: #553130)
