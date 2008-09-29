@@ -56,7 +56,7 @@ AC_SUBST(TOTEM_PL_PARSER_VERSION_MINOR)
 AC_SUBST(TOTEM_PL_PARSER_VERSION_MICRO)
 
 dnl Check for packages for building libtotem-plparser.la
-PKG_CHECK_MODULES(TOTEM_PLPARSER, [glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 camel-1.2 gio-2.0 >= 2.17.0])
+PKG_CHECK_MODULES(TOTEM_PLPARSER, [glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 camel-1.2 gio-2.0 >= 2.17.5])
 
 PKG_CHECK_MODULES([TOTEM_PLPARSER_MINI], [gio-2.0])
 
