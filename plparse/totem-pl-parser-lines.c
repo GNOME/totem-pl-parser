@@ -97,6 +97,12 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 	if (num_entries_total == 0)
 		return TRUE;
 
+	buf = g_strdup_printf ("#EXTM3U%s", cr);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+	g_free (buf);
+	if (success == FALSE)
+		return FALSE;
+
 	for (i = 1; i <= num_entries_total; i++) {
 		GtkTreeIter iter;
 		char *url, *title, *path2;
@@ -124,7 +130,6 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 			if (success == FALSE) {
 				g_free (title);
 				g_free (url);
-				g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
 				return FALSE;
 			}
 		}
@@ -151,13 +156,11 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (buf);
 
-		if (success == FALSE) {
-			g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
+		if (success == FALSE)
 			return FALSE;
-		}
 	}
 
-	g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, NULL);
+	g_object_unref (stream);
 
 	return TRUE;
 }

@@ -1,3 +1,15 @@
+2008-10-01  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-lines.c (totem_pl_parser_write_m3u):
+	* plparse/totem-pl-parser-pla.c (totem_pl_parser_write_pla):
+	* plparse/totem-pl-parser-pls.c (totem_pl_parser_write_pls):
+	* plparse/totem-pl-parser-xspf.c (totem_pl_parser_write_xspf):
+	Always write the #EXTM3U line at the start of M3U playlists,
+	Spotted by D. Grady <fehknt@gmail.com> (Closes: #551610)
+	Don't unref streams that totem_pl_parser_write_* will unref
+	on error, and make sure the streams are unref'ed and not just
+	closed
+
 2008-09-27  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
