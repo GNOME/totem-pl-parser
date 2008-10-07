@@ -3,9 +3,6 @@ SUBDIRS = lib plparse po docs
 EXTRA_DIST =			\
 	COPYING.LIB		\
 	autogen.sh		\
-	intltool-extract.in	\
-	intltool-merge.in	\
-	intltool-update.in	\
 	AUTHORS NEWS		\
 	gtk-doc.make		\
 	totem-plparser.pc.in	\

@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+2.24.1:
+* Fix DVB channels parsing in Totem
+* Fix parsing of DOS M3U files that don't finish with a line feed
+* Always write '#EXTM3U" at the start of M3U playlists
+
 2.24.0:
 * Updated translations
 

@@ -1,3 +1,12 @@
+============ Version 2.24.1
+
+2008-10-07  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.24.1
+	* autogen.sh:
+	* Makefile.am: Some distcheck fixes
+
 2008-10-07  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal),
