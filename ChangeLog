@@ -1,3 +1,10 @@
+2008-10-07  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal),
+	(totem_pl_parser_add_ignored_scheme): Fix scheme ignore function
+	we used to expect schemes in the form "cdda:" and now we expect
+	"cdda" (Closes: #554875)
+
 2008-10-01  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-lines.c (totem_pl_parser_write_m3u):
