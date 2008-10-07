@@ -1567,7 +1567,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		return ret;
 	}
 
-	if (totem_pl_parser_ignore_from_mimetype (parser, mimetype)) {
+	if (totem_pl_parser_ignore_from_mimetype (parser, mimetype) != FALSE) {
 		g_free (mimetype);
 		return TOTEM_PL_PARSER_RESULT_IGNORED;
 	}
@@ -1657,10 +1657,15 @@ void
 totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 		const char *scheme)
 {
+	char *s;
+
 	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
 
+	s = g_strdup (scheme);
+	if (s[strlen (s) - 1] == ':')
+		s[strlen (s) - 1] = '\0';
 	parser->priv->ignore_schemes = g_list_prepend
-		(parser->priv->ignore_schemes, g_strdup (scheme));
+		(parser->priv->ignore_schemes, s);
 }
 
 /**
