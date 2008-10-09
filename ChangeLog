@@ -1,3 +1,8 @@
+2008-10-09  Bastien Nocera  <hadess@hadess.net>
+
+	* autogen.sh: Fix passing args to configure, spotted by
+	Frederic Peters <fpeters@0d.be> (Closes: #555614)
+
 ============ Version 2.24.1
 
 2008-10-07  Bastien Nocera  <hadess@hadess.net>
