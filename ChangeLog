@@ -1,3 +1,7 @@
+2008-10-09  Bastien Nocera  <hadess@hadess.net>
+
+	* autogen.sh: Add --enable-gtk-doc to the default configure line
+
 2008-10-07  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal),
