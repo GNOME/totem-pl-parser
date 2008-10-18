@@ -1,3 +1,8 @@
+2008-10-18  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
+
+	* plparse/plparser.symbols: Add missing symbol
+	totem_pl_parser_metadata_get_type (Closes: #556719).
+
 2008-10-09  Bastien Nocera  <hadess@hadess.net>
 
 	* autogen.sh: Fix passing args to configure, spotted by
