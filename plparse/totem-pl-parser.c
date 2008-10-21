@@ -1467,9 +1467,15 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	DEBUG(file, g_print ("_get_mime_type_for_name for '%s' returned '%s'\n", uri, mimetype));
 	if (mimetype == NULL || strcmp (UNKNOWN_TYPE, mimetype) == 0
 	    || (g_file_is_native (file) && g_content_type_is_a (mimetype, "text/plain") != FALSE)) {
-		g_free (mimetype);
-		mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
-		DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned '%s'\n", uri, mimetype ? mimetype : "NULL"));
+	    	char *new_mimetype;
+		new_mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
+		if (new_mimetype) {
+			g_free (mimetype);
+			mimetype = new_mimetype;
+			DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned '%s'\n", uri, mimetype ? mimetype : "NULL"));
+		} else {
+			DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned NULL, ignoring\n", uri));
+		}
 	}
 
 	if (mimetype == NULL) {
