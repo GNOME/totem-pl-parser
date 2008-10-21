@@ -1,3 +1,10 @@
+2008-10-21  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
+	Fix M3U file parsing, the content-type detection is unreliable
+	so ignore it if it doesn't bring us anything new
+	(Closes: #556060)
+
 2008-10-09  Bastien Nocera  <hadess@hadess.net>
 
 	* autogen.sh: Add --enable-gtk-doc to the default configure line
