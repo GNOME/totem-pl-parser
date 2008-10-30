@@ -1,3 +1,10 @@
+============ Version 2.24.2
+
+2008-10-30  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.24.2
+
 2008-10-21  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):

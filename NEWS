@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+2.24.2:
+* Fix parsing of M3U files
+* Export missing symbol, fixes the Python bindings
+
 2.24.1:
 * Fix DVB channels parsing in Totem
 * Fix parsing of DOS M3U files that don't finish with a line feed
