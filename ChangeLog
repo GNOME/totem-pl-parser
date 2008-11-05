@@ -1,3 +1,7 @@
+2008-11-05  Bastien Nocera  <hadess@hadess.net>
+
+	* README: update README with accurate deps
+
 2008-10-21  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
