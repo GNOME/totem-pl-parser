@@ -104,7 +104,10 @@
 #ifndef TOTEM_PL_PARSER_MINI
 #include <gobject/gvaluecollector.h>
 #include <gtk/gtk.h>
+
+#ifdef HAVE_CAMEL
 #include <camel/camel-mime-utils.h>
+#endif
 
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
@@ -1756,6 +1759,7 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 	return -1;
 }
 
+
 /**
  * totem_pl_parser_parse_date:
  * @date_str: the date string to parse
@@ -1769,6 +1773,7 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 guint64
 totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 {
+#ifdef HAVE_CAMEL
 	GTimeVal val;
 
 	g_return_val_if_fail (date_str != NULL, -1);
@@ -1780,11 +1785,12 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 		return val.tv_sec;
 	}
 	D(g_message ("Failed to parse duration '%s' using the ISO8601 parser", date_str));
-
 	/* Fall back to RFC 2822 date parsing */
 	return camel_header_decode_date (date_str, NULL);
+#else
+	WARN_NO_CAMEL;
+#endif /* HAVE_CAMEL */
 }
-
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 static char *

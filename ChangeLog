@@ -1,5 +1,21 @@
 2008-11-05  Bastien Nocera  <hadess@hadess.net>
 
+	* configure.in:
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss),
+	(totem_pl_parser_add_itpc), (totem_pl_parser_add_zune),
+	(totem_pl_parser_add_atom), (totem_pl_parser_add_xml_feed),
+	(totem_pl_parser_add_itms), (totem_pl_parser_add_opml):
+	* plparse/totem-pl-parser-podcast.h:
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_date):
+	* totem-plparser.pc.in: Adapt patch from Ivan Frade
+	<ivan.frade@nokia.com> to make libcamel optional for some
+	"embedded" platforms. This is absolutely unsupported and
+	any general purpose distribution shipping with libcamel
+	disabled will be kicked in the knackers
+	forcefully (Closes: #522639)
+
+2008-11-05  Bastien Nocera  <hadess@hadess.net>
+
 	* README: update README with accurate deps
 
 2008-10-21  Bastien Nocera  <hadess@hadess.net>

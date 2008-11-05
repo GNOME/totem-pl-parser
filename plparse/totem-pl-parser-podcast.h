@@ -37,6 +37,14 @@ const char * totem_pl_parser_is_opml (const char *data, gsize len);
 const char * totem_pl_parser_is_xml_feed (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
+
+#ifndef HAVE_CAMEL
+#define WARN_NO_CAMEL { \
+	g_warning("Trying to parse a podcast, but totem-pl-parser built without libcamel support. Please contact your distribution provider."); \
+	return TOTEM_PL_PARSER_RESULT_ERROR; \
+}
+#endif /* !HAVE_CAMEL */
+
 gboolean totem_pl_parser_is_itms_feed (GFile *file);
 
 TotemPlParserResult totem_pl_parser_add_xml_feed (TotemPlParser *parser,

@@ -235,6 +235,9 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 			 GFile *base_file,
 			 gpointer data)
 {
+#ifndef HAVE_CAMEL
+	WARN_NO_CAMEL;
+#else
 	xml_node_t* doc, *channel;
 	char *contents;
 	gsize size;
@@ -274,6 +277,7 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 	xml_parser_free_tree (doc);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+#endif /* !HAVE_CAMEL */
 }
 
 /* http://www.apple.com/itunes/store/podcaststechspecs.html */
@@ -283,6 +287,9 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
+#ifndef HAVE_CAMEL
+	WARN_NO_CAMEL;
+#else
 	TotemPlParserResult ret;
 	char *url, *new_url, *uri_scheme;
 	GFile *new_file;
@@ -301,6 +308,7 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 	g_object_unref (new_file);
 
 	return ret;
+#endif /* !HAVE_CAMEL */
 }
 
 TotemPlParserResult
@@ -309,6 +317,9 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
+#ifndef HAVE_CAMEL
+	WARN_NO_CAMEL;
+#else
 	TotemPlParserResult ret;
 	char *url, *new_url;
 	GFile *new_file;
@@ -335,6 +346,7 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 	g_object_unref (new_file);
 
 	return ret;
+#endif /* !HAVE_CAMEL */
 }
 
 /* Atom docs:
@@ -473,6 +485,9 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
+#ifdef HAVE_CAMEL
+	WARN_NO_CAMEL;
+#else
 	xml_node_t* doc;
 	char *contents, *url;
 	gsize size;
@@ -501,6 +516,7 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 	xml_parser_free_tree (doc);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+#endif /* !HAVE_CAMEL */
 }
 
 TotemPlParserResult
@@ -509,6 +525,9 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 			      GFile *base_file,
 			      gpointer data)
 {
+#ifndef HAVE_CAMEL
+	WARN_NO_CAMEL;
+#else
 	guint len;
 
 	if (data == NULL)
@@ -524,6 +543,7 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 		return totem_pl_parser_add_opml (parser, file, base_file, data);
 
 	return TOTEM_PL_PARSER_RESULT_UNHANDLED;
+#endif /* !HAVE_CAMEL */
 }
 
 /* From libgsf's gsf-utils.h */
@@ -694,6 +714,9 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
+#ifndef HAVE_CAMEL
+	WARN_NO_CAMEL;
+#else
 	char *contents, *uncompressed, *itms_url;
 	GFile *itms_file, *feed_url;
 	TotemPlParserResult ret;
@@ -741,6 +764,7 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	g_object_unref (feed_url);
 
 	return ret;
+#endif /* !HAVE_CAMEL */
 }
 
 gboolean
@@ -836,6 +860,9 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
+#ifndef HAVE_CAMEL
+	WARN_NO_CAMEL;
+#else
 	xml_node_t* doc;
 	char *contents, *url;
 	gsize size;
@@ -864,6 +891,7 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 	xml_parser_free_tree (doc);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+#endif /* !HAVE_CAMEL */
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

@@ -36,6 +36,7 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 
 # Requirements
 GLIB_REQS=2.16.3
+GIO_REQS=2.17.3
 DBUS_REQS=0.61
 
 # Before making a release, the PLPARSER_LT_VERSION string should be modified.
@@ -55,8 +56,46 @@ AC_SUBST(TOTEM_PL_PARSER_VERSION_MAJOR)
 AC_SUBST(TOTEM_PL_PARSER_VERSION_MINOR)
 AC_SUBST(TOTEM_PL_PARSER_VERSION_MICRO)
 
+pkg_modules="glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 gthread-2.0 gio-2.0 >= $GIO_REQS"
+
+##################################
+# Checking libcamel dependency
+##################################
+camel_message=""
+
+AC_ARG_ENABLE(camel-i-know-what-im-doing,
+	      AS_HELP_STRING([--disable-camel-i-know-what-im-doing],
+			     [Disable libcamel (Unsupported, breaks Podcast support).]),
+			     [enable_camel=no],
+			     [enable_camel=yes])
+
+if test "x$enable_camel" = "xyes" ; then
+   PKG_CHECK_MODULES(LIBCAMEL,  
+		     camel-1.2,
+                     [have_camel=yes], 
+                     [have_camel=no])
+
+   if test "x$have_camel" = "xyes" ; then
+      AC_SUBST(LIBCAMEL, camel-1.2)
+      AC_SUBST(USELIBCAMEL, yes)
+      AC_DEFINE(HAVE_CAMEL, 1, [Camel available in the system])
+      pkg_modules="$pkg_modules camel-1.2"
+   else
+      AC_MSG_ERROR([libcamel is required to compile totem-pl-parser.])
+   fi
+else
+   AC_SUBST(USELIBCAMEL, no)
+   camel_message="
+ **************************************************************
+ Compiling totem-pl-parser without libcamel.
+ This will break podcast support and is completely unsupported.
+ **************************************************************"
+fi
+
 dnl Check for packages for building libtotem-plparser.la
-PKG_CHECK_MODULES(TOTEM_PLPARSER, [glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 camel-1.2 gio-2.0 >= 2.17.5])
+PKG_CHECK_MODULES(TOTEM_PLPARSER, [$pkg_modules])
+AC_SUBST(TOTEM_PLPARSER_CFLAGS)
+AC_SUBST(TOTEM_PLPARSER_LIBS)
 
 PKG_CHECK_MODULES([TOTEM_PLPARSER_MINI], [gio-2.0])
 
@@ -83,7 +122,7 @@ AC_SUBST([AM_LDFLAGS])
 
 GTK_DOC_CHECK(1.0)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 totem-plparser.pc
 totem-plparser-uninstalled.pc
@@ -99,3 +138,9 @@ docs/reference/Makefile
 docs/reference/version.xml
 ])
 
+
+AC_OUTPUT
+
+echo "
+$camel_message
+"
