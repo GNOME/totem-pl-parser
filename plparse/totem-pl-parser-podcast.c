@@ -485,7 +485,7 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 			  GFile *base_file,
 			  gpointer data)
 {
-#ifdef HAVE_CAMEL
+#ifndef HAVE_CAMEL
 	WARN_NO_CAMEL;
 #else
 	xml_node_t* doc;

@@ -1,3 +1,8 @@
+2008-11-09  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* plparse/totem-pl-parser-podcast.c: (totem_pl_parser_add_atom):
+	Fix reversed logic so this builds for people who have libcamel.
+
 2008-11-05  Bastien Nocera  <hadess@hadess.net>
 
 	* configure.in:
