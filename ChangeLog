@@ -1,3 +1,7 @@
+2008-11-10  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	* plparse/totem-pl-parser.h: use single GTK+ includes.
+
 2008-11-09  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* plparse/totem-pl-parser-podcast.c: (totem_pl_parser_add_atom):

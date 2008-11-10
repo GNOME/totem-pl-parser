@@ -25,7 +25,7 @@
 
 #include <glib.h>
 
-#include <gtk/gtktreemodel.h>
+#include <gtk/gtk.h>
 #include "totem-pl-parser-features.h"
 #include "totem-pl-parser-builtins.h"
 
