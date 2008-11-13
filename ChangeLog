@@ -1,3 +1,11 @@
+2008-11-13  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c
+	(my_g_file_info_get_mime_type_with_data),
+	(totem_pl_parser_cleanup_xml): Fix _cleanup_xml to
+	actually clean the comment closing bits ('-->')
+	(Closes: #560051)
+
 ============ Version 2.24.2
 
 2008-10-30  Bastien Nocera  <hadess@hadess.net>
