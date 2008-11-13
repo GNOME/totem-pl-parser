@@ -671,13 +671,14 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 		g_error_free (error);
 		return NULL;
 	}
-	DEBUG(file, g_print ("URL '%s' was opened successfully in _get_mime_type_with_data:\n", uri));
+	DEBUG(file, g_print ("URL '%s' was opened successfully in _get_mime_type_with_data\n", uri));
 
 	/* Read the whole thing, up to MIME_READ_CHUNK_SIZE */
 	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
 	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
 	g_object_unref (G_INPUT_STREAM (stream));
 	if (bytes_read == -1) {
+		DEBUG(file, g_print ("Couldn't read data from '%s'\n", uri));
 		g_free (buffer);
 		return NULL;
 	}
@@ -1380,6 +1381,11 @@ totem_pl_parser_cleanup_xml (char *contents)
 			needle++;
 			if (*needle == '\0')
 				break;
+		}
+		if (strncmp (needle, "-->", 3) == 0) {
+			guint i;
+			for (i = 0; i < 3; i++)
+				*(needle + i) = ' ';
 		}
 	}
 }
