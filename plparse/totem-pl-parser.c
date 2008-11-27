@@ -750,6 +750,7 @@ totem_pl_parser_line_is_empty (const char *line)
  * @error: return location for a #GError, or %NULL
  *
  * Writes the string @buf out to the file specified by @handle.
+ * Possible error codes are as per totem_pl_parser_write_buffer().
  *
  * Return value: %TRUE on success
  **/
@@ -770,6 +771,8 @@ totem_pl_parser_write_string (GOutputStream *stream, const char *buf, GError **e
  * @error: return location for a #GError, or %NULL
  *
  * Writes @len bytes of @buf to the file specified by @handle.
+ *
+ * A value of @len greater than #G_MAXSSIZE will cause a #G_IO_ERROR_INVALID_ARGUMENT argument.
  *
  * Return value: %TRUE on success
  **/
@@ -870,6 +873,20 @@ totem_pl_parser_relative (GFile *output, const char *filepath)
  * @user_data), which gets various metadata values about the entry for
  * the playlist writer.
  *
+ * If the @output file is a directory the #G_IO_ERROR_IS_DIRECTORY error
+ * will be returned, and if the file is some other form of non-regular file
+ * then a #G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file
+ * systems don't allow all file names, and may return a
+ * #G_IO_ERROR_INVALID_FILENAME error, and if the name is too long,
+ * #G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors are possible
+ * too, and depend on what kind of filesystem the file is on.
+ *
+ * In extreme cases, a #G_IO_ERROR_INVALID_ARGUMENT error can be returned, if
+ * parts of the playlist to be written are too long.
+ *
+ * If writing a PLA playlist and there is an error converting a URI's encoding,
+ * a code from #GConvertError will be returned.
+ *
  * Return value: %TRUE on success
  **/
 gboolean
@@ -925,6 +942,8 @@ totem_pl_parser_write_with_title (TotemPlParser *parser, GtkTreeModel *model,
  * For each entry in the @model, the function @func is called (and passed
  * @user_data), which gets various metadata values about the entry for
  * the playlist writer.
+ *
+ * Possible error codes are as per totem_pl_parser_write_with_title().
  *
  * Return value: %TRUE on success
  **/

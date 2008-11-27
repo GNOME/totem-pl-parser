@@ -1,3 +1,12 @@
+2008-11-27  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* plparse/totem-disc.c (cd_cache_new), (cd_cache_open_device),
+	(cd_cache_open_mountpoint):
+	* plparse/totem-pl-parser.c:
+	* plparse/totem-pl-parser.h: Expand API documentation re. error codes;
+	fix g_set_error calls with 0 domain/code; and mention functions which
+	do sync I/O. (Closes: #560495, #560493, #560491)
+
 2008-11-13  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c

@@ -315,8 +315,8 @@ cd_cache_new (const char *dev,
 	if (data.error) {
 	  g_propagate_error (error, data.error);
 	} else {
-	  g_set_error (error, 0, 0,
-		       _("Failed to mount %s"), cache->device);
+	  g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
+		       _("Failed to mount %s."), cache->device);
 	}
 	cd_cache_free (cache);
 	return FALSE;
@@ -345,8 +345,8 @@ cd_cache_new (const char *dev,
   mon = g_volume_monitor_get ();
   found = cd_cache_get_dev_from_volumes (mon, device, &mountpoint, &volume);
   if (!found) {
-    g_set_error (error, 0, 0,
-	_("No media in drive for device '%s'"),
+    g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_NO_DISC,
+	_("No media in drive for device '%s'."),
 	device);
     g_free (device);
     return NULL;
@@ -399,7 +399,7 @@ cd_cache_open_device (CdCache *cache,
   }
 
   if (cd_cache_has_medium (cache) == FALSE) {
-    g_set_error (error, 0, 0,
+    g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_NO_DISC,
 	_("Please check that a disc is present in the drive."));
     return FALSE;
   }
@@ -456,8 +456,8 @@ cd_cache_open_mountpoint (CdCache *cache,
       if (data.error) {
 	g_propagate_error (error, data.error);
       } else {
-	g_set_error (error, 0, 0,
-		     _("Failed to mount %s"), cache->device);
+	g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
+		     _("Failed to mount %s."), cache->device);
       }
       return FALSE;
     } else {
@@ -628,6 +628,14 @@ totem_cd_dir_get_parent (const char *dir)
  * a string pointer is passed to @url, it will return the disc's
  * MRL as from totem_cd_mrl_from_type().
  *
+ * Note that this function does synchronous I/O.
+ *
+ * If no disc is present in the drive, a #TOTEM_PL_PARSER_ERROR_NO_DISC
+ * error will be returned. On unknown mounting errors, a
+ * #TOTEM_PL_PARSER_ERROR_MOUNT_FAILED error will be returned. On other
+ * I/O errors, or if resolution of symlinked mount paths failed, a code from
+ * #GIOErrorEnum will be returned.
+ *
  * Return value: #TotemDiscMediaType corresponding to the disc's type, or #MEDIA_TYPE_ERROR on failure
  **/
 TotemDiscMediaType
@@ -687,6 +695,10 @@ totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
  * Detects the disc's type, given its device node path. If
  * a string pointer is passed to @url, it will return the disc's
  * MRL as from totem_cd_mrl_from_type().
+ *
+ * Note that this function does synchronous I/O.
+ *
+ * Possible error codes are as per totem_cd_detect_type_from_dir().
  *
  * Return value: #TotemDiscMediaType corresponding to the disc's type, or #MEDIA_TYPE_ERROR on failure
  **/
@@ -778,6 +790,8 @@ totem_cd_detect_type_with_url (const char *device,
  * @error: return location for a #GError, or %NULL
  *
  * Detects the disc's type, given its device node path.
+ *
+ * Possible error codes are as per totem_cd_detect_type_with_url().
  *
  * Return value: #TotemDiscMediaType corresponding to the disc's type, or #MEDIA_TYPE_ERROR on failure
  **/
