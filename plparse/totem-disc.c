@@ -52,6 +52,7 @@
 #include <gio/gio.h>
 
 #include "totem-disc.h"
+#include "totem-pl-parser.h"
 
 typedef struct _CdCache {
   /* device node and mountpoint */

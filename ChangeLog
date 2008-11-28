@@ -1,3 +1,11 @@
+2008-11-28  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* plparse/Makefile.am:
+	* plparse/totem-disc.c:
+	* plparse/totem-pl-parser-builtins.c
+	(totem_pl_parser_error_get_type): Fix build errors introduced in
+	previous commit. (Closes: #562571)
+
 2008-11-27  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* plparse/totem-disc.c (cd_cache_new), (cd_cache_open_device),

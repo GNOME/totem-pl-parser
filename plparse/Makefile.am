@@ -59,10 +59,10 @@ plparserinclude_HEADERS =			\
 	totem-pl-parser-mini.h
 
 libtotem_plparser_la_SOURCES =			\
-	totem-disc.c				\
-	totem-disc.h				\
 	totem-pl-parser-builtins.c		\
 	totem-pl-parser-builtins.h		\
+	totem-disc.c				\
+	totem-disc.h				\
 	totem-pl-parser.c			\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
