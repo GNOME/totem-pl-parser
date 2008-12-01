@@ -1,3 +1,13 @@
+2008-12-01  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-builtins.c
+	(totem_pl_parser_error_get_type):
+	* plparse/totem-pl-parser.c:
+	* plparse/totem-pl-parser.h: Remove unused
+	TOTEM_PL_PARSER_ERROR_VFS_[OPEN|WRITE] enums,
+	spotted by Christian Persch <chpe@gnome.org> (Closes: #560497)
+	Fix warnings wrt totem_pl_parser_error_get_type
+
 2008-11-28  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* plparse/Makefile.am:

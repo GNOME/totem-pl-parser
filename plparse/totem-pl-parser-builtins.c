@@ -44,8 +44,6 @@ totem_pl_parser_error_get_type (void)
   static GType etype = 0;
   if (etype == 0) {
     static const GEnumValue values[] = {
-      { TOTEM_PL_PARSER_ERROR_VFS_OPEN, "TOTEM_PL_PARSER_ERROR_VFS_OPEN", "vfs-open" },
-      { TOTEM_PL_PARSER_ERROR_VFS_WRITE, "TOTEM_PL_PARSER_ERROR_VFS_WRITE", "vfs-write" },
       { TOTEM_PL_PARSER_ERROR_NO_DISC, "TOTEM_PL_PARSER_ERROR_NO_DISC", "no-disc" },
       { TOTEM_PL_PARSER_ERROR_MOUNT_FAILED, "TOTEM_PL_PARSER_ERROR_MOUNT_FAILED", "mount-failed" },
       { 0, NULL, NULL }

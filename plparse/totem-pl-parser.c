@@ -1959,7 +1959,7 @@ totem_pl_parser_can_parse_from_filename (const char *filename, gboolean debug)
 	return retval;
 }
 
-
+#ifndef TOTEM_PL_PARSER_MINI
 GType
 totem_pl_parser_metadata_get_type (void)
 {
@@ -1974,4 +1974,5 @@ totem_pl_parser_metadata_get_type (void)
 	}
 	return g_define_type_id__volatile;
 }
+#endif /* !TOTEM_PL_PARSER_MINI */
 

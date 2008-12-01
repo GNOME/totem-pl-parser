@@ -286,8 +286,6 @@ typedef enum
 
 /**
  * TotemPlParserError:
- * @TOTEM_PL_PARSER_ERROR_VFS_OPEN: Error on opening a file
- * @TOTEM_PL_PARSER_ERROR_VFS_WRITE: Error on writing a file
  * @TOTEM_PL_PARSER_ERROR_NO_DISC: Error attempting to open a disc device when no disc is present
  * @TOTEM_PL_PARSER_ERROR_MOUNT_FAILED: An attempted mount operation failed
  *
@@ -296,8 +294,6 @@ typedef enum
  **/
 typedef enum
 {
-	TOTEM_PL_PARSER_ERROR_VFS_OPEN,
-	TOTEM_PL_PARSER_ERROR_VFS_WRITE,
 	TOTEM_PL_PARSER_ERROR_NO_DISC,
 	TOTEM_PL_PARSER_ERROR_MOUNT_FAILED
 } TotemPlParserError;
