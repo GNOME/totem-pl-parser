@@ -45,15 +45,15 @@
 #define EXTVLCOPT "#EXTVLCOPT"
 
 static char *
-totem_pl_parser_url_to_dos (const char *url, GFile *output)
+totem_pl_parser_uri_to_dos (const char *uri, GFile *output)
 {
 	char *retval, *i;
 
-	/* Get a relative URL if there is one */
-	retval = totem_pl_parser_relative (output, url);
+	/* Get a relative URI if there is one */
+	retval = totem_pl_parser_relative (output, uri);
 
 	if (retval == NULL)
-		retval = g_strdup (url);
+		retval = g_strdup (uri);
 
 	/* Don't change URIs, but change smb:// */
 	if (g_str_has_prefix (retval, "smb://") != FALSE) {
@@ -105,19 +105,19 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 
 	for (i = 1; i <= num_entries_total; i++) {
 		GtkTreeIter iter;
-		char *url, *title, *path2;
+		char *uri, *title, *path2;
 		gboolean custom_title;
 		GFile *file;
 
 		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
 			continue;
 
-		func (model, &iter, &url, &title, &custom_title, user_data);
+		func (model, &iter, &uri, &title, &custom_title, user_data);
 
-		file = g_file_new_for_uri (url);
+		file = g_file_new_for_uri (uri);
 		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
 			g_object_unref (file);
-			g_free (url);
+			g_free (uri);
 			g_free (title);
 			continue;
 		}
@@ -129,7 +129,7 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 			g_free (buf);
 			if (success == FALSE) {
 				g_free (title);
-				g_free (url);
+				g_free (uri);
 				return FALSE;
 			}
 		}
@@ -138,20 +138,20 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 		if (dos_compatible == FALSE) {
 			char *tmp;
 
-			tmp = totem_pl_parser_relative (output, url);
+			tmp = totem_pl_parser_relative (output, uri);
 
-			if (tmp == NULL && g_str_has_prefix (url, "file:")) {
-				path2 = g_filename_from_uri (url, NULL, NULL);
+			if (tmp == NULL && g_str_has_prefix (uri, "file:")) {
+				path2 = g_filename_from_uri (uri, NULL, NULL);
 			} else {
 				path2 = tmp;
 			}
 		} else {
-			path2 = totem_pl_parser_url_to_dos (url, output);
+			path2 = totem_pl_parser_uri_to_dos (uri, output);
 		}
 
-		buf = g_strdup_printf ("%s%s", path2 ? path2 : url, cr);
+		buf = g_strdup_printf ("%s%s", path2 ? path2 : uri, cr);
 		g_free (path2);
-		g_free (url);
+		g_free (uri);
 
 		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (buf);
@@ -166,39 +166,39 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 }
 
 static void
-totem_pl_parser_parse_ram_url (TotemPlParser *parser, const char *url)
+totem_pl_parser_parse_ram_uri (TotemPlParser *parser, const char *uri)
 {
 	char *mark, **params;
 	GString *str;
 	guint i, num_params;
 	char *title, *author, *copyright, *abstract, *screensize, *mode, *start, *end;
 
-	if (g_str_has_prefix (url, "rtsp://") == FALSE
-	    && g_str_has_prefix (url, "pnm://") == FALSE) {
-		totem_pl_parser_add_one_url (parser, url, NULL);
+	if (g_str_has_prefix (uri, "rtsp://") == FALSE
+	    && g_str_has_prefix (uri, "pnm://") == FALSE) {
+		totem_pl_parser_add_one_uri (parser, uri, NULL);
 		return;
 	}
 
 	/* Look for "?" */
-	mark = strstr (url, "?");
+	mark = strstr (uri, "?");
 	if (mark == NULL) {
-		totem_pl_parser_add_one_url (parser, url, NULL);
+		totem_pl_parser_add_one_uri (parser, uri, NULL);
 		return;
 	}
 
 	if (mark[1] == '\0') {
-		char *new_url;
+		char *new_uri;
 
-		new_url = g_strndup (url, mark + 1 - url);
-		totem_pl_parser_add_one_url (parser, new_url, NULL);
-		g_free (new_url);
+		new_uri = g_strndup (uri, mark + 1 - uri);
+		totem_pl_parser_add_one_uri (parser, new_uri, NULL);
+		g_free (new_uri);
 		return;
 	}
 
 	title = author = copyright = abstract = screensize = mode = end = start = NULL;
 	num_params = 0;
 
-	str = g_string_new_len (url, mark - url);
+	str = g_string_new_len (uri, mark - uri);
 	params = g_strsplit (mark + 1, "&", -1);
 	for (i = 0; params[i] != NULL; i++) {
 		if (g_str_has_prefix (params[i], "title=") != FALSE) {
@@ -227,8 +227,8 @@ totem_pl_parser_parse_ram_url (TotemPlParser *parser, const char *url)
 		}
 	}
 
-	totem_pl_parser_add_url (parser,
-				 TOTEM_PL_PARSER_FIELD_URL, str->str,
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_URI, str->str,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
 				 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
 				 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
@@ -279,7 +279,7 @@ totem_pl_parser_add_ram (TotemPlParser *parser, GFile *file, gpointer data)
 			line_file = g_file_new_for_uri (lines[i]);
 			/* .ram files can contain .smil entries */
 			if (totem_pl_parser_parse_internal (parser, line_file, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS)
-				totem_pl_parser_parse_ram_url (parser, lines[i]);
+				totem_pl_parser_parse_ram_uri (parser, lines[i]);
 			g_object_unref (line_file);
 		} else if (strcmp (lines[i], "--stop--") == 0) {
 			/* For Real Media playlists, handle the stop command */
@@ -290,13 +290,13 @@ totem_pl_parser_add_ram (TotemPlParser *parser, GFile *file, gpointer data)
 			char *base;
 
 			/* Try with a base */
-			base = totem_pl_parser_base_url (url);
+			base = totem_pl_parser_base_uri (uri);
 
 			if (totem_pl_parser_parse_internal (parser, lines[i], base) != TOTEM_PL_PARSER_RESULT_SUCCESS)
 			{
 				char *fullpath;
 				fullpath = g_strdup_printf ("%s/%s", base, lines[i]);
-				totem_pl_parser_parse_ram_url (parser, fullpath);
+				totem_pl_parser_parse_ram_uri (parser, fullpath);
 				g_free (fullpath);
 			}
 			g_free (base);
@@ -405,57 +405,57 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		/* Either it's a URI, or it has a proper path ... */
 		if (strstr(lines[i], "://") != NULL
 				|| lines[i][0] == G_DIR_SEPARATOR) {
-			GFile *url;
+			GFile *uri;
 
-			url = g_file_new_for_commandline_arg (lines[i]);
-			if (totem_pl_parser_parse_internal (parser, url, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
-				totem_pl_parser_add_one_url (parser, lines[i],
+			uri = g_file_new_for_commandline_arg (lines[i]);
+			if (totem_pl_parser_parse_internal (parser, uri, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+				totem_pl_parser_add_one_uri (parser, lines[i],
 						totem_pl_parser_get_extinfo_title (extinfo));
 			}
-			g_object_unref (url);
+			g_object_unref (uri);
 			extinfo = NULL;
 		} else if (g_ascii_isalpha (lines[i][0]) != FALSE
 			   && g_str_has_prefix (lines[i] + 1, ":\\")) {
 			/* Path relative to a drive on Windows, we need to use
 			 * the base that was passed to us */
-			GFile *url;
+			GFile *uri;
 
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
 			/* + 2, skip drive letter */
-			url = g_file_get_child (base_file, lines[i] + 2);
-			totem_pl_parser_add_one_file (parser, url,
+			uri = g_file_get_child (base_file, lines[i] + 2);
+			totem_pl_parser_add_one_file (parser, uri,
 						     totem_pl_parser_get_extinfo_title (extinfo));
-			g_object_unref (url);
+			g_object_unref (uri);
 			extinfo = NULL;
 		} else if (lines[i][0] == '\\' && lines[i][1] == '\\') {
 			/* ... Or it's in the windows smb form
 			 * (\\machine\share\filename), Note drive names
 			 * (C:\ D:\ etc) are unhandled (unknown base for
 			 * drive letters) */
-		        char *tmpurl;
+		        char *tmpuri;
 
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
-			tmpurl = g_strjoin (NULL, "smb:", lines[i], NULL);
+			tmpuri = g_strjoin (NULL, "smb:", lines[i], NULL);
 
-			totem_pl_parser_add_one_url (parser, lines[i],
+			totem_pl_parser_add_one_uri (parser, lines[i],
 					totem_pl_parser_get_extinfo_title (extinfo));
 			extinfo = NULL;
 
-			g_free (tmpurl);
+			g_free (tmpuri);
 		} else {
 			/* Try with a base */
-			GFile *url, *_base_file;
+			GFile *uri, *_base_file;
 			char sep;
 
 			_base_file = g_file_get_parent (file);
 			sep = (split_char[0] == '\n' ? '/' : '\\');
 			if (sep == '\\')
 				lines[i] = g_strdelimit (lines[i], "\\", '/');
-			url = g_file_get_child (_base_file, lines[i]);
+			uri = g_file_get_child (_base_file, lines[i]);
 			g_object_unref (_base_file);
-			totem_pl_parser_add_one_file (parser, url,
+			totem_pl_parser_add_one_file (parser, uri,
 						     totem_pl_parser_get_extinfo_title (extinfo));
-			g_object_unref (url);
+			g_object_unref (uri);
 			extinfo = NULL;
 		}
 	}

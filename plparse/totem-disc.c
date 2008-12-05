@@ -35,6 +35,13 @@
  *
  * This file has various different disc utility functions for getting
  * the media types and labels of discs.
+ *
+ * The functions in this file refer to MRLs, which are a special form
+ * of URIs used by xine to refer to things such as DVDs. An example of
+ * an MRL would be <example>dvd:///dev/scd0</example>, which is not a
+ * valid URI as far as, for example, GIO is concerned.
+ *
+ * The rest of the totem-pl-parser API exclusively uses URIs.
  **/
 
 #include "config.h"
@@ -651,11 +658,11 @@ totem_cd_dir_get_parent (const char *dir)
 /**
  * totem_cd_detect_type_from_dir:
  * @dir: a directory URI
- * @url: return location for the disc's MRL, or %NULL
+ * @mrl: return location for the disc's MRL, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Detects the disc's type, given its mount directory URI. If
- * a string pointer is passed to @url, it will return the disc's
+ * a string pointer is passed to @mrl, it will return the disc's
  * MRL as from totem_cd_mrl_from_type().
  *
  * Note that this function does synchronous I/O.
@@ -669,7 +676,7 @@ totem_cd_dir_get_parent (const char *dir)
  * Return value: #TotemDiscMediaType corresponding to the disc's type, or #MEDIA_TYPE_ERROR on failure
  **/
 TotemDiscMediaType
-totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
+totem_cd_detect_type_from_dir (const char *dir, char **mrl, GError **error)
 {
   CdCache *cache;
   TotemDiscMediaType type;
@@ -700,15 +707,15 @@ totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
     }
   }
 
-  if (url == NULL) {
+  if (mrl == NULL) {
     cd_cache_free (cache);
     return type;
   }
 
   if (type == MEDIA_TYPE_DVD) {
-    *url = totem_cd_mrl_from_type ("dvd", cache->mountpoint);
+    *mrl = totem_cd_mrl_from_type ("dvd", cache->mountpoint);
   } else if (type == MEDIA_TYPE_VCD) {
-    *url = totem_cd_mrl_from_type ("vcd", cache->mountpoint);
+    *mrl = totem_cd_mrl_from_type ("vcd", cache->mountpoint);
   }
 
   cd_cache_free (cache);
@@ -719,11 +726,11 @@ totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
 /**
  * totem_cd_detect_type_with_url:
  * @device: a device node path
- * @url: return location for the disc's MRL, or %NULL
+ * @mrl: return location for the disc's MRL, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Detects the disc's type, given its device node path. If
- * a string pointer is passed to @url, it will return the disc's
+ * a string pointer is passed to @mrl, it will return the disc's
  * MRL as from totem_cd_mrl_from_type().
  *
  * Note that this function does synchronous I/O.
@@ -734,14 +741,14 @@ totem_cd_detect_type_from_dir (const char *dir, char **url, GError **error)
  **/
 TotemDiscMediaType
 totem_cd_detect_type_with_url (const char *device,
-    			       char      **url,
+    			       char      **mrl,
 			       GError     **error)
 {
   CdCache *cache;
   TotemDiscMediaType type;
 
-  if (url != NULL)
-    *url = NULL;
+  if (mrl != NULL)
+    *mrl = NULL;
 
   if (!(cache = cd_cache_new (device, error)))
     return MEDIA_TYPE_ERROR;
@@ -758,7 +765,7 @@ totem_cd_detect_type_with_url (const char *device,
     /* crap, nothing found */
   }
 
-  if (url == NULL) {
+  if (mrl == NULL) {
     cd_cache_free (cache);
     return type;
   }
@@ -772,7 +779,7 @@ totem_cd_detect_type_with_url (const char *device,
 	str = cache->mountpoint ? cache->mountpoint : device;
       else
 	str = cache->device;
-      *url = totem_cd_mrl_from_type ("dvd", str);
+      *mrl = totem_cd_mrl_from_type ("dvd", str);
     }
     break;
   case MEDIA_TYPE_VCD:
@@ -783,7 +790,7 @@ totem_cd_detect_type_with_url (const char *device,
 	str = cache->mountpoint ? cache->mountpoint : device;
       else
 	str = cache->device;
-      *url = totem_cd_mrl_from_type ("vcd", str);
+      *mrl = totem_cd_mrl_from_type ("vcd", str);
     }
     break;
   case MEDIA_TYPE_CDDA:
@@ -792,9 +799,9 @@ totem_cd_detect_type_with_url (const char *device,
 
       dev = cache->device ? cache->device : device;
       if (g_str_has_prefix (dev, "/dev/") != FALSE)
-	*url = totem_cd_mrl_from_type ("cdda", dev + 5);
+	*mrl = totem_cd_mrl_from_type ("cdda", dev + 5);
       else
-	*url = totem_cd_mrl_from_type ("cdda", dev);
+	*mrl = totem_cd_mrl_from_type ("cdda", dev);
     }
     break;
   case MEDIA_TYPE_DATA:
@@ -802,7 +809,7 @@ totem_cd_detect_type_with_url (const char *device,
       type = MEDIA_TYPE_ERROR;
       /* No error, it's just not usable */
     } else {
-      *url = g_strdup (cache->mountpoint);
+      *mrl = g_strdup (cache->mountpoint);
     }
     break;
   default:

@@ -38,18 +38,18 @@ header (const char *message)
 #define error(x...) { g_warning (x); exit(1); }
 
 static void
-test_relative_real (const char *url, const char *output, const char *expected)
+test_relative_real (const char *uri, const char *output, const char *expected)
 {
 	GFile *output_file;
 	char *base;
 
 	output_file = g_file_new_for_commandline_arg (output);
-	base = totem_pl_parser_relative (output_file, url);
+	base = totem_pl_parser_relative (output_file, uri);
 	g_object_unref (output_file);
 
 	if (base == NULL && expected == NULL) {
 		g_print ("Relative: '%s' with output '%s' has no relative path\n",
-			 url, output);
+			 uri, output);
 		return;
 	}
 
@@ -58,21 +58,21 @@ test_relative_real (const char *url, const char *output, const char *expected)
 	    || (strcmp (base, expected) != 0)) {
 	    	if (base == NULL) {
 			error ("Relative: '%s' with output '%s' got no relative path (expected '%s')",
-			       url, output, expected);
+			       uri, output, expected);
 		} else {
 			error ("Relative: '%s' with output '%s' got '%s' (expected '%s')",
-			       url, output, base, expected ? expected : "none");
+			       uri, output, base, expected ? expected : "none");
 			g_free (base);
 		}
 		return;
 	}
 
-	g_print ("Relative: '%s' with output '%s' got '%s'\n", url, output, base);
+	g_print ("Relative: '%s' with output '%s' got '%s'\n", uri, output, base);
 
 #if 0
 	{
 		char *dos;
-		dos = totem_pl_parser_url_to_dos (url, output);
+		dos = totem_pl_parser_uri_to_dos (uri, output);
 		g_print ("DOS path: %s\n", dos);
 		g_print ("\n");
 		g_free (dos);
@@ -175,7 +175,7 @@ entry_metadata_foreach (const char *key,
 			const char *value,
 			gpointer data)
 {
-	if (g_ascii_strcasecmp (key, TOTEM_PL_PARSER_FIELD_URL) == 0)
+	if (g_ascii_strcasecmp (key, TOTEM_PL_PARSER_FIELD_URI) == 0)
 		return;
 	if (g_ascii_strcasecmp (key, TOTEM_PL_PARSER_FIELD_DESCRIPTION) == 0
 	    && strlen (value) > MAX_DESCRIPTION_LEN) {
@@ -216,21 +216,21 @@ entry_parsed (TotemPlParser *parser, const char *uri,
 }
 
 static void
-test_parsing_real (TotemPlParser *pl, const char *url)
+test_parsing_real (TotemPlParser *pl, const char *uri)
 {
 	TotemPlParserResult res;
 
-	res = totem_pl_parser_parse_with_base (pl, url, option_base_uri, FALSE);
+	res = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
 	if (res != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 		switch (res) {
 		case TOTEM_PL_PARSER_RESULT_UNHANDLED:
-			g_print ("url '%s' unhandled\n", url);
+			g_print ("URI '%s' unhandled\n", uri);
 			break;
 		case TOTEM_PL_PARSER_RESULT_ERROR:
-			g_print ("error handling url '%s'\n", url);
+			g_print ("error handling URI '%s'\n", uri);
 			break;
 		case TOTEM_PL_PARSER_RESULT_IGNORED:
-			g_print ("ignored url '%s'\n", url);
+			g_print ("ignored URI '%s'\n", uri);
 			break;
 		default:
 			g_assert_not_reached ();
@@ -285,7 +285,7 @@ test_data_get_data (const char *uri, guint *len)
 	/* Open the file. */
 	stream = g_file_read (file, NULL, &error);
 	if (stream == NULL) {
-		g_print ("URL '%s' couldn't be opened in test_data_get_data: '%s'\n", uri, error->message);
+		g_print ("URI '%s' couldn't be opened in test_data_get_data: '%s'\n", uri, error->message);
 		g_error_free (error);
 		return NULL;
 	}
@@ -299,7 +299,7 @@ test_data_get_data (const char *uri, guint *len)
 	}
 
 	if (bytes_read == -1) {
-		g_message ("URL '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'\n", uri, error->message);
+		g_message ("URI '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'\n", uri, error->message);
 		g_error_free (error);
 		g_free (buffer);
 		return NULL;
@@ -414,7 +414,7 @@ int main (int argc, char **argv)
 		g_print ("Error parsing arguments: %s\n", error->message);
 		g_error_free (error);
 
-		g_print ("Usage: %s <-n | --no-recurse> <-d | --debug> <-h | --help> <-t | --data > <-u | --disable-unsafe> <url>\n", argv[0]);
+		g_print ("Usage: %s <-n | --no-recurse> <-d | --debug> <-h | --help> <-t | --data > <-u | --disable-unsafe> <uri>\n", argv[0]);
 		exit (1);
 	}
 

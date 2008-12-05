@@ -77,7 +77,7 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 
 	title = totem_pl_parser_read_ini_line_string_with_sep (lines, "title", FALSE, ":");
 
-	totem_pl_parser_add_one_url (parser, link, title);
+	totem_pl_parser_add_one_uri (parser, link, title);
 
 	g_free (link);
 	g_free (title);

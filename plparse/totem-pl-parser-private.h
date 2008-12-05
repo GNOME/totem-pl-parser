@@ -91,7 +91,7 @@ char *totem_pl_parser_read_ini_line_string	(char **lines, const char *key,
 int   totem_pl_parser_read_ini_line_int		(char **lines, const char *key);
 char *totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 						     gboolean dos_mode, const char *sep);
-char *totem_pl_parser_base_url			(GFile *file);
+char *totem_pl_parser_base_uri			(GFile *file);
 void totem_pl_parser_playlist_end		(TotemPlParser *parser,
 						 const char *playlist_title);
 int totem_pl_parser_num_entries			(TotemPlParser *parser,
@@ -113,17 +113,17 @@ char * totem_pl_parser_relative			(GFile *output,
 TotemPlParserResult totem_pl_parser_parse_internal (TotemPlParser *parser,
 						    GFile *file,
 						    GFile *base_file);
-void totem_pl_parser_add_one_url		(TotemPlParser *parser,
-						 const char *url,
+void totem_pl_parser_add_one_uri		(TotemPlParser *parser,
+						 const char *uri,
 						 const char *title);
 void totem_pl_parser_add_one_file		(TotemPlParser *parser,
 						 GFile *file,
 						 const char *title);
-void totem_pl_parser_add_url			(TotemPlParser *parser,
+void totem_pl_parser_add_uri			(TotemPlParser *parser,
 						 const char *first_property_name,
 						 ...);
 gboolean totem_pl_parser_ignore			(TotemPlParser *parser,
-						 const char *url);
+						 const char *uri);
 void totem_pl_parser_cleanup_xml		(char *string);
 
 #endif /* !TOTEM_PL_PARSER_MINI */

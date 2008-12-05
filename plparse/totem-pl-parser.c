@@ -135,7 +135,7 @@
 typedef const char * (*PlaylistIdenCallback) (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
-typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, GFile *url, GFile *base_file, gpointer data);
+typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, GFile *uri, GFile *base_file, gpointer data);
 #endif
 
 typedef struct {
@@ -298,7 +298,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 					 PROP_RECURSE,
 					 g_param_spec_boolean ("recurse",
 							       "recurse",
-							       "Whether or not to process URLs further", 
+							       "Whether or not to process URIs further", 
 							       TRUE,
 							       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
@@ -401,7 +401,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	/* param specs */
 	totem_pl_parser_pspec_pool = g_param_spec_pool_new (FALSE);
 	pspec = g_param_spec_string ("url", "url",
-				     "URL to be added", NULL,
+				     "URI to be added", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("title", "title",
@@ -421,7 +421,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("base", "base",
-				     "Base URL of the item to be added", NULL,
+				     "Base URI of the item to be added", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("volume", "volume",
@@ -453,7 +453,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("moreinfo", "moreinfo",
-				     "URL to get more information for item to be added", NULL,
+				     "URI to get more information for item to be added", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("screensize", "screensize",
@@ -505,7 +505,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("download-url", "download-url",
-				     "String representing the location of a download URL", NULL,
+				     "String representing the location of a download URI", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 	pspec = g_param_spec_string ("id", "id",
@@ -667,11 +667,11 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 			g_error_free (error);
 			return g_strdup (DIR_MIME_TYPE);
 		}
-		DEBUG(file, g_print ("URL '%s' couldn't be opened in _get_mime_type_with_data: '%s'\n", uri, error->message));
+		DEBUG(file, g_print ("URI '%s' couldn't be opened in _get_mime_type_with_data: '%s'\n", uri, error->message));
 		g_error_free (error);
 		return NULL;
 	}
-	DEBUG(file, g_print ("URL '%s' was opened successfully in _get_mime_type_with_data\n", uri));
+	DEBUG(file, g_print ("URI '%s' was opened successfully in _get_mime_type_with_data\n", uri));
 
 	/* Read the whole thing, up to MIME_READ_CHUNK_SIZE */
 	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
@@ -686,7 +686,7 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 	/* Empty file */
 	if (bytes_read == 0) {
 		g_free (buffer);
-		DEBUG(file, g_print ("URL '%s' is empty in _get_mime_type_with_data\n", uri));
+		DEBUG(file, g_print ("URI '%s' is empty in _get_mime_type_with_data\n", uri));
 		return g_strdup (EMPTY_FILE_TYPE);
 	}
 
@@ -699,22 +699,22 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 }
 
 /**
- * totem_pl_parser_base_url:
- * @url: a URI
+ * totem_pl_parser_base_uri:
+ * @uri: a URI
  *
- * Returns the parent URI of @url.
+ * Returns the parent URI of @uri.
  *
- * Return value: a newly-allocated string containing @url's parent URI, or %NULL
+ * Return value: a newly-allocated string containing @uri's parent URI, or %NULL
  **/
 char *
-totem_pl_parser_base_url (GFile *file)
+totem_pl_parser_base_uri (GFile *uri)
 {
 	GFile *parent;
 	char *ret;
 
-	parent = g_file_get_parent (file);
+	parent = g_file_get_parent (uri);
 	ret = g_file_get_uri (parent);
-	g_object_unref (file);
+	g_object_unref (uri);
 
 	return ret;
 }
@@ -816,20 +816,20 @@ totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
 	for (i = 1; i <= num_entries; i++)
 	{
 		GtkTreeIter iter;
-		char *url, *title;
+		char *uri, *title;
 		GFile *file;
 		gboolean custom_title;
 
 		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
 			return i - ignored;
 
-		func (model, &iter, &url, &title, &custom_title, user_data);
-		file = g_file_new_for_uri (url);
+		func (model, &iter, &uri, &title, &custom_title, user_data);
+		file = g_file_new_for_uri (uri);
 		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE)
 			ignored++;
 
 		g_object_unref (file);
-		g_free (url);
+		g_free (uri);
 		g_free (title);
 	}
 
@@ -1096,16 +1096,16 @@ totem_pl_parser_finalize (GObject *object)
 }
 
 static void
-totem_pl_parser_add_url_valist (TotemPlParser *parser,
+totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 				const gchar *first_property_name,
 				va_list      var_args)
 {
 	const char *name;
-	char *title, *url;
+	char *title, *uri;
 	GHashTable *metadata;
 	gboolean is_playlist;
 
-	title = url = NULL;
+	title = uri = NULL;
 	is_playlist = FALSE;
 
 	g_object_ref (G_OBJECT (parser));
@@ -1137,28 +1137,28 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 			break;
 		}
 
-		if (strcmp (name, TOTEM_PL_PARSER_FIELD_URL) == 0) {
-			if (url == NULL)
-				url = g_value_dup_string (&value);
+		if (strcmp (name, TOTEM_PL_PARSER_FIELD_URI) == 0) {
+			if (uri == NULL)
+				uri = g_value_dup_string (&value);
 		} else if (strcmp (name, TOTEM_PL_PARSER_FIELD_FILE) == 0) {
 			GFile *file;
 
 			file = g_value_get_object (&value);
-			url = g_file_get_uri (file);
+			uri = g_file_get_uri (file);
 
 			g_value_unset (&value);
 			name = va_arg (var_args, char*);
 			continue;
 		} else if (strcmp (name, TOTEM_PL_PARSER_FIELD_BASE_FILE) == 0) {
 			GFile *file;
-			char *base_url;
+			char *base_uri;
 
 			file = g_value_get_object (&value);
-			base_url = g_file_get_uri (file);
+			base_uri = g_file_get_uri (file);
 
 			g_hash_table_insert (metadata,
 					     g_strdup (TOTEM_PL_PARSER_FIELD_BASE),
-					     base_url);
+					     base_uri);
 
 			g_value_unset (&value);
 			name = va_arg (var_args, char*);
@@ -1206,58 +1206,58 @@ totem_pl_parser_add_url_valist (TotemPlParser *parser,
 		//FIXME fix this! 396710
 	}
 
-	if (g_hash_table_size (metadata) > 0 || url != NULL) {
+	if (g_hash_table_size (metadata) > 0 || uri != NULL) {
 		if (is_playlist == FALSE) {
 			g_signal_emit (G_OBJECT (parser),
 				       totem_pl_parser_table_signals[ENTRY_PARSED],
-				       0, url, metadata);
+				       0, uri, metadata);
 		} else {
 			g_signal_emit (G_OBJECT (parser),
 				       totem_pl_parser_table_signals[PLAYLIST_STARTED],
-				       0, url, metadata);
+				       0, uri, metadata);
 		}
 	}
 
 	g_hash_table_unref (metadata);
 
-	g_free (url);
+	g_free (uri);
 	g_object_unref (G_OBJECT (parser));
 }
 
 /**
- * totem_pl_parser_add_url:
+ * totem_pl_parser_add_uri:
  * @parser: a #TotemPlParser
  * @first_property_name: the first property name
  * @Varargs: value for the first property, followed optionally by more
  * name/value pairs, followed by %NULL
  *
- * Adds a URL to the playlist with the properties given in @first_property_name
+ * Adds a URI to the playlist with the properties given in @first_property_name
  * and @Varargs.
  **/
 void
-totem_pl_parser_add_url (TotemPlParser *parser,
+totem_pl_parser_add_uri (TotemPlParser *parser,
 			 const char *first_property_name,
 			 ...)
 {
 	va_list var_args;
 	va_start (var_args, first_property_name);
-	totem_pl_parser_add_url_valist (parser, first_property_name, var_args);
+	totem_pl_parser_add_uri_valist (parser, first_property_name, var_args);
 	va_end (var_args);
 }
 
 /**
- * totem_pl_parser_add_one_url:
+ * totem_pl_parser_add_one_uri:
  * @parser: a #TotemPlParser
- * @url: the entry's URL
+ * @uri: the entry's URI
  * @title: the entry's title
  *
- * Adds a single URL entry with only URL and title strings to the playlist.
+ * Adds a single URI entry with only URI and title strings to the playlist.
  **/
 void
-totem_pl_parser_add_one_url (TotemPlParser *parser, const char *url, const char *title)
+totem_pl_parser_add_one_uri (TotemPlParser *parser, const char *uri, const char *title)
 {
-	totem_pl_parser_add_url (parser,
-				 TOTEM_PL_PARSER_FIELD_URL, url,
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_URI, uri,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
 				 NULL);
 }
@@ -1265,7 +1265,7 @@ totem_pl_parser_add_one_url (TotemPlParser *parser, const char *url, const char 
 void
 totem_pl_parser_add_one_file (TotemPlParser *parser, GFile *file, const char *title)
 {
-	totem_pl_parser_add_url (parser,
+	totem_pl_parser_add_uri (parser,
 				 TOTEM_PL_PARSER_FIELD_FILE, file,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
 				 NULL);
@@ -1282,15 +1282,15 @@ static PlaylistTypes ignore_types[] = {
 /**
  * totem_pl_parser_scheme_is_ignored:
  * @parser: a #TotemPlParser
- * @url: a URL
+ * @uri: a URI
  *
- * Checks to see if @url's scheme is in the @parser's list of
+ * Checks to see if @uri's scheme is in the @parser's list of
  * schemes to ignore.
  *
- * Return value: %TRUE if @url's scheme is ignored
+ * Return value: %TRUE if @uri's scheme is ignored
  **/
 gboolean
-totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, GFile *file)
+totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, GFile *uri)
 {
 	GList *l;
 
@@ -1299,7 +1299,7 @@ totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, GFile *file)
 
 	for (l = parser->priv->ignore_schemes; l != NULL; l = l->next) {
 		const char *scheme = l->data;
-		if (g_file_has_uri_scheme (file, scheme) != FALSE)
+		if (g_file_has_uri_scheme (uri, scheme) != FALSE)
 			return TRUE;
 	}
 
@@ -1328,28 +1328,28 @@ totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 /**
  * totem_pl_parser_ignore:
  * @parser: a #TotemPlParser
- * @url: a URL
+ * @uri: a URI
  *
- * Checks if the URL should be ignored. URLs are <emphasis>not</emphasis> ignored if:
+ * Checks if the URI should be ignored. URIs are <emphasis>not</emphasis> ignored if:
  * <itemizedlist>
  *  <listitem><para>they have an unknown mimetype,</para></listitem>
  *  <listitem><para>they have a special mimetype,</para></listitem>
  *  <listitem><para>they have a mimetype which could be a video or a playlist.</para></listitem>
  * </itemizedlist>
  *
- * URLs are automatically ignored if their scheme is ignored as per totem_pl_parser_scheme_is_ignored(),
+ * URIs are automatically ignored if their scheme is ignored as per totem_pl_parser_scheme_is_ignored(),
  * and are ignored if all the other tests are inconclusive.
  *
- * Return value: %TRUE if @url is to be ignored
+ * Return value: %TRUE if @uri is to be ignored
  **/
 gboolean
-totem_pl_parser_ignore (TotemPlParser *parser, const char *url)
+totem_pl_parser_ignore (TotemPlParser *parser, const char *uri)
 {
 	char *mimetype;
 	GFile *file;
 	guint i;
 
-	file = g_file_new_for_path (url);
+	file = g_file_new_for_path (uri);
 	if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
 		g_object_unref (file);
 		return TRUE;
@@ -1357,7 +1357,7 @@ totem_pl_parser_ignore (TotemPlParser *parser, const char *url)
 	g_object_unref (file);
 
 	//FIXME wrong for win32
-	mimetype = g_content_type_guess (url, NULL, 0, NULL);
+	mimetype = g_content_type_guess (uri, NULL, 0, NULL);
 	if (mimetype == NULL || strcmp (mimetype, UNKNOWN_TYPE) == 0) {
 		g_free (mimetype);
 		return FALSE;
@@ -1445,7 +1445,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 			|| g_file_has_uri_scheme (file, "rtsp") != FALSE
 			|| g_file_has_uri_scheme (file, "icy") != FALSE
 			|| g_file_has_uri_scheme (file, "pnm") != FALSE) {
-		DEBUG(file, g_print ("URL '%s' is MMS, RTSP, PNM or ICY, not a playlist\n", uri));
+		DEBUG(file, g_print ("URI '%s' is MMS, RTSP, PNM or ICY, not a playlist\n", uri));
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 
@@ -1455,16 +1455,16 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	if (g_file_has_uri_scheme (file, "itpc") != FALSE
 	    || g_file_has_uri_scheme (file, "feed") != FALSE
 	    || g_file_has_uri_scheme (file, "zcast") != FALSE) {
-		DEBUG(file, g_print ("URL '%s' is getting special cased for ITPC/FEED/ZCAST parsing\n", uri));
+		DEBUG(file, g_print ("URI '%s' is getting special cased for ITPC/FEED/ZCAST parsing\n", uri));
 		return totem_pl_parser_add_itpc (parser, file, base_file, NULL);
 	}
 	if (g_file_has_uri_scheme (file, "zune") != FALSE) {
-		DEBUG(file, g_print ("URL '%s' is getting special cased for ZUNE parsing\n", uri));
+		DEBUG(file, g_print ("URI '%s' is getting special cased for ZUNE parsing\n", uri));
 		return totem_pl_parser_add_zune (parser, file, base_file, NULL);
 	}
 	/* Try itms Podcast references, see itunes.py in PenguinTV */
 	if (totem_pl_parser_is_itms_feed (file) != FALSE) {
-	    	DEBUG(file, g_print ("URL '%s' is getting special cased for ITMS parsing\n", uri));
+	    	DEBUG(file, g_print ("URI '%s' is getting special cased for ITMS parsing\n", uri));
 	    	return totem_pl_parser_add_itms (parser, file, NULL, NULL);
 	}
 
@@ -1540,9 +1540,9 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 		for (i = 0; i < G_N_ELEMENTS(special_types); i++) {
 			if (strcmp (special_types[i].mimetype, mimetype) == 0) {
-				DEBUG(file, g_print ("URL '%s' is special type '%s'\n", uri, mimetype));
+				DEBUG(file, g_print ("URI '%s' is special type '%s'\n", uri, mimetype));
 				if (parser->priv->disable_unsafe != FALSE && special_types[i].unsafe != FALSE) {
-					DEBUG(file, g_print ("URL '%s' is unsafe so was ignored\n", uri));
+					DEBUG(file, g_print ("URI '%s' is unsafe so was ignored\n", uri));
 					g_free (mimetype);
 					g_free (data);
 					return TOTEM_PL_PARSER_RESULT_IGNORED;
@@ -1565,7 +1565,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 		for (i = 0; i < G_N_ELEMENTS(dual_types) && found == FALSE; i++) {
 			if (strcmp (dual_types[i].mimetype, mimetype) == 0) {
-				DEBUG(file, g_print ("URL '%s' is dual type '%s'\n", uri, mimetype));
+				DEBUG(file, g_print ("URI '%s' is dual type '%s'\n", uri, mimetype));
 				if (data == NULL) {
 					g_free (mimetype);
 					mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
@@ -1618,29 +1618,29 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 /**
  * totem_pl_parser_parse_with_base:
  * @parser: a #TotemPlParser
- * @url: the URL of the playlist to parse
+ * @uri: the URI of the playlist to parse
  * @base: the base path for relative filenames
- * @fallback: %TRUE if the parser should add the playlist URL to the
+ * @fallback: %TRUE if the parser should add the playlist URI to the
  * end of the playlist on parse failure
  *
- * Parses a playlist given by the absolute URL @url, using
+ * Parses a playlist given by the absolute URI @uri, using
  * @base to resolve relative paths where appropriate.
  *
  * Return value: a #TotemPlParserResult
  **/
 TotemPlParserResult
-totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *url,
+totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *uri,
 				 const char *base, gboolean fallback)
 {
 	GFile *file, *base_file;
 	TotemPlParserResult retval;
 
 	g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
-	g_return_val_if_fail (url != NULL, TOTEM_PL_PARSER_RESULT_UNHANDLED);
-	g_return_val_if_fail (strstr (url, "://") != NULL,
+	g_return_val_if_fail (uri != NULL, TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	g_return_val_if_fail (strstr (uri, "://") != NULL,
 			TOTEM_PL_PARSER_RESULT_ERROR);
 
-	file = g_file_new_for_uri (url);
+	file = g_file_new_for_uri (uri);
 	base_file = NULL;
 
 	if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
@@ -1664,19 +1664,19 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *url,
 /**
  * totem_pl_parser_parse:
  * @parser: a #TotemPlParser
- * @url: the URL of the playlist to parse
- * @fallback: %TRUE if the parser should add the playlist URL to the
+ * @uri: the URI of the playlist to parse
+ * @fallback: %TRUE if the parser should add the playlist URI to the
  * end of the playlist on parse failure
  *
- * Parses a playlist given by the absolute URL @url.
+ * Parses a playlist given by the absolute URI @uri.
  *
  * Return value: a #TotemPlParserResult
  **/
 TotemPlParserResult
-totem_pl_parser_parse (TotemPlParser *parser, const char *url,
+totem_pl_parser_parse (TotemPlParser *parser, const char *uri,
 		       gboolean fallback)
 {
-	return totem_pl_parser_parse_with_base (parser, url, NULL, fallback);
+	return totem_pl_parser_parse_with_base (parser, uri, NULL, fallback);
 }
 
 /**
@@ -1685,7 +1685,7 @@ totem_pl_parser_parse (TotemPlParser *parser, const char *url,
  * @scheme: the scheme to ignore
  *
  * Adds a scheme to the list of schemes to ignore, so that
- * any URL using that scheme is ignored during playlist parsing.
+ * any URI using that scheme is ignored during playlist parsing.
  **/
 void
 totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
@@ -1708,7 +1708,7 @@ totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
  * @mimetype: the mimetype to ignore
  *
  * Adds a mimetype to the list of mimetypes to ignore, so that
- * any URL of that mimetype is ignored during playlist parsing.
+ * any URI of that mimetype is ignored during playlist parsing.
  **/
 void
 totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,

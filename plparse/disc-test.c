@@ -31,7 +31,7 @@ main (gint   argc,
   TotemDiscMediaType type;
   GError *error = NULL;
   const char *type_s = NULL;
-  char *url = NULL;
+  char *uri = NULL;
   gboolean is_dir = FALSE;
   GList *or, *list;
   GVolumeMonitor *mon;
@@ -46,10 +46,10 @@ main (gint   argc,
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
   if (g_file_test (argv[1], G_FILE_TEST_IS_DIR) != FALSE) {
-    type = totem_cd_detect_type_from_dir (argv[1], &url, &error);
+    type = totem_cd_detect_type_from_dir (argv[1], &uri, &error);
     is_dir = TRUE;
   } else {
-    type = totem_cd_detect_type_with_url (argv[1], &url, &error);
+    type = totem_cd_detect_type_with_url (argv[1], &uri, &error);
   }
 
   switch (type) {
@@ -106,11 +106,11 @@ main (gint   argc,
 
   g_print ("%s contains a %s\n", argv[1], type_s);
 
-  if (url != NULL) {
-    g_print ("URL for directory is %s\n", url);
+  if (uri != NULL) {
+    g_print ("URI for directory is %s\n", uri);
   }
 
-  g_free (url);
+  g_free (uri);
 
   return 0;
 }

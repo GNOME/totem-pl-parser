@@ -31,6 +31,12 @@
 
 G_BEGIN_DECLS
 
+/* Compatibility defines */
+#define TOTEM_PL_PARSER_FIELD_URL		TOTEM_PL_PARSER_FIELD_URI
+#define TOTEM_PL_PARSER_FIELD_IMAGE_URL		TOTEM_PL_PARSER_FIELD_IMAGE_URI
+#define TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL	TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI
+/* End */
+
 #define TOTEM_TYPE_PL_PARSER            (totem_pl_parser_get_type ())
 #define TOTEM_PL_PARSER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TOTEM_TYPE_PL_PARSER, TotemPlParser))
 #define TOTEM_PL_PARSER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TOTEM_TYPE_PL_PARSER, TotemPlParserClass))
@@ -71,11 +77,11 @@ struct TotemPlParser {
 /* Known metadata fields */
 
 /**
- * TOTEM_PL_PARSER_FIELD_URL:
+ * TOTEM_PL_PARSER_FIELD_URI:
  *
- * Metadata field for an entry's URL.
+ * Metadata field for an entry's URI.
  **/
-#define TOTEM_PL_PARSER_FIELD_URL		"url"
+#define TOTEM_PL_PARSER_FIELD_URI		"url"
 /**
  * TOTEM_PL_PARSER_FIELD_GENRE:
  *
@@ -171,7 +177,7 @@ struct TotemPlParser {
 /**
  * TOTEM_PL_PARSER_FIELD_MOREINFO:
  *
- * Metadata field for an entry's "more info" URL.
+ * Metadata field for an entry's "more info" URI.
  **/
 #define TOTEM_PL_PARSER_FIELD_MOREINFO		"moreinfo"
 /**
@@ -211,18 +217,18 @@ struct TotemPlParser {
  **/
 #define TOTEM_PL_PARSER_FIELD_CONTACT		"contact"
 /**
- * TOTEM_PL_PARSER_FIELD_IMAGE_URL:
+ * TOTEM_PL_PARSER_FIELD_IMAGE_URI:
  *
- * Metadata field for an entry's thumbnail image URL.
+ * Metadata field for an entry's thumbnail image URI.
  **/
-#define TOTEM_PL_PARSER_FIELD_IMAGE_URL		"image-url"
+#define TOTEM_PL_PARSER_FIELD_IMAGE_URI		"image-url"
 /**
- * TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL:
+ * TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI:
  *
- * Metadata field for an entry's download URL. Only used if an alternate download
+ * Metadata field for an entry's download URI. Only used if an alternate download
  * location is available for the entry.
  **/
-#define TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL	"download-url"
+#define TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI	"download-url"
 /**
  * TOTEM_PL_PARSER_FIELD_ID:
  *
@@ -348,9 +354,9 @@ void       totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 						 const char *mimetype);
 
 TotemPlParserResult totem_pl_parser_parse (TotemPlParser *parser,
-					   const char *url, gboolean fallback);
+					   const char *uri, gboolean fallback);
 TotemPlParserResult totem_pl_parser_parse_with_base (TotemPlParser *parser,
-						     const char *url,
+						     const char *uri,
 						     const char *base,
 						     gboolean fallback);
 

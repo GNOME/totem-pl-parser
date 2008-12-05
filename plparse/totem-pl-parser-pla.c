@@ -177,7 +177,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 	if (contents[TITLE_OFFSET] != '\0')
 	{
 		title = contents + TITLE_OFFSET;
-		totem_pl_parser_add_url (parser,
+		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
 					 TOTEM_PL_PARSER_FIELD_FILE, file,
 					 TOTEM_PL_PARSER_FIELD_TITLE, title,
@@ -216,7 +216,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 			break;
 		}
 
-		totem_pl_parser_add_url (parser, TOTEM_PL_PARSER_FIELD_URL, uri, NULL);
+		totem_pl_parser_add_uri (parser, TOTEM_PL_PARSER_FIELD_URI, uri, NULL);
 
 		g_free (uri);
 		g_free (path);

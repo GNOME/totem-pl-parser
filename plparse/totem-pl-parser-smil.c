@@ -44,11 +44,11 @@ parse_smil_entry (TotemPlParser *parser,
 		  const char *parent_title)
 {
 	xml_node_t *node;
-	const char *title, *url, *author, *abstract, *dur, *clip_begin, *copyright;
+	const char *title, *uri, *author, *abstract, *dur, *clip_begin, *copyright;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
 
 	title = NULL;
-	url = NULL;
+	uri = NULL;
 	author = NULL;
 	abstract = NULL;
 	dur = NULL;
@@ -62,7 +62,7 @@ parse_smil_entry (TotemPlParser *parser,
 
 		/* ENTRY should only have one ref and one title nodes */
 		if (g_ascii_strcasecmp (node->name, "video") == 0 || g_ascii_strcasecmp (node->name, "audio") == 0) {
-			url = xml_parser_get_property (node, "src");
+			uri = xml_parser_get_property (node, "src");
 			title = xml_parser_get_property (node, "title");
 			author = xml_parser_get_property (node, "author");
 			dur = xml_parser_get_property (node, "dur");
@@ -70,15 +70,15 @@ parse_smil_entry (TotemPlParser *parser,
 			abstract = xml_parser_get_property (node, "abstract");
 			copyright = xml_parser_get_property (node, "copyright");
 
-			if (url != NULL) {
+			if (uri != NULL) {
 				GFile *resolved;
 
-				if (base_file != NULL && strstr (url, "://") == NULL)
-					resolved = g_file_resolve_relative_path (base_file, url);
+				if (base_file != NULL && strstr (uri, "://") == NULL)
+					resolved = g_file_resolve_relative_path (base_file, uri);
 				else
-					resolved = g_file_new_for_uri (url);
+					resolved = g_file_new_for_uri (uri);
 
-				totem_pl_parser_add_url (parser,
+				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_FILE, resolved,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title ? title : parent_title,
 							 TOTEM_PL_PARSER_FIELD_ABSTRACT, abstract,

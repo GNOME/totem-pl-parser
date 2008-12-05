@@ -76,28 +76,28 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 
 	for (i = 1; i <= num_entries_total; i++) {
 		GtkTreeIter iter;
-		char *url, *title, *relative;
+		char *uri, *title, *relative;
 		GFile *file;
 		gboolean custom_title;
 
 		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
 			continue;
 
-		func (model, &iter, &url, &title, &custom_title, user_data);
+		func (model, &iter, &uri, &title, &custom_title, user_data);
 
-		file = g_file_new_for_uri (url);
+		file = g_file_new_for_uri (uri);
 		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
-			g_free (url);
+			g_free (uri);
 			g_free (title);
 			g_object_unref (file);
 			continue;
 		}
 		g_object_unref (file);
 
-		relative = totem_pl_parser_relative (output, url);
-		buf = g_strdup_printf ("File%d=%s\n", i, relative ? relative : url);
+		relative = totem_pl_parser_relative (output, uri);
+		buf = g_strdup_printf ("File%d=%s\n", i, relative ? relative : uri);
 		g_free (relative);
-		g_free (url);
+		g_free (uri);
 		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (buf);
 		if (success == FALSE) {
@@ -163,7 +163,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 			"X-GNOME-Title", dos_mode);
 
 	if (playlist_title != NULL) {
-		totem_pl_parser_add_url (parser,
+		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
 					 TOTEM_PL_PARSER_FIELD_FILE, file,
 					 TOTEM_PL_PARSER_FIELD_TITLE, playlist_title,
@@ -239,8 +239,8 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 
 			target = g_file_new_for_commandline_arg (file_str);
 			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
-				totem_pl_parser_add_url (parser,
-							 TOTEM_PL_PARSER_FIELD_URL, file_str,
+				totem_pl_parser_add_uri (parser,
+							 TOTEM_PL_PARSER_FIELD_URI, file_str,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
 							 TOTEM_PL_PARSER_FIELD_GENRE, genre,
 							 TOTEM_PL_PARSER_FIELD_DURATION, length,
@@ -254,7 +254,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 
 			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, base_file) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 
-				totem_pl_parser_add_url (parser,
+				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_FILE, target,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
 							 TOTEM_PL_PARSER_FIELD_GENRE, genre,

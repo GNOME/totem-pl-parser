@@ -129,7 +129,7 @@ totem_pl_parser_add_iso (TotemPlParser *parser,
 		char *label;
 
 		label = totem_pl_parser_iso_get_title (file);
-		totem_pl_parser_add_one_url (parser, retval, label);
+		totem_pl_parser_add_one_uri (parser, retval, label);
 		g_free (label);
 		g_free (retval);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
@@ -143,16 +143,16 @@ totem_pl_parser_add_cue (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file, gpointer data)
 {
-	char *vcdurl, *path;
+	char *vcduri, *path;
 
 	path = g_file_get_path (file);
 	if (path == NULL)
 		return TOTEM_PL_PARSER_RESULT_IGNORED;
 
-	vcdurl = totem_cd_mrl_from_type ("vcd", path);
+	vcduri = totem_cd_mrl_from_type ("vcd", path);
 	g_free (path);
-	totem_pl_parser_add_one_url (parser, vcdurl, NULL);
-	g_free (vcdurl);
+	totem_pl_parser_add_one_uri (parser, vcduri, NULL);
+	g_free (vcduri);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
@@ -222,12 +222,12 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 {
 	TotemDiscMediaType type;
 	GList *list, *l;
-	char *media_url, *uri;
+	char *media_uri, *uri;
 
 	uri = g_file_get_uri (file);
-	type = totem_cd_detect_type_from_dir (uri, &media_url, NULL);
+	type = totem_cd_detect_type_from_dir (uri, &media_uri, NULL);
 
-	if (type != MEDIA_TYPE_DATA && type != MEDIA_TYPE_ERROR && media_url != NULL) {
+	if (type != MEDIA_TYPE_DATA && type != MEDIA_TYPE_ERROR && media_uri != NULL) {
 		char *basename = NULL, *fname;
 
 		fname = g_filename_from_uri (uri, NULL, NULL);
@@ -236,9 +236,9 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 			basename = g_filename_display_basename (fname);
 			g_free (fname);
 		}
-		totem_pl_parser_add_one_url (parser, media_url, basename);
+		totem_pl_parser_add_one_uri (parser, media_uri, basename);
 		g_free (basename);
-		g_free (media_url);
+		g_free (media_uri);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
@@ -260,7 +260,7 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 			char *item_uri;
 
 			item_uri = g_file_get_uri (item);
-			totem_pl_parser_add_one_url (parser, item_uri, NULL);
+			totem_pl_parser_add_one_uri (parser, item_uri, NULL);
 			g_free (item_uri);
 		}
 
@@ -283,26 +283,26 @@ totem_pl_parser_add_block (TotemPlParser *parser,
 			   gpointer data)
 {
 	TotemDiscMediaType type;
-	char *media_url, *path;
+	char *media_uri, *path;
 	GError *err = NULL;
 
 	path = g_file_get_path (file);
 	if (path == NULL)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
-	type = totem_cd_detect_type_with_url (path, &media_url, &err);
+	type = totem_cd_detect_type_with_url (path, &media_uri, &err);
 	g_free (path);
 	if (err != NULL) {
-		DEBUG(file, g_print ("Couldn't get CD type for URL '%s': %s\n", uri, err->message));
+		DEBUG(file, g_print ("Couldn't get CD type for URI '%s': %s\n", uri, err->message));
 		g_error_free (err);
 	}
-	if (type == MEDIA_TYPE_DATA || media_url == NULL)
+	if (type == MEDIA_TYPE_DATA || media_uri == NULL)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	else if (type == MEDIA_TYPE_ERROR)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	totem_pl_parser_add_one_url (parser, media_url, NULL);
-	g_free (media_url);
+	totem_pl_parser_add_one_uri (parser, media_uri, NULL);
+	g_free (media_uri);
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
 

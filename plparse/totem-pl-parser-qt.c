@@ -73,7 +73,7 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 {
 	char *contents = NULL;
 	gboolean dos_mode = FALSE;
-	char *volume, *autoplay, *rtspurl;
+	char *volume, *autoplay, *rtspuri;
 	gsize size;
 	char **lines;
 
@@ -90,19 +90,19 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 	autoplay = totem_pl_parser_read_ini_line_string_with_sep
 		(lines, "autoplay", dos_mode, "=");
 
-	rtspurl = g_strdup (lines[0] + strlen ("RTSPtext"));
-	if (rtspurl[0] == '\0') {
-		g_free (rtspurl);
-		rtspurl = g_strdup (lines[1]);
+	rtspuri = g_strdup (lines[0] + strlen ("RTSPtext"));
+	if (rtspuri[0] == '\0') {
+		g_free (rtspuri);
+		rtspuri = g_strdup (lines[1]);
 	}
-	g_strstrip (rtspurl);
+	g_strstrip (rtspuri);
 
-	totem_pl_parser_add_url (parser,
-				 TOTEM_PL_PARSER_FIELD_URL, rtspurl,
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_URI, rtspuri,
 				 TOTEM_PL_PARSER_FIELD_VOLUME, volume,
 				 TOTEM_PL_PARSER_FIELD_AUTOPLAY, autoplay,
 				 NULL);
-	g_free (rtspurl);
+	g_free (rtspuri);
 	g_free (volume);
 	g_free (autoplay);
 	g_strfreev (lines);
@@ -118,7 +118,7 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 	xml_node_t *doc, *node;
 	gsize size;
 	char *contents;
-	const char *item_url, *autoplay;
+	const char *item_uri, *autoplay;
 	gboolean found;
 
 	if (g_str_has_prefix (data, "RTSPtext") != FALSE
@@ -176,8 +176,8 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
-	item_url = xml_parser_get_property (doc, "src");
-	if (!item_url) {
+	item_uri = xml_parser_get_property (doc, "src");
+	if (!item_uri) {
 		xml_parser_free_tree (doc);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
@@ -187,8 +187,8 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 	if (autoplay == NULL)
 		autoplay = "true";
 
-	totem_pl_parser_add_url (parser,
-				 TOTEM_PL_PARSER_FIELD_URL, item_url,
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_URI, item_uri,
 				 TOTEM_PL_PARSER_FIELD_AUTOPLAY, autoplay,
 				 NULL);
 	xml_parser_free_tree (doc);
@@ -203,11 +203,11 @@ totem_pl_parser_add_quicktime (TotemPlParser *parser,
 			       gpointer data)
 {
 	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == NULL) {
-		char *url;
+		char *uri;
 
-		url = g_file_get_uri (file);
-		totem_pl_parser_add_one_url (parser, url, NULL);
-		g_free (url);
+		uri = g_file_get_uri (file);
+		totem_pl_parser_add_one_uri (parser, uri, NULL);
+		g_free (uri);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 

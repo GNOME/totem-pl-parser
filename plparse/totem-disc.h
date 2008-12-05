@@ -54,10 +54,10 @@ typedef enum {
 TotemDiscMediaType	totem_cd_detect_type	(const char *device,
 						 GError     **error);
 TotemDiscMediaType	totem_cd_detect_type_with_url (const char  *device,
-						       char       **url,
+						       char       **mrl,
 						       GError     **error);
 TotemDiscMediaType	totem_cd_detect_type_from_dir (const char *dir,
-						       char      **url, 
+						       char      **mrl, 
 						       GError    **error);
 const char *	totem_cd_get_human_readable_name (TotemDiscMediaType type);
 char *		totem_cd_mrl_from_type (const char *scheme, const char *dir);

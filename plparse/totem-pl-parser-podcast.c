@@ -103,11 +103,11 @@ totem_pl_parser_is_xml_feed (const char *data, gsize len)
 static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
-	const char *title, *url, *description, *author;
+	const char *title, *uri, *description, *author;
 	const char *pub_date, *duration, *filesize;
 	xml_node_t *node;
 
-	title = url = description = author = NULL;
+	title = uri = description = author = NULL;
 	pub_date = duration = filesize = NULL;
 
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -117,7 +117,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 		if (g_ascii_strcasecmp (node->name, "title") == 0) {
 			title = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "url") == 0) {
-			url = node->data;
+			uri = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "pubDate") == 0) {
 			pub_date = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "description") == 0
@@ -135,7 +135,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 
 			tmp = xml_parser_get_property (node, "url");
 			if (tmp != NULL)
-				url = tmp;
+				uri = tmp;
 			else
 				continue;
 			tmp = xml_parser_get_property (node, "length");
@@ -144,9 +144,9 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 		}
 	}
 
-	if (url != NULL) {
-		totem_pl_parser_add_url (parser,
-					 TOTEM_PL_PARSER_FIELD_URL, url,
+	if (uri != NULL) {
+		totem_pl_parser_add_uri (parser,
+					 TOTEM_PL_PARSER_FIELD_URI, uri,
 					 TOTEM_PL_PARSER_FIELD_TITLE, title,
 					 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
 					 TOTEM_PL_PARSER_FIELD_DESCRIPTION, description,
@@ -160,7 +160,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 }
 
 static TotemPlParserResult
-parse_rss_items (TotemPlParser *parser, const char *url, xml_node_t *parent)
+parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 {
 	const char *title, *language, *description, *author;
 	const char *contact, *img, *pub_date, *copyright;
@@ -204,16 +204,16 @@ parse_rss_items (TotemPlParser *parser, const char *url, xml_node_t *parent)
 	}
 
 	/* Send the info we already have about the feed */
-	totem_pl_parser_add_url (parser,
+	totem_pl_parser_add_uri (parser,
 				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
-				 TOTEM_PL_PARSER_FIELD_URL, url,
+				 TOTEM_PL_PARSER_FIELD_URI, uri,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
 				 TOTEM_PL_PARSER_FIELD_LANGUAGE, language,
 				 TOTEM_PL_PARSER_FIELD_DESCRIPTION, description,
 				 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
 				 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
 				 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
-				 TOTEM_PL_PARSER_FIELD_IMAGE_URL, img,
+				 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
 				 NULL);
 
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -224,7 +224,7 @@ parse_rss_items (TotemPlParser *parser, const char *url, xml_node_t *parent)
 			parse_rss_item (parser, node);
 	}
 
-	totem_pl_parser_playlist_end (parser, url);
+	totem_pl_parser_playlist_end (parser, uri);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
@@ -262,11 +262,11 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 
 	for (channel = doc->child; channel != NULL; channel = channel->next) {
 		if (g_ascii_strcasecmp (channel->name, "channel") == 0) {
-			char *url;
+			char *uri;
 
-			url = g_file_get_uri (file);
-			parse_rss_items (parser, url, channel);
-			g_free (url);
+			uri = g_file_get_uri (file);
+			parse_rss_items (parser, uri, channel);
+			g_free (uri);
 
 			/* One channel per file */
 			break;
@@ -291,17 +291,17 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 	WARN_NO_CAMEL;
 #else
 	TotemPlParserResult ret;
-	char *url, *new_url, *uri_scheme;
+	char *uri, *new_uri, *uri_scheme;
 	GFile *new_file;
 
-	url = g_file_get_uri (file);
+	uri = g_file_get_uri (file);
 	uri_scheme = g_file_get_uri_scheme (file);
-	new_url = g_strdup_printf ("http%s", url + strlen (uri_scheme));
-	g_free (url);
+	new_uri = g_strdup_printf ("http%s", uri + strlen (uri_scheme));
+	g_free (uri);
 	g_free (uri_scheme);
 
-	new_file = g_file_new_for_uri (new_url);
-	g_free (new_url);
+	new_file = g_file_new_for_uri (new_uri);
+	g_free (new_uri);
 
 	ret = totem_pl_parser_add_rss (parser, new_file, base_file, data);
 
@@ -321,25 +321,25 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 	WARN_NO_CAMEL;
 #else
 	TotemPlParserResult ret;
-	char *url, *new_url;
+	char *uri, *new_uri;
 	GFile *new_file;
 
-	url = g_file_get_uri (file);
-	if (g_str_has_prefix (url, "zune://subscribe/?") == FALSE) {
-		g_free (url);
+	uri = g_file_get_uri (file);
+	if (g_str_has_prefix (uri, "zune://subscribe/?") == FALSE) {
+		g_free (uri);
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 
-	new_url = strchr (url + strlen ("zune://subscribe/?"), '=');
-	if (new_url == NULL) {
-		g_free (url);
+	new_uri = strchr (uri + strlen ("zune://subscribe/?"), '=');
+	if (new_uri == NULL) {
+		g_free (uri);
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 	/* Skip over the '=' */
-	new_url++;
+	new_uri++;
 
-	new_file = g_file_new_for_uri (new_url);
-	g_free (url);
+	new_file = g_file_new_for_uri (new_uri);
+	g_free (uri);
 
 	ret = totem_pl_parser_add_rss (parser, new_file, base_file, data);
 
@@ -356,11 +356,11 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 static TotemPlParserResult
 parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 {
-	const char *title, *author, *img, *url, *filesize;
+	const char *title, *author, *img, *uri, *filesize;
 	const char *copyright, *pub_date, *description;
 	xml_node_t *node;
 
-	title = author = img = url = filesize = NULL;
+	title = author = img = uri = filesize = NULL;
 	copyright = pub_date = description = NULL;
 
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -385,7 +385,7 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 				href = xml_parser_get_property (node, "href");
 				if (href == NULL)
 					continue;
-				url = href;
+				uri = href;
 				filesize = xml_parser_get_property (node, "length");
 			} else if (g_ascii_strcasecmp (node->name, "license") == 0) {
 				const char *href;
@@ -410,11 +410,11 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 		//FIXME handle category
 	}
 
-	if (url != NULL) {
-		totem_pl_parser_add_url (parser,
+	if (uri != NULL) {
+		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_TITLE, title,
 					 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
-					 TOTEM_PL_PARSER_FIELD_URL, url,
+					 TOTEM_PL_PARSER_FIELD_URI, uri,
 					 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
 					 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
 					 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
@@ -426,7 +426,7 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 }
 
 static TotemPlParserResult
-parse_atom_entries (TotemPlParser *parser, const char *url, xml_node_t *parent)
+parse_atom_entries (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 {
 	const char *title, *pub_date, *description;
 	const char *author, *img;
@@ -458,14 +458,14 @@ parse_atom_entries (TotemPlParser *parser, const char *url, xml_node_t *parent)
 		if (g_ascii_strcasecmp (node->name, "entry") == 0) {
 			if (started == FALSE) {
 				/* Send the info we already have about the feed */
-				totem_pl_parser_add_url (parser,
+				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
-							 TOTEM_PL_PARSER_FIELD_URL, url,
+							 TOTEM_PL_PARSER_FIELD_URI, uri,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
 							 TOTEM_PL_PARSER_FIELD_DESCRIPTION, description,
 							 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
 							 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
-							 TOTEM_PL_PARSER_FIELD_IMAGE_URL, img,
+							 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
 							 NULL);
 				started = TRUE;
 			}
@@ -474,7 +474,7 @@ parse_atom_entries (TotemPlParser *parser, const char *url, xml_node_t *parent)
 		}
 	}
 
-	totem_pl_parser_playlist_end (parser, url);
+	totem_pl_parser_playlist_end (parser, uri);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
@@ -489,7 +489,7 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 	WARN_NO_CAMEL;
 #else
 	xml_node_t* doc;
-	char *contents, *url;
+	char *contents, *uri;
 	gsize size;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
@@ -508,9 +508,9 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
-	url = g_file_get_uri (file);
-	parse_atom_entries (parser, url, doc);
-	g_free (url);
+	uri = g_file_get_uri (file);
+	parse_atom_entries (parser, uri, doc);
+	g_free (uri);
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
@@ -655,13 +655,13 @@ totem_pl_parser_parse_itms_doc (xml_node_t *item)
 }
 
 static GFile *
-totem_pl_parser_get_feed_url (const char *data, gsize len)
+totem_pl_parser_get_feed_uri (const char *data, gsize len)
 {
 	xml_node_t* doc;
-	const char *url;
+	const char *uri;
 	GFile *ret;
 
-	url = NULL;
+	uri = NULL;
 
 	xml_parser_init (data, len, XML_PARSER_CASE_INSENSITIVE);
 	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0)
@@ -674,20 +674,20 @@ totem_pl_parser_get_feed_url (const char *data, gsize len)
 		return NULL;
 	}
 
-	url = totem_pl_parser_parse_itms_doc (doc);
-	if (url == NULL) {
+	uri = totem_pl_parser_parse_itms_doc (doc);
+	if (uri == NULL) {
 		xml_parser_free_tree (doc);
 		return NULL;
 	}
 
-	ret = g_file_new_for_uri (url);
+	ret = g_file_new_for_uri (uri);
 	xml_parser_free_tree (doc);
 
 	return ret;
 }
 
 static char *
-totem_pl_parser_get_itms_url (const char *data)
+totem_pl_parser_get_itms_uri (const char *data)
 {
 	char *s, *end, *ret;
 #define ITMS_OPEN "<body onload=\"return itmsOpen('"
@@ -717,8 +717,8 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 #ifndef HAVE_CAMEL
 	WARN_NO_CAMEL;
 #else
-	char *contents, *uncompressed, *itms_url;
-	GFile *itms_file, *feed_url;
+	char *contents, *uncompressed, *itms_uri;
+	GFile *itms_file, *feed_uri;
 	TotemPlParserResult ret;
 	gsize size;
 
@@ -733,16 +733,16 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 			return TOTEM_PL_PARSER_RESULT_ERROR;
 
 		/* Look for the link to the itms on phobos */
-		itms_url = totem_pl_parser_get_itms_url (uncompressed);
+		itms_uri = totem_pl_parser_get_itms_uri (uncompressed);
 		g_free (uncompressed);
 	} else {
-		itms_url= g_file_get_uri (file);
-		memcpy (itms_url, "http", 4);
+		itms_uri= g_file_get_uri (file);
+		memcpy (itms_uri, "http", 4);
 	}
 
 	/* Get the phobos linked, in some weird iTunes only format */
-	itms_file = g_file_new_for_uri (itms_url);
-	g_free (itms_url);
+	itms_file = g_file_new_for_uri (itms_uri);
+	g_free (itms_uri);
 
 	if (g_file_load_contents (itms_file, NULL, &contents, &size, NULL, NULL) == FALSE) {
 		g_object_unref (itms_file);
@@ -756,12 +756,12 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	/* And look in the file for the feedURL */
-	feed_url = totem_pl_parser_get_feed_url (uncompressed, strlen (uncompressed) + 1);
-	if (feed_url == NULL)
+	feed_uri = totem_pl_parser_get_feed_uri (uncompressed, strlen (uncompressed) + 1);
+	if (feed_uri == NULL)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	ret = totem_pl_parser_add_rss (parser, feed_url, NULL, NULL);
-	g_object_unref (feed_url);
+	ret = totem_pl_parser_add_rss (parser, feed_uri, NULL, NULL);
+	g_object_unref (feed_uri);
 
 	return ret;
 #endif /* !HAVE_CAMEL */
@@ -770,31 +770,31 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 gboolean
 totem_pl_parser_is_itms_feed (GFile *file)
 {
-	char *url;
+	char *uri;
 
 	g_return_val_if_fail (file != NULL, FALSE);
 
-	url = g_file_get_uri (file);
+	uri = g_file_get_uri (file);
 
 	if (g_file_has_uri_scheme (file, "itms") != FALSE
-	    && strstr (url, "phobos.apple.com") != NULL
-	    && strstr (url, "viewPodcast") != NULL) {
-	    	g_free (url);
+	    && strstr (uri, "phobos.apple.com") != NULL
+	    && strstr (uri, "viewPodcast") != NULL) {
+	    	g_free (uri);
 		return TRUE;
 	}
 
-	if (strstr (url, "phobos.apple.com/") != NULL
-	    && strstr (url, "viewPodcast") != NULL) {
-	    	g_free (url);
+	if (strstr (uri, "phobos.apple.com/") != NULL
+	    && strstr (uri, "viewPodcast") != NULL) {
+	    	g_free (uri);
 		return TRUE;
 	}
 
-	if (strstr (url, "itunes.com/podcast") != NULL) {
-		g_free (url);
+	if (strstr (uri, "itunes.com/podcast") != NULL) {
+		g_free (uri);
 		return TRUE;
 	}
 
-	g_free (url);
+	g_free (uri);
 
 	return FALSE;
 }
@@ -803,22 +803,22 @@ static TotemPlParserResult
 parse_opml_outline (TotemPlParser *parser, xml_node_t *parent)
 {
 	xml_node_t* node;
-	const char *title, *url;
+	const char *title, *uri;
 
-	title = url = NULL;
+	title = uri = NULL;
 	for (node = parent->child; node != NULL; node = node->next) {
 		if (node->name == NULL || g_ascii_strcasecmp (node->name, "outline") != 0)
 			continue;
 
-		url = xml_parser_get_property (node, "xmlUrl");
+		uri = xml_parser_get_property (node, "xmlUrl");
 		title = xml_parser_get_property (node, "text");
 
-		if (url == NULL)
+		if (uri == NULL)
 			continue;
 
-		totem_pl_parser_add_url (parser,
+		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_TITLE, title,
-					 TOTEM_PL_PARSER_FIELD_URL, url,
+					 TOTEM_PL_PARSER_FIELD_URI, uri,
 					 NULL);
 	}
 
@@ -826,7 +826,7 @@ parse_opml_outline (TotemPlParser *parser, xml_node_t *parent)
 }
 
 static TotemPlParserResult
-parse_opml_head_body (TotemPlParser *parser, const char *url, xml_node_t *parent)
+parse_opml_head_body (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 {
 	xml_node_t* node;
 	gboolean started;
@@ -840,9 +840,9 @@ parse_opml_head_body (TotemPlParser *parser, const char *url, xml_node_t *parent
 		if (g_ascii_strcasecmp (node->name, "body") == 0) {
 			if (started == FALSE) {
 				/* Send the info we already have about the feed */
-				totem_pl_parser_add_url (parser,
+				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
-							 TOTEM_PL_PARSER_FIELD_URL, url,
+							 TOTEM_PL_PARSER_FIELD_URI, uri,
 							 NULL);
 				started = TRUE;
 			}
@@ -864,7 +864,7 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 	WARN_NO_CAMEL;
 #else
 	xml_node_t* doc;
-	char *contents, *url;
+	char *contents, *uri;
 	gsize size;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
@@ -883,9 +883,9 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
-	url = g_file_get_uri (file);
-	parse_opml_head_body (parser, url, doc);
-	g_free (url);
+	uri = g_file_get_uri (file);
+	parse_opml_head_body (parser, uri, doc);
+	g_free (uri);
 
 	g_free (contents);
 	xml_parser_free_tree (doc);
