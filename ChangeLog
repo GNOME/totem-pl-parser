@@ -1,3 +1,10 @@
+2008-12-05  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-disc.c (cd_cache_get_dev_from_volumes),
+	(cd_cache_has_content_type), (cd_cache_disc_is_cdda):
+	Make detecting the type of devices not connected 1-to-1
+	to a drive work again, as it did in 2.24
+
 2008-12-01  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-builtins.c

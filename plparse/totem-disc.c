@@ -204,6 +204,38 @@ cd_cache_get_dev_from_volumes (GVolumeMonitor *mon, const char *device,
   g_list_foreach (list, (GFunc) g_object_unref, NULL);
   g_list_free (list);
 
+  if (found != FALSE)
+    return found;
+
+  /* Not in the drives? Look in the volumes themselves */
+  found = FALSE;
+  list = g_volume_monitor_get_volumes (mon);
+  for (l = list; l != NULL; l = l->next) {
+    GVolume *vol;
+    char *ddev, *resolved;
+
+    vol = l->data;
+    ddev = g_volume_get_identifier (vol, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+    if (ddev == NULL)
+      continue;
+    resolved = totem_resolve_symlink (ddev, NULL);
+    g_free (ddev);
+    if (resolved == NULL)
+      continue;
+
+    if (strcmp (resolved, device) == 0) {
+      found = TRUE;
+      *volume = g_object_ref (vol);
+    }
+
+    g_free (resolved);
+    if (found != FALSE)
+      break;
+  }
+
+  g_list_foreach (list, (GFunc) g_object_unref, NULL);
+  g_list_free (list);
+
   return found;
 }
 
@@ -213,12 +245,10 @@ cd_cache_has_content_type (CdCache *cache, const char *content_type)
   guint i;
 
   if (cache->content_types == NULL) {
-    g_message ("no content type");
     return FALSE;
   }
 
   for (i = 0; cache->content_types[i] != NULL; i++) {
-    g_message ("type: %s", cache->content_types[i]);
     if (g_str_equal (cache->content_types[i], content_type) != FALSE)
       return TRUE;
   }
@@ -526,7 +556,6 @@ cd_cache_disc_is_cdda (CdCache *cache,
 {
   /* We can't have audio CDs on disc, yet */
   if (cache->is_media == FALSE) {
-    g_message ("has no media");
     return MEDIA_TYPE_DATA;
   }
   if (!cd_cache_open_device (cache, error))
