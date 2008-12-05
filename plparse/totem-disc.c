@@ -548,6 +548,10 @@ cd_cache_disc_is_cdda (CdCache *cache,
     DBusError error;
     dbus_bool_t is_cdda;
 
+    if (libhal_device_property_exists (cache->ctx,
+				       cache->disc_udi, "volume.disc.has_audio", NULL) == FALSE)
+      return MEDIA_TYPE_DATA;
+
     dbus_error_init (&error);
 
     is_cdda = libhal_device_get_property_bool (cache->ctx,
@@ -649,19 +653,26 @@ cd_cache_disc_is_vcd (CdCache *cache,
     DBusError error;
     dbus_bool_t is_vcd;
 
-    dbus_error_init (&error);
+    if (libhal_device_property_exists (cache->ctx,
+				       cache->disc_udi, "volume.disc.is_vcd", NULL) != FALSE) {
+      dbus_error_init (&error);
 
-    is_vcd = libhal_device_get_property_bool (cache->ctx,
-	cache->disc_udi, "volume.disc.is_vcd", &error);
+      is_vcd = libhal_device_get_property_bool (cache->ctx,
+						cache->disc_udi, "volume.disc.is_vcd", &error);
 
-    if (dbus_error_is_set (&error)) {
-      g_warning ("Error checking whether the volume is a VCD: %s",
-	  error.message);
-      dbus_error_free (&error);
-      return MEDIA_TYPE_ERROR;
+      if (dbus_error_is_set (&error)) {
+	g_warning ("Error checking whether the volume is a VCD: %s",
+		   error.message);
+	dbus_error_free (&error);
+	return MEDIA_TYPE_ERROR;
+      }
+      if (is_vcd != FALSE)
+	return MEDIA_TYPE_VCD;
     }
-    if (is_vcd != FALSE)
-      return MEDIA_TYPE_VCD;
+    if (libhal_device_property_exists (cache->ctx,
+				       cache->disc_udi, "volume.disc.is_svcd", NULL) == FALSE)
+      return MEDIA_TYPE_DATA;
+
     is_vcd = libhal_device_get_property_bool (cache->ctx,
 	cache->disc_udi, "volume.disc.is_svcd", &error);
 
@@ -697,6 +708,10 @@ cd_cache_disc_is_dvd (CdCache *cache,
   if (cache->is_media != FALSE) {
     DBusError error;
     dbus_bool_t is_dvd;
+
+    if (libhal_device_property_exists (cache->ctx,
+				       cache->disc_udi, "volume.disc.is_videodvd", NULL) == FALSE)
+      return MEDIA_TYPE_DATA;
 
     dbus_error_init (&error);
 
@@ -906,7 +921,7 @@ totem_cd_detect_type_with_url (const char *device,
       type = MEDIA_TYPE_ERROR;
       /* No error, it's just not usable */
     } else {
-      *url = g_strdup (cache->mountpoint);
+      *url = g_filename_to_uri (cache->mountpoint, NULL, NULL);
     }
     break;
   default:
