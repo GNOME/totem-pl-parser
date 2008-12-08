@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+2.24.3:
+* Fix parsing of RSS feeds that use HTML comments
+* Fix problems that made Totem show an error when selecting
+  a data device in the Movie menu
+
 2.24.2:
 * Fix parsing of M3U files
 * Export missing symbol, fixes the Python bindings

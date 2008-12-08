@@ -1,3 +1,10 @@
+============ Version 2.24.3
+
+2008-12-08  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.24.3
+
 2008-12-05  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-disc.c (cd_cache_disc_is_cdda),
