@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+2.25.1 (changes to 2.24.3):
+* Port disc detection code to GIO, remove HAL dependency
+* Add a way to disable the libcamel dependency for very
+  specific system integration cases
+* Use error codes properly and document them
+
 2.23.91:
 * Add support for parsing Zune and ZENCast URLs
 * Fix parsing broken podcasts with HTML comments in them
