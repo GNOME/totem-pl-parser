@@ -22,3 +22,4 @@ totem_pl_parser_result_get_type
 totem_pl_parser_type_get_type
 totem_pl_parser_write
 totem_pl_parser_write_with_title
+totem_pl_parser_metadata_get_type

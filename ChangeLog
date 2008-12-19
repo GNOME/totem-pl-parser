@@ -1,3 +1,7 @@
+2008-12-19  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
+
+	* plparse/plparser.symbols: Bug 556719 – totem binding does not work.
+
 ============ Version 2.25.1
 
 2008-12-08  Bastien Nocera  <hadess@hadess.net>
