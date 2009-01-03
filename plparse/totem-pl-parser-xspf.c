@@ -244,6 +244,8 @@ bail:
 	SAFE_FREE (album);
 	SAFE_FREE (duration);
 	SAFE_FREE (moreinfo);
+	SAFE_FREE (download_uri);
+	SAFE_FREE (id);
 
 	return retval;
 }

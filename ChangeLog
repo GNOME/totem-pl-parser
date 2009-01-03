@@ -1,3 +1,8 @@
+2009-01-03  Pascal Terjan <pterjan@linuxfr.org>
+
+	* plparse/totem-pl-parser-xspf.c: Fix memory leaks in 
+	parse_xspf_track (Closes: #566446)
+
 2008-12-19  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
 
 	* plparse/plparser.symbols: Bug 556719 – totem binding does not work.
