@@ -1443,9 +1443,10 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 	if (g_file_has_uri_scheme (file, "mms") != FALSE
 			|| g_file_has_uri_scheme (file, "rtsp") != FALSE
+			|| g_file_has_uri_scheme (file, "rtmp") != FALSE
 			|| g_file_has_uri_scheme (file, "icy") != FALSE
 			|| g_file_has_uri_scheme (file, "pnm") != FALSE) {
-		DEBUG(file, g_print ("URI '%s' is MMS, RTSP, PNM or ICY, not a playlist\n", uri));
+		DEBUG(file, g_print ("URI '%s' is MMS, RTSP, RTMP, PNM or ICY, not a playlist\n", uri));
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 

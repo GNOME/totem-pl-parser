@@ -1,3 +1,8 @@
+2009-01-05  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser.c (totem_pl_parser_parse_internal):
+	Also ignore RTMP:// URIs
+
 2009-01-03  Pascal Terjan <pterjan@linuxfr.org>
 
 	* plparse/totem-pl-parser-xspf.c: Fix memory leaks in 
