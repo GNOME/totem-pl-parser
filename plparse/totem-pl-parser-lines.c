@@ -366,6 +366,17 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		return retval;
 	}
 
+	/* Try to use ISO-8859-1 if we don't have valid UTF-8,
+	 * try to parse anyway if it's not ISO-8859-1 */
+	if (g_utf8_validate (contents, -1, NULL) == FALSE) {
+		char *fixed;
+		fixed = g_convert (contents, -1, "UTF-8", "ISO8859-1", NULL, NULL, NULL);
+		if (fixed != NULL) {
+			g_free (contents);
+			contents = fixed;
+		}
+	}
+
 	/* is non-NULL if there's an EXTINF on a preceding line */
 	extinfo = NULL;
 
