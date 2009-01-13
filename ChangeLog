@@ -1,3 +1,9 @@
+2009-01-13  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-smil.c (parse_smil_entry):
+	* plparse/totem-pl-parser.c: Patch from Sandor Pinter
+	to add support for WPL playlists (Closes: #567142)
+
 2009-01-07  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser-lines.c (totem_pl_parser_add_m3u):

@@ -61,7 +61,9 @@ parse_smil_entry (TotemPlParser *parser,
 			continue;
 
 		/* ENTRY should only have one ref and one title nodes */
-		if (g_ascii_strcasecmp (node->name, "video") == 0 || g_ascii_strcasecmp (node->name, "audio") == 0) {
+		if (g_ascii_strcasecmp (node->name, "video") == 0 
+                    || g_ascii_strcasecmp (node->name, "audio") == 0
+                    || g_ascii_strcasecmp (node->name, "media") == 0) {
 			uri = xml_parser_get_property (node, "src");
 			title = xml_parser_get_property (node, "title");
 			author = xml_parser_get_property (node, "author");
