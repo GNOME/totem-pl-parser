@@ -3,16 +3,16 @@
 #
 # Runa Bhattacharjee<runa77@softhome.net>, 2003.
 # Runa Bhattacharjee <runabh@gmail.com>, 2007.
-# Runa Bhattacharjee <runab@redhat.com>, 2008.
+# Runa Bhattacharjee <runab@redhat.com>, 2008, 2009.
 # Runa Bhattacharjee <runab@fedoraproject.org>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-03 18:38+0000\n"
-"PO-Revision-Date: 2008-02-28 11:51+0530\n"
-"Last-Translator: Runa Bhattacharjee <runab@fedoraproject.org>\n"
-"Language-Team: Bengali INDIA <discuss@ankur.co.in>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&amp;component=playlist parser\n"
+"POT-Creation-Date: 2008-11-27 17:18+0000\n"
+"PO-Revision-Date: 2009-01-20 17:52+0530\n"
+"Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
+"Language-Team: Bengali INDIA <fedora-trans-bn_IN@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,54 +21,35 @@ msgstr ""
 "\n"
 "\n"
 
-#: ../plparse/totem-disc.c:286
+#: ../plparse/totem-disc.c:319 ../plparse/totem-disc.c:460
 #, c-format
-msgid "Failed to find mountpoint for device %s"
-msgstr "ডিভাইস %s-র মাউন্ট-পয়েন্ট সনাক্ত করতে ব্যর্থ"
+msgid "Failed to mount %s."
+msgstr "%s মাউন্ট করতে ব্যর্থ।"
 
-#: ../plparse/totem-disc.c:296
-msgid "Could not connect to the HAL daemon"
-msgstr "HAL ডেমনের সাথে সংযোগ করতে ব্যর্থ"
+#: ../plparse/totem-disc.c:349
+#, c-format
+msgid "No media in drive for device '%s'."
+msgstr "ডিভাইস '%s'-র জন্য ড্রাইভের মধ্যে কোনো মিডিয়া উপস্থিত নেই।"
 
-#: ../plparse/totem-disc.c:396
+#: ../plparse/totem-disc.c:403
+#, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "ড্রাইভের মধ্যে ডিস্ক উপস্থিত আছে কিনা পরীক্ষা করুন।"
 
-#: ../plparse/totem-disc.c:443
-#, c-format
-msgid "Failed to mount %s"
-msgstr "%s মাউন্ট করতে ব্যর্থ"
-
-#: ../plparse/totem-disc.c:467
-#, c-format
-msgid "Failed to find mountpoint for %s"
-msgstr "%s-র মাউন্ট-পয়েন্ট সনাক্ত করতে ব্যর্থ"
-
-#: ../plparse/totem-disc.c:860
+#: ../plparse/totem-disc.c:843
 msgid "Audio CD"
 msgstr "অডিও CD"
 
 # ঠিক করেন
-#: ../plparse/totem-disc.c:862
+#: ../plparse/totem-disc.c:845
 msgid "Video CD"
 msgstr "ভিডিও CD"
 
-#: ../plparse/totem-disc.c:864
+#: ../plparse/totem-disc.c:847
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:866
+#: ../plparse/totem-disc.c:849
 msgid "Digital Television"
 msgstr "ডিজিট্যাল টেলিভিশন"
-
-#: ../plparse/totem-pl-parser.c:447
-#, c-format
-msgid "Couldn't write parser: %s"
-msgstr "পার্সার লেখা যায়নি: %s"
-
-#: ../plparse/totem-pl-parser-lines.c:105 ../plparse/totem-pl-parser-pla.c:78
-#: ../plparse/totem-pl-parser-pls.c:70 ../plparse/totem-pl-parser-xspf.c:106
-#, c-format
-msgid "Couldn't open file '%s': %s"
-msgstr "'%s' নামক ফাইল খোলা যায়নি: %s"
 
