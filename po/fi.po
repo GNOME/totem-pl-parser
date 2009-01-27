@@ -1,16 +1,16 @@
 # Finnish messages for totem-pl-parser.
-# Copyright (C) 2002, 2003, 2005 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2005-2009 Free Software Foundation, Inc.
 # Suomennos: http://gnome.fi/
 #
-# Ilkka Tuohela <hile@iki.fi>, 2002,2003,2005-2008.
+# Ilkka Tuohela <hile@iki.fi>, 2002,2003,2005-2009.
 # Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2003-2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-11 16:23+0300\n"
-"PO-Revision-Date: 2008-08-11 16:10+0300\n"
+"POT-Creation-Date: 2009-01-27 18:06+0300\n"
+"PO-Revision-Date: 2009-01-27 18:10+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,41 +18,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../plparse/totem-disc.c:314 ../plparse/totem-disc.c:459
+#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
 #, c-format
-msgid "Failed to mount %s"
-msgstr "Asemaa \"%s\" ei voi liittää"
+msgid "Failed to mount %s."
+msgstr "Levyä \"%s\" ei voitu liittää."
 
-#: ../plparse/totem-disc.c:342
+#: ../plparse/totem-disc.c:387
 #, c-format
-msgid "No media in drive for device '%s'"
-msgstr "Asemassa ei ole mediaa laitteelle \"%s\""
+msgid "No media in drive for device '%s'."
+msgstr "Laitteen \"%s\" asemassa ei ole levyä."
 
-#: ../plparse/totem-disc.c:352
-#, c-format
-msgid "Could not connect to the HAL daemon"
-msgstr "HAL-palvelimeen ei saatu yhteyttä"
-
-#: ../plparse/totem-disc.c:402
+#: ../plparse/totem-disc.c:441
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Varmista, että levy on asemassa."
 
-#: ../plparse/totem-disc.c:975
+#: ../plparse/totem-disc.c:880
 msgid "Audio CD"
 msgstr "Ääni-CD"
 
-#: ../plparse/totem-disc.c:977
+#: ../plparse/totem-disc.c:882
 msgid "Video CD"
 msgstr "Video-CD"
 
-#: ../plparse/totem-disc.c:979
+#: ../plparse/totem-disc.c:884
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:981
+#: ../plparse/totem-disc.c:886
 msgid "Digital Television"
 msgstr "Digi-TV"
+
+#~ msgid "Could not connect to the HAL daemon"
+#~ msgstr "HAL-palvelimeen ei saatu yhteyttä"
 
 #~ msgid "Leave Fullscreen"
 #~ msgstr "Poistu kokoruudusta"
