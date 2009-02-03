@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.25.90:
+* Add support for the WPL playlist type
+* Fix the Python bindings not working
+* Fix a few memory leaks in XSPF parsing
+* Fix parsing of ISO-8859-1 M3U files
+* Ignore rtmp:// URIs
+
 2.25.1 (changes to 2.24.3):
 * Port disc detection code to GIO, remove HAL dependency
 * Add a way to disable the libcamel dependency for very
