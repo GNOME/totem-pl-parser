@@ -63,7 +63,9 @@
  *  <title>Writing a Playlist</title>
  *  <programlisting>
  * void
- * parser_func (GtkTreeModel *model, GtkTreeIter *iter, gchar **uri, gchar **title, gboolean *custom_title, gpointer user_data)
+ * parser_func (GtkTreeModel *model, GtkTreeIter *iter,
+ * 		gchar **uri, gchar **title, gboolean *custom_title,
+ * 		gpointer user_data)
  * {
  * 	gtk_tree_model_get (model, iter,
  * 		0, uri,
@@ -83,8 +85,10 @@
  * 	tree_model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
  * 	populate_model (tree_model);
  *
- * 	if (totem_pl_parser_write (pl, tree_model, parser_func, "/tmp/playlist.pls", TOTEM_PL_PARSER_PLS, NULL, NULL) != TRUE)
+ * 	if (totem_pl_parser_write (pl, tree_model, parser_func, "/tmp/playlist.pls",
+ * 				   TOTEM_PL_PARSER_PLS, NULL, NULL) != TRUE) {
  * 		g_error ("Playlist writing failed.");
+ * 	}
  *
  * 	g_object_unref (tree_model);
  * 	g_object_unref (pl);

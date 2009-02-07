@@ -1,3 +1,17 @@
+2009-02-07  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* configure.in:
+	* docs/reference/Makefile.am:
+	* docs/reference/totem-pl-parser-docs.sgml:
+	* docs/reference/totem-pl-parser-docs.xml:
+	* docs/reference/totem-pl-parser-sections.txt:
+	* plparse/totem-disc.c:
+	* plparse/totem-pl-parser.c:
+	* plparse/totem-pl-parser.h: Tidy up the documentation a bit, taking
+	advantage of recent gtk-doc features, and also adding missing "since"
+	and "deprecated" tags to a few symbols. gtkdoc-check will now run on
+	`make check`.
+
 ============ Version 2.25.90
 
 2009-02-03  Bastien Nocera  <hadess@hadess.net>

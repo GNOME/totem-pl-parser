@@ -32,8 +32,31 @@
 G_BEGIN_DECLS
 
 /* Compatibility defines */
+
+/**
+ * TOTEM_PL_PARSER_FIELD_URL:
+ *
+ * Metadata field for an entry's URL.
+ *
+ * Deprecated: 2.26: Use %TOTEM_PL_PARSER_FIELD_URI instead.
+ **/
 #define TOTEM_PL_PARSER_FIELD_URL		TOTEM_PL_PARSER_FIELD_URI
+/**
+ * TOTEM_PL_PARSER_FIELD_IMAGE_URL:
+ *
+ * Metadata field for an entry's thumbnail image URL.
+ *
+ * Deprecated: 2.26: Use %TOTEM_PL_PARSER_FIELD_IMAGE_URI instead.
+ **/
 #define TOTEM_PL_PARSER_FIELD_IMAGE_URL		TOTEM_PL_PARSER_FIELD_IMAGE_URI
+/**
+ * TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL:
+ *
+ * Metadata field for an entry's download URL. Only used if an alternate download
+ * location is available for the entry.
+ *
+ * Deprecated: 2.26: Use %TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI instead.
+ **/
 #define TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL	TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI
 /* End */
 
@@ -52,8 +75,7 @@ G_BEGIN_DECLS
  *
  * Gives the result of parsing a playlist.
  **/
-typedef enum
-{
+typedef enum {
 	TOTEM_PL_PARSER_RESULT_UNHANDLED,
 	TOTEM_PL_PARSER_RESULT_ERROR,
 	TOTEM_PL_PARSER_RESULT_SUCCESS,
@@ -80,6 +102,8 @@ struct TotemPlParser {
  * TOTEM_PL_PARSER_FIELD_URI:
  *
  * Metadata field for an entry's URI.
+ *
+ * Since: 2.26
  **/
 #define TOTEM_PL_PARSER_FIELD_URI		"url"
 /**
@@ -220,6 +244,8 @@ struct TotemPlParser {
  * TOTEM_PL_PARSER_FIELD_IMAGE_URI:
  *
  * Metadata field for an entry's thumbnail image URI.
+ *
+ * Since: 2.26
  **/
 #define TOTEM_PL_PARSER_FIELD_IMAGE_URI		"image-url"
 /**
@@ -227,6 +253,8 @@ struct TotemPlParser {
  *
  * Metadata field for an entry's download URI. Only used if an alternate download
  * location is available for the entry.
+ *
+ * Since: 2.26
  **/
 #define TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI	"download-url"
 /**
@@ -281,8 +309,7 @@ struct TotemPlParserClass {
  *
  * The type of playlist a #TotemPlParser will parse.
  **/
-typedef enum
-{
+typedef enum {
 	TOTEM_PL_PARSER_PLS,
 	TOTEM_PL_PARSER_M3U,
 	TOTEM_PL_PARSER_M3U_DOS,
@@ -298,8 +325,7 @@ typedef enum
  * Allows you to differentiate between different
  * errors occurring during file operations in a #TotemPlParser.
  **/
-typedef enum
-{
+typedef enum {
 	TOTEM_PL_PARSER_ERROR_NO_DISC,
 	TOTEM_PL_PARSER_ERROR_MOUNT_FAILED
 } TotemPlParserError;

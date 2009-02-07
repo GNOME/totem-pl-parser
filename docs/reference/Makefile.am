@@ -12,7 +12,7 @@ AUTOMAKE_OPTIONS = 1.6
 DOC_MODULE=totem-pl-parser
 
 # The top-level SGML file. You can change this if you want to.
-DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
+DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir).
 # gtk-doc will search all .c & .h files beneath here for inline comments
@@ -29,7 +29,7 @@ SCAN_OPTIONS=
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
-MKDB_OPTIONS=--sgml-mode --output-format=xml
+MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=totem_pl_parser
 
 # Extra options to supply to gtkdoc-mktmpl
 # e.g. MKTMPL_OPTIONS=--only-section-tmpl
@@ -95,3 +95,5 @@ include $(top_srcdir)/gtk-doc.make
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
 EXTRA_DIST += version.xml.in
+
+TESTS = $(GTKDOC_CHECK)

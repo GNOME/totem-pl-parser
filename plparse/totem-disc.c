@@ -38,7 +38,7 @@
  *
  * The functions in this file refer to MRLs, which are a special form
  * of URIs used by xine to refer to things such as DVDs. An example of
- * an MRL would be <example>dvd:///dev/scd0</example>, which is not a
+ * an MRL would be <literal>dvd:///dev/scd0</literal>, which is not a
  * valid URI as far as, for example, GIO is concerned.
  *
  * The rest of the totem-pl-parser API exclusively uses URIs.
