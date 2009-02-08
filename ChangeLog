@@ -1,3 +1,15 @@
+2009-02-08  Jonathan Matthew  <jonathan@d14n.org>
+
+	* plparse/totem-pl-parser-pla.c: (totem_pl_parser_write_pla),
+	(totem_pl_parser_add_pla):
+	The first 16 bits of the playlist entry record are actually the
+	one-based offset of the first character of the filename.  Set this
+	correctly (rather than always to 0x1A) so the playlists look right
+	when viewed on the device.  (Closes: #570484)
+
+	Also update my email address and fix a couple of debug output
+	statements.
+
 ============ Version 2.24.3
 
 2008-12-08  Bastien Nocera  <hadess@hadess.net>

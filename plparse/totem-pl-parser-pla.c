@@ -16,7 +16,7 @@
    write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301  USA.
 
-   Author: Jonathan Matthew <jonathan@kaolin.wh9.net>
+   Author: Jonathan Matthew <jonathan@d14n.org>
  */
 
 #include "config.h"
@@ -73,7 +73,7 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	strncpy (buffer + TITLE_OFFSET, title, TITLE_SIZE);
 	if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, error) == FALSE)
 	{
-		DEBUG(NULL, g_print ("Couldn't write header block for '%s'", uri));
+		DEBUG(output, g_print ("Couldn't write header block for '%s'", uri));
 		g_free (buffer);
 		return FALSE;
 	}
@@ -81,32 +81,45 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	ret = TRUE;
 	for (i = 1; i <= num_entries_total; i++) {
 		GtkTreeIter iter;
-		char *uri, *title, *path, *converted;
+		char *euri, *title, *path, *converted, *filename;
 		gsize written;
 		gboolean custom_title;
 
 		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
 			continue;
 
-		func (model, &iter, &uri, &title, &custom_title, user_data);
+		func (model, &iter, &euri, &title, &custom_title, user_data);
 		g_free (title);
 
 		memset (buffer, 0, RECORD_SIZE);
-		/* this value appears to identify the directory holding the file,
-		 * but it doesn't seem to matter if it doesn't.
-		 */
-		buffer[1] = 0x1A;
 
 		/* convert to filename */
-		path = g_filename_from_uri (uri, NULL, error);
+		path = g_filename_from_uri (euri, NULL, error);
 		if (path == NULL)
 		{
-			DEBUG(NULL, g_print ("Couldn't convert URI '%s' to a filename: %s\n", uri, (*error)->message));
-			g_free (uri);
+			DEBUG(NULL, g_print ("Couldn't convert URI '%s' to a filename: %s\n", euri, (*error)->message));
+			g_free (euri);
 			ret = FALSE;
 			break;
 		}
-		g_free (uri);
+		g_free (euri);
+
+		/* the first two bytes of the record give the offset of the first character in the
+		 * filename.  this is used to display just the filename when viewing the playlist
+		 * on the device.
+		 */
+		filename = g_utf8_strrchr (path, -1, '/');
+		if (filename == NULL)
+		{
+			/* should never happen, but this would be the right value */
+			buffer[1] = 0x01;
+		} else {
+			/* we want the char after the slash, and it's one-based */
+			guint name_offset = (filename - path) + 2;
+
+			buffer[0] = (name_offset >> 8) & 0xff;
+			buffer[1] = name_offset & 0xff;
+		}
 
 		/* replace slashes */
 		g_strdelimit (path, "/", '\\');
@@ -167,8 +180,8 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 	max_entries = GINT32_FROM_BE (*((gint32 *)contents));
 	if (strcmp (contents + FORMAT_ID_OFFSET, "iriver UMS PLA") != 0)
 	{
-		g_free (contents);
 		DEBUG(file, g_print ("playlist '%s' signature doesn't match: %s\n", uri, contents + 4));
+		g_free (contents);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
