@@ -618,7 +618,8 @@ totem_pl_parser_parse_itms_doc (xml_node_t *item)
 		/* What we're looking for looks like:
 		 * <key>feedURL</key><string>URL</string> */
 		if (g_ascii_strcasecmp (item->name, "key") == 0
-		    && g_ascii_strcasecmp (item->data, "feedURL") == 0) {
+		    && g_ascii_strcasecmp (item->data, "feedURL") == 0
+		    && item->next != NULL) {
 			item = item->next;
 			if (g_ascii_strcasecmp (item->name, "string") == 0)
 				return item->data;
