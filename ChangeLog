@@ -1,3 +1,9 @@
+2009-02-10  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-podcast.c
+	(totem_pl_parser_parse_itms_doc): Fix possible crasher
+	when looking for the feedURL in itms files (Closes: #570997)
+
 2009-02-08  Jonathan Matthew  <jonathan@d14n.org>
 
 	* plparse/totem-pl-parser-pla.c: (totem_pl_parser_write_pla),
