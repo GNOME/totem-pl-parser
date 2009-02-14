@@ -1,10 +1,11 @@
-# Danish translation of Totem.
-# Copyright (C) 2002-2007 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem package.
+# Danish translation of totem-pl-parser.
+# Copyright (C) 2002-2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Ole Laursen <olau@hardworking.dk>, 2002, 03.
 # Martin Willemoes Hansen <mwh@sysrq.dk>, 2005.
 # Lasse Bang Mikkelsen <lbm@fatalerror.dk>, 2006.
 # Ask Hjorth Larsen <asklarsen@gmail.com>, 2007.
+# Per Kongstad <p_kongstad@op.pl>, 2009.
 #
 # Konventioner:
 #
@@ -12,45 +13,48 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem\n"
+"Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-22 00:53+0200\n"
-"PO-Revision-Date: 2008-09-22 00:51+0200\n"
-"Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
+"POT-Creation-Date: 2009-02-15 00:39+0100\n"
+"PO-Revision-Date: 2009-02-14 22:59+0100\n"
+"Last-Translator: Per Kongstad <p_kongstad@op.pl>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: ../plparse/totem-disc.c:319 ../plparse/totem-disc.c:460
+#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
 #, c-format
-msgid "Failed to mount %s"
-msgstr "Kunne ikke montere %s"
+msgid "Failed to mount %s."
+msgstr "Kunne ikke montere %s."
 
-#: ../plparse/totem-disc.c:349
+#: ../plparse/totem-disc.c:387
 #, c-format
-msgid "No media in drive for device '%s'"
-msgstr "Intet medie i drev for enhed \"%s\""
+msgid "No media in drive for device '%s'."
+msgstr "Intet medie i drev for enhed \"%s\"."
 
-#: ../plparse/totem-disc.c:403
+#: ../plparse/totem-disc.c:441
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Kontrollér venligst at der er en disk i drevet."
 
-#: ../plparse/totem-disc.c:829
+#: ../plparse/totem-disc.c:880
 msgid "Audio CD"
 msgstr "Lyd-cd"
 
-#: ../plparse/totem-disc.c:831
+#: ../plparse/totem-disc.c:882
 msgid "Video CD"
 msgstr "Video-cd"
 
-#: ../plparse/totem-disc.c:833
+#: ../plparse/totem-disc.c:884
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:835
+#: ../plparse/totem-disc.c:886
 msgid "Digital Television"
 msgstr "Digitalt fjernsyn"
 
@@ -1494,410 +1498,3 @@ msgstr "Digitalt fjernsyn"
 
 #~ msgid "_Open with \"%s\""
 #~ msgstr "_Åbn med \"%s\""
-
-# Oversættelsen kan meget vel være forkert afhængigt af kontekst
-#~ msgid "Browser Plugin using %s"
-#~ msgstr "Browser-udvidelsesmodul med %s"
-
-#~ msgid "Totem Browser Plugin"
-#~ msgstr "Totem browser-udvidelsesmodul"
-
-#~ msgid "The Totem plugin could not be started."
-#~ msgstr "Totem-udvidelsesmodulet kunne ikke startes."
-
-#~ msgid "No playlist or playlist empty"
-#~ msgstr "Ingen eller tom afspilningsliste"
-
-#~ msgid "Could not initialise the thread-safe libraries."
-#~ msgstr "Kunne ikke klargøre de trådsikre biblioteker."
-
-#~ msgid "Verify your system installation. The Totem plugin will now exit."
-#~ msgstr ""
-#~ "Kontrollér din systeminstallation. Totem-udvidelsesmodulet vil nu "
-#~ "afslutte."
-
-#~ msgid "Totem could not eject the optical media."
-#~ msgstr "Totem kunne ikke skubbe det optiske medium ud."
-
-#~ msgid "Media Player Keys"
-#~ msgstr "Medieafspiller-taster"
-
-#~ msgid "Support additional media player keys"
-#~ msgstr "Understøt yderligere medie-afspillertaster"
-
-#~ msgid "Adds movie properties to the sidebar"
-#~ msgstr "Tilføjer filmegenskaber til sidepanelet"
-
-#~ msgid "Movie Properties"
-#~ msgstr "Filmegenskaber"
-
-#~ msgid "Deactivates the screensaver when a movie is playing"
-#~ msgstr "Deaktiverer pauseskærmen når en film bliver afspillet"
-
-#~ msgid "Screensaver"
-#~ msgstr "Pauseskærm"
-
-#~ msgid "Provides the \"Skip to\" dialog."
-#~ msgstr "Giver \"Spring til\"-vinduet."
-
-#~ msgid "Skipto"
-#~ msgstr "Spring til"
-
-#~ msgid "Rhythmbox Plugins"
-#~ msgstr "Rhythmbox-udvidelser"
-
-#~ msgid ""
-#~ "14.4 Kbps Modem\n"
-#~ "19.2 Kbps Modem\n"
-#~ "28.8 Kbps Modem\n"
-#~ "33.6 Kbps Modem\n"
-#~ "34.4 Kbps Modem\n"
-#~ "56 Kbps Modem/ISDN\n"
-#~ "112 Kbps Dual ISDN/DSL\n"
-#~ "256 Kbps DSL/Cable\n"
-#~ "384 Kbps DSL/Cable\n"
-#~ "512 Kbps DSL/Cable\n"
-#~ "1.5 Mbps T1/Intranet/LAN\n"
-#~ "Intranet/LAN"
-#~ msgstr ""
-#~ "14.4 Kb/s modem\n"
-#~ "19.2 Kb/s modem\n"
-#~ "28.8 Kb/s modem\n"
-#~ "33.6 Kb/s modem\n"
-#~ "34.4 Kb/s modem\n"
-#~ "56 Kb/s modem/ISDN\n"
-#~ "112 Kb/s Dual ISDN/DSL\n"
-#~ "256 Kb/s DSL/kabel\n"
-#~ "384 Kb/s DSL/kabel\n"
-#~ "512 Kb/s DSL/kabel\n"
-#~ "1.5 Mb/s T1/intranet/LAN\n"
-#~ "Intranet/LAN"
-
-#~ msgid ""
-#~ "Small\n"
-#~ "Normal\n"
-#~ "Large\n"
-#~ "Extra Large"
-#~ msgstr ""
-#~ "Lille\n"
-#~ "Normal\n"
-#~ "Stor\n"
-#~ "Ekstra stor"
-
-#~ msgid ""
-#~ "Stereo\n"
-#~ "4-channel\n"
-#~ "4.1-channel\n"
-#~ "5.0-channel\n"
-#~ "5.1-channel\n"
-#~ "AC3 Passthrough"
-#~ msgstr ""
-#~ "Stereo\n"
-#~ "4-kanaler\n"
-#~ "4.1-kanaler\n"
-#~ "5.0-kanaler\n"
-#~ "5.1-kanaler\n"
-#~ "AC3-gennemgående"
-
-#~ msgid "Time seek bar"
-#~ msgstr "Søgebjælke"
-
-#~ msgid "Open Location"
-#~ msgstr "Åbn sted"
-
-#~ msgid "Volume"
-#~ msgstr "Lydstyrke"
-
-#~ msgid "+"
-#~ msgstr "+"
-
-#~ msgid "-"
-#~ msgstr "-"
-
-#~ msgid "Muted"
-#~ msgstr "Slukket"
-
-#~ msgid "Full Volume"
-#~ msgstr "Fuld lydstyrke"
-
-#~ msgid "playlist"
-#~ msgstr "afspilningsliste"
-
-#~ msgid "main window"
-#~ msgstr "hovedvindue"
-
-#~ msgid "Plugins Manager"
-#~ msgstr "Udvidelsesmoduler"
-
-#~ msgid "Properties dialog"
-#~ msgstr "Vindue over egenskaber"
-
-#~ msgid "Menu"
-#~ msgstr "Menu"
-
-#~ msgid "<b>Audio</b>"
-#~ msgstr "<b>Lyd</b>"
-
-#~ msgid "<b>General</b>"
-#~ msgstr "<b>Generelt</b>"
-
-#~ msgid "<b>Video</b>"
-#~ msgstr "<b>Video</b>"
-
-#~ msgid "<i>Channels:</i>"
-#~ msgstr "<i>Kanaler:</i>"
-
-#~ msgid "<i>Duration:</i>"
-#~ msgstr "<i>Varighed:</i>"
-
-#~ msgid "<i>Title:</i>"
-#~ msgstr "<i>Titel:</i>"
-
-#~ msgid "<i>Year:</i>"
-#~ msgstr "<i>År:</i>"
-
-#~ msgid "<b>Preview</b>"
-#~ msgstr "<b>Eksempel</b>"
-
-#~ msgid "Save screenshot"
-#~ msgstr "Gem skærmbillede"
-
-#~ msgid "Save screenshot to _desktop"
-#~ msgstr "Gem skærmbillede på _skrivebordet"
-
-#~ msgid "Save screenshot to _file:"
-#~ msgstr "Gem skærmbillede i _fil:"
-
-#~ msgid "<b>Display</b>"
-#~ msgstr "<b>Fremvisning</b>"
-
-#~ msgid "<span size=\"medium\"><b>No file</b></span>"
-#~ msgstr "<span size=\"medium\"><b>Ingen fil</b></span>"
-
-#~ msgid "Vanity Webcam utility"
-#~ msgstr "Vanity - netkameraværktøj"
-
-#~ msgid "View live webcam and upload pictures"
-#~ msgstr "Vis live-netkamera og overfør billeder"
-
-#~ msgid "Save File"
-#~ msgstr "Gem vil"
-
-#~ msgid "Vanity"
-#~ msgstr "Vanity"
-
-#~ msgid "Vanity Preferences"
-#~ msgstr "Indstillinger for Vanity "
-
-#~ msgid "Zoom 1:1"
-#~ msgstr "Zoom 1:1"
-
-#~ msgid "Zoom 1:2"
-#~ msgstr "Zoom 1:2"
-
-#~ msgid "Zoom 2:1"
-#~ msgstr "Zoom 2:1"
-
-#~ msgid "Zoom _1:1"
-#~ msgstr "Zoom _1:1"
-
-#~ msgid "Zoom _2:1"
-#~ msgstr "Zoom _2:1"
-
-#~ msgid "_Picture"
-#~ msgstr "_Billede"
-
-#~ msgid "_Zoom 1:2"
-#~ msgstr "_Zoom 1:2"
-
-#~ msgid "Unnamed CDROM"
-#~ msgstr "Unavngiven cd-rom"
-
-#~ msgid "Always on top"
-#~ msgstr "Altid øverst"
-
-#~ msgid "File '%s' already exists."
-#~ msgstr "Filen \"%s\" eksisterer allerede."
-
-#~ msgid "The screenshot was not saved"
-#~ msgstr "Skærmbilledet blev ikke gemt."
-
-#~ msgid "Shadow type"
-#~ msgstr "Skyggetype"
-
-#~ msgid "Style of bevel around the statusbar text"
-#~ msgstr "Afrundingstypen omkring statuslinjeteksten"
-
-#~ msgid "Totem could not seek in '%s'."
-#~ msgstr "Totem kunne ikke søge i \"%s\"."
-
-#~ msgid "Webcam utility using %s"
-#~ msgstr "Netkamera-værktøj via %s"
-
-#~ msgid "Copyright © 2002-2005 Bastien Nocera"
-#~ msgstr "Copyright © 2002-2005 Bastien Nocera"
-
-#~ msgid ""
-#~ "Vanity could not startup:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Vanity kunne ikke starte:\n"
-#~ "%s"
-
-#~ msgid "No reason"
-#~ msgstr "Ingen begrundelse"
-
-#~ msgid ""
-#~ "Vanity could not contact the webcam.\n"
-#~ "Reason: %s"
-#~ msgstr ""
-#~ "Vanity kunne ikke kontakte netkameraet.\n"
-#~ "Grund: %s."
-
-#~ msgid ""
-#~ "Vanity could not play video from the webcam.\n"
-#~ "Reason: %s"
-#~ msgstr ""
-#~ "Vanity kunne ikke afspille video fra netkameraet.\n"
-#~ "Grund: %s"
-
-#~ msgid "Debug mode on"
-#~ msgstr "Fejlanalyseringstilstand til"
-
-#~ msgid ""
-#~ "Could not initialize the thread-safe libraries.\n"
-#~ "Verify your system installation. Vanity will now exit."
-#~ msgstr ""
-#~ "Kunne ikke klargøre de tråd-sikre biblioteker.\n"
-#~ "Kontrollér din systeminstallation. Vanity vil nu afslutte."
-
-#~ msgid "Vanity Webcam Utility"
-#~ msgstr "Vanity - netkamera-værktøj"
-
-#~ msgid ""
-#~ "Vanity could not initialize the \n"
-#~ "configuration engine:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Vanity kunne ikke klargøre\n"
-#~ "konfigurationsmotoren:\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Couldn't load the main interface (vanity.glade).\n"
-#~ "Make sure that Vanity is properly installed."
-#~ msgstr ""
-#~ "Kunne ikke indlæse hovedgrænsefladen (vanity.glade).\n"
-#~ "Sikr dig at Vanity er korrekt installeret."
-
-#~ msgid "Save..."
-#~ msgstr "Gem..."
-
-#~ msgid "    "
-#~ msgstr "    "
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "Languages"
-#~ msgstr "Sprog"
-
-#~ msgid "No Language Selection Available"
-#~ msgstr "Intet sprogvalg tilgængeligt"
-
-#~ msgid "No subtitles selection available"
-#~ msgstr "Intet undertitelvalg tilgængeligt"
-
-#~ msgid "Set the aspect ratio"
-#~ msgstr "Sæt højde-/breddeforholdet"
-
-#~ msgid "Subtitles"
-#~ msgstr "Undertekster"
-
-#~ msgid "_DXR3 TV-out"
-#~ msgstr "_DXR3 tv-ud"
-
-#~ msgid "Height of the video widget"
-#~ msgstr "Højde af videokontrollen"
-
-#~ msgid "Whether the sidebar is shown"
-#~ msgstr "Om sidepanelet vises"
-
-#~ msgid "Width of the video widget"
-#~ msgstr "Bredde af videokontrollen"
-
-#~ msgid "Empty"
-#~ msgstr "Tom"
-
-#~ msgid "Backend options"
-#~ msgstr "Motorindstillinger"
-
-#~ msgid "Option '%s' is unknown and was ignored\n"
-#~ msgstr "Valgmuligheden \"%s\" er ukendt og blev ignoreret\n"
-
-#~ msgid "Overwrite file?"
-#~ msgstr "Overskriv fil?"
-
-#~ msgid ""
-#~ "A file named '%s' already exists.  Are you sure you want to overwrite it?"
-#~ msgstr ""
-#~ "Filen \"%s\" findes allerede. Er du sikker på du vil overskrive den?"
-
-#~ msgid ""
-#~ "Switching on or off this type of TV-Out requires a restart to take effect."
-#~ msgstr ""
-#~ "Aktivering/deaktivering af denne type tv-ud kræver en genstart for at "
-#~ "træde i kraft."
-
-#~ msgid "Totem"
-#~ msgstr "Totem"
-
-#~ msgid "Totem couldn't show the movie properties window."
-#~ msgstr "Totem kunne ikke vise filmegenskabsvinduet."
-
-#~ msgid "Make sure that Totem is correctly installed."
-#~ msgstr "Kontrollér at Totem er korrekt installeret."
-
-#~ msgid "video popup menu"
-#~ msgstr "video pop op-menu"
-
-#~ msgid "Totem Video Window"
-#~ msgstr "Totem-videovindue"
-
-#~ msgid "Failed to open media file; unknown error"
-#~ msgstr "Det mislykkedes at åbne medie-filen; ukendt fejl"
-
-#~ msgid "Failed to play: %s"
-#~ msgstr "Kunne ikke afspille: %s"
-
-#~ msgid "unknown error"
-#~ msgstr "Ukendt fejl"
-
-#~ msgid "This movie is a still image. You can open it with an image viewer."
-#~ msgstr ""
-#~ "Denne film er et stillbillede. Du kan åbne den med et "
-#~ "billedvisningsprogram."
-
-#~ msgid "Failed to find real device node for %s: %s"
-#~ msgstr "Kunne ikke finde korrekt enhedsknude for %s: %s"
-
-#~ msgid "Failed to read symbolic link %s: %s"
-#~ msgstr "Kunne ikke læse symbolsk henvisning %s: %s"
-
-#~ msgid "Failed to find mountpoint for device %s in /etc/fstab"
-#~ msgstr "Kunne ikke finde monteringspunktet for enheden %s i /etc/fstab"
-
-#~ msgid "Failed to open device %s for reading: %s"
-#~ msgstr "Kunne ikke åbne enheden %s for læsning: %s"
-
-#~ msgid "Failed to retrieve capabilities of device %s: %s"
-#~ msgstr "Kunne ikke hente egenskaber for enheden %s: %s"
-
-#~ msgid "Drive status 0x%x (%s) - check disc"
-#~ msgstr "Drevstatus 0x%x (%s) - kontrollér disken"
-
-#~ msgid "Error getting %s disc status: %s"
-#~ msgstr "Fejl ved henting %s diskstatus: %s"
-
-#~ msgid "Unexpected/unknown cd type 0x%x (%s)"
-#~ msgstr "Uventet/ukendt cd-type 0x%x (%s)"
