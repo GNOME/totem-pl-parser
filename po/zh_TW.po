@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem 2.23.91\n"
+"Project-Id-Version: totem 2.25.90\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-18 12:33+0800\n"
-"PO-Revision-Date: 2008-09-17 18:58+0800\n"
+"POT-Creation-Date: 2009-02-14 17:40+0800\n"
+"PO-Revision-Date: 2009-02-14 17:40+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -17,34 +17,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../plparse/totem-disc.c:319 ../plparse/totem-disc.c:460
+#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
 #, c-format
-msgid "Failed to mount %s"
-msgstr "掛載 %s 失敗"
+msgid "Failed to mount %s."
+msgstr "掛載 %s 失敗。"
 
-#: ../plparse/totem-disc.c:349
+#: ../plparse/totem-disc.c:387
 #, c-format
-msgid "No media in drive for device '%s'"
-msgstr "在裝置「%s」中沒有媒體在內"
+msgid "No media in drive for device '%s'."
+msgstr "在裝置「%s」中沒有媒體在內。"
 
-#: ../plparse/totem-disc.c:403
+#: ../plparse/totem-disc.c:441
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "您可能要檢查一下光碟是否已在光碟機內。"
 
-#: ../plparse/totem-disc.c:829
+#: ../plparse/totem-disc.c:880
 msgid "Audio CD"
 msgstr "音樂 CD"
 
-#: ../plparse/totem-disc.c:831
+#: ../plparse/totem-disc.c:882
 msgid "Video CD"
 msgstr "VCD"
 
-#: ../plparse/totem-disc.c:833
+#: ../plparse/totem-disc.c:884
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:835
+#: ../plparse/totem-disc.c:886
 msgid "Digital Television"
 msgstr "數位電視"
 
