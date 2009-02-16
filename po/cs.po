@@ -1,5 +1,5 @@
 # Czech translation for totem-pl-parser.
-# Copyright (C) 2002, 2008 Free Software Foundation.
+# Copyright (C) 2002, 2008, 2009 the author(s) of totem-pl-parser.
 # Copyright (C) 2003, 2004, 2005, 2006 Miloslav Trmac <mitr@volny.cz>.
 # Copyright (C) 2006 Lukas Novotny <lukasnov@cvs.gnome.org>.
 # This file is distributed under the same license as the totem-pl-parser package.
@@ -8,15 +8,15 @@
 # Petr Tomeš <ptomes@gmail.com>, 2006.
 # Lukas Novotny <lukasnov@cvs.gnome.org>, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
-# Lucas Lommer <llommer@svn.gnome.org>, 2008.
+# Lucas Lommer <llommer@svn.gnome.org>, 2008, 2009.
 # Petr Kovar <pknbe@volny.cz>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-08 22:45+0200\n"
-"PO-Revision-Date: 2008-08-07 22:06+0100\n"
+"POT-Creation-Date: 2009-02-16 02:36+0100\n"
+"PO-Revision-Date: 2009-02-16 01:11+0100\n"
 "Last-Translator: Lucas Lommer <llommer@svn.gnome.org>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,50 +24,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../plparse/totem-disc.c:314 ../plparse/totem-disc.c:459
+#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
 #, c-format
-msgid "Failed to mount %s"
-msgstr "Nemohu připojit %s"
+msgid "Failed to mount %s."
+msgstr "Nelze připojit %s."
 
-#: ../plparse/totem-disc.c:342
+#: ../plparse/totem-disc.c:387
 #, c-format
-msgid "No media in drive for device '%s'"
-msgstr "V mechanice zařízení '%s' není médium"
+msgid "No media in drive for device '%s'."
+msgstr "V mechanice zařízení '%s' není médium."
 
-#: ../plparse/totem-disc.c:352
-#, c-format
-msgid "Could not connect to the HAL daemon"
-msgstr "Nemohu se spojit s démonem HAL"
-
-#: ../plparse/totem-disc.c:402
+#: ../plparse/totem-disc.c:441
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Zkontrolujte prosím, zda je v mechanice přítomen disk."
 
-#: ../plparse/totem-disc.c:975
+#: ../plparse/totem-disc.c:880
 msgid "Audio CD"
 msgstr "Zvukové CD"
 
-#: ../plparse/totem-disc.c:977
+#: ../plparse/totem-disc.c:882
 msgid "Video CD"
 msgstr "Video CD"
 
-#: ../plparse/totem-disc.c:979
+#: ../plparse/totem-disc.c:884
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:981
+#: ../plparse/totem-disc.c:886
 msgid "Digital Television"
 msgstr "Digitální televize"
-
-#~ msgid "Failed to find mountpoint for device %s"
-#~ msgstr "Nemohu najít místo připojení pro zařízení %s"
-
-#~ msgid "Failed to find mountpoint for %s"
-#~ msgstr "Nemohu najít místo připojení pro %s"
-
-#~ msgid "Couldn't write parser: %s"
-#~ msgstr "Nemohu zapsat analyzátor: %s"
-
-#~ msgid "Couldn't open file '%s': %s"
-#~ msgstr "Nemohu otevřít soubor \"%s\": %s"
