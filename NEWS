@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+2.25.91:
+* Update API documentation
+* Fix PLA writing to make filenames appear correctly on the device
+* Fix possible crasher in the itms feed parser
+* Fix crasher when parsing a PLS file with invalid UTF-8
+
 2.25.90:
 * Add support for the WPL playlist type
 * Fix the Python bindings not working
