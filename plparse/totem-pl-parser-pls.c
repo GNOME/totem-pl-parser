@@ -122,6 +122,27 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 	return TRUE;
 }
 
+static char *
+ensure_utf8_valid (char *input) 
+{
+	char *utf8_valid;
+
+	utf8_valid = g_strdup (input);
+
+	if (!g_utf8_validate (utf8_valid, -1, NULL)) {
+		gint i;
+
+		for (i = 0; i < g_utf8_strlen (utf8_valid, -1); i++) {
+			gunichar c;
+			c = g_utf8_get_char_validated (&utf8_valid[i], -1);
+			if (c > 127) {
+				utf8_valid[i] = '?';
+			}
+		}
+	}
+	return utf8_valid;
+}
+
 TotemPlParserResult
 totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 				       GFile *file,
@@ -249,11 +270,13 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 			g_object_unref (target);
 		} else {
 			GFile *target;
+			char *utf8_filename;
 
-			target = g_file_get_child_for_display_name (base_file, file_str, NULL);
+			utf8_filename = ensure_utf8_valid (file_str);
+			target = g_file_get_child_for_display_name (base_file, utf8_filename, NULL);
+			g_free (utf8_filename);
 
 			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, base_file) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
-
 				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_FILE, target,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
