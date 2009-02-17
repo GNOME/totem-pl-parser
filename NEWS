@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+2.24.4:
+* Fix PLA writing to make filenames appear correctly on the device
+* Fix possible crasher in the itms feed parser
+
 2.24.3:
 * Fix parsing of RSS feeds that use HTML comments
 * Fix problems that made Totem show an error when selecting
