@@ -4,14 +4,15 @@
 #
 # Felix <ifelix@redhat.com>, 2006.
 # Dr.T.Vasudevan <agnihot3@gmail.com>, 2007, 2008.
+# Dr.T.vasudevan <agnihot3@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser.HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-03 18:38+0000\n"
-"PO-Revision-Date: 2008-03-07 11:33+0530\n"
-"Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
-"Language-Team: Tamil <ubuntu>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&amp;component=playlist parser\n"
+"POT-Creation-Date: 2008-11-27 17:18+0000\n"
+"PO-Revision-Date: 2009-02-21 11:36+0530\n"
+"Last-Translator: Dr.T.vasudevan <agnihot3@gmail.com>\n"
+"Language-Team: Tamil <Ubuntu-l10n-tam@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,53 +21,34 @@ msgstr ""
 "\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../plparse/totem-disc.c:286
+#: ../plparse/totem-disc.c:319 ../plparse/totem-disc.c:460
 #, c-format
-msgid "Failed to find mountpoint for device %s"
-msgstr "சாதனம் %s க்கு ஏற்றப்ப்புள்ளி ஏதும் கண்டு பிடித்தல் தோல்வியுற்றது."
+msgid "Failed to mount %s."
+msgstr "%s ஐ ஏற்ற முடியவில்லை."
 
-#: ../plparse/totem-disc.c:296
-msgid "Could not connect to the HAL daemon"
-msgstr "ஹால் கிங்கரனுடன் இணைக்க முடியவில்லை."
+#: ../plparse/totem-disc.c:349
+#, c-format
+msgid "No media in drive for device '%s'."
+msgstr "சாதனம் '%s' க்கு இயக்கியில் ஒரு ஊடகமும் இல்லை."
 
-#: ../plparse/totem-disc.c:396
+#: ../plparse/totem-disc.c:403
+#, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "இயக்கியில் வட்டு உள்ளதா என சோதிக்கவும்."
 
-#: ../plparse/totem-disc.c:443
-#, c-format
-msgid "Failed to mount %s"
-msgstr "%s ஐ ஏற்ற முடியவில்லை."
-
-#: ../plparse/totem-disc.c:467
-#, c-format
-msgid "Failed to find mountpoint for %s"
-msgstr "%s க்கு ஏற்றப் புள்ளி கண்டு பிடிக்க முடியவில்லை."
-
-#: ../plparse/totem-disc.c:860
+#: ../plparse/totem-disc.c:843
 msgid "Audio CD"
 msgstr "ஆடியோ CD"
 
-#: ../plparse/totem-disc.c:862
+#: ../plparse/totem-disc.c:845
 msgid "Video CD"
 msgstr "வீடியோ குறுவட்டு"
 
-#: ../plparse/totem-disc.c:864
+#: ../plparse/totem-disc.c:847
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:866
+#: ../plparse/totem-disc.c:849
 msgid "Digital Television"
 msgstr "இலக்கமுறை தொலைக்காட்சி "
-
-#: ../plparse/totem-pl-parser.c:447
-#, c-format
-msgid "Couldn't write parser: %s"
-msgstr "பகுப்பியை எழுத முடியவில்லை: %s"
-
-#: ../plparse/totem-pl-parser-lines.c:105 ../plparse/totem-pl-parser-pla.c:78
-#: ../plparse/totem-pl-parser-pls.c:70 ../plparse/totem-pl-parser-xspf.c:106
-#, c-format
-msgid "Couldn't open file '%s': %s"
-msgstr "கோப்பு  '%s' ஐ திறக்க முடியவில்லை: %s"
 
