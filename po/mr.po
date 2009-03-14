@@ -1,17 +1,17 @@
-# translation of mr.po to marathi
+# translation of totem-pl-parser.HEAD.mr.po to marathi
 # Marathi translation for totem
 # Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
 # This file is distributed under the same license as the totem package.
 #
 # Onkar Shinde <onkarshinde@gmail.com>, 2006.
 # Rahul Bhalerao <b.rahul.pm@gmail.com>, 2006.
-# Sandeep Shedmake <sandeep.shedmake@gmail.com>, 2008.
+# Sandeep Shedmake <sandeep.shedmake@gmail.com>, 2008, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: mr\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-07 17:14+0000\n"
-"PO-Revision-Date: 2008-08-25 11:06+0530\n"
+"Project-Id-Version: totem-pl-parser.HEAD.mr\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&amp;component=playlist parser\n"
+"POT-Creation-Date: 2008-11-27 17:18+0000\n"
+"PO-Revision-Date: 2009-03-14 16:59+0530\n"
 "Last-Translator: Sandeep Shedmake <sandeep.shedmake@gmail.com>\n"
 "Language-Team: marathi\n"
 "MIME-Version: 1.0\n"
@@ -20,39 +20,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../plparse/totem-disc.c:314 ../plparse/totem-disc.c:460
+#: ../plparse/totem-disc.c:319 ../plparse/totem-disc.c:460
 #, c-format
-msgid "Failed to mount %s"
-msgstr "%s आरोहण करण्यास अपयशी"
+msgid "Failed to mount %s."
+msgstr "%s माऊन्ट करण्यास अपयशी."
 
-#: ../plparse/totem-disc.c:342
+#: ../plparse/totem-disc.c:349
 #, c-format
-msgid "No media in drive for device '%s'"
-msgstr "साधन '%s' करीता ड्राइव्ह मध्ये मिडीया आढळले नाही"
+msgid "No media in drive for device '%s'."
+msgstr "साधन '%s' करीता ड्राइव मध्ये मिडीया आढळली नाही."
 
-#: ../plparse/totem-disc.c:352
-#, c-format
-msgid "Could not connect to the HAL daemon"
-msgstr "HAL डीमनशी जुळवणी करू शकत नाही"
-
-#: ../plparse/totem-disc.c:402
+#: ../plparse/totem-disc.c:403
 #, c-format
 msgid "Please check that a disc is present in the drive."
-msgstr "कृपया ड्राइव्ह मध्ये डीस्क आहे याची खात्री करा."
+msgstr "कृपया ड्राइव मध्ये डीस्क आहे याची खात्री करा."
 
-#: ../plparse/totem-disc.c:976
+#: ../plparse/totem-disc.c:843
 msgid "Audio CD"
-msgstr "ऑडीओ सीडी"
+msgstr "ऑडीओ CD"
 
-#: ../plparse/totem-disc.c:978
+#: ../plparse/totem-disc.c:845
 msgid "Video CD"
-msgstr "व्हिडीओ सीडी"
+msgstr "व्हिडीओ CD"
 
-#: ../plparse/totem-disc.c:980
+#: ../plparse/totem-disc.c:847
 msgid "DVD"
-msgstr "डिव्हिडी"
+msgstr "2DVD"
 
-#: ../plparse/totem-disc.c:982
+#: ../plparse/totem-disc.c:849
 msgid "Digital Television"
 msgstr "डिजीटल टेलीवीशन"
 
