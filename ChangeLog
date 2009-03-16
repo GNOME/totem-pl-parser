@@ -1,5 +1,9 @@
 2009-03-16  Philip Withnall  <philip@tecnocode.co.uk>
 
+	Update svn:ignore properties.
+
+2009-03-16  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* Makefile.decl:
 	* configure.in:
 	* plparse/Makefile.am:
