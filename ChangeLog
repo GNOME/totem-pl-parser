@@ -1,3 +1,19 @@
+2009-03-16  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* Makefile.decl:
+	* configure.in:
+	* plparse/Makefile.am:
+	* plparse/disc-test.c:
+	* plparse/test-parser.c:
+	* plparse/tests/541405.xml:
+	* plparse/tests/560051.xml:
+	* plparse/tests/Makefile.am:
+	* plparse/tests/disc.c:
+	* plparse/tests/parser.c: Convert totem-pl-parser to use the GTest
+	API for its test suite. The test suite has also been improved a
+	little, and is consequently more automated. Feature parity with the
+	old code for manually testing discs is maintained. (Closes: #508346)
+
 ============ Version 2.26.0
 
 2009-03-16  Bastien Nocera  <hadess@hadess.net>

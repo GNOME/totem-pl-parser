@@ -131,6 +131,7 @@ totem-plparser-mini-uninstalled.pc
 totem-pl-parser.spec
 lib/Makefile
 plparse/Makefile
+plparse/tests/Makefile
 plparse/totem-pl-parser-features.h
 po/Makefile.in
 docs/Makefile

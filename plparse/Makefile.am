@@ -1,44 +1,5 @@
-noinst_PROGRAMS = test-parser disc-test
-
-test_parser_SOURCES = test-parser.c
-
-test_parser_CPPFLAGS = \
-	-I$(top_srcdir)			\
-	-I$(top_srcdir)/lib		\
-	-I$(top_builddir)/plparse	\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"\
-	$(DISABLE_DEPRECATED)		\
-	$(AM_CPPFLAGS)
-
-test_parser_CFLAGS = \
-	$(TOTEM_PLPARSER_CFLAGS)\
-	$(HAL_CFLAGS)		\
-	$(DBUS_CFLAGS)		\
-	$(WARN_CFLAGS)		\
-	$(AM_CFLAGS)
-
-test_parser_LDADD = \
-	$(TOTEM_PLPARSER_LIBS) \
-	libtotem-plparser.la
-
-disc_test_SOURCES = \
-	disc-test.c
-
-disc_test_CPPFLAGS = \
-	$(common_defines)	\
-	$(AM_CPPFLAGS)
-
-disc_test_CFLAGS = \
-	$(WARN_CFLAGS)		\
-	$(TOTEM_PLPARSER_CFLAGS)\
-	$(AM_CFLAGS)
-
-disc_test_LDFLAGS = \
-	$(AM_LDFLAGS)
-
-disc_test_LDADD = \
-	libtotem-plparser.la	\
-	$(TOTEM_PLPARSER_LIBS)
+SUBDIRS = . tests
+DIST_SUBDIRS = tests
 
 lib_LTLIBRARIES = libtotem-plparser.la libtotem-plparser-mini.la
 
