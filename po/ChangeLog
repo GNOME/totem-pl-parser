@@ -1,5 +1,9 @@
 2009-03-16  Shankar Prasad  <svenkate@redhat.com>
 
+        * kn.po: Updated Kannada translations.
+
+2009-03-16  Shankar Prasad  <svenkate@redhat.com>
+
         * kn.po: Added Kannada translations.
 	* LINGUAS: Added Kannada(kn) to the list of languages.
 
