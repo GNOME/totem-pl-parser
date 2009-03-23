@@ -1,5 +1,13 @@
 2009-03-23  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-media.c (totem_pl_parser_load_directory),
+	(totem_pl_parser_add_directory): When a URI is detected as a
+	directory, return an "unhandled" error instead of an error if
+	the backend doesn't support reading directories. Fixes parsing
+	of radio streams (Closes: #576410)
+
+2009-03-23  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/xmlparser.c: Increase the token and data sizes
 	again in the xml parser, so it can parse ABC's podcast:
 	http://www.abc.net.au/rn/podcast/feeds/spirit.xml

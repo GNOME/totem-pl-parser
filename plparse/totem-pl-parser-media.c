@@ -194,19 +194,25 @@ totem_pl_parser_dir_compare (GFileInfo *a, GFileInfo *b)
 }
 
 static gboolean
-totem_pl_parser_load_directory (GFile *file, GList **list)
+totem_pl_parser_load_directory (GFile *file, GList **list, gboolean *unhandled)
 {
 	GFileEnumerator *e;
 	GFileInfo *info;
+	GError *err = NULL;
 
 	*list = NULL;
+	*unhandled = FALSE;
 
 	e = g_file_enumerate_children (file,
 				       G_FILE_ATTRIBUTE_STANDARD_NAME,
 				       G_FILE_QUERY_INFO_NONE,
-				       NULL, NULL);
-	if (e == NULL)
+				       NULL, &err);
+	if (e == NULL) {
+		if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED) != FALSE)
+			*unhandled = TRUE;
+		g_error_free (err);
 		return FALSE;
+	}
 
 	while ((info = g_file_enumerator_next_file (e, NULL, NULL)) != NULL)
 		*list = g_list_prepend (*list, info);
@@ -223,6 +229,7 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 	TotemDiscMediaType type;
 	GList *list, *l;
 	char *media_uri, *uri;
+	gboolean unhandled;
 
 	uri = g_file_get_uri (file);
 	type = totem_cd_detect_type_from_dir (uri, &media_uri, NULL);
@@ -242,8 +249,11 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
-	if (totem_pl_parser_load_directory (file, &list) == FALSE)
+	if (totem_pl_parser_load_directory (file, &list, &unhandled) == FALSE) {
+		if (unhandled != FALSE)
+			return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 		return TOTEM_PL_PARSER_RESULT_ERROR;
+	}
 
 	list = g_list_sort (list, (GCompareFunc) totem_pl_parser_dir_compare);
 	l = list;
