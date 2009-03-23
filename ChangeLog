@@ -1,3 +1,10 @@
+2009-03-23  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/xmlparser.c: Increase the token and data sizes
+	again in the xml parser, so it can parse ABC's podcast:
+	http://www.abc.net.au/rn/podcast/feeds/spirit.xml
+	(Closes: #552025)
+
 2009-03-16  Philip Withnall  <philip@tecnocode.co.uk>
 
 	Update svn:ignore properties.

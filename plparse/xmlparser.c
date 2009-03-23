@@ -47,8 +47,8 @@
 #include "xmlparser.h"
 
 
-#define TOKEN_SIZE  32 * 1024
-#define DATA_SIZE   32 * 1024
+#define TOKEN_SIZE  64 * 1024
+#define DATA_SIZE   64 * 1024
 #define MAX_RECURSION 23
 
 /* private global variables */
