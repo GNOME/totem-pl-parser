@@ -366,6 +366,7 @@ cd_cache_new (const char *dev,
       g_object_unref (mount);
     }
 
+    cache->content_types = g_content_type_guess_for_tree (cache->iso_file);
     cache->mountpoint = g_file_get_path (cache->iso_file);
     cache->mounted = TRUE;
 
