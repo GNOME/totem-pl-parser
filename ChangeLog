@@ -1,3 +1,10 @@
+============ Version 2.26.1
+
+2009-03-31  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.26.1
+
 2009-03-24  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-disc.c (cd_cache_new): Fix detection of ISO

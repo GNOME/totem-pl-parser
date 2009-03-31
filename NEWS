@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+2.26.1:
+- Fix playback of radio streams when the URL has a trailing slash
+- Fix detection of ISOs as VCDs or DVDs
+- Fix parsing of some podcasts with huge amounts of CDATA in the XML
+
 2.26.0:
 * Updated translations
 
