@@ -31,35 +31,6 @@
 
 G_BEGIN_DECLS
 
-/* Compatibility defines */
-
-/**
- * TOTEM_PL_PARSER_FIELD_URL:
- *
- * Metadata field for an entry's URL.
- *
- * Deprecated: 2.26: Use %TOTEM_PL_PARSER_FIELD_URI instead.
- **/
-#define TOTEM_PL_PARSER_FIELD_URL		TOTEM_PL_PARSER_FIELD_URI
-/**
- * TOTEM_PL_PARSER_FIELD_IMAGE_URL:
- *
- * Metadata field for an entry's thumbnail image URL.
- *
- * Deprecated: 2.26: Use %TOTEM_PL_PARSER_FIELD_IMAGE_URI instead.
- **/
-#define TOTEM_PL_PARSER_FIELD_IMAGE_URL		TOTEM_PL_PARSER_FIELD_IMAGE_URI
-/**
- * TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL:
- *
- * Metadata field for an entry's download URL. Only used if an alternate download
- * location is available for the entry.
- *
- * Deprecated: 2.26: Use %TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI instead.
- **/
-#define TOTEM_PL_PARSER_FIELD_DOWNLOAD_URL	TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI
-/* End */
-
 #define TOTEM_TYPE_PL_PARSER            (totem_pl_parser_get_type ())
 #define TOTEM_PL_PARSER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TOTEM_TYPE_PL_PARSER, TotemPlParser))
 #define TOTEM_PL_PARSER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TOTEM_TYPE_PL_PARSER, TotemPlParserClass))

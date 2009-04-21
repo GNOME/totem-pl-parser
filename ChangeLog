@@ -1,3 +1,8 @@
+2009-04-21  Bastien Nocera  <hadess@hadess.net>
+
+	* docs/reference/totem-pl-parser-sections.txt:
+	* plparse/totem-pl-parser.h: Remove deprecated macros
+
 2009-04-05  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* docs/reference/Makefile.am: Only run the gtk-doc test suite if
