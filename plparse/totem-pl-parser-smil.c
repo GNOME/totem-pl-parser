@@ -73,12 +73,12 @@ parse_smil_entry (TotemPlParser *parser,
 			copyright = xml_parser_get_property (node, "copyright");
 
 			if (uri != NULL) {
+				char *resolved_uri;
 				GFile *resolved;
 
-				if (base_file != NULL && strstr (uri, "://") == NULL)
-					resolved = g_file_resolve_relative_path (base_file, uri);
-				else
-					resolved = g_file_new_for_uri (uri);
+				resolved_uri = totem_pl_parser_resolve_uri (base_file, uri);
+				resolved = g_file_new_for_uri (resolved_uri);
+				g_free (resolved_uri);
 
 				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_FILE, resolved,

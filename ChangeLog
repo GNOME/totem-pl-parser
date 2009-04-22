@@ -1,3 +1,15 @@
+2009-04-22  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser-smil.c (parse_smil_entry):
+	* plparse/totem-pl-parser-wm.c (parse_asx_entry),
+	(parse_asx_entryref):
+	* plparse/totem-pl-parser-xspf.c (parse_xspf_track):
+	* plparse/totem-pl-parser.c (relative_uri_remove_query),
+	(is_probably_dir), (totem_pl_parser_resolve_uri):
+	Backport path resolution function from master
+	fixes parsing of relative URIs in playlists (Closes: #577547)
+
 ============ Version 2.26.1
 
 2009-03-31  Bastien Nocera  <hadess@hadess.net>
