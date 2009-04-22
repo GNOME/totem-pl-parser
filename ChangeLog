@@ -1,5 +1,9 @@
 2009-04-22  Bastien Nocera  <hadess@hadess.net>
 
+	* configure.in: Update version to 2.27.0
+
+2009-04-22  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/plparser.symbols:
 	* plparse/tests/parser.c:
 	* plparse/totem-pl-parser-private.h:
