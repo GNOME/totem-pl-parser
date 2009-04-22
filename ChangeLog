@@ -1,3 +1,17 @@
+2009-04-22  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/plparser.symbols:
+	* plparse/tests/parser.c:
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser-smil.c (parse_smil_entry):
+	* plparse/totem-pl-parser-wm.c (parse_asx_entry),
+	(parse_asx_entryref):
+	* plparse/totem-pl-parser-xspf.c (parse_xspf_track):
+	* plparse/totem-pl-parser.c (relative_uri_remove_query),
+	(is_probably_dir), (totem_pl_parser_resolve_uri):
+	Write our own horrible path resolution function
+	And write a few test cases for it. (Closes: #577547)
+
 2009-04-21  Bastien Nocera  <hadess@hadess.net>
 
 	* docs/reference/totem-pl-parser-sections.txt:
