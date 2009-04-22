@@ -858,6 +858,143 @@ totem_pl_parser_relative (GFile *output, const char *filepath)
 	return retval;
 }
 
+static char *
+relative_uri_remove_query (const char *uri, char **query)
+{
+	char *qmark;
+
+	/* Look for '?' */
+	qmark = strrchr (uri, '?');
+	if (qmark == NULL)
+		return NULL;
+
+	if (query != NULL)
+		*query = g_strdup (qmark);
+	return g_strndup (uri, qmark - uri);
+}
+
+static const char *suffixes[] = {
+	".jsp",
+	".php",
+	".asp"
+};
+
+static gboolean
+is_probably_dir (const char *filename)
+{
+	gboolean ret;
+	char *content_type, *short_name;
+
+	short_name = relative_uri_remove_query (filename, NULL);
+	if (short_name == NULL)
+		short_name = g_strdup (filename);
+	content_type = g_content_type_guess (short_name, NULL, -1, NULL);
+	if (g_content_type_is_unknown (content_type) != FALSE) {
+		guint i;
+		for (i = 0; i < G_N_ELEMENTS (suffixes); i++) {
+			if (g_str_has_suffix (short_name, suffixes[i]) != FALSE) {
+				g_free (content_type);
+				g_free (short_name);
+				return FALSE;
+			}
+		}
+		ret = TRUE;
+	} else {
+		ret = FALSE;
+	}
+	g_free (content_type);
+	g_free (short_name);
+
+	return ret;
+}
+
+char *
+totem_pl_parser_resolve_uri (GFile *base_gfile,
+			     const char *relative_uri)
+{
+	char *uri, *scheme, *query, *new_relative_uri, *base_uri;
+	GFile *base_parent_gfile, *resolved_gfile;
+
+	if (relative_uri == NULL) {
+		if (base_gfile == NULL)
+			return NULL;
+		return g_file_get_uri (base_gfile);
+	}
+
+	if (base_gfile == NULL)
+		return g_strdup (relative_uri);
+
+	/* If |relative_uri| has a scheme, it's a full URI, just return it */
+	scheme = g_uri_parse_scheme (relative_uri);
+	if (scheme != NULL) {
+		g_free (scheme);
+		return g_strdup (relative_uri);
+	}
+
+	/* Check whether we need to get the parent for the base or not */
+	base_uri = g_file_get_path (base_gfile);
+	if (base_uri == NULL)
+		base_uri = g_file_get_uri (base_gfile);
+	if (is_probably_dir (base_uri) == FALSE)
+		base_parent_gfile = g_file_get_parent (base_gfile);
+	else
+		base_parent_gfile = g_object_ref (base_gfile);
+	g_free (base_uri);
+
+	if (base_parent_gfile == NULL) {
+		resolved_gfile = g_file_resolve_relative_path (base_gfile, relative_uri);
+		uri = g_file_get_uri (resolved_gfile);
+		g_object_unref (resolved_gfile);
+		return uri;
+	}
+
+	/* Remove the query portion of the URI, to transplant it again
+	 * if there is any */
+	query = NULL;
+	new_relative_uri = relative_uri_remove_query (relative_uri, &query);
+
+	if (new_relative_uri) {
+		char *tmpuri;
+
+		resolved_gfile = g_file_resolve_relative_path (base_parent_gfile, new_relative_uri);
+		g_object_unref (base_parent_gfile);
+		if (!resolved_gfile) {
+			char *base_uri;
+			base_uri = g_file_get_uri (base_gfile);
+			g_warning ("Failed to resolve relative URI '%s' against base '%s'\n", relative_uri, base_uri);
+			g_free (base_uri);
+			g_free (new_relative_uri);
+			g_free (query);
+			return NULL;
+		}
+
+		tmpuri = g_file_get_uri (resolved_gfile);
+		g_object_unref (resolved_gfile);
+		uri = g_strdup_printf ("%s%s", tmpuri, query);
+
+		g_free (tmpuri);
+		g_free (new_relative_uri);
+		g_free (query);
+
+		return uri;
+	} else {
+		resolved_gfile = g_file_resolve_relative_path (base_parent_gfile, relative_uri);
+		g_object_unref (base_parent_gfile);
+		if (!resolved_gfile) {
+			char *base_uri;
+			base_uri = g_file_get_uri (base_gfile);
+			g_warning ("Failed to resolve relative URI '%s' against base '%s'\n", relative_uri, base_uri);
+			g_free (base_uri);
+			return NULL;
+		}
+
+		uri = g_file_get_uri (resolved_gfile);
+		g_object_unref (resolved_gfile);
+
+		return uri;
+	}
+}
+
 #ifndef TOTEM_PL_PARSER_MINI
 /**
  * totem_pl_parser_write_with_title:

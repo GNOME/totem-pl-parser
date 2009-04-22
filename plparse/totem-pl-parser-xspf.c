@@ -164,6 +164,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 	xmlChar *title, *uri, *image_uri, *artist, *album, *duration, *moreinfo;
 	xmlChar *download_uri, *id;
 	GFile *resolved;
+	char *resolved_uri;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
 	
 	title = NULL;
@@ -217,10 +218,10 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 		goto bail;
 	}
 
-	if (base_file != NULL && strstr ((char *) uri, "://") == NULL)
-		resolved = g_file_resolve_relative_path (base_file, (const char *) uri);
-	else
-		resolved = g_file_new_for_uri ((const char *) uri);
+	resolved_uri = totem_pl_parser_resolve_uri (base_file, (char *) uri);
+	resolved = g_file_new_for_uri (resolved_uri);
+	g_free (resolved_uri);
+
 	totem_pl_parser_add_uri (parser,
 				 TOTEM_PL_PARSER_FIELD_FILE, resolved,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,

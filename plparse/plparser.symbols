@@ -18,6 +18,7 @@ totem_pl_parser_parse_date
 totem_pl_parser_parse_duration
 totem_pl_parser_parse_with_base
 totem_pl_parser_relative
+totem_pl_parser_resolve_uri
 totem_pl_parser_result_get_type
 totem_pl_parser_type_get_type
 totem_pl_parser_write

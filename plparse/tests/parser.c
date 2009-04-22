@@ -48,6 +48,40 @@ test_relative (void)
 	g_assert_cmpstr (test_relative_real ("/1", "/test"), ==, "1");
 }
 
+static char *
+test_resolution_real (const char *base_uri,
+		      const char *relative_uri)
+{
+	GFile *base_gfile;
+	char *ret;
+
+	if (base_uri == NULL)
+		base_gfile = NULL;
+	else
+		base_gfile = g_file_new_for_commandline_arg (base_uri);
+
+	ret = totem_pl_parser_resolve_uri (base_gfile, relative_uri);
+	if (base_gfile)
+		g_object_unref (base_gfile);
+
+	return ret;
+}
+
+static void
+test_resolution (void)
+{
+	/* http://bugzilla.gnome.org/show_bug.cgi?id=555417 */
+	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
+	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp?actionpage=3&id=288629&locale", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
+	/* http://bugzilla.gnome.org/show_bug.cgi?id=577547 */
+	g_assert_cmpstr (test_resolution_real ("http://localhost:12345/8.html", "anim.png"), ==, "http://localhost:12345/anim.png");
+	g_assert_cmpstr (test_resolution_real (NULL, "http://foobar.com/anim.png"), ==, "http://foobar.com/anim.png");
+	g_assert_cmpstr (test_resolution_real ("http://foobar.com/", "/anim.png"), ==, "http://foobar.com/anim.png");
+	g_assert_cmpstr (test_resolution_real ("http://foobar.com/", "anim.png"), ==, "http://foobar.com/anim.png");
+	g_assert_cmpstr (test_resolution_real ("http://foobar.com", "anim.png"), ==, "http://foobar.com/anim.png");
+	g_assert_cmpstr (test_resolution_real ("/foobar/test/", "anim.png"), ==, "file:///foobar/test/anim.png");
+}
+
 static void
 test_duration (void)
 {
@@ -389,6 +423,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/duration", test_duration);
 		g_test_add_func ("/parser/date", test_date);
 		g_test_add_func ("/parser/relative", test_relative);
+		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
 		g_test_add_func ("/parser/parsing/nonexistent_files", test_parsing_nonexistent_files);

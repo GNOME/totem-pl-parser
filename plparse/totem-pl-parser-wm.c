@@ -166,6 +166,7 @@ parse_asx_entry (TotemPlParser *parser, GFile *base_file, xml_node_t *parent)
 	xml_node_t *node;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 	GFile *resolved;
+	char *resolved_uri;
 	const char *uri;
 	const char *title, *duration, *starttime, *author;
 	const char *moreinfo, *abstract, *copyright;
@@ -256,11 +257,9 @@ parse_asx_entry (TotemPlParser *parser, GFile *base_file, xml_node_t *parent)
 	if (uri == NULL)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-
-	if (base_file != NULL && strstr (uri, "://") == NULL)
-		resolved = g_file_resolve_relative_path (base_file, uri);
-	else
-		resolved = g_file_new_for_uri (uri);
+	resolved_uri = totem_pl_parser_resolve_uri (base_file, uri);
+	resolved = g_file_new_for_uri (resolved_uri);
+	g_free (resolved_uri);
 
 	/* .asx files can contain references to other .asx files */
 	retval = totem_pl_parser_parse_internal (parser, resolved, NULL);
@@ -289,16 +288,16 @@ parse_asx_entryref (TotemPlParser *parser, GFile *base_file, xml_node_t *node)
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 	const char *uri;
 	GFile *resolved;
+	char *resolved_uri;
 
 	uri = xml_parser_get_property (node, "href");
 
 	if (uri == NULL)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	if (base_file != NULL && strstr (uri, "://") == NULL)
-		resolved = g_file_resolve_relative_path (base_file, uri);
-	else
-		resolved = g_file_new_for_uri (uri);
+	resolved_uri = totem_pl_parser_resolve_uri (base_file, uri);
+	resolved = g_file_new_for_uri (resolved_uri);
+	g_free (resolved_uri);
 
 	/* .asx files can contain references to other .asx files */
 	retval = totem_pl_parser_parse_internal (parser, resolved, NULL);
