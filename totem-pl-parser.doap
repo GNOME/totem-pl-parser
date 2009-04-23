@@ -7,6 +7,7 @@
 	<shortdesc xml:lang="en">Simple GObject-based library to parse and save a host of playlist formats</shortdesc>
 	<homepage rdf:resource="http://projects.gnome.org/totem/"/>
 	<bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=totem-pl-parser"/>
+	<category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
 	<maintainer>
 		<foaf:Person>
 			<foaf:name>Bastien Nocera</foaf:name>
