@@ -1531,7 +1531,7 @@ totem_pl_parser_ignore (TotemPlParser *parser, const char *uri)
  * Removes HTML comments from a string representing the contents of an XML file.
  * The function modifies the string in place.
  */
-void
+static void
 totem_pl_parser_cleanup_xml (char *contents)
 {
 	char *needle;
@@ -1549,6 +1549,53 @@ totem_pl_parser_cleanup_xml (char *contents)
 				*(needle + i) = ' ';
 		}
 	}
+}
+
+xml_node_t *
+totem_pl_parser_parse_xml_relaxed (char *contents,
+				   gsize size)
+{
+	xml_node_t* doc, *node;
+	char *encoding, *new_contents;
+	gsize new_size;
+
+	totem_pl_parser_cleanup_xml (contents);
+	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
+	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0)
+		return NULL;
+
+	encoding = NULL;
+	for (node = doc; node != NULL; node = node->next) {
+		if (node->name == NULL || g_str_equal (node->name, "?XML") == FALSE)
+			continue;
+		encoding = g_strdup (xml_parser_get_property (node, "ENCODING"));
+		break;
+	}
+
+	if (encoding == NULL || g_str_equal (encoding, "UTF-8") != FALSE) {
+		g_free (encoding);
+		return doc;
+	}
+
+	xml_parser_free_tree (doc);
+
+	new_contents = g_convert (contents, size, "UTF-8", encoding, NULL, &new_size, NULL);
+	if (new_contents == NULL) {
+		g_warning ("Failed to convert XML data to UTF-8");
+		g_free (encoding);
+		return NULL;
+	}
+	g_free (encoding);
+
+	xml_parser_init (new_contents, new_size, XML_PARSER_CASE_INSENSITIVE);
+	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+		g_free (new_contents);
+		return NULL;
+	}
+
+	g_free (new_contents);
+
+	return doc;
 }
 
 static gboolean

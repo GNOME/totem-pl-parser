@@ -245,16 +245,16 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	totem_pl_parser_cleanup_xml (contents);
-	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
-	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+	doc = totem_pl_parser_parse_xml_relaxed (contents, size);
+	if (doc == NULL) {
 		g_free (contents);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
+
 	/* If the document has no name */
 	if (doc->name == NULL
 	    || (g_ascii_strcasecmp (doc->name , "rss") != 0
-	    	&& g_ascii_strcasecmp (doc->name , "rss\n") != 0)) {
+		&& g_ascii_strcasecmp (doc->name , "rss\n") != 0)) {
 		g_free (contents);
 		xml_parser_free_tree (doc);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
@@ -495,11 +495,12 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
-	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+	doc = totem_pl_parser_parse_xml_relaxed (contents, size);
+	if (doc == NULL) {
 		g_free (contents);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
+
 	/* If the document has no name */
 	if (doc->name == NULL
 	    || g_ascii_strcasecmp (doc->name , "feed") != 0) {
@@ -664,8 +665,8 @@ totem_pl_parser_get_feed_uri (const char *data, gsize len)
 
 	uri = NULL;
 
-	xml_parser_init (data, len, XML_PARSER_CASE_INSENSITIVE);
-	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0)
+	doc = totem_pl_parser_parse_xml_relaxed (data, len);
+	if (doc == NULL)
 		return NULL;
 
 	/* If the document has no name */
@@ -871,11 +872,12 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
-	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+	doc = totem_pl_parser_parse_xml_relaxed (contents, size);
+	if (doc == NULL) {
 		g_free (contents);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
+
 	/* If the document has no name */
 	if (doc->name == NULL
 	    || g_ascii_strcasecmp (doc->name , "opml") != 0) {

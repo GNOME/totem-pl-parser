@@ -1,3 +1,22 @@
+2009-04-24  Bastien Nocera  <hadess@hadess.net>
+
+        * plparse/totem-pl-parser.c (totem_pl_parser_parse_xml_relaxed):
+        Implement XML parser helper which takes the XML encoding
+        property into account to convert source contents
+
+        * plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss),
+        (totem_pl_parser_add_atom), (totem_pl_parser_get_feed_uri),
+        (totem_pl_parser_add_opml):
+        * plparse/totem-pl-parser-private.h:
+        * plparse/totem-pl-parser-qt.c
+        (totem_pl_parser_add_quicktime_metalink):
+        * plparse/totem-pl-parser-smil.c
+        (totem_pl_parser_add_smil_with_data):
+        * plparse/totem-pl-parser-wm.c (totem_pl_parser_add_asx):
+        Use the XML parser helper
+
+        (Closes: #579993)
+
 2009-04-22  Bastien Nocera  <hadess@hadess.net>
 
 	* configure.in: Update version to 2.27.0
