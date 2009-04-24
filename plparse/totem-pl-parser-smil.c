@@ -197,8 +197,8 @@ totem_pl_parser_add_smil_with_data (TotemPlParser *parser,
 	xml_node_t* doc;
 	TotemPlParserResult retval;
 
-	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
-	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0)
+	doc = totem_pl_parser_parse_xml_relaxed (contents, size);
+	if (doc == NULL)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	retval = totem_pl_parser_add_smil_with_doc (parser, file, base_file, doc);

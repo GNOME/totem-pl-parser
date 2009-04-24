@@ -32,6 +32,7 @@
 #include <gio/gio.h>
 #include <gio/gio.h>
 #include <string.h>
+#include "xmlparser.h"
 #else
 #include "totem-pl-parser-mini.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -126,7 +127,8 @@ void totem_pl_parser_add_uri			(TotemPlParser *parser,
 						 ...);
 gboolean totem_pl_parser_ignore			(TotemPlParser *parser,
 						 const char *uri);
-void totem_pl_parser_cleanup_xml		(char *string);
+xml_node_t * totem_pl_parser_parse_xml_relaxed	(char *contents,
+						 gsize size);
 
 #endif /* !TOTEM_PL_PARSER_MINI */
 
