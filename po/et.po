@@ -11,10 +11,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem-pl-parser HEAD\n"
+"Project-Id-Version: totem-pl-parser 2.26\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&amp;component=playlist parser\n"
-"POT-Creation-Date: 2008-11-27 17:18+0000\n"
+"product=totem&component=playlist parser\n"
+"POT-Creation-Date: 2009-04-17 15:52+0000\n"
 "PO-Revision-Date: 2009-01-23 22:14+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -23,33 +23,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../plparse/totem-disc.c:319 ../plparse/totem-disc.c:460
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Tõrge %s külgehaakimisel."
 
-#: ../plparse/totem-disc.c:349
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "Seadmes '%s' pole andmekandjat."
 
-#: ../plparse/totem-disc.c:403
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Palun veendu, et plaat on seadmes."
 
-#: ../plparse/totem-disc.c:843
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: ../plparse/totem-disc.c:845
 msgid "Video CD"
 msgstr "Video VCD"
 
-#: ../plparse/totem-disc.c:847
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:849
 msgid "Digital Television"
 msgstr "Digitaaltelevisioon"
