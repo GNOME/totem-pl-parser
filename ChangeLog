@@ -1,3 +1,15 @@
+2009-04-29  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-podcast.c (check_header),
+	(decompress_gzip), (totem_pl_parser_is_itms_feed):
+	Fix parsing of:
+	itms://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewPodcast?id=271121520&ign-mscache=1
+	and
+	http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewPodcast?id=271121520
+
+	The same podcast, as launched from the web browser, and by
+	hand, respectively
+
 2009-04-24  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-pl-parser.c (totem_pl_parser_parse_xml_relaxed):

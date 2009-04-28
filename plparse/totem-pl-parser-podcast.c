@@ -570,16 +570,16 @@ check_header (char *data, gsize len)
 	unsigned flags;
 
 	if (len < 2 + 1 + 1 + 6)
-		return -1;
+		return 0;
 
 	/* Check signature */
 	if (memcmp (data, signature, sizeof (signature)) != 0)
-		return -1;
+		return 0;
 
 	/* verify flags and compression type */
 	flags  = data[3];
 	if (data[2] != Z_DEFLATED || (flags & ~GZIP_HEADER_FLAGS) != 0)
-		return -1;
+		return 0;
 
 	/* Get the uncompressed size */
 	/* FIXME, but how?  The size read here is modulo 2^32.  */
@@ -595,8 +595,8 @@ decompress_gzip (char *data, gsize len)
 	z_stream  stream;
 
 	retlen = check_header (data, len);
-	if (retlen < 0)
-		return NULL;
+	if (retlen == 0)
+		return g_strdup (data);
 
 	stream.zalloc    = (alloc_func)0;
 	stream.zfree     = (free_func)0;
@@ -657,7 +657,7 @@ totem_pl_parser_parse_itms_doc (xml_node_t *item)
 }
 
 static GFile *
-totem_pl_parser_get_feed_uri (const char *data, gsize len)
+totem_pl_parser_get_feed_uri (char *data, gsize len)
 {
 	xml_node_t* doc;
 	const char *uri;
@@ -778,11 +778,14 @@ totem_pl_parser_is_itms_feed (GFile *file)
 
 	uri = g_file_get_uri (file);
 
-	if (g_file_has_uri_scheme (file, "itms") != FALSE
-	    && strstr (uri, "phobos.apple.com") != NULL
-	    && strstr (uri, "viewPodcast") != NULL) {
-	    	g_free (uri);
-		return TRUE;
+	if (g_file_has_uri_scheme (file, "itms") != FALSE) {
+		if (strstr (uri, "phobos.apple.com") != NULL ||
+		    strstr (uri, "itunes.apple.com") != NULL) {
+			if (strstr (uri, "viewPodcast") != NULL) {
+				g_free (uri);
+				return TRUE;
+			}
+		}
 	}
 
 	if (strstr (uri, "phobos.apple.com/") != NULL
