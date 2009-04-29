@@ -1,5 +1,11 @@
 2009-04-29  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_get_feed_uri),
+	(totem_pl_parser_add_itms): Fix warning, and add debug code to
+	itms parsing
+
+2009-04-29  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_itms):
 	Fix memleak in _add_itms
 

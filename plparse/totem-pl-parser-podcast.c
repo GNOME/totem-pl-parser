@@ -657,7 +657,7 @@ totem_pl_parser_parse_itms_doc (xml_node_t *item)
 }
 
 static GFile *
-totem_pl_parser_get_feed_uri (const char *data, gsize len)
+totem_pl_parser_get_feed_uri (char *data, gsize len)
 {
 	xml_node_t* doc;
 	const char *uri;
@@ -720,19 +720,23 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	WARN_NO_CAMEL;
 #else
 	char *contents, *uncompressed, *itms_uri;
-	GFile *itms_file, *feed_uri;
+	GFile *itms_file, *feed_file;
 	TotemPlParserResult ret;
 	gsize size;
 
 	if (g_file_has_uri_scheme (file, "itms") == FALSE) {
 		/* Get the webpage */
-		if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
+		if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE) {
+			DEBUG(file, g_print ("Couldn't load contents for %s\n", uri));
 			return TOTEM_PL_PARSER_RESULT_ERROR;
+		}
 
 		uncompressed = decompress_gzip (contents, size);
 		g_free (contents);
-		if (uncompressed == NULL)
+		if (uncompressed == NULL) {
+			DEBUG(file, g_print ("Couldn't decompress %s\n", uri));
 			return TOTEM_PL_PARSER_RESULT_ERROR;
+		}
 
 		/* Look for the link to the itms on phobos */
 		itms_uri = totem_pl_parser_get_itms_uri (uncompressed);
@@ -747,6 +751,7 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	g_free (itms_uri);
 
 	if (g_file_load_contents (itms_file, NULL, &contents, &size, NULL, NULL) == FALSE) {
+		DEBUG(itms_file, g_print ("Couldn't load contents for itms_file %s\n", uri));
 		g_object_unref (itms_file);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
@@ -754,18 +759,22 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 
 	uncompressed = decompress_gzip (contents, size);
 	g_free (contents);
-	if (uncompressed == NULL)
+	if (uncompressed == NULL) {
+		DEBUG(itms_file, g_print ("Couldn't decompress itms_file %s\n", uri));
 		return TOTEM_PL_PARSER_RESULT_ERROR;
+	}
 
 	/* And look in the file for the feedURL */
-	feed_uri = totem_pl_parser_get_feed_uri (uncompressed, strlen (uncompressed) + 1);
-	if (feed_uri == NULL) {
+	feed_file = totem_pl_parser_get_feed_uri (uncompressed, strlen (uncompressed) + 1);
+	if (feed_file == NULL) {
 		g_free (uncompressed);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
-	ret = totem_pl_parser_add_rss (parser, feed_uri, NULL, NULL);
-	g_object_unref (feed_uri);
+	DEBUG(feed_file, g_print ("Found feed URI: %s\n", uri));
+
+	ret = totem_pl_parser_add_rss (parser, feed_file, NULL, NULL);
+	g_object_unref (feed_file);
 
 	return ret;
 #endif /* !HAVE_CAMEL */
