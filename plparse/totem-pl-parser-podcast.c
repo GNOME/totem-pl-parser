@@ -789,11 +789,14 @@ totem_pl_parser_is_itms_feed (GFile *file)
 
 	uri = g_file_get_uri (file);
 
-	if (g_file_has_uri_scheme (file, "itms") != FALSE
-	    && strstr (uri, "phobos.apple.com") != NULL
-	    && strstr (uri, "viewPodcast") != NULL) {
-	    	g_free (uri);
-		return TRUE;
+	if (g_file_has_uri_scheme (file, "itms") != FALSE) {
+		if (strstr (uri, "phobos.apple.com") != NULL ||
+		    strstr (uri, "itunes.apple.com") != NULL) {
+			if (strstr (uri, "viewPodcast") != NULL) {
+				g_free (uri);
+				return TRUE;
+			}
+		}
 	}
 
 	if (strstr (uri, "phobos.apple.com/") != NULL
