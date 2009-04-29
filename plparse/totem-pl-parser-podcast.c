@@ -759,8 +759,10 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 
 	/* And look in the file for the feedURL */
 	feed_uri = totem_pl_parser_get_feed_uri (uncompressed, strlen (uncompressed) + 1);
-	if (feed_uri == NULL)
+	if (feed_uri == NULL) {
+		g_free (uncompressed);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
+	}
 
 	ret = totem_pl_parser_add_rss (parser, feed_uri, NULL, NULL);
 	g_object_unref (feed_uri);

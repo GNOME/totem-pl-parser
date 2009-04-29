@@ -1,5 +1,10 @@
 2009-04-29  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_itms):
+	Fix memleak in _add_itms
+
+2009-04-29  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-podcast.c (decompress_gzip):
 	Fix parsing of
 	http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewPodcast?id=271121520
