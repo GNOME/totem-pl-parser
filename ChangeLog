@@ -1,5 +1,10 @@
 2009-04-29  Bastien Nocera  <hadess@hadess.net>
 
+	* plparse/tests/parser.c (test_parsability): Add test cases for
+	the recent itms parser fixes
+
+2009-04-29  Bastien Nocera  <hadess@hadess.net>
+
 	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_is_itms_feed):
 	Fix parsing for
 	itms://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewPodcast?id=271121520&ign-mscache=1
