@@ -596,7 +596,7 @@ decompress_gzip (char *data, gsize len)
 
 	retlen = check_header (data, len);
 	if (retlen == 0)
-		return NULL;
+		return g_strdup (data);
 
 	stream.zalloc    = (alloc_func)0;
 	stream.zfree     = (free_func)0;
