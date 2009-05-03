@@ -8,7 +8,7 @@ common_defines = \
 
 noinst_HEADERS = totem_internal.h
 
-libtotem_glibc_la_SOURCES =
+libtotem_glibc_la_SOURCES = stub.c
 libtotem_glibc_la_LIBADD = @LTLIBOBJS@
 
 EXTRA_DIST = asprintf.c
