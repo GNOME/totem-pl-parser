@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+2.26.2:
+- Fix relative paths resolution for a number of playlist types
+- Implement support for non-unicode encodings in the XML parser
+- Fix parsing of iTunes podcasts for recent Apple changes
+- Fix incorrect parsing of non-metalink QuickTime files
+
 2.26.1:
 - Fix playback of radio streams when the URL has a trailing slash
 - Fix detection of ISOs as VCDs or DVDs
