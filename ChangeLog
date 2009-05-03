@@ -1,3 +1,11 @@
+2009-05-03  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-pl-parser-qt.c (totem_pl_parser_add_quicktime):
+	Don't implement a fall-back when the top-level parsing code
+	can already do that for us, and we might not want a fall-back.
+	Fixes video/mp4 files played from YouTube showing up with
+	"get_video" as the video name (Closes: #576338)
+
 2009-04-29  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/tests/parser.c (test_parsability): Add test cases for

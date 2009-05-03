@@ -202,14 +202,8 @@ totem_pl_parser_add_quicktime (TotemPlParser *parser,
 			       GFile *base_file,
 			       gpointer data)
 {
-	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == NULL) {
-		char *uri;
-
-		uri = g_file_get_uri (file);
-		totem_pl_parser_add_one_uri (parser, uri, NULL);
-		g_free (uri);
-		return TOTEM_PL_PARSER_RESULT_SUCCESS;
-	}
+	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == NULL)
+		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
 	return totem_pl_parser_add_quicktime_metalink (parser, file, base_file, data);
 }
