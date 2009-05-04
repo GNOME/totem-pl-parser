@@ -153,18 +153,10 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	GFile *base_file;
 	char **lines;
 	int i, num_entries;
-	char *split_char, *playlist_title;
-	gboolean dos_mode = FALSE;
+	char *playlist_title;
 	gboolean fallback;
 
-	/* figure out whether we're a unix pls or dos pls */
-	if (strstr(contents,"\x0d") == NULL) {
-		split_char = "\n";
-	} else {
-		split_char = "\x0d\n";
-		dos_mode = TRUE;
-	}
-	lines = g_strsplit (contents, split_char, 0);
+	lines = g_strsplit_set (contents, "\r\n", 0);
 
 	/* [playlist] */
 	i = 0;
@@ -181,7 +173,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	}
 
 	playlist_title = totem_pl_parser_read_ini_line_string (lines,
-			"X-GNOME-Title", dos_mode);
+			"X-GNOME-Title");
 
 	if (playlist_title != NULL) {
 		totem_pl_parser_add_uri (parser,
@@ -229,10 +221,10 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		/* Genre is our own little extension */
 		genre_key = g_strdup_printf ("genre%d", i);
 
-		file_str = totem_pl_parser_read_ini_line_string (lines, (const char*)file_key, dos_mode);
-		title = totem_pl_parser_read_ini_line_string (lines, (const char*)title_key, dos_mode);
-		genre = totem_pl_parser_read_ini_line_string (lines, (const char*)genre_key, dos_mode);
-		length = totem_pl_parser_read_ini_line_string (lines, (const char*)length_key, dos_mode);
+		file_str = totem_pl_parser_read_ini_line_string (lines, (const char*)file_key);
+		title = totem_pl_parser_read_ini_line_string (lines, (const char*)title_key);
+		genre = totem_pl_parser_read_ini_line_string (lines, (const char*)genre_key);
+		length = totem_pl_parser_read_ini_line_string (lines, (const char*)length_key);
 
 		g_free (file_key);
 		g_free (title_key);

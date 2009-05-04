@@ -72,7 +72,6 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 					gpointer data)
 {
 	char *contents = NULL;
-	gboolean dos_mode = FALSE;
 	char *volume, *autoplay, *rtspuri;
 	gsize size;
 	char **lines;
@@ -80,20 +79,22 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	if (strstr(contents,"\x0d") != NULL)
-		dos_mode = TRUE;
-
-	lines = g_strsplit (contents, dos_mode ? "\x0d\n" : "\n", 0);
+	lines = g_strsplit_set (contents, "\r\n", 0);
 
 	volume = totem_pl_parser_read_ini_line_string_with_sep
-		(lines, "volume", dos_mode, "=");
+		(lines, "volume", "=");
 	autoplay = totem_pl_parser_read_ini_line_string_with_sep
-		(lines, "autoplay", dos_mode, "=");
+		(lines, "autoplay", "=");
 
 	rtspuri = g_strdup (lines[0] + strlen ("RTSPtext"));
 	if (rtspuri[0] == '\0') {
+		char **line;
 		g_free (rtspuri);
-		rtspuri = g_strdup (lines[1]);
+
+		for (line = lines; line && *line[0] == '\0'; line++);
+		if (line == NULL)
+			return TOTEM_PL_PARSER_RESULT_ERROR;
+		rtspuri = g_strdup (*line);
 	}
 	g_strstrip (rtspuri);
 

@@ -84,23 +84,17 @@ totem_pl_parser_add_asf_reference_parser (TotemPlParser *parser,
 					  GFile *base_file,
 					  gpointer data)
 {
-	char *contents, **lines, *ref, *split_char;
+	char *contents, **lines, *ref;
 	gsize size;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	if (strstr(contents,"\x0d") == NULL) {
-		split_char = "\n";
-	} else {
-		split_char = "\x0d\n";
-	}
-
-	lines = g_strsplit (contents, split_char, 0);
+	lines = g_strsplit_set (contents, "\n\r", 0);
 	g_free (contents);
 
 	/* Try to get Ref1 first */
-	ref = totem_pl_parser_read_ini_line_string (lines, "Ref1", FALSE);
+	ref = totem_pl_parser_read_ini_line_string (lines, "Ref1");
 	if (ref == NULL) {
 		g_strfreev (lines);
 		return totem_pl_parser_add_asx (parser, file, base_file, data);

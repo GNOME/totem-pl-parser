@@ -87,11 +87,10 @@ struct TotemPlParserPrivate
 };
 
 #ifndef TOTEM_PL_PARSER_MINI
-char *totem_pl_parser_read_ini_line_string	(char **lines, const char *key,
-						 gboolean dos_mode);
+char *totem_pl_parser_read_ini_line_string	(char **lines, const char *key);
 int   totem_pl_parser_read_ini_line_int		(char **lines, const char *key);
 char *totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
-						     gboolean dos_mode, const char *sep);
+						     const char *sep);
 char *totem_pl_parser_base_uri			(GFile *file);
 void totem_pl_parser_playlist_end		(TotemPlParser *parser,
 						 const char *playlist_title);

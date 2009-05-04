@@ -59,7 +59,7 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 	g_free (contents);
 
 	/* We only handle GVP version 1.1 for now */
-	version = totem_pl_parser_read_ini_line_string_with_sep (lines, "gvp_version", FALSE, ":");
+	version = totem_pl_parser_read_ini_line_string_with_sep (lines, "gvp_version", ":");
 	if (version == NULL || strcmp (version, "1.1") != 0) {
 		g_free (version);
 		g_strfreev (lines);
@@ -67,7 +67,7 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 	}
 	g_free (version);
 
-	link = totem_pl_parser_read_ini_line_string_with_sep (lines, "url", FALSE, ":");
+	link = totem_pl_parser_read_ini_line_string_with_sep (lines, "url", ":");
 	if (link == NULL) {
 		g_strfreev (lines);
 		return retval;
@@ -75,7 +75,7 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 
 	retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 
-	title = totem_pl_parser_read_ini_line_string_with_sep (lines, "title", FALSE, ":");
+	title = totem_pl_parser_read_ini_line_string_with_sep (lines, "title", ":");
 
 	totem_pl_parser_add_one_uri (parser, link, title);
 
@@ -104,7 +104,7 @@ totem_pl_parser_add_desktop (TotemPlParser *parser,
 	lines = g_strsplit (contents, "\n", 0);
 	g_free (contents);
 
-	type = totem_pl_parser_read_ini_line_string (lines, "Type", FALSE);
+	type = totem_pl_parser_read_ini_line_string (lines, "Type");
 	if (type == NULL)
 		goto bail;
 	
@@ -113,12 +113,12 @@ totem_pl_parser_add_desktop (TotemPlParser *parser,
 		goto bail;
 	}
 
-	path = totem_pl_parser_read_ini_line_string (lines, "URL", FALSE);
+	path = totem_pl_parser_read_ini_line_string (lines, "URL");
 	if (path == NULL)
 		goto bail;
 	target = g_file_new_for_uri (path);
 
-	display_name = totem_pl_parser_read_ini_line_string (lines, "Name", FALSE);
+	display_name = totem_pl_parser_read_ini_line_string (lines, "Name");
 
 	if (totem_pl_parser_ignore (parser, path) == FALSE
 	    && g_ascii_strcasecmp (type, "FSDevice") != 0) {

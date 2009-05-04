@@ -1,3 +1,16 @@
+2009-05-04  Robert Ancell  <robert.ancell@gmail.com>
+
+	* plparse/totem-pl-parser-lines.c:
+	* plparse/totem-pl-parser-misc.c:
+	* plparse/totem-pl-parser-pls.c:
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser-qt.c:
+	* plparse/totem-pl-parser-wm.c:
+	* plparse/totem-pl-parser.c:
+	Handle all types of newline characters in playlists by splitting on both \n and \r
+	
+	(Closes: #579905)
+
 2009-05-03  Bastien Nocera  <hadess@hadess.net>
 
 	* lib/stub.c (___stub_so_lib_is_not_empty): Add a stub

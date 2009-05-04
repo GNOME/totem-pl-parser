@@ -250,18 +250,11 @@ totem_pl_parser_add_ram (TotemPlParser *parser, GFile *file, gpointer data)
 	char *contents, **lines;
 	gsize size;
 	guint i;
-	const char *split_char;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	/* figure out whether we're a unix or dos RAM file */
-	if (strstr(contents,"\x0d") == NULL)
-		split_char = "\n";
-	else
-		split_char = "\x0d\n";
-
-	lines = g_strsplit (contents, split_char, 0);
+	lines = g_strsplit_set (contents, "\r\n", 0);
 	g_free (contents);
 
 	for (i = 0; lines[i] != NULL; i++) {
@@ -351,8 +344,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	char *contents, **lines;
 	gsize size;
 	guint i, num_lines;
-	gboolean dos;
-	const char *split_char, *extinfo;
+	gboolean dos_mode = FALSE;
+	const char *extinfo;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
@@ -381,15 +374,11 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	extinfo = NULL;
 
 	/* figure out whether we're a unix m3u or dos m3u */
-	if (strstr(contents,"\x0d") == NULL) {
-		split_char = "\n";
-		dos = FALSE;
-	} else {
-		split_char = "\x0d\n";
-		dos = TRUE;
+	if (strstr(contents, "\x0d")) {
+		dos_mode = TRUE;
 	}
 
-	lines = g_strsplit (contents, split_char, 0);
+	lines = g_strsplit_set (contents, "\r\n", 0);
 	g_free (contents);
 	num_lines = g_strv_length (lines);
 	/* We don't count the terminating NULL */
@@ -407,11 +396,6 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 				extinfo = lines[i];
 			continue;
 		}
-
-		/* If we're on the last line, and we're a DOS M3U,
-		 * remove the terminating \n if it's there */
-		if (dos != FALSE && i == num_lines)
-			g_strchomp (lines[i]);
 
 		/* Either it's a URI, or it has a proper path ... */
 		if (strstr(lines[i], "://") != NULL
@@ -459,7 +443,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			char sep;
 
 			_base_file = g_file_get_parent (file);
-			sep = (split_char[0] == '\n' ? '/' : '\\');
+			sep = (dos_mode ? '\\' : '/');
 			if (sep == '\\')
 				lines[i] = g_strdelimit (lines[i], "\\", '/');
 			uri = g_file_get_child (_base_file, lines[i]);

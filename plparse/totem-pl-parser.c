@@ -1148,7 +1148,6 @@ totem_pl_parser_read_ini_line_int (char **lines, const char *key)
  * totem_pl_parser_read_ini_line_string_with_sep:
  * @lines: a NULL-terminated array of INI lines to read
  * @key: the key to match
- * @dos_mode: %TRUE if the returned string should end in \r\0, instead of \n\0
  * @sep: the key-value separator
  *
  * Returns the first string value case-insensitively matching the specified
@@ -1159,7 +1158,7 @@ totem_pl_parser_read_ini_line_int (char **lines, const char *key)
  **/
 char*
 totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
-		gboolean dos_mode, const char *sep)
+		const char *sep)
 {
 	char *retval = NULL;
 	int i;
@@ -1175,7 +1174,6 @@ totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 
 		if (g_ascii_strncasecmp (line, key, strlen (key)) == 0) {
 			char **bits;
-			glong len;
 
 			bits = g_strsplit (line, sep, 2);
 			if (bits[0] == NULL || bits [1] == NULL) {
@@ -1184,12 +1182,6 @@ totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 			}
 
 			retval = g_strdup (bits[1]);
-			len = strlen (retval);
-			if (dos_mode && len >= 2 && retval[len-2] == '\r') {
-				retval[len-2] = '\n';
-				retval[len-1] = '\0';
-			}
-
 			g_strfreev (bits);
 		}
 	}
@@ -1201,7 +1193,6 @@ totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
  * totem_pl_parser_read_ini_line_string:
  * @lines: a NULL-terminated array of INI lines to read
  * @key: the key to match
- * @dos_mode: %TRUE if the returned string should end in \r\0, instead of \n\0
  *
  * Returns the first string value case-insensitively matching the
  * specified key. The parser ignores leading whitespace on lines.
@@ -1209,9 +1200,9 @@ totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
  * Return value: a newly-allocated string value, or %NULL
  **/
 char*
-totem_pl_parser_read_ini_line_string (char **lines, const char *key, gboolean dos_mode)
+totem_pl_parser_read_ini_line_string (char **lines, const char *key)
 {
-	return totem_pl_parser_read_ini_line_string_with_sep (lines, key, dos_mode, "=");
+	return totem_pl_parser_read_ini_line_string_with_sep (lines, key, "=");
 }
 
 static void
