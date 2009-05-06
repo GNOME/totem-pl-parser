@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+2.27.1:
+* Handle all types of newline combinations (Unix/DOS)
+* Fix compilation in MacOS X
+* Convert tests to GTest API
+and all the changes from 2.26.1 and 2.26.2
+
 2.26.0:
 * Updated translations
 

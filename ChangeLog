@@ -1,3 +1,10 @@
+============ Version 2.27.2
+
+2009-05-06  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.27.1
+
 2009-05-04  Robert Ancell  <robert.ancell@gmail.com>
 
 	* plparse/totem-pl-parser-lines.c:
