@@ -389,7 +389,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		dos = TRUE;
 	}
 
-	lines = g_strsplit (contents, split_char, 0);
+	lines = g_strsplit_set (contents, split_char, 0);
 	g_free (contents);
 	num_lines = g_strv_length (lines);
 	/* We don't count the terminating NULL */
