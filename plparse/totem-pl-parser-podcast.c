@@ -233,6 +233,7 @@ TotemPlParserResult
 totem_pl_parser_add_rss (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 #ifndef HAVE_CAMEL
@@ -285,6 +286,7 @@ TotemPlParserResult
 totem_pl_parser_add_itpc (TotemPlParser *parser,
 			  GFile *file,
 			  GFile *base_file,
+			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
 #ifndef HAVE_CAMEL
@@ -303,7 +305,7 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 	new_file = g_file_new_for_uri (new_uri);
 	g_free (new_uri);
 
-	ret = totem_pl_parser_add_rss (parser, new_file, base_file, data);
+	ret = totem_pl_parser_add_rss (parser, new_file, base_file, parse_data, data);
 
 	g_object_unref (new_file);
 
@@ -315,6 +317,7 @@ TotemPlParserResult
 totem_pl_parser_add_zune (TotemPlParser *parser,
 			  GFile *file,
 			  GFile *base_file,
+			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
 #ifndef HAVE_CAMEL
@@ -341,7 +344,7 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 	new_file = g_file_new_for_uri (new_uri);
 	g_free (uri);
 
-	ret = totem_pl_parser_add_rss (parser, new_file, base_file, data);
+	ret = totem_pl_parser_add_rss (parser, new_file, base_file, parse_data, data);
 
 	g_object_unref (new_file);
 
@@ -483,6 +486,7 @@ TotemPlParserResult
 totem_pl_parser_add_atom (TotemPlParser *parser,
 			  GFile *file,
 			  GFile *base_file,
+			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
 #ifndef HAVE_CAMEL
@@ -524,6 +528,7 @@ TotemPlParserResult
 totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 			      GFile *file,
 			      GFile *base_file,
+			      TotemPlParseData *parse_data,
 			      gpointer data)
 {
 #ifndef HAVE_CAMEL
@@ -537,11 +542,11 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 	len = strlen (data);
 
 	if (totem_pl_parser_is_rss (data, len) != FALSE)
-		return totem_pl_parser_add_rss (parser, file, base_file, data);
+		return totem_pl_parser_add_rss (parser, file, base_file, parse_data, data);
 	if (totem_pl_parser_is_atom (data, len) != FALSE)
-		return totem_pl_parser_add_atom (parser, file, base_file, data);
+		return totem_pl_parser_add_atom (parser, file, base_file, parse_data, data);
 	if (totem_pl_parser_is_opml (data, len) != FALSE)
-		return totem_pl_parser_add_opml (parser, file, base_file, data);
+		return totem_pl_parser_add_opml (parser, file, base_file, parse_data, data);
 
 	return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 #endif /* !HAVE_CAMEL */
@@ -714,6 +719,7 @@ TotemPlParserResult
 totem_pl_parser_add_itms (TotemPlParser *parser,
 			  GFile *file,
 			  GFile *base_file,
+			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
 #ifndef HAVE_CAMEL
@@ -773,7 +779,7 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 
 	DEBUG(feed_file, g_print ("Found feed URI: %s\n", uri));
 
-	ret = totem_pl_parser_add_rss (parser, feed_file, NULL, NULL);
+	ret = totem_pl_parser_add_rss (parser, feed_file, NULL, parse_data, NULL);
 	g_object_unref (feed_file);
 
 	return ret;
@@ -874,6 +880,7 @@ TotemPlParserResult
 totem_pl_parser_add_opml (TotemPlParser *parser,
 			  GFile *file,
 			  GFile *base_file,
+			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
 #ifndef HAVE_CAMEL

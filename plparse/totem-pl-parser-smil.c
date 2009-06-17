@@ -172,7 +172,9 @@ totem_pl_parser_add_smil_with_doc (TotemPlParser *parser, GFile *file,
 TotemPlParserResult
 totem_pl_parser_add_smil (TotemPlParser *parser,
 			  GFile *file,
-			  GFile *base_file, gpointer data)
+			  GFile *base_file,
+			  TotemPlParseData *parse_data,
+			  gpointer data)
 {
 	char *contents;
 	gsize size;

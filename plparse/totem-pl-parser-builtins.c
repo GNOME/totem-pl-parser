@@ -15,6 +15,7 @@ totem_pl_parser_result_get_type (void)
       { TOTEM_PL_PARSER_RESULT_ERROR, "TOTEM_PL_PARSER_RESULT_ERROR", "error" },
       { TOTEM_PL_PARSER_RESULT_SUCCESS, "TOTEM_PL_PARSER_RESULT_SUCCESS", "success" },
       { TOTEM_PL_PARSER_RESULT_IGNORED, "TOTEM_PL_PARSER_RESULT_IGNORED", "ignored" },
+      { TOTEM_PL_PARSER_RESULT_CANCELLED, "TOTEM_PL_PARSER_RESULT_CANCELLED", "cancelled" },
       { 0, NULL, NULL }
     };
     etype = g_enum_register_static ("TotemPlParserResult", values);

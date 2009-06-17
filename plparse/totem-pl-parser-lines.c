@@ -244,7 +244,7 @@ totem_pl_parser_parse_ram_uri (TotemPlParser *parser, const char *uri)
 }
 
 TotemPlParserResult
-totem_pl_parser_add_ram (TotemPlParser *parser, GFile *file, gpointer data)
+totem_pl_parser_add_ram (TotemPlParser *parser, GFile *file, TotemPlParseData *parse_data, gpointer data)
 {
 	gboolean retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	char *contents, **lines;
@@ -271,7 +271,7 @@ totem_pl_parser_add_ram (TotemPlParser *parser, GFile *file, gpointer data)
 
 			line_file = g_file_new_for_uri (lines[i]);
 			/* .ram files can contain .smil entries */
-			if (totem_pl_parser_parse_internal (parser, line_file, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS)
+			if (totem_pl_parser_parse_internal (parser, line_file, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS)
 				totem_pl_parser_parse_ram_uri (parser, lines[i]);
 			g_object_unref (line_file);
 		} else if (strcmp (lines[i], "--stop--") == 0) {
@@ -338,6 +338,7 @@ TotemPlParserResult
 totem_pl_parser_add_m3u (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
@@ -354,7 +355,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	if (g_str_has_prefix (contents, "[playlist]") != FALSE
 			|| g_str_has_prefix (contents, "[Playlist]") != FALSE
 			|| g_str_has_prefix (contents, "[PLAYLIST]") != FALSE) {
-		retval = totem_pl_parser_add_pls_with_contents (parser, file, base_file, contents);
+		retval = totem_pl_parser_add_pls_with_contents (parser, file, base_file, contents, parse_data);
 		g_free (contents);
 		return retval;
 	}
@@ -403,7 +404,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			GFile *uri;
 
 			uri = g_file_new_for_commandline_arg (lines[i]);
-			if (totem_pl_parser_parse_internal (parser, uri, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+			if (totem_pl_parser_parse_internal (parser, uri, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				totem_pl_parser_add_one_uri (parser, lines[i],
 						totem_pl_parser_get_extinfo_title (extinfo));
 			}
@@ -463,14 +464,16 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 TotemPlParserResult
 totem_pl_parser_add_ra (TotemPlParser *parser,
 			GFile *file,
-			GFile *base_file, gpointer data)
+			GFile *base_file,
+			TotemPlParseData *parse_data,
+			gpointer data)
 {
 	if (data == NULL || totem_pl_parser_is_uri_list (data, strlen (data)) == NULL) {
 		totem_pl_parser_add_one_file (parser, file, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
-	return totem_pl_parser_add_ram (parser, file, NULL);
+	return totem_pl_parser_add_ram (parser, file, parse_data, NULL);
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

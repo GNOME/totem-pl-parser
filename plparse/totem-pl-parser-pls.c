@@ -147,7 +147,8 @@ TotemPlParserResult
 totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 				       GFile *file,
 				       GFile *_base_file,
-				       const char *contents)
+				       const char *contents,
+				       TotemPlParseData *parse_data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	GFile *base_file;
@@ -238,20 +239,20 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 			continue;
 		}
 
-		fallback = parser->priv->fallback;
-		if (parser->priv->recurse)
-			parser->priv->fallback = FALSE;
+		fallback = parse_data->fallback;
+		if (parse_data->recurse)
+			parse_data->fallback = FALSE;
 
 		/* Get the length, if it's negative, that means that we have a stream
 		 * and should push the entry straight away */
 		if (length != NULL)
-			length_num = totem_pl_parser_parse_duration (length, parser->priv->debug);
+			length_num = totem_pl_parser_parse_duration (length, totem_pl_parser_is_debugging_enabled (parser));
 
 		if (strstr (file_str, "://") != NULL || file_str[0] == G_DIR_SEPARATOR) {
 			GFile *target;
 
 			target = g_file_new_for_commandline_arg (file_str);
-			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_URI, file_str,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
@@ -268,7 +269,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 			target = g_file_get_child_for_display_name (base_file, utf8_filename, NULL);
 			g_free (utf8_filename);
 
-			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, base_file) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+			if (length_num < 0 || totem_pl_parser_parse_internal (parser, target, base_file, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_FILE, target,
 							 TOTEM_PL_PARSER_FIELD_TITLE, title,
@@ -280,7 +281,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 			g_object_unref (target);
 		}
 
-		parser->priv->fallback = fallback;
+		parse_data->fallback = fallback;
 		g_free (file_str);
 		g_free (title);
 		g_free (genre);
@@ -303,6 +304,7 @@ TotemPlParserResult
 totem_pl_parser_add_pls (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
@@ -317,7 +319,7 @@ totem_pl_parser_add_pls (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
-	retval = totem_pl_parser_add_pls_with_contents (parser, file, base_file, contents);
+	retval = totem_pl_parser_add_pls_with_contents (parser, file, base_file, contents, parse_data);
 	g_free (contents);
 
 	return retval;

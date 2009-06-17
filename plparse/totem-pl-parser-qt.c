@@ -69,6 +69,7 @@ static TotemPlParserResult
 totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 					GFile *file,
 					GFile *base_file,
+					TotemPlParseData *parse_data,
 					gpointer data)
 {
 	char *contents = NULL;
@@ -114,7 +115,9 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 static TotemPlParserResult
 totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 					GFile *file,
-					GFile *base_file, gpointer data)
+					GFile *base_file,
+					TotemPlParseData *parse_data,
+					gpointer data)
 {
 	xml_node_t *doc, *node;
 	gsize size;
@@ -124,7 +127,7 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 
 	if (g_str_has_prefix (data, "RTSPtext") != FALSE
 			|| g_str_has_prefix (data, "rtsptext") != FALSE) {
-		return totem_pl_parser_add_quicktime_rtsptext (parser, file, base_file, data);
+		return totem_pl_parser_add_quicktime_rtsptext (parser, file, base_file, parse_data, data);
 	}
 	if (g_str_has_prefix (data, "SMILtext") != FALSE) {
 		char *contents;
@@ -201,12 +204,13 @@ TotemPlParserResult
 totem_pl_parser_add_quicktime (TotemPlParser *parser,
 			       GFile *file,
 			       GFile *base_file,
+			       TotemPlParseData *parse_data,
 			       gpointer data)
 {
 	if (data == NULL || totem_pl_parser_is_quicktime (data, strlen (data)) == NULL)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
-	return totem_pl_parser_add_quicktime_metalink (parser, file, base_file, data);
+	return totem_pl_parser_add_quicktime_metalink (parser, file, base_file, parse_data, data);
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

@@ -1,3 +1,67 @@
+2009-06-17  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* docs/reference/totem-pl-parser-sections.txt:
+	* plparse/plparser.symbols:
+	* plparse/totem-pl-parser-builtins.c
+	(totem_pl_parser_result_get_type):
+	* plparse/totem-pl-parser-lines.c (totem_pl_parser_add_ram),
+	(totem_pl_parser_add_m3u), (totem_pl_parser_add_ra):
+	* plparse/totem-pl-parser-lines.h:
+	* plparse/totem-pl-parser-media.c (totem_pl_parser_add_iso),
+	(totem_pl_parser_add_cue), (totem_pl_parser_add_directory),
+	(totem_pl_parser_add_block):
+	* plparse/totem-pl-parser-media.h:
+	* plparse/totem-pl-parser-misc.c (totem_pl_parser_add_gvp),
+	(totem_pl_parser_add_desktop):
+	* plparse/totem-pl-parser-misc.h:
+	* plparse/totem-pl-parser-pla.c (totem_pl_parser_add_pla):
+	* plparse/totem-pl-parser-pla.h:
+	* plparse/totem-pl-parser-pls.c
+	(totem_pl_parser_add_pls_with_contents), (totem_pl_parser_add_pls):
+	* plparse/totem-pl-parser-pls.h:
+	* plparse/totem-pl-parser-podcast.c (totem_pl_parser_add_rss),
+	(totem_pl_parser_add_itpc), (totem_pl_parser_add_zune),
+	(totem_pl_parser_add_atom), (totem_pl_parser_add_xml_feed),
+	(totem_pl_parser_add_itms), (totem_pl_parser_add_opml):
+	* plparse/totem-pl-parser-podcast.h:
+	* plparse/totem-pl-parser-private.h:
+	* plparse/totem-pl-parser-qt.c
+	(totem_pl_parser_add_quicktime_rtsptext),
+	(totem_pl_parser_add_quicktime_metalink),
+	(totem_pl_parser_add_quicktime):
+	* plparse/totem-pl-parser-qt.h:
+	* plparse/totem-pl-parser-smil.c (totem_pl_parser_add_smil):
+	* plparse/totem-pl-parser-smil.h:
+	* plparse/totem-pl-parser-wm.c
+	(totem_pl_parser_add_asf_reference_parser),
+	(totem_pl_parser_add_asf_parser), (parse_asx_entry),
+	(parse_asx_entryref), (parse_asx_entries),
+	(totem_pl_parser_add_asx), (totem_pl_parser_add_asf):
+	* plparse/totem-pl-parser-wm.h:
+	* plparse/totem-pl-parser-xspf.c (totem_pl_parser_add_xspf):
+	* plparse/totem-pl-parser-xspf.h:
+	* plparse/totem-pl-parser.c (totem_pl_parser_class_init),
+	(emit_playlist_ended_signal), (totem_pl_parser_playlist_end),
+	(totem_pl_parser_is_debugging_enabled), (totem_pl_parser_init),
+	(totem_pl_parser_finalize), (emit_entry_parsed_signal),
+	(totem_pl_parser_add_uri_valist),
+	(totem_pl_parser_scheme_is_ignored),
+	(totem_pl_parser_mimetype_is_ignored),
+	(totem_pl_parser_parse_internal), (parse_async_data_free),
+	(parse_thread), (totem_pl_parser_parse_with_base_async),
+	(totem_pl_parser_parse_with_base), (totem_pl_parser_parse_async),
+	(totem_pl_parser_parse_finish),
+	(totem_pl_parser_add_ignored_scheme),
+	(totem_pl_parser_add_ignored_mimetype):
+	* plparse/totem-pl-parser.h: Add asynchronous playlist parsing
+	functions, totem_pl_parser_parse_async, *_parse_with_base_async and
+	totem_pl_parser_parse_finish. This includes making TotemPlParser
+	threadsafe, and ensuring it emits all its signals in the main thread.
+	It also includes refactoring of recursive parsing so that global
+	options are copied and preserved throughout the parse operation,
+	and can't be changed mid-operation from another thread.
+	(Closes: #561444)
+
 2009-05-31  Philip Withnall  <philip@tecnocode.co.uk>
 
         * docs/reference/Makefile.am: Add the builddir to gtkdoc-mkhtml's

@@ -159,6 +159,7 @@ TotemPlParserResult
 totem_pl_parser_add_pla (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;

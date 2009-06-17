@@ -41,6 +41,7 @@ TotemPlParserResult
 totem_pl_parser_add_gvp (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
@@ -90,6 +91,7 @@ TotemPlParserResult
 totem_pl_parser_add_desktop (TotemPlParser *parser,
 			     GFile *file,
 			     GFile *base_file,
+			     TotemPlParseData *parse_data,
 			     gpointer data)
 {
 	char *contents, **lines;
@@ -124,7 +126,7 @@ totem_pl_parser_add_desktop (TotemPlParser *parser,
 	    && g_ascii_strcasecmp (type, "FSDevice") != 0) {
 		totem_pl_parser_add_one_file (parser, target, display_name);
 	} else {
-		if (totem_pl_parser_parse_internal (parser, target, NULL) != TOTEM_PL_PARSER_RESULT_SUCCESS)
+		if (totem_pl_parser_parse_internal (parser, target, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS)
 			totem_pl_parser_add_one_file (parser, target, display_name);
 	}
 

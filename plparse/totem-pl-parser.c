@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (C) 2002, 2003, 2004, 2005, 2006 Bastien Nocera
    Copyright (C) 2003, 2004 Colin Walters <walters@rhythmbox.org>
 
@@ -139,7 +139,7 @@
 typedef const char * (*PlaylistIdenCallback) (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
-typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, GFile *uri, GFile *base_file, gpointer data);
+typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, GFile *uri, GFile *base_file, TotemPlParseData *parse_data, gpointer data);
 #endif
 
 typedef struct {
@@ -226,6 +226,17 @@ static void totem_pl_parser_get_property (GObject *object,
 					  GValue *value,
 					  GParamSpec *pspec);
 
+struct TotemPlParserPrivate {
+	GList *ignore_schemes;
+	GList *ignore_mimetypes;
+	GMutex *ignore_mutex;
+
+	guint recurse : 1;
+	guint debug : 1;
+	guint force : 1;
+	guint disable_unsafe : 1;
+};
+
 enum {
 	PROP_NONE,
 	PROP_RECURSE,
@@ -255,6 +266,8 @@ static void totem_pl_parser_init       (TotemPlParser      *self);
 static void totem_pl_parser_class_init (TotemPlParserClass *klass);
 static gpointer totem_pl_parser_parent_class = NULL;
 
+#define TOTEM_PL_PARSER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate))
+
 GType
 totem_pl_parser_get_type (void)
 {
@@ -272,10 +285,10 @@ totem_pl_parser_get_type (void)
 			0,
 			(GInstanceInitFunc) totem_pl_parser_init,
 		};
-		GType g_define_type_id = g_type_register_static (G_TYPE_OBJECT, "TotemPlParser", &g_define_type_info, 0); 
+		GType g_define_type_id = g_type_register_static (G_TYPE_OBJECT, "TotemPlParser", &g_define_type_info, 0);
 		g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-	} 
-	return g_define_type_id__volatile; 
+	}
+	return g_define_type_id__volatile;
 }
 
 static void
@@ -285,6 +298,9 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	totem_pl_parser_parent_class = g_type_class_peek_parent (klass);
+	if (!g_thread_supported ())
+		g_thread_init (NULL);
+
 	g_type_class_add_private (klass, sizeof (TotemPlParserPrivate));
 
 	object_class->finalize = totem_pl_parser_finalize;
@@ -303,7 +319,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 					 PROP_RECURSE,
 					 g_param_spec_boolean ("recurse",
 							       "recurse",
-							       "Whether or not to process URIs further", 
+							       "Whether or not to process URIs further",
 							       TRUE,
 							       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
@@ -316,7 +332,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 					 PROP_DEBUG,
 					 g_param_spec_boolean ("debug",
 							       "debug",
-							       "Whether or not to enable debugging output", 
+							       "Whether or not to enable debugging output",
 							       FALSE,
 							       G_PARAM_READWRITE));
 
@@ -330,7 +346,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 					 PROP_FORCE,
 					 g_param_spec_boolean ("force",
 							       "force",
-							       "Whether or not to force parsing the file if the playlist looks unsupported", 
+							       "Whether or not to force parsing the file if the playlist looks unsupported",
 							       FALSE,
 							       G_PARAM_READWRITE));
 
@@ -345,7 +361,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 					 PROP_DISABLE_UNSAFE,
 					 g_param_spec_boolean ("disable-unsafe",
 							       "disable-unsafe",
-							       "Whether or not to disable parsing of unsafe locations", 
+							       "Whether or not to disable parsing of unsafe locations",
 							       FALSE,
 							       G_PARAM_READWRITE));
 
@@ -625,6 +641,26 @@ totem_pl_parser_new (void)
 	return TOTEM_PL_PARSER (g_object_new (TOTEM_TYPE_PL_PARSER, NULL));
 }
 
+typedef struct {
+	TotemPlParser *parser;
+	char *playlist_uri;
+} PlaylistEndedSignalData;
+
+static gboolean
+emit_playlist_ended_signal (PlaylistEndedSignalData *data)
+{
+	g_signal_emit (data->parser,
+		       totem_pl_parser_table_signals[PLAYLIST_ENDED],
+		       0, data->playlist_uri);
+
+	/* Free the data */
+	g_object_unref (data->parser);
+	g_free (data->playlist_uri);
+	g_free (data);
+
+	return FALSE;
+}
+
 /**
  * totem_pl_parser_playlist_end:
  * @parser: a #TotemPlParser
@@ -636,9 +672,13 @@ totem_pl_parser_new (void)
 void
 totem_pl_parser_playlist_end (TotemPlParser *parser, const char *playlist_uri)
 {
-	g_signal_emit (G_OBJECT (parser),
-		       totem_pl_parser_table_signals[PLAYLIST_ENDED],
-		       0, playlist_uri);
+	PlaylistEndedSignalData *data;
+
+	data = g_new (PlaylistEndedSignalData, 1);
+	data->parser = g_object_ref (parser);
+	data->playlist_uri = g_strdup (playlist_uri);
+
+	g_idle_add ((GSourceFunc) emit_playlist_ended_signal, data);
 }
 
 static char *
@@ -701,6 +741,20 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 	*data = buffer;
 
 	return totem_pl_parser_mime_type_from_data (*data, bytes_read);
+}
+
+/**
+ * totem_pl_parser_is_debugging_enabled:
+ * @parser: a #TotemPlParser
+ *
+ * Returns whether debugging is enabled. This is a private method, not exposed by the library.
+ *
+ * Return value: %TRUE if debugging is enabled, %FALSE otherwise
+ **/
+gboolean
+totem_pl_parser_is_debugging_enabled (TotemPlParser *parser)
+{
+	return parser->priv->debug;
 }
 
 /**
@@ -1209,23 +1263,47 @@ static void
 totem_pl_parser_init (TotemPlParser *parser)
 {
 	parser->priv = G_TYPE_INSTANCE_GET_PRIVATE (parser, TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate);
+	parser->priv->ignore_mutex = g_mutex_new ();
 }
 
 static void
 totem_pl_parser_finalize (GObject *object)
 {
-	TotemPlParser *parser = TOTEM_PL_PARSER (object);
+	TotemPlParserPrivate *priv = TOTEM_PL_PARSER (object)->priv;
 
 	g_return_if_fail (object != NULL);
-	g_return_if_fail (parser->priv != NULL);
+	g_return_if_fail (priv != NULL);
 
-	g_list_foreach (parser->priv->ignore_schemes, (GFunc) g_free, NULL);
-	g_list_free (parser->priv->ignore_schemes);
+	g_list_foreach (priv->ignore_schemes, (GFunc) g_free, NULL);
+	g_list_free (priv->ignore_schemes);
 
-	g_list_foreach (parser->priv->ignore_mimetypes, (GFunc) g_free, NULL);
-	g_list_free (parser->priv->ignore_mimetypes);
+	g_list_foreach (priv->ignore_mimetypes, (GFunc) g_free, NULL);
+	g_list_free (priv->ignore_mimetypes);
+
+	g_mutex_free (priv->ignore_mutex);
 
 	G_OBJECT_CLASS (totem_pl_parser_parent_class)->finalize (object);
+}
+
+typedef struct {
+	TotemPlParser *parser;
+	guint signal_id;
+	char *uri;
+	GHashTable *metadata;
+} EntryParsedSignalData;
+
+static gboolean
+emit_entry_parsed_signal (EntryParsedSignalData *data)
+{
+	g_signal_emit (data->parser, data->signal_id, 0, data->uri, data->metadata);
+
+	/* Free the data */
+	g_object_unref (data->parser);
+	g_free (data->uri);
+	g_hash_table_unref (data->metadata);
+	g_free (data);
+
+	return FALSE;
 }
 
 static void
@@ -1340,15 +1418,21 @@ totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 	}
 
 	if (g_hash_table_size (metadata) > 0 || uri != NULL) {
-		if (is_playlist == FALSE) {
-			g_signal_emit (G_OBJECT (parser),
-				       totem_pl_parser_table_signals[ENTRY_PARSED],
-				       0, uri, metadata);
-		} else {
-			g_signal_emit (G_OBJECT (parser),
-				       totem_pl_parser_table_signals[PLAYLIST_STARTED],
-				       0, uri, metadata);
-		}
+		EntryParsedSignalData *data;
+
+		/* Make sure to emit the signals asynchronously, as we could be in the main loop
+		 * *or* a worker thread at this point. */
+		data = g_new (EntryParsedSignalData, 1);
+		data->parser = g_object_ref (parser);
+		data->uri = g_strdup (uri);
+		data->metadata = g_hash_table_ref (metadata);
+
+		if (is_playlist == FALSE)
+			data->signal_id = totem_pl_parser_table_signals[ENTRY_PARSED];
+		else
+			data->signal_id = totem_pl_parser_table_signals[PLAYLIST_STARTED];
+
+		g_idle_add ((GSourceFunc) emit_entry_parsed_signal, data);
 	}
 
 	g_hash_table_unref (metadata);
@@ -1427,14 +1511,22 @@ totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, GFile *uri)
 {
 	GList *l;
 
-	if (parser->priv->ignore_schemes == NULL)
+	g_mutex_lock (parser->priv->ignore_mutex);
+
+	if (parser->priv->ignore_schemes == NULL) {
+		g_mutex_unlock (parser->priv->ignore_mutex);
 		return FALSE;
+	}
 
 	for (l = parser->priv->ignore_schemes; l != NULL; l = l->next) {
 		const char *scheme = l->data;
-		if (g_file_has_uri_scheme (uri, scheme) != FALSE)
+		if (g_file_has_uri_scheme (uri, scheme) != FALSE) {
+			g_mutex_unlock (parser->priv->ignore_mutex);
 			return TRUE;
+		}
 	}
+
+	g_mutex_unlock (parser->priv->ignore_mutex);
 
 	return FALSE;
 }
@@ -1445,15 +1537,23 @@ totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 {
 	GList *l;
 
-	if (parser->priv->ignore_mimetypes == NULL)
+	g_mutex_lock (parser->priv->ignore_mutex);
+
+	if (parser->priv->ignore_mimetypes == NULL) {
+		g_mutex_unlock (parser->priv->ignore_mutex);
 		return FALSE;
+	}
 
 	for (l = parser->priv->ignore_mimetypes; l != NULL; l = l->next)
 	{
 		const char *item = l->data;
-		if (strcmp (mimetype, item) == 0)
+		if (strcmp (mimetype, item) == 0) {
+			g_mutex_unlock (parser->priv->ignore_mutex);
 			return TRUE;
+		}
 	}
+
+	g_mutex_unlock (parser->priv->ignore_mutex);
 
 	return FALSE;
 }
@@ -1610,7 +1710,8 @@ totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetyp
 TotemPlParserResult
 totem_pl_parser_parse_internal (TotemPlParser *parser,
 				GFile *file,
-				GFile *base_file)
+				GFile *base_file,
+				TotemPlParseData *parse_data)
 {
 	char *mimetype;
 	guint i;
@@ -1618,7 +1719,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	TotemPlParserResult ret = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	gboolean found = FALSE;
 
-	if (parser->priv->recurse_level > RECURSE_LEVEL_MAX)
+	if (parse_data->recurse_level > RECURSE_LEVEL_MAX)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	if (g_file_has_uri_scheme (file, "mms") != FALSE
@@ -1637,23 +1738,23 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	    || g_file_has_uri_scheme (file, "feed") != FALSE
 	    || g_file_has_uri_scheme (file, "zcast") != FALSE) {
 		DEBUG(file, g_print ("URI '%s' is getting special cased for ITPC/FEED/ZCAST parsing\n", uri));
-		return totem_pl_parser_add_itpc (parser, file, base_file, NULL);
+		return totem_pl_parser_add_itpc (parser, file, base_file, parse_data, NULL);
 	}
 	if (g_file_has_uri_scheme (file, "zune") != FALSE) {
 		DEBUG(file, g_print ("URI '%s' is getting special cased for ZUNE parsing\n", uri));
-		return totem_pl_parser_add_zune (parser, file, base_file, NULL);
+		return totem_pl_parser_add_zune (parser, file, base_file, parse_data, NULL);
 	}
 	/* Try itms Podcast references, see itunes.py in PenguinTV */
 	if (totem_pl_parser_is_itms_feed (file) != FALSE) {
-	    	DEBUG(file, g_print ("URI '%s' is getting special cased for ITMS parsing\n", uri));
-	    	return totem_pl_parser_add_itms (parser, file, NULL, NULL);
+		DEBUG(file, g_print ("URI '%s' is getting special cased for ITMS parsing\n", uri));
+		return totem_pl_parser_add_itms (parser, file, NULL, parse_data, NULL);
 	}
 
-	if (!parser->priv->recurse && parser->priv->recurse_level > 0)
+	if (!parse_data->recurse && parse_data->recurse_level > 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
 	/* In force mode we want to get the data */
-	if (parser->priv->force != FALSE) {
+	if (parse_data->force != FALSE) {
 		mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
 	} else {
 		char *uri;
@@ -1700,7 +1801,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 	/* If we're at the top-level of the parsing, try to get more
 	 * data from the playlist parser */
-	if (strcmp (mimetype, AUDIO_MPEG_TYPE) == 0 && parser->priv->recurse_level == 0 && data == NULL) {
+	if (strcmp (mimetype, AUDIO_MPEG_TYPE) == 0 && parse_data->recurse_level == 0 && data == NULL) {
 		char *tmp;
 		tmp = my_g_file_info_get_mime_type_with_data (file, &data, parser);
 		if (tmp != NULL) {
@@ -1716,13 +1817,13 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_IGNORED;
 	}
 
-	if (parser->priv->recurse || parser->priv->recurse_level == 0) {
-		parser->priv->recurse_level++;
+	if (parse_data->recurse || parse_data->recurse_level == 0) {
+		parse_data->recurse_level++;
 
 		for (i = 0; i < G_N_ELEMENTS(special_types); i++) {
 			if (strcmp (special_types[i].mimetype, mimetype) == 0) {
 				DEBUG(file, g_print ("URI '%s' is special type '%s'\n", uri, mimetype));
-				if (parser->priv->disable_unsafe != FALSE && special_types[i].unsafe != FALSE) {
+				if (parse_data->disable_unsafe != FALSE && special_types[i].unsafe != FALSE) {
 					DEBUG(file, g_print ("URI '%s' is unsafe so was ignored\n", uri));
 					g_free (mimetype);
 					g_free (data);
@@ -1734,7 +1835,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 					base_file = g_object_ref (base_file);
 
 				DEBUG (file, g_print ("Using %s function for '%s'\n", special_types[i].mimetype, uri));
-				ret = (* special_types[i].func) (parser, file, base_file, data);
+				ret = (* special_types[i].func) (parser, file, base_file, parse_data, data);
 
 				if (base_file != NULL)
 					g_object_unref (base_file);
@@ -1762,7 +1863,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				else
 					base_file = g_object_ref (base_file);
 
-				ret = (* dual_types[i].func) (parser, file, base_file ? base_file : file, data);
+				ret = (* dual_types[i].func) (parser, file, base_file ? base_file : file, parse_data, data);
 
 				if (base_file != NULL)
 					g_object_unref (base_file);
@@ -1774,7 +1875,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 		g_free (data);
 
-		parser->priv->recurse_level--;
+		parse_data->recurse_level--;
 	}
 
 	if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS) {
@@ -1788,12 +1889,87 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	}
 	g_free (mimetype);
 
-	if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS && parser->priv->fallback) {
+	if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS && parse_data->fallback) {
 		totem_pl_parser_add_one_file (parser, file, NULL);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
 	return ret;
+}
+
+typedef struct {
+	char *uri;
+	char *base;
+	gboolean fallback;
+} ParseAsyncData;
+
+static void
+parse_async_data_free (ParseAsyncData *data)
+{
+	g_free (data->uri);
+	g_free (data->base);
+	g_slice_free (ParseAsyncData, data);
+}
+
+static void
+parse_thread (GSimpleAsyncResult *result, GObject *object, GCancellable *cancellable)
+{
+	TotemPlParserResult parse_result;
+	GError *error = NULL;
+	ParseAsyncData *data = g_simple_async_result_get_op_res_gpointer (result);
+
+	/* Check to see if it's been cancelled already */
+	if (g_cancellable_set_error_if_cancelled (cancellable, &error) == TRUE) {
+		g_simple_async_result_set_from_error (result, error);
+		g_simple_async_result_set_op_res_gpointer (result, GUINT_TO_POINTER (TOTEM_PL_PARSER_RESULT_CANCELLED), NULL);
+		g_error_free (error);
+		return;
+	}
+
+	/* Parse and return */
+	parse_result = totem_pl_parser_parse_with_base (TOTEM_PL_PARSER (object), data->uri, data->base, data->fallback);
+	g_simple_async_result_set_op_res_gpointer (result, GUINT_TO_POINTER (parse_result), NULL);
+}
+
+/**
+ * totem_pl_parser_parse_with_base_async:
+ * @parser: a #TotemPlParser
+ * @uri: the URI of the playlist to parse
+ * @base: the base path for relative filenames
+ * @fallback: %TRUE if the parser should add the playlist URI to the
+ * end of the playlist on parse failure
+ * @cancellable: optional #GCancellable object, or %NULL
+ * @callback: a #GAsyncReadyCallback to call when parsing is finished
+ * @user_data: data to pass to the @callback function
+ *
+ * Starts asynchronous parsing of a playlist given by the absolute URI @uri, using @base to resolve relative paths where appropriate.
+ * @self and @uri are both reffed/copied when this function is called, so can safely be freed after this function returns.
+ *
+ * For more details, see totem_pl_parser_parse_with_base(), which is the synchronous version of this function.
+ *
+ * When the operation is finished, @callback will be called. You can then call totem_pl_parser_parse_finish()
+ * to get the results of the operation.
+ **/
+void
+totem_pl_parser_parse_with_base_async (TotemPlParser *parser, const char *uri, const char *base, gboolean fallback,
+				       GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
+{
+	GSimpleAsyncResult *result;
+	ParseAsyncData *data;
+
+	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
+	g_return_if_fail (uri != NULL);
+	g_return_if_fail (strstr (uri, "://") != NULL);
+
+	data = g_slice_new (ParseAsyncData);
+	data->uri = g_strdup (uri);
+	data->base = g_strdup (base);
+	data->fallback = fallback;
+
+	result = g_simple_async_result_new (G_OBJECT (parser), callback, user_data, totem_pl_parser_parse_with_base_async);
+	g_simple_async_result_set_op_res_gpointer (result, data, (GDestroyNotify) parse_async_data_free);
+	g_simple_async_result_run_in_thread (result, (GSimpleAsyncThreadFunc) parse_thread, G_PRIORITY_DEFAULT, cancellable);
+	g_object_unref (result);
 }
 
 /**
@@ -1815,6 +1991,7 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *uri,
 {
 	GFile *file, *base_file;
 	TotemPlParserResult retval;
+	TotemPlParseData data;
 
 	g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
 	g_return_val_if_fail (uri != NULL, TOTEM_PL_PARSER_RESULT_UNHANDLED);
@@ -1829,11 +2006,16 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *uri,
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 
-	parser->priv->recurse_level = 0;
-	parser->priv->fallback = fallback != FALSE;
+	/* Use a struct to store copies of the options as set for this parse operation */
+	data.recurse_level = 0;
+	data.fallback = fallback;
+	data.recurse = parser->priv->recurse;
+	data.force = parser->priv->force;
+	data.disable_unsafe = parser->priv->disable_unsafe;
+
 	if (base != NULL)
 		base_file = g_file_new_for_uri (base);
-	retval = totem_pl_parser_parse_internal (parser, file, base_file);
+	retval = totem_pl_parser_parse_internal (parser, file, base_file, &data);
 
 	g_object_unref (file);
 	if (base_file != NULL)
@@ -1843,13 +2025,71 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *uri,
 }
 
 /**
+ * totem_pl_parser_parse_async:
+ * @parser: a #TotemPlParser
+ * @uri: the URI of the playlist to parse
+ * @fallback: %TRUE if the parser should add the playlist URI to the
+ * end of the playlist on parse failure
+ * @cancellable: optional #GCancellable object, or %NULL
+ * @callback: a #GAsyncReadyCallback to call when parsing is finished
+ * @user_data: data to pass to the @callback function
+ *
+ * Starts asynchronous parsing of a playlist given by the absolute URI @uri. @self and @uri are both reffed/copied
+ * when this function is called, so can safely be freed after this function returns.
+ *
+ * For more details, see totem_pl_parser_parse(), which is the synchronous version of this function.
+ *
+ * When the operation is finished, @callback will be called. You can then call totem_pl_parser_parse_finish()
+ * to get the results of the operation.
+ **/
+void
+totem_pl_parser_parse_async (TotemPlParser *parser, const char *uri, gboolean fallback,
+			     GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
+{
+	totem_pl_parser_parse_with_base_async (parser, uri, NULL, fallback, cancellable, callback, user_data);
+}
+
+/**
+ * totem_pl_parser_parse_finish:
+ * @parser: a #TotemPlParser
+ * @async_result: a #GAsyncResult
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an asynchronous playlist parsing operation started with totem_pl_parser_parse_async()
+ * or totem_pl_parser_parse_with_base_async().
+ *
+ * If parsing of the playlist is cancelled part-way through, %TOTEM_PL_PARSER_RESULT_CANCELLED is returned when
+ * this function is called.
+ *
+ * Return value: a #TotemPlParserResult
+ **/
+TotemPlParserResult
+totem_pl_parser_parse_finish (TotemPlParser *parser, GAsyncResult *async_result, GError **error)
+{
+	GSimpleAsyncResult *result = G_SIMPLE_ASYNC_RESULT (async_result);
+
+	g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), FALSE);
+	g_return_val_if_fail (G_IS_ASYNC_RESULT (async_result), FALSE);
+
+	g_warn_if_fail (g_simple_async_result_get_source_tag (result) == totem_pl_parser_parse_with_base_async);
+
+	/* Propagate any errors which were caught and return the result; otherwise just return the result */
+	g_simple_async_result_propagate_error (result, error);
+	return GPOINTER_TO_UINT (g_simple_async_result_get_op_res_gpointer (result));
+}
+
+/**
  * totem_pl_parser_parse:
  * @parser: a #TotemPlParser
  * @uri: the URI of the playlist to parse
  * @fallback: %TRUE if the parser should add the playlist URI to the
  * end of the playlist on parse failure
  *
- * Parses a playlist given by the absolute URI @uri.
+ * Parses a playlist given by the absolute URI @uri. This method is
+ * synchronous, and will block on (e.g.) network requests to slow
+ * servers. totem_pl_parser_parse_async() is recommended instead.
+ *
+ * Return values are as totem_pl_parser_parse_with_base().
  *
  * Return value: a #TotemPlParserResult
  **/
@@ -1876,11 +2116,15 @@ totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 
 	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
 
+	g_mutex_lock (parser->priv->ignore_mutex);
+
 	s = g_strdup (scheme);
 	if (s[strlen (s) - 1] == ':')
 		s[strlen (s) - 1] = '\0';
 	parser->priv->ignore_schemes = g_list_prepend
 		(parser->priv->ignore_schemes, s);
+
+	g_mutex_unlock (parser->priv->ignore_mutex);
 }
 
 /**
@@ -1897,8 +2141,12 @@ totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 {
 	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
 
+	g_mutex_lock (parser->priv->ignore_mutex);
+
 	parser->priv->ignore_mimetypes = g_list_prepend
 		(parser->priv->ignore_mimetypes, g_strdup (mimetype));
+
+	g_mutex_unlock (parser->priv->ignore_mutex);
 }
 
 /**
@@ -2146,7 +2394,7 @@ totem_pl_parser_metadata_get_type (void)
 {
 	static volatile gsize g_define_type_id__volatile = 0;
 	if (g_once_init_enter (&g_define_type_id__volatile))
-	{ 
+	{
 		GType g_define_type_id = g_boxed_type_register_static (
 		    g_intern_static_string ("TotemPlParserMetadata"),
 		    (GBoxedCopyFunc) g_hash_table_ref,

@@ -294,6 +294,7 @@ TotemPlParserResult
 totem_pl_parser_add_xspf (TotemPlParser *parser,
 			  GFile *file,
 			  GFile *base_file,
+			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
 	xmlDocPtr doc;

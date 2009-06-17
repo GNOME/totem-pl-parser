@@ -26,6 +26,7 @@ G_BEGIN_DECLS
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
+#include "totem-pl-parser-private.h"
 #include <gio/gio.h>
 #else
 #include "totem-pl-parser-mini.h"
@@ -50,30 +51,37 @@ gboolean totem_pl_parser_is_itms_feed (GFile *file);
 TotemPlParserResult totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 						  GFile *file,
 						  GFile *base_file,
+						  TotemPlParseData *parse_data,
 						  gpointer data);
 TotemPlParserResult totem_pl_parser_add_atom (TotemPlParser *parser,
 					      GFile *file,
 					      GFile *base_file,
+					      TotemPlParseData *parse_data,
 					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_rss (TotemPlParser *parser,
 					     GFile *file,
 					     GFile *base_file,
+					     TotemPlParseData *parse_data,
 					     gpointer data);
 TotemPlParserResult totem_pl_parser_add_itpc (TotemPlParser *parser,
 					      GFile *file,
 					      GFile *base_file,
+					      TotemPlParseData *parse_data,
 					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_zune (TotemPlParser *parser,
 					      GFile *file,
 					      GFile *base_file,
+					      TotemPlParseData *parse_data,
 					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_itms (TotemPlParser *parser,
 					      GFile *file,
 					      GFile *base_file,
+					      TotemPlParseData *parse_data,
 					      gpointer data);
 TotemPlParserResult totem_pl_parser_add_opml (TotemPlParser *parser,
 					      GFile *file,
 					      GFile *base_file,
+					      TotemPlParseData *parse_data,
 					      gpointer data);
 
 #endif /* !TOTEM_PL_PARSER_MINI */

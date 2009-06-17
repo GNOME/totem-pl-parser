@@ -27,6 +27,7 @@ G_BEGIN_DECLS
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
+#include "totem-pl-parser-private.h"
 #include <gio/gio.h>
 #else
 #include "totem-pl-parser-mini.h"
@@ -38,6 +39,7 @@ const char * totem_pl_parser_is_quicktime (const char *data, gsize len);
 TotemPlParserResult totem_pl_parser_add_quicktime (TotemPlParser *parser,
 						   GFile *file,
 						   GFile *base_file,
+						   TotemPlParseData *parse_data,
 						   gpointer data);
 #endif /* !TOTEM_PL_PARSER_MINI */
 

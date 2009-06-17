@@ -42,7 +42,9 @@ G_BEGIN_DECLS
  * @TOTEM_PL_PARSER_RESULT_UNHANDLED: The playlist could not be handled.
  * @TOTEM_PL_PARSER_RESULT_ERROR: There was an error parsing the playlist.
  * @TOTEM_PL_PARSER_RESULT_SUCCESS: The playlist was parsed successfully.
- * @TOTEM_PL_PARSER_RESULT_IGNORED: The playlist was ignored due to its scheme or MIME type (see totem_pl_parser_add_ignored_scheme() and totem_pl_parser_add_ignored_mimetype()).
+ * @TOTEM_PL_PARSER_RESULT_IGNORED: The playlist was ignored due to its scheme or MIME type (see totem_pl_parser_add_ignored_scheme()
+ * and totem_pl_parser_add_ignored_mimetype()).
+ * @TOTEM_PL_PARSER_RESULT_CANCELLED: Parsing of the playlist was cancelled part-way through.
  *
  * Gives the result of parsing a playlist.
  **/
@@ -50,7 +52,8 @@ typedef enum {
 	TOTEM_PL_PARSER_RESULT_UNHANDLED,
 	TOTEM_PL_PARSER_RESULT_ERROR,
 	TOTEM_PL_PARSER_RESULT_SUCCESS,
-	TOTEM_PL_PARSER_RESULT_IGNORED
+	TOTEM_PL_PARSER_RESULT_IGNORED,
+	TOTEM_PL_PARSER_RESULT_CANCELLED
 } TotemPlParserResult;
 
 typedef struct TotemPlParser	       TotemPlParser;
@@ -352,10 +355,24 @@ void       totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 
 TotemPlParserResult totem_pl_parser_parse (TotemPlParser *parser,
 					   const char *uri, gboolean fallback);
+void totem_pl_parser_parse_async (TotemPlParser *parser, const char *uri,
+				  gboolean fallback, GCancellable *cancellable,
+				  GAsyncReadyCallback callback,
+                                  gpointer user_data);
+TotemPlParserResult totem_pl_parser_parse_finish (TotemPlParser *parser,
+						  GAsyncResult *async_result,
+						  GError **error);
+
 TotemPlParserResult totem_pl_parser_parse_with_base (TotemPlParser *parser,
 						     const char *uri,
 						     const char *base,
 						     gboolean fallback);
+void totem_pl_parser_parse_with_base_async (TotemPlParser *parser,
+					    const char *uri, const char *base,
+					    gboolean fallback,
+					    GCancellable *cancellable,
+					    GAsyncReadyCallback callback,
+                    			    gpointer user_data);
 
 TotemPlParser *totem_pl_parser_new (void);
 

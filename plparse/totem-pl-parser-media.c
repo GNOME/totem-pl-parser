@@ -117,6 +117,7 @@ TotemPlParserResult
 totem_pl_parser_add_iso (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 	TotemDiscMediaType type;
@@ -141,7 +142,9 @@ totem_pl_parser_add_iso (TotemPlParser *parser,
 TotemPlParserResult
 totem_pl_parser_add_cue (TotemPlParser *parser,
 			 GFile *file,
-			 GFile *base_file, gpointer data)
+			 GFile *base_file,
+			 TotemPlParseData *parse_data,
+			 gpointer data)
 {
 	char *vcduri, *path;
 
@@ -224,6 +227,7 @@ TotemPlParserResult
 totem_pl_parser_add_directory (TotemPlParser *parser,
 			       GFile *file,
 			       GFile *base_file,
+			       TotemPlParseData *parse_data,
 			       gpointer data)
 {
 	TotemDiscMediaType type;
@@ -265,7 +269,7 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 
 		item = g_file_get_child (file, g_file_info_get_name (info));
 
-		ret = totem_pl_parser_parse_internal (parser, item, NULL);
+		ret = totem_pl_parser_parse_internal (parser, item, NULL, parse_data);
 		if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS && ret != TOTEM_PL_PARSER_RESULT_IGNORED) {
 			char *item_uri;
 
@@ -290,6 +294,7 @@ TotemPlParserResult
 totem_pl_parser_add_block (TotemPlParser *parser,
 			   GFile *file,
 			   GFile *base_file,
+			   TotemPlParseData *parse_data,
 			   gpointer data)
 {
 	TotemDiscMediaType type;

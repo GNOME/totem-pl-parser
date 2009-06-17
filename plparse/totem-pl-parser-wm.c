@@ -82,6 +82,7 @@ static TotemPlParserResult
 totem_pl_parser_add_asf_reference_parser (TotemPlParser *parser,
 					  GFile *file,
 					  GFile *base_file,
+					  TotemPlParseData *parse_data,
 					  gpointer data)
 {
 	char *contents, **lines, *ref;
@@ -97,7 +98,7 @@ totem_pl_parser_add_asf_reference_parser (TotemPlParser *parser,
 	ref = totem_pl_parser_read_ini_line_string (lines, "Ref1");
 	if (ref == NULL) {
 		g_strfreev (lines);
-		return totem_pl_parser_add_asx (parser, file, base_file, data);
+		return totem_pl_parser_add_asx (parser, file, base_file, parse_data, data);
 	}
 
 	/* change http to mmsh, thanks Microsoft */
@@ -119,6 +120,7 @@ static TotemPlParserResult
 totem_pl_parser_add_asf_parser (TotemPlParser *parser,
 				GFile *file,
 				GFile *base_file,
+				TotemPlParseData *parse_data,
 				gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
@@ -130,7 +132,7 @@ totem_pl_parser_add_asf_parser (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
 	if (g_str_has_prefix (data, "ASF ") == FALSE) {
-		return totem_pl_parser_add_asf_reference_parser (parser, file, base_file, data);
+		return totem_pl_parser_add_asf_reference_parser (parser, file, base_file, parse_data, data);
 	}
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
@@ -155,7 +157,7 @@ totem_pl_parser_add_asf_parser (TotemPlParser *parser,
 }
 
 static gboolean
-parse_asx_entry (TotemPlParser *parser, GFile *base_file, xml_node_t *parent)
+parse_asx_entry (TotemPlParser *parser, GFile *base_file, xml_node_t *parent, TotemPlParseData *parse_data)
 {
 	xml_node_t *node;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
@@ -256,7 +258,7 @@ parse_asx_entry (TotemPlParser *parser, GFile *base_file, xml_node_t *parent)
 	g_free (resolved_uri);
 
 	/* .asx files can contain references to other .asx files */
-	retval = totem_pl_parser_parse_internal (parser, resolved, NULL);
+	retval = totem_pl_parser_parse_internal (parser, resolved, NULL, parse_data);
 	if (retval != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_FILE, resolved,
@@ -277,7 +279,7 @@ bail:
 }
 
 static gboolean
-parse_asx_entryref (TotemPlParser *parser, GFile *base_file, xml_node_t *node)
+parse_asx_entryref (TotemPlParser *parser, GFile *base_file, xml_node_t *node, TotemPlParseData *parse_data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 	const char *uri;
@@ -294,7 +296,7 @@ parse_asx_entryref (TotemPlParser *parser, GFile *base_file, xml_node_t *node)
 	g_free (resolved_uri);
 
 	/* .asx files can contain references to other .asx files */
-	retval = totem_pl_parser_parse_internal (parser, resolved, NULL);
+	retval = totem_pl_parser_parse_internal (parser, resolved, NULL, parse_data);
 	if (retval != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_FILE, resolved,
@@ -308,7 +310,7 @@ parse_asx_entryref (TotemPlParser *parser, GFile *base_file, xml_node_t *node)
 
 //FIXME the retval is completely wrong
 static gboolean
-parse_asx_entries (TotemPlParser *parser, const char *uri, GFile *base_file, xml_node_t *parent)
+parse_asx_entries (TotemPlParser *parser, const char *uri, GFile *base_file, xml_node_t *parent, TotemPlParseData *parse_data)
 {
 	char *title = NULL;
 	GFile *new_base;
@@ -341,17 +343,17 @@ parse_asx_entries (TotemPlParser *parser, const char *uri, GFile *base_file, xml
 		}
 		if (g_ascii_strcasecmp (node->name, "entry") == 0) {
 			/* Whee! found an entry here, find the REF and TITLE */
-			if (parse_asx_entry (parser, new_base ? new_base : base_file, node) != FALSE)
+			if (parse_asx_entry (parser, new_base ? new_base : base_file, node, parse_data) != FALSE)
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 		}
 		if (g_ascii_strcasecmp (node->name, "entryref") == 0) {
 			/* Found an entryref, extract the REF attribute */
-			if (parse_asx_entryref (parser, new_base ? new_base : base_file, node) != FALSE)
+			if (parse_asx_entryref (parser, new_base ? new_base : base_file, node, parse_data) != FALSE)
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 		}
 		if (g_ascii_strcasecmp (node->name, "repeat") == 0) {
 			/* Repeat at the top-level */
-			if (parse_asx_entries (parser, uri, new_base ? new_base : base_file, node) != FALSE)
+			if (parse_asx_entries (parser, uri, new_base ? new_base : base_file, node, parse_data) != FALSE)
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 		}
 	}
@@ -369,6 +371,7 @@ TotemPlParserResult
 totem_pl_parser_add_asx (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 	xml_node_t* doc;
@@ -377,7 +380,7 @@ totem_pl_parser_add_asx (TotemPlParser *parser,
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
 	if (data != NULL && totem_pl_parser_is_uri_list (data, strlen (data)) != FALSE) {
-		return totem_pl_parser_add_ram (parser, file, data);
+		return totem_pl_parser_add_ram (parser, file, parse_data, data);
 	}
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
@@ -399,7 +402,7 @@ totem_pl_parser_add_asx (TotemPlParser *parser,
 
 	uri = g_file_get_uri (file);
 
-	if (parse_asx_entries (parser, uri, base_file, doc) != FALSE)
+	if (parse_asx_entries (parser, uri, base_file, doc, parse_data) != FALSE)
 		retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 
 	g_free (uri);
@@ -413,6 +416,7 @@ TotemPlParserResult
 totem_pl_parser_add_asf (TotemPlParser *parser,
 			 GFile *file,
 			 GFile *base_file,
+			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
 	if (data == NULL) {
@@ -425,7 +429,7 @@ totem_pl_parser_add_asf (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
-	return totem_pl_parser_add_asf_parser (parser, file, base_file, data);
+	return totem_pl_parser_add_asf_parser (parser, file, base_file, parse_data, data);
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

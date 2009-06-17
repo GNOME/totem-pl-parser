@@ -56,7 +56,7 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 #define DEBUG(file, x) {					\
-	if (parser->priv->debug) {				\
+	if (totem_pl_parser_is_debugging_enabled (parser)) {	\
 		if (file != NULL) {				\
 			char *uri;				\
 								\
@@ -70,27 +70,23 @@
 	}							\
 }
 #else
-#define DEBUG(x) { if (parser->priv->debug) x; }
+#define DEBUG(x) { if (totem_pl_parser_is_debugging_enabled (parser)) x; }
 #endif
 
-struct TotemPlParserPrivate
-{
-	GList *ignore_schemes;
-	GList *ignore_mimetypes;
-
+typedef struct {
 	guint recurse_level;
 	guint fallback : 1;
 	guint recurse : 1;
-	guint debug : 1;
 	guint force : 1;
 	guint disable_unsafe : 1;
-};
+} TotemPlParseData;
 
 #ifndef TOTEM_PL_PARSER_MINI
 char *totem_pl_parser_read_ini_line_string	(char **lines, const char *key);
 int   totem_pl_parser_read_ini_line_int		(char **lines, const char *key);
 char *totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 						     const char *sep);
+gboolean totem_pl_parser_is_debugging_enabled	(TotemPlParser *parser);
 char *totem_pl_parser_base_uri			(GFile *file);
 void totem_pl_parser_playlist_end		(TotemPlParser *parser,
 						 const char *playlist_title);
@@ -114,7 +110,8 @@ char * totem_pl_parser_resolve_uri		(GFile *base_gfile,
 						 const char *relative_uri);
 TotemPlParserResult totem_pl_parser_parse_internal (TotemPlParser *parser,
 						    GFile *file,
-						    GFile *base_file);
+						    GFile *base_file,
+						    TotemPlParseData *parse_data);
 void totem_pl_parser_add_one_uri		(TotemPlParser *parser,
 						 const char *uri,
 						 const char *title);
