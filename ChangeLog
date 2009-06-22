@@ -1,3 +1,9 @@
+2009-06-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* plparse/totem-pl-parser.c: Added examples of async parsing, and
+	clarified in documentation that a main loop is now required for
+	totem-pl-parser to operate properly.
+
 2009-06-17  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* docs/reference/totem-pl-parser-sections.txt:

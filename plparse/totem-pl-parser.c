@@ -27,7 +27,8 @@
  * @include: totem-pl-parser.h
  *
  * #TotemPlParser is a general-purpose playlist parser and writer, with
- * support for several different types of playlist.
+ * support for several different types of playlist. Note that totem-pl-parser requires a main loop
+ * to operate properly (e.g. for the #TotemPlParser::entry-parsed signal to be emitted).
  *
  * <example>
  *  <title>Reading a Playlist</title>
@@ -41,6 +42,29 @@
  * 	g_error ("Playlist parsing failed.");
  *
  * g_object_unref (pl);
+ *  </programlisting>
+ * </example>
+ *
+  * <example>
+ *  <title>Reading a Playlist Asynchronously</title>
+ *  <programlisting>
+ * TotemPlParser *pl = totem_pl_parser_new ();
+ * g_object_set (pl, "recurse", FALSE, "disable-unsafe", TRUE, NULL);
+ * g_signal_connect (G_OBJECT (pl), "playlist-started", G_CALLBACK (playlist_started), NULL);
+ * g_signal_connect (G_OBJECT (pl), "entry-parsed", G_CALLBACK (entry_parsed), NULL);
+ *
+ * totem_pl_parser_parse_async (pl, "http://example.com/playlist.pls", FALSE, NULL, parse_cb, NULL);
+ * g_object_unref (pl);
+ *
+ * static void
+ * parse_cb (TotemPlParser *parser, GAsyncResult *result, gpointer user_data)
+ * {
+ *	GError *error = NULL;
+ * 	if (totem_pl_parser_parse_finish (parser, result, &error) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+ * 		g_error ("Playlist parsing failed: %s", error->message);
+ * 		g_error_free (error);
+ * 	}
+ * }
  *  </programlisting>
  * </example>
  *
@@ -58,6 +82,7 @@
  * }
  *  </programlisting>
  * </example>
+ *
  *
  * <example>
  *  <title>Writing a Playlist</title>
