@@ -265,13 +265,15 @@ cd_cache_has_content_type (CdCache *cache, const char *content_type)
 static char *
 cd_cache_local_file_to_archive (const char *filename)
 {
-  char *escaped, *retval, *uri;
+  char *escaped, *escaped2, *retval, *uri;
 
   uri = g_filename_to_uri (filename, NULL, NULL);
   escaped = g_uri_escape_string (uri, NULL, FALSE);
-  g_free (uri);
-  retval = g_strdup_printf ("archive://%s", escaped);
+  escaped2 = g_uri_escape_string (escaped, NULL, FALSE);
   g_free (escaped);
+  g_free (uri);
+  retval = g_strdup_printf ("archive://%s/", escaped2);
+  g_free (escaped2);
 
   return retval;
 }
