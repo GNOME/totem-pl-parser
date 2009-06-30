@@ -1,3 +1,9 @@
+2009-06-30  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/totem-disc.c (cd_cache_local_file_to_archive):
+	Fix mounting and detection of ISO mounts (they need double
+	escaping, god knows...) (Closes: #583762)
+
 2009-06-22  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* plparse/totem-pl-parser.c: Added examples of async parsing, and
