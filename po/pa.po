@@ -3,10 +3,7 @@
 # This file is distributed under the same license as the totem package.
 #
 # Punjab Linux Technology <punjablinux@netscape.net>, 2004.
-# Amanpreet Singh Alam <aalam@redhat.com>, 2004.
-# Amanpreet Singh Alam <amanpreetalam@yahoo.com>, 2005.
-# A S Alam <apbrar@gmail.com>, 2006.
-# A S Alam <aalam@users.sf.net>, 2007, 2009.
+# A S Alam <aalam@users.sf.net>,2005,2006 2007, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: totem.HEAD\n"
