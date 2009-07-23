@@ -27,6 +27,14 @@ compile
 INSTALL
 gnome-doc-utils.make
 *.patch
+*.gmo
+*.o
+*.lo
+.deps
+.libs
+*.la
+stamp-it
+POTFILES
 totem-plparser-mini-uninstalled.pc
 gtk-doc.make
 totem-plparser.pc
@@ -34,3 +42,11 @@ totem-plparser-uninstalled.pc
 totem-plparser-mini.pc
 totem-pl-parser.spec
 *~
+plparse/stamp-totem-pl-parser-builtins.h
+plparse/test-parser
+plparse/tests/disc
+plparse/tests/parser
+plparse/totem-pl-parser-features.h
+plparse/totemplparser-marshal.c
+plparse/totemplparser-marshal.h
+po/Makefile.in.in
