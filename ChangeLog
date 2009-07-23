@@ -1,3 +1,10 @@
+============ Version 2.27.2
+
+2009-07-23  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.in: 2.27.2
+
 2009-07-23  Bastien Nocera  <hadess@hadess.net>
 
 	* configure.in: Fix substitution in pkg-config file,
@@ -104,7 +111,7 @@
         * docs/reference/Makefile.am: Add the builddir to gtkdoc-mkhtml's
         path so that builddir != srcdir builds work for the documentation.
 
-============ Version 2.27.2
+============ Version 2.27.1
 
 2009-05-06  Bastien Nocera  <hadess@hadess.net>
 
