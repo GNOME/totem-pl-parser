@@ -16,6 +16,7 @@ Dependencies
 ============
 
 glib with GIO (glib 2.16)
+gmime 2.4
 
 BUGS
 ====
