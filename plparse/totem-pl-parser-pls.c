@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Bastien Nocera
    Copyright (C) 2003, 2004 Colin Walters <walters@rhythmbox.org>
 
@@ -38,7 +38,7 @@
 #ifndef TOTEM_PL_PARSER_MINI
 gboolean
 totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
-			   TotemPlParserIterFunc func, 
+			   TotemPlParserIterFunc func,
 			   GFile *output, const char *title,
 			   gpointer user_data, GError **error)
 {
@@ -123,7 +123,7 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 }
 
 static char *
-ensure_utf8_valid (char *input) 
+ensure_utf8_valid (char *input)
 {
 	char *utf8_valid;
 
@@ -156,11 +156,15 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	int i, num_entries;
 	char *playlist_title;
 	gboolean fallback;
+	GHashTable *entries;
+
+	entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
 	lines = g_strsplit_set (contents, "\r\n", 0);
 
 	/* [playlist] */
 	i = 0;
+	num_entries = 0;
 	playlist_title = NULL;
 
 	/* Ignore empty lines */
@@ -168,13 +172,14 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		i++;
 
 	if (lines[i] == NULL
-			|| g_ascii_strncasecmp (lines[i], "[playlist]",
-				(gsize)strlen ("[playlist]")) != 0) {
+	    || g_ascii_strncasecmp (lines[i], "[playlist]",
+				    (gsize)strlen ("[playlist]")) != 0) {
+		g_strfreev (lines);
 		goto bail;
 	}
 
 	playlist_title = totem_pl_parser_read_ini_line_string (lines,
-			"X-GNOME-Title");
+							       "X-GNOME-Title");
 
 	if (playlist_title != NULL) {
 		totem_pl_parser_add_uri (parser,
@@ -184,23 +189,36 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 					 NULL);
 	}
 
-	/* numberofentries=? */
-	num_entries = totem_pl_parser_read_ini_line_int (lines, "numberofentries");
+	/* Load the file in hash table to speed up the later processing */
+	for (i = 0; lines[i] != NULL; i++) {
+		char **bits;
+		char *value;
+		gint len;
 
-	if (num_entries == -1) {
-		num_entries = 0;
+		if (totem_pl_parser_line_is_empty (lines[i]))
+			continue;
 
-		for (i = 0; lines[i] != NULL; i++) {
-			if (totem_pl_parser_line_is_empty (lines[i]))
-				continue;
+		if (lines[i][0] == '#' || lines[i][0] == '[')
+			continue;
 
-			if (g_ascii_strncasecmp (g_strchug (lines[i]), "file", (gsize)strlen ("file")) == 0)
-				num_entries++;
+		bits = g_strsplit (lines[i], "=", 2);
+		if (bits[0] == NULL || bits [1] == NULL) {
+			g_strfreev (bits);
+			continue;
 		}
 
-		if (num_entries == 0)
-			goto bail;
+		if (g_ascii_strncasecmp (g_strchug (bits[0]), "file", strlen ("file")) == 0)
+			num_entries++;
+
+		len = strlen (bits[1]);
+		value = g_strdup (bits[1]);
+
+		g_hash_table_insert (entries,
+				     g_ascii_strdown (bits[0], strlen (bits[0])),
+				     value);
+		g_strfreev (bits);
 	}
+	g_strfreev (lines);
 
 	/* Base? */
 	if (_base_file == NULL)
@@ -222,22 +240,18 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		/* Genre is our own little extension */
 		genre_key = g_strdup_printf ("genre%d", i);
 
-		file_str = totem_pl_parser_read_ini_line_string (lines, (const char*)file_key);
-		title = totem_pl_parser_read_ini_line_string (lines, (const char*)title_key);
-		genre = totem_pl_parser_read_ini_line_string (lines, (const char*)genre_key);
-		length = totem_pl_parser_read_ini_line_string (lines, (const char*)length_key);
+		file_str = g_hash_table_lookup (entries, file_key);
+		title = g_hash_table_lookup (entries, title_key);
+		genre = g_hash_table_lookup (entries, genre_key);
+		length = g_hash_table_lookup (entries, length_key);
 
 		g_free (file_key);
 		g_free (title_key);
 		g_free (genre_key);
 		g_free (length_key);
 
-		if (file_str == NULL) {
-			g_free (title);
-			g_free (genre);
-			g_free (length);
+		if (file_str == NULL)
 			continue;
-		}
 
 		fallback = parse_data->fallback;
 		if (parse_data->recurse)
@@ -282,10 +296,6 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		}
 
 		parse_data->fallback = fallback;
-		g_free (file_str);
-		g_free (title);
-		g_free (genre);
-		g_free (length);
 	}
 
 	if (playlist_title != NULL)
@@ -295,7 +305,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 
 bail:
 	g_free (playlist_title);
-	g_strfreev (lines);
+        g_hash_table_destroy (entries);
 
 	return retval;
 }
