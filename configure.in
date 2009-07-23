@@ -76,7 +76,7 @@ if test "x$enable_gmime" = "xyes" ; then
                      [have_gmime=no])
 
    if test "x$have_gmime" = "xyes" ; then
-      AC_SUBST(GMIME, gmime-1.2)
+      AC_SUBST(GMIME, gmime-2.4)
       AC_SUBST(USEGMIME, yes)
       AC_DEFINE(HAVE_GMIME, 1, [GMime available in the system])
       pkg_modules="$pkg_modules gmime-2.4"
