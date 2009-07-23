@@ -1,3 +1,8 @@
+2009-07-23  Bastien Nocera  <hadess@hadess.net>
+
+	* plparse/tests/parser.c (test_data_get_data), (test_parsability):
+	Add more debug when a parse error happens
+
 2009-06-30  Bastien Nocera  <hadess@hadess.net>
 
 	* plparse/totem-disc.c (cd_cache_local_file_to_archive):

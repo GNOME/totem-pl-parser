@@ -128,7 +128,7 @@ test_data_get_data (const char *uri, guint *len)
 	/* Open the file. */
 	stream = g_file_read (file, NULL, &error);
 	if (stream == NULL) {
-		g_test_message ("URI '%s' couldn't be opened in test_data_get_data: '%s'\n", uri, error->message);
+		g_test_message ("URI '%s' couldn't be opened in test_data_get_data: '%s'", uri, error->message);
 		g_error_free (error);
 		return NULL;
 	}
@@ -142,7 +142,7 @@ test_data_get_data (const char *uri, guint *len)
 	}
 
 	if (bytes_read == -1) {
-		g_test_message ("URI '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'\n", uri, error->message);
+		g_test_message ("URI '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'", uri, error->message);
 		g_error_free (error);
 		g_free (buffer);
 		return NULL;
@@ -196,7 +196,10 @@ test_parsability (void)
 		parsable = totem_pl_parser_can_parse_from_data (data, len, TRUE);
 		g_free (data);
 
-		g_assert (parsable == files[i].parsable);
+		if (parsable != files[i].parsable) {
+			g_test_message ("Failed to parse '%s' (idx %d)", files[i].uri, i);
+			g_assert_not_reached ();
+		}
 	}
 
 	/* Loop through again by filename */
