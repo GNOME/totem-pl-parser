@@ -4,14 +4,14 @@
 # Paul Duffy <dubhthach@frink.nuigalway.ie>, 2003.
 # David O'Callaghan <david.ocallaghan@cs.tcd.ie>, 2003.
 # Alastair McKinstry <mckinstry@debian.org>, 2004.
-# Seán de Búrca <leftmostcat@gmail.com>, 2007.
+# Seán de Búrca <leftmostcat@gmail.com>, 2007-2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-22 00:26-0700\n"
-"PO-Revision-Date: 2007-12-22 00:23-0700\n"
+"POT-Creation-Date: 2009-07-29 17:46-0600\n"
+"PO-Revision-Date: 2009-07-29 17:47-0600\n"
 "Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -20,52 +20,33 @@ msgstr ""
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : (n%10==1 || n%10==2) ? 1 : (n%"
 "10>=3 && n%10<= 6) ? 2 : ((n%10>=7 && n%10<=9) || n==10) ? 3 : 4;\n"
 
-#: ../plparse/totem-disc.c:284
+#: ../plparse/totem-disc.c:359 ../plparse/totem-disc.c:501
 #, c-format
-msgid "Failed to find mountpoint for device %s"
-msgstr "Theip ar aimsiú pointe feistithe le gléas %s"
+msgid "Failed to mount %s."
+msgstr "Theip ar fheistiú %s."
 
-#: ../plparse/totem-disc.c:294
-msgid "Could not connect to the HAL daemon"
-msgstr "Níorbh fhéidir nascadh leis an deamhan HAL"
+#: ../plparse/totem-disc.c:390
+#, c-format
+msgid "No media in drive for device '%s'."
+msgstr "Gan mheáin istigh i dtiomántán do ghléas '%s'."
 
-#: ../plparse/totem-disc.c:394
+#: ../plparse/totem-disc.c:444
+#, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Seiceáil go bhfuil diosca ann sa tiomántán, le do thoil."
 
-#: ../plparse/totem-disc.c:441
-#, c-format
-msgid "Failed to mount %s"
-msgstr "Theip ar fheistiú %s"
-
-#: ../plparse/totem-disc.c:465
-#, c-format
-msgid "Failed to find mountpoint for %s"
-msgstr "Theip ar aimsiú pointe feistithe le %s"
-
-#: ../plparse/totem-disc.c:858
+#: ../plparse/totem-disc.c:883
 msgid "Audio CD"
 msgstr "CD Fuaime"
 
-#: ../plparse/totem-disc.c:860
+#: ../plparse/totem-disc.c:885
 msgid "Video CD"
 msgstr "CD Físe"
 
-#: ../plparse/totem-disc.c:862
+#: ../plparse/totem-disc.c:887
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:864
+#: ../plparse/totem-disc.c:889
 msgid "Digital Television"
 msgstr "Teilifís Dhigiteach"
-
-#: ../plparse/totem-pl-parser.c:436
-#, c-format
-msgid "Couldn't write parser: %s"
-msgstr "Níorbh fhéidir parsálaí a scríobh: %s"
-
-#: ../plparse/totem-pl-parser-lines.c:103 ../plparse/totem-pl-parser-pla.c:76
-#: ../plparse/totem-pl-parser-pls.c:68 ../plparse/totem-pl-parser-xspf.c:103
-#, c-format
-msgid "Couldn't open file '%s': %s"
-msgstr "Níorbh fhéidir comhad '%s' a oscailt: %s"
