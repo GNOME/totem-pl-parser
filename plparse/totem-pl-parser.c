@@ -1759,13 +1759,16 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				if (data == NULL) {
 					g_free (mimetype);
 					mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
-					/* If it's _still_ a text/plain, we don't want it */
-					if (mimetype == NULL || strcmp (mimetype, "text/plain") == 0) {
-						g_free (mimetype);
-						mimetype = NULL;
-						break;
-					}
+					DEBUG(file, g_print ("URI '%s' dual type has type '%s' from data\n", uri, mimetype));
 				}
+				/* If it's _still_ a text/plain, we don't want it */
+				if (mimetype == NULL || strcmp (mimetype, "text/plain") == 0) {
+					ret = TOTEM_PL_PARSER_RESULT_IGNORED;
+					g_free (mimetype);
+					mimetype = NULL;
+					break;
+				}
+
 				if (base_file == NULL)
 					base_file = g_file_get_parent (file);
 				else
