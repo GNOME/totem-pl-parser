@@ -26,6 +26,32 @@
 #include <glib.h>
 #include "totem_internal.h"
 
+/* A macro to call functions synchronously or asynchronously, depending on whether
+ * we're parsing sync or async. This is necessary because when doing a sync parse,
+ * the main loop isn't iterated, and so any signals emitted in idle functions (a requirement
+ * of an async parse) aren't emitted until the sync parsing function returns, which
+ * is less than ideal. We therefore want those idle functions to be called synchronously
+ * when parsing sync, and with g_idle_add() when parsing async.
+ *
+ * Whether we're parsing sync or async is determined by whether we're in a thread. If (for
+ * whatever reason), we're parsing async -- but not in a thread -- this will work out fine
+ * anyway, since signal emission will consequently happen in the main thread.
+ *
+ * We determine if we're in the main thread by comparing the GThread pointer of the current
+ * thread to a stored GThread pointer known to be from the main thread
+ * (TotemPlParser->priv->main_thread).
+ *
+ * @p: a #TotemPlParser
+ * @c: callback (as if for g_idle_add())
+ * @d: callback data
+ */
+#define CALL_ASYNC(p, c, d) {				\
+	if (g_thread_self () == p->priv->main_thread)	\
+		c (d);					\
+	else						\
+		g_idle_add ((GSourceFunc) c, d);	\
+}
+
 #ifndef TOTEM_PL_PARSER_MINI
 #include "totem-pl-parser.h"
 #include <glib-object.h>

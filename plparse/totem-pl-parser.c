@@ -255,6 +255,7 @@ struct TotemPlParserPrivate {
 	GList *ignore_schemes;
 	GList *ignore_mimetypes;
 	GMutex *ignore_mutex;
+	GThread *main_thread; /* see CALL_ASYNC() in *-private.h */
 
 	guint recurse : 1;
 	guint debug : 1;
@@ -703,7 +704,7 @@ totem_pl_parser_playlist_end (TotemPlParser *parser, const char *playlist_uri)
 	data->parser = g_object_ref (parser);
 	data->playlist_uri = g_strdup (playlist_uri);
 
-	g_idle_add ((GSourceFunc) emit_playlist_ended_signal, data);
+	CALL_ASYNC (parser, emit_playlist_ended_signal, data);
 }
 
 static char *
@@ -1289,6 +1290,7 @@ totem_pl_parser_init (TotemPlParser *parser)
 {
 	parser->priv = G_TYPE_INSTANCE_GET_PRIVATE (parser, TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate);
 	parser->priv->ignore_mutex = g_mutex_new ();
+	parser->priv->main_thread = g_thread_self ();
 }
 
 static void
@@ -1457,7 +1459,7 @@ totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 		else
 			data->signal_id = totem_pl_parser_table_signals[PLAYLIST_STARTED];
 
-		g_idle_add ((GSourceFunc) emit_entry_parsed_signal, data);
+		CALL_ASYNC (parser, emit_entry_parsed_signal, data);
 	}
 
 	g_hash_table_unref (metadata);
