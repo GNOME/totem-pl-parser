@@ -812,7 +812,9 @@ totem_cd_detect_type_with_url (const char *device,
       type = MEDIA_TYPE_ERROR;
       /* No error, it's just not usable */
     } else {
-      *mrl = g_strdup (cache->mountpoint);
+      *mrl = g_filename_to_uri (cache->mountpoint, NULL, NULL);
+      if (*mrl == NULL)
+	*mrl = g_strdup (cache->mountpoint);
     }
     break;
   default:
