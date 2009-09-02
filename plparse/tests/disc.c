@@ -75,7 +75,10 @@ test_disc (gconstpointer data)
 		return;
 	}
 
-	g_message ("%s contains a %s.", device, totem_cd_get_human_readable_name (type));
+	if (type != MEDIA_TYPE_DATA)
+		g_message ("%s contains a %s.", device, totem_cd_get_human_readable_name (type));
+	else
+		g_message ("%s contains a data disc", device);
 	g_assert (mrl != NULL);
 	g_message ("MRL for directory is \"%s\".", mrl);
 
