@@ -10,91 +10,50 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: totem\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-20 04:15+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=totem&component=playlist parser\n"
+"POT-Creation-Date: 2009-04-17 18:07+0000\n"
 "PO-Revision-Date: 2008-09-20 04:16+0100\n"
 "Last-Translator: Горан Ракић <grakic@devbase.net>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3;    plural=n%10==1 && n%100!=11 ? 0 :    n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3;    plural=n%10==1 && n%100!=11 ? 0 :    n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Poedit-Language: Serbian\n"
 "X-Poedit-Country: SERBIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../plparse/totem-disc.c:319
-#: ../plparse/totem-disc.c:460
+#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:499
 #, c-format
-msgid "Failed to mount %s"
-msgstr "Неуспешно прикључење %s"
+#| msgid "Failed to mount %s"
+msgid "Failed to mount %s."
+msgstr "Не могу да монтирам %s."
 
-#: ../plparse/totem-disc.c:349
+#: ../plparse/totem-disc.c:388
 #, c-format
-msgid "No media in drive for device '%s'"
-msgstr "Нема медија у уређају „%s“"
+#| msgid "No media in drive for device '%s'"
+msgid "No media in drive for device '%s'."
+msgstr "Није убачен медијум у уређају „%s“"
 
-#: ../plparse/totem-disc.c:403
+#: ../plparse/totem-disc.c:442
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Проверите да ли је диск присутан у уређају."
 
-#: ../plparse/totem-disc.c:829
+#: ../plparse/totem-disc.c:881
 msgid "Audio CD"
 msgstr "Звучни ЦД"
 
-#: ../plparse/totem-disc.c:831
+#: ../plparse/totem-disc.c:883
 msgid "Video CD"
 msgstr "Видео ЦД"
 
-#: ../plparse/totem-disc.c:833
+#: ../plparse/totem-disc.c:885
 msgid "DVD"
 msgstr "ДВД"
 
-#: ../plparse/totem-disc.c:835
+#: ../plparse/totem-disc.c:887
 msgid "Digital Television"
 msgstr "Дигитална телевизија"
-
-#~ msgid "Leave Fullscreen"
-#~ msgstr "Напусти цео екран"
-#~ msgid "Time:"
-#~ msgstr "Време:"
-#~ msgid "Add..."
-#~ msgstr "Додај..."
-#~ msgid "Move Down"
-#~ msgstr "Премести испод"
-#~ msgid "Move Up"
-#~ msgstr "Премести изнад"
-#~ msgid "Remove"
-#~ msgstr "Уклони"
-#~ msgid "Save Playlist..."
-#~ msgstr "Сачувај листу..."
-#~ msgid "Author:"
-#~ msgstr "Аутор:"
-#~ msgid "C_onfigure..."
-#~ msgstr "_Поставке..."
-#~ msgid "Copyright:"
-#~ msgstr "Ауторско право:"
-#~ msgid "Description:"
-#~ msgstr "Опис:"
-#~ msgid "Site:"
-#~ msgstr "Веб адреса:"
-#~ msgid "0 Channels"
-#~ msgstr "0 канала"
-#~ msgid "0 Hz"
-#~ msgstr "0 Hz"
-#~ msgid "0 frames per second"
-#~ msgstr "0 кадрова у секунди"
-#~ msgid "0 kbps"
-#~ msgstr "0 Kbit/s"
-#~ msgid "0 seconds"
-#~ msgstr "0 секунди"
-#~ msgid "0 x 0"
-#~ msgstr "0 х 0"
-#~ msgid "Album:"
-#~ msgstr "Албум:"
-#~ msgid "Artist:"
-#~ msgstr "Извођач:"
-#~ msgid "Audio"
-#~ msgstr "Звук"
-
