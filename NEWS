@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.27.92
+* Speed up PLS parsing
+* Fix error when trying to activate a data mount
+  in Totem's Movie menu
+* Try harder to ignore text files
+* Fix test parser
+
 2.27.2
 * Add asynchronous parsing API
 * Use GMime instead of evolution-data-server's libcamel
