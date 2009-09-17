@@ -51,11 +51,10 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 			   gpointer user_data, GError **error)
 {
 	GFileOutputStream *stream;
-	int num_entries_total, num_entries, i;
+	int num_entries_total, i;
 	char *buffer;
 	gboolean ret;
 
-	num_entries = totem_pl_parser_num_entries (parser, model, func, user_data);
 	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
 
 	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
