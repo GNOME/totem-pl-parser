@@ -2413,7 +2413,7 @@ totem_pl_parser_can_parse_from_filename (const char *filename, gboolean debug)
 		(g_mapped_file_get_contents (map),
 		 g_mapped_file_get_length (map), debug);
 
-	g_mapped_file_free (map);
+	g_mapped_file_unref (map);
 
 	return retval;
 }

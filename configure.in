@@ -35,7 +35,7 @@ AC_PATH_PROG([GLIB_GENMARSHAL],[glib-genmarshal])
 AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 
 # Requirements
-GLIB_REQS=2.16.3
+GLIB_REQS=2.21.6
 GIO_REQS=2.17.3
 DBUS_REQS=0.61
 
