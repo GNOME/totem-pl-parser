@@ -1339,11 +1339,11 @@ totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 				va_list      var_args)
 {
 	const char *name;
-	char *title, *uri;
+	char *uri;
 	GHashTable *metadata;
 	gboolean is_playlist;
 
-	title = uri = NULL;
+	uri = NULL;
 	is_playlist = FALSE;
 
 	g_object_ref (G_OBJECT (parser));
