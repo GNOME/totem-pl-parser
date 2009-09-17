@@ -242,7 +242,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 
 	g_free (contents);
 
-	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+	return retval;
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */
