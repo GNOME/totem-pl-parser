@@ -825,10 +825,10 @@ static TotemPlParserResult
 parse_opml_outline (TotemPlParser *parser, xml_node_t *parent)
 {
 	xml_node_t* node;
-	const char *title, *uri;
 
-	title = uri = NULL;
 	for (node = parent->child; node != NULL; node = node->next) {
+		const char *title, *uri;
+
 		if (node->name == NULL || g_ascii_strcasecmp (node->name, "outline") != 0)
 			continue;
 
