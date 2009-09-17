@@ -143,7 +143,6 @@ cd_cache_get_best_mount_for_drive (GDrive *drive,
     GFile *file;
     int new_rank;
 
-    new_rank = 0;
     v = l->data;
 
     m = g_volume_get_mount (v);
