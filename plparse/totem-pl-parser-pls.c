@@ -193,7 +193,6 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	for (i = 0; lines[i] != NULL; i++) {
 		char **bits;
 		char *value;
-		gint len;
 
 		if (totem_pl_parser_line_is_empty (lines[i]))
 			continue;
@@ -210,7 +209,6 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		if (g_ascii_strncasecmp (g_strchug (bits[0]), "file", strlen ("file")) == 0)
 			num_entries++;
 
-		len = strlen (bits[1]);
 		value = g_strdup (bits[1]);
 
 		g_hash_table_insert (entries,
