@@ -360,11 +360,11 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 static TotemPlParserResult
 parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 {
-	const char *title, *author, *img, *uri, *filesize;
+	const char *title, *author, *uri, *filesize;
 	const char *copyright, *pub_date, *description;
 	xml_node_t *node;
 
-	title = author = img = uri = filesize = NULL;
+	title = author = uri = filesize = NULL;
 	copyright = pub_date = description = NULL;
 
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -375,8 +375,6 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 			title = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "author") == 0) {
 			//FIXME
-		} else if (g_ascii_strcasecmp (node->name, "logo") == 0) {
-			img = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "link") == 0) {
 			const char *rel;
 
