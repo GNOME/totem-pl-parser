@@ -214,6 +214,7 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 				 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
 				 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
 				 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
+				 TOTEM_PL_PARSER_FIELD_CONTACT, contact,
 				 NULL);
 
 	for (node = parent->child; node != NULL; node = node->next) {
