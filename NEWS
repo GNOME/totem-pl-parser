@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+2.28.0
+* Updated translations
+
 2.27.92
 * Speed up PLS parsing
 * Fix error when trying to activate a data mount
