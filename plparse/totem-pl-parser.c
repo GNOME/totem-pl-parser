@@ -1881,7 +1881,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 					DEBUG(file, g_print ("URI '%s' dual type has type '%s' from data\n", uri, mimetype));
 				}
 				/* If it's _still_ a text/plain, we don't want it */
-				if (mimetype == NULL || strcmp (mimetype, "text/plain") == 0) {
+				if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
 					ret = TOTEM_PL_PARSER_RESULT_IGNORED;
 					g_free (mimetype);
 					mimetype = NULL;
