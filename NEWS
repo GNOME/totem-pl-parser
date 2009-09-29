@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+2.28.1
+* Fix some files with magic getting ignored
+* Small bug fixes
+
 2.28.0
 * Updated translations
 
