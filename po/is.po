@@ -9,32 +9,13 @@ msgstr ""
 "Project-Id-Version: totem 0.99\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-05-10 20:55+0000\n"
-"PO-Revision-Date: 2009-10-02 05:40+0000\n"
+"PO-Revision-Date: 2009-10-02 05:59+0000\n"
 "Last-Translator: Anna Jonna Ármannsdóttir <annajonna@gmail.com>\n"
 "Language-Team: Icelandic <rglug@rglug.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-#: data/playlist.glade.h:1 src/totem-playlist.c:1444
-msgid "Playlist"
-msgstr "Spilunarlisti"
-
-#: data/playlist.glade.h:2
-msgid "Repeat _mode"
-msgstr "Endurtekning"
-
-#: data/playlist.glade.h:3
-msgid "Shuf_fle mode"
-msgstr "S_tokkun"
-
-#: data/playlist.glade.h:4
-msgid "_Add..."
-msgstr "_Bæta við..."
-
-#: data/playlist.glade.h:5
-#, fuzzy
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 msgid "_Copy Location"
 msgstr "Opna _slóð..."
 
@@ -934,23 +915,23 @@ msgstr "Ónefnt vídeótæki"
 msgid "Totem Video Window"
 msgstr "Totem vídeógluggi"
 
-#: src/bacon-video-widget-properties.c:122
-#, c-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d klukkustundir"
+#~ #: src/bacon-video-widget-properties.c:122
+#~ #, c-format, fuzzy
+#~ msgid "%d hour"
+#~ msgid_plural "%d hours"
+#~ msgstr[0] "%d klukkustundir"
 
-#: src/bacon-video-widget-properties.c:124
-#, c-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d mínútur"
+#~ #: src/bacon-video-widget-properties.c:124
+#~ #, c-format, fuzzy
+#~ msgid "%d minute"
+#~ msgid_plural "%d minutes"
+#~ msgstr[0] "%d mínútur"
 
-#: src/bacon-video-widget-properties.c:127
-#, c-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d sekúndur"
+#~ #: src/bacon-video-widget-properties.c:127
+#~ #, c-format, fuzzy
+#~ msgid "%d second"
+#~ msgid_plural "%d seconds"
+#~ msgstr[0] "%d sekúndur"
 
 #. hour:minutes:seconds
 #: src/bacon-video-widget-properties.c:133
