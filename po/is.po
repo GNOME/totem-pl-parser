@@ -2,21 +2,20 @@
 # Copyright (C) 2004 THE totem'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the totem package.
 # Áki G. Karlsson <aki@akademia.is>, 2004.
-# , fuzzy
-# 
-# 
+# Anna Jonna Ármannsdóttir <annajonna@gmail.com>, 2009 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: totem 0.99\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-05-10 20:55+0000\n"
-"PO-Revision-Date: 2004-05-09 22:17+0000\n"
-"Last-Translator: Áki G. Karlsson <aki@akademia.is>\n"
-"Language-Team: Icelandic <gnome@techattack.nu>\n"
+"PO-Revision-Date: 2009-10-02 05:40+0000\n"
+"Last-Translator: Anna Jonna Ármannsdóttir <annajonna@gmail.com>\n"
+"Language-Team: Icelandic <rglug@rglug.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: data/playlist.glade.h:1 src/totem-playlist.c:1444
 msgid "Playlist"
@@ -183,7 +182,7 @@ msgstr "14.4 Kb/s mótald"
 
 #: data/totem.glade.h:6
 msgid "16:9 (Widescreen)"
-msgstr ""
+msgstr "16:9 (Breiðtjald)"
 
 #: data/totem.glade.h:7
 msgid "19.2 Kbps Modem"
@@ -191,7 +190,7 @@ msgstr "19.2 Kb/s mótald"
 
 #: data/totem.glade.h:8
 msgid "2.11:1 (DVB)"
-msgstr ""
+msgstr "2.11:1 (DVB)"
 
 #: data/totem.glade.h:9
 msgid "256 Kbps DSL/Cable"
@@ -219,7 +218,7 @@ msgstr "4ra rása"
 
 #: data/totem.glade.h:15
 msgid "4:3 (TV)"
-msgstr ""
+msgstr "4:3 (Sjónvarp)"
 
 #: data/totem.glade.h:16
 msgid "5.0-channel"
