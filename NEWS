@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+2.26.3:
+- Ignore text files that are dropped on the playlist
+- Fix opening DVD ISOs
+- Fix parsing of M3U files with mixed Unix/DOS linefeeds
+
 2.26.2:
 - Fix relative paths resolution for a number of playlist types
 - Implement support for non-unicode encodings in the XML parser
