@@ -1,15 +1,14 @@
 # Icelandic translation of totem.
-# Copyright (C) 2004 THE totem'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the totem package.
+# Copyright (C) 2004-2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Áki G. Karlsson <aki@akademia.is>, 2004.
 # Anna Jonna Ármannsdóttir <annajonna@gmail.com>, 2009 
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: totem 0.99\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-05-10 20:55+0000\n"
-"PO-Revision-Date: 2009-10-02 05:59+0000\n"
+"PO-Revision-Date: 2009-10-16 04:53+0000\n"
 "Last-Translator: Anna Jonna Ármannsdóttir <annajonna@gmail.com>\n"
 "Language-Team: Icelandic <rglug@rglug.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +20,7 @@ msgstr "Opna _slóð..."
 
 #: data/playlist.glade.h:6
 msgid "_Save..."
-msgstr "_Vista"
+msgstr "Vi_sta"
 
 #: data/properties.glade.h:1 data/screenshot.glade.h:1 data/totem.glade.h:1
 msgid "    "
@@ -126,14 +125,12 @@ msgid "Save Screenshot"
 msgstr "Vista skjámynd:"
 
 #: data/screenshot.glade.h:5
-#, fuzzy
 msgid "Save screenshot"
 msgstr "Vista skjámynd:"
 
 #: data/screenshot.glade.h:6
-#, fuzzy
 msgid "Save screenshot to _desktop"
-msgstr "Vista skjámynd á skjá_borðið"
+msgstr "Vista skjámyn_d á skjáborðið"
 
 #: data/screenshot.glade.h:7
 msgid "Save screenshot to _file:"
@@ -426,9 +423,8 @@ msgid "Sat_uration:"
 msgstr "_Mettun:"
 
 #: data/totem.glade.h:72
-#, fuzzy
 msgid "Set the aspect ratio"
-msgstr "Skipta hlutföllum"
+msgstr "Stilla hlutfallið"
 
 #: data/totem.glade.h:73
 msgid "Set the repeat mode"
@@ -1049,22 +1045,18 @@ msgid "There is no plugin to handle this movie."
 msgstr "Ekkert íforrit styður þessa kvikmynd"
 
 #: src/bacon-video-widget-xine.c:1451
-#, fuzzy
 msgid "This movie is broken and can not be played further."
 msgstr "Þessi kvikmynd er gölluð og ekki hægt að spila lengra."
 
 #: src/bacon-video-widget-xine.c:1455
-#, fuzzy
 msgid "This location is not a valid one."
 msgstr "Þetta er ekki gild slóð."
 
 #: src/bacon-video-widget-xine.c:1459
-#, fuzzy
 msgid "This movie could not be opened."
 msgstr "Ekki var hægt að opna þessa kvikmynd"
 
 #: src/bacon-video-widget-xine.c:1462
-#, fuzzy
 msgid "Generic Error."
 msgstr "Ótilgreind villa"
 
@@ -1078,12 +1070,10 @@ msgstr ""
 "hægt sé að spila sumar tegundir kvikmynda"
 
 #: src/bacon-video-widget-xine.c:1925
-#, fuzzy
 msgid "This is an audio-only file, and there is no audio output available."
 msgstr "Þetta er hljóðskrá, og ekkert hljóðúttak er til staðar."
 
 #: src/bacon-video-widget-xine.c:3400
-#, fuzzy
 msgid "Movie is not playing."
 msgstr "Kvikmynd er ekki í gangi"
 
@@ -1093,7 +1083,6 @@ msgid "No video to capture."
 msgstr "Ekkert vídeó til að taka upp"
 
 #: src/bacon-video-widget-xine.c:3415
-#, fuzzy
 msgid "Video codec is not handled."
 msgstr "Myndkóðun er ekki studd"
 
@@ -1119,14 +1108,12 @@ msgid "Couldn't load the main interface (mozilla-viewer.glade)."
 msgstr "Tókst ekki að hlaða inn aðalviðmótið (totem.glade)."
 
 #: src/totem-mozilla-viewer.c:104 src/totem-mozilla-viewer.c:111
-#, fuzzy
 msgid "Make sure that the Totem plugin is properly installed."
-msgstr "Athugaðu hvort Totem er rétt uppsett."
+msgstr "Athugaðu hvort Totem íforritið sé rétt uppsett."
 
 #: src/totem-mozilla-viewer.c:122
-#, fuzzy
 msgid "The Totem plugin could not startup."
-msgstr "Totem tókst ekki að ræsa sig."
+msgstr "Ekki var hægt að ræsa Totem íforritið."
 
 #: src/totem-mozilla-viewer.c:122 src/totem.c:3347
 msgid "No reason."
@@ -1137,9 +1124,8 @@ msgid "Could not initialise the thread-safe libraries."
 msgstr "Tókst ekki að frumstilla þráðviss aðgerðasöfn."
 
 #: src/totem-mozilla-viewer.c:154
-#, fuzzy
 msgid "Verify your system installation. The Totem plugin will now exit."
-msgstr "Athugaðu kerfisuppsetningu. Totem kveður núna."
+msgstr "Athugaðu kerfisuppsetningu. Totem íforritið hættir núna."
 
 #: src/totem-playlist.c:339
 msgid "Could not save the playlist"
@@ -1324,7 +1310,6 @@ msgid "Totem could not eject the optical media."
 msgstr "Totem tókst ekki að spýta myndmiðlinum út."
 
 #: src/totem.c:342
-#, fuzzy
 msgid "No reason given."
 msgstr "Engin ástæða gefin"
 
@@ -1418,7 +1403,6 @@ msgid "Totem could not get a screenshot of that film."
 msgstr "Totem náði ekki skjámynd af kvikmyndinni."
 
 #: src/totem.c:1993
-#, fuzzy
 msgid "Please file a bug, this isn't supposed to happen."
 msgstr "Vinsamlega skráðu villu. Þetta á ekki að gerast."
 
