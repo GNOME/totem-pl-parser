@@ -297,6 +297,7 @@ entry_metadata_foreach (const char *key, const char *value, gpointer data)
 	    			break;
 			}
 	    	g_message ("\t%s = '%s' (truncated)", key, tmp);
+		g_free (tmp);
 	    	return;
 	}
 	if (g_ascii_strcasecmp (key, TOTEM_PL_PARSER_FIELD_PUB_DATE) == 0) {
