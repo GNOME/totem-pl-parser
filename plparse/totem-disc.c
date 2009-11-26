@@ -262,15 +262,13 @@ cd_cache_has_content_type (CdCache *cache, const char *content_type)
 }
 
 static char *
-cd_cache_local_file_to_archive (const char *filename)
+cd_cache_uri_to_archive (const char *uri)
 {
-  char *escaped, *escaped2, *retval, *uri;
+  char *escaped, *escaped2, *retval;
 
-  uri = g_filename_to_uri (filename, NULL, NULL);
   escaped = g_uri_escape_string (uri, NULL, FALSE);
   escaped2 = g_uri_escape_string (escaped, NULL, FALSE);
   g_free (escaped);
-  g_free (uri);
   retval = g_strdup_printf ("archive://%s/", escaped2);
   g_free (escaped2);
 
@@ -295,7 +293,7 @@ cd_cache_new (const char *dev,
   GVolumeMonitor *mon;
   GVolume *volume = NULL;
   GFile *file;
-  gboolean found;
+  gboolean found, self_mounted;
 
   if (dev[0] == '/') {
     local = g_strdup (dev);
@@ -311,6 +309,8 @@ cd_cache_new (const char *dev,
     return NULL;
   }
 
+  self_mounted = FALSE;
+
   if (g_file_test (local, G_FILE_TEST_IS_DIR) != FALSE) {
     cache = g_new0 (CdCache, 1);
     cache->mountpoint = local;
@@ -322,15 +322,16 @@ cd_cache_new (const char *dev,
   } else if (g_file_test (local, G_FILE_TEST_IS_REGULAR)) {
     GMount *mount;
     GError *err = NULL;
-    char *archive_path;
-
-    g_object_unref (file);
+    char *uri, *archive_path;
 
     cache = g_new0 (CdCache, 1);
     cache->is_iso = TRUE;
     cache->is_media = FALSE;
 
-    archive_path = cd_cache_local_file_to_archive (local);
+    uri = g_file_get_uri (file);
+    g_object_unref (file);
+    archive_path = cd_cache_uri_to_archive (uri);
+    g_free (uri);
     cache->device = local;
 
     cache->iso_file = g_file_new_for_uri (archive_path);
@@ -360,6 +361,7 @@ cd_cache_new (const char *dev,
 	cd_cache_free (cache);
 	return FALSE;
       }
+      self_mounted = TRUE;
     } else if (mount == NULL) {
       cd_cache_free (cache);
       return FALSE;
@@ -369,6 +371,7 @@ cd_cache_new (const char *dev,
 
     cache->content_types = g_content_type_guess_for_tree (cache->iso_file);
     cache->mountpoint = g_file_get_path (cache->iso_file);
+    cache->self_mounted = self_mounted;
     cache->mounted = TRUE;
 
     return cache;
@@ -396,7 +399,7 @@ cd_cache_new (const char *dev,
   cache = g_new0 (CdCache, 1);
   cache->device = device;
   cache->mountpoint = mountpoint;
-  cache->self_mounted = FALSE;
+  cache->self_mounted = self_mounted;
   cache->volume = volume;
   cache->is_media = TRUE;
 
@@ -532,7 +535,7 @@ cd_cache_free (CdCache *cache)
 
   g_strfreev (cache->content_types);
 
-  if (cache->iso_file) {
+  if (cache->iso_file && cache->self_mounted) {
     mount = g_file_find_enclosing_mount (cache->iso_file,
 					 NULL, NULL);
     if (mount) {
