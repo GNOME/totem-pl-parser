@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <locale.h>
 #include <glib.h>
 #include <gio/gio.h>
 
@@ -104,6 +105,8 @@ main (int argc, char *argv[])
 		{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &device_paths, "[Device paths...]", NULL },
 		{ NULL }
 	};
+
+	setlocale (LC_ALL, "");
 
 	g_type_init ();
 	g_test_init (&argc, &argv, NULL);
