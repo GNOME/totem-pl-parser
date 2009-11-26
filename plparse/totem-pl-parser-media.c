@@ -237,12 +237,12 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 
 	uri = g_file_get_uri (file);
 	type = totem_cd_detect_type_from_dir (uri, &media_uri, NULL);
+	g_free (uri);
 
 	if (type != MEDIA_TYPE_DATA && type != MEDIA_TYPE_ERROR && media_uri != NULL) {
 		char *basename = NULL, *fname;
 
-		fname = g_filename_from_uri (uri, NULL, NULL);
-		g_free (uri);
+		fname = g_file_get_path (file);
 		if (fname != NULL) {
 			basename = g_filename_display_basename (fname);
 			g_free (fname);
@@ -285,7 +285,6 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 	}
 
 	g_list_free (list);
-	g_free (uri);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 }
