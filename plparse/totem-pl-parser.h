@@ -111,6 +111,12 @@ struct TotemPlParser {
  **/
 #define TOTEM_PL_PARSER_FIELD_BASE		"base"
 /**
+ * TOTEM_PL_PARSER_FIELD_SUBTITLE_URI:
+ *
+ * The URI of the entry's subtitle file.
+ **/
+#define TOTEM_PL_PARSER_FIELD_SUBTITLE_URI	"subtitle-uri"
+/**
  * TOTEM_PL_PARSER_FIELD_VOLUME:
  *
  * Metadata field for an entry's playback volume.

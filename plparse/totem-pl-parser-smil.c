@@ -36,6 +36,46 @@
 #include "totem-pl-parser-private.h"
 
 #ifndef TOTEM_PL_PARSER_MINI
+static void
+parse_smil_entry_add (TotemPlParser *parser,
+		      GFile *base_file,
+		      const char *uri,
+		      const char *title,
+		      const char *abstract,
+		      const char *copyright,
+		      const char *author,
+		      const char *clip_begin,
+		      const char *dur,
+		      const char *subtitle_uri)
+{
+	char *resolved_uri, *sub;
+	GFile *resolved;
+
+	resolved_uri = totem_pl_parser_resolve_uri (base_file, uri);
+	if (resolved_uri == NULL)
+		resolved = g_file_new_for_uri (uri);
+	else
+		resolved = g_file_new_for_uri (resolved_uri);
+	g_free (resolved_uri);
+
+	sub = NULL;
+	if (subtitle_uri != NULL)
+		sub = totem_pl_parser_resolve_uri (base_file, subtitle_uri);
+
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_FILE, resolved,
+				 TOTEM_PL_PARSER_FIELD_TITLE, title,
+				 TOTEM_PL_PARSER_FIELD_ABSTRACT, abstract,
+				 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
+				 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
+				 TOTEM_PL_PARSER_FIELD_STARTTIME, clip_begin,
+				 TOTEM_PL_PARSER_FIELD_DURATION, dur,
+				 TOTEM_PL_PARSER_FIELD_SUBTITLE_URI, sub ? sub : subtitle_uri,
+				 NULL);
+	g_object_unref (resolved);
+	g_free (sub);
+}
+
 static TotemPlParserResult
 parse_smil_entry (TotemPlParser *parser,
 		  GFile *base_file,
@@ -44,26 +84,44 @@ parse_smil_entry (TotemPlParser *parser,
 		  const char *parent_title)
 {
 	xml_node_t *node;
-	const char *title, *uri, *author, *abstract, *dur, *clip_begin, *copyright;
+	const char *title, *uri, *author, *abstract, *dur, *clip_begin, *copyright, *subtitle_uri;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
+	gboolean added;
 
 	title = NULL;
 	uri = NULL;
+	subtitle_uri = NULL;
 	author = NULL;
 	abstract = NULL;
 	dur = NULL;
 	clip_begin = NULL;
 	copyright = NULL;
+	added = FALSE;
 
-	for (node = parent->child; node != NULL; node = node->next)
-	{
+	for (node = parent->child; node != NULL; node = node->next) {
 		if (node->name == NULL)
 			continue;
 
 		/* ENTRY should only have one ref and one title nodes */
-		if (g_ascii_strcasecmp (node->name, "video") == 0 
-                    || g_ascii_strcasecmp (node->name, "audio") == 0
-                    || g_ascii_strcasecmp (node->name, "media") == 0) {
+		if (g_ascii_strcasecmp (node->name, "video") == 0
+		    || g_ascii_strcasecmp (node->name, "audio") == 0
+		    || g_ascii_strcasecmp (node->name, "media") == 0) {
+			/* Send the previous entry */
+			if (uri != NULL && added == FALSE) {
+				parse_smil_entry_add (parser,
+						      base_file,
+						      uri,
+						      title ? title : parent_title,
+						      abstract,
+						      copyright,
+						      author,
+						      clip_begin,
+						      dur,
+						      subtitle_uri);
+				added = TRUE;
+				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
+			}
+
 			uri = xml_parser_get_property (node, "src");
 			title = xml_parser_get_property (node, "title");
 			author = xml_parser_get_property (node, "author");
@@ -71,32 +129,30 @@ parse_smil_entry (TotemPlParser *parser,
 			clip_begin = xml_parser_get_property (node, "clip-begin");
 			abstract = xml_parser_get_property (node, "abstract");
 			copyright = xml_parser_get_property (node, "copyright");
-
-			if (uri != NULL) {
-				char *resolved_uri;
-				GFile *resolved;
-
-				resolved_uri = totem_pl_parser_resolve_uri (base_file, uri);
-				resolved = g_file_new_for_uri (resolved_uri);
-				g_free (resolved_uri);
-
-				totem_pl_parser_add_uri (parser,
-							 TOTEM_PL_PARSER_FIELD_FILE, resolved,
-							 TOTEM_PL_PARSER_FIELD_TITLE, title ? title : parent_title,
-							 TOTEM_PL_PARSER_FIELD_ABSTRACT, abstract,
-							 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
-							 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
-							 TOTEM_PL_PARSER_FIELD_STARTTIME, clip_begin,
-							 TOTEM_PL_PARSER_FIELD_DURATION, dur,
-							 NULL);
-				g_object_unref (resolved);
-				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
-			}
+			subtitle_uri = NULL;
+			added = FALSE;
+		} else if (g_ascii_strcasecmp (node->name, "textstream") == 0) {
+			subtitle_uri = xml_parser_get_property (node, "src");
 		} else {
 			if (parse_smil_entry (parser,
 						base_file, doc, node, parent_title) != FALSE)
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 		}
+	}
+
+	if (uri != NULL && added == FALSE) {
+		parse_smil_entry_add (parser,
+				      base_file,
+				      uri,
+				      title ? title : parent_title,
+				      abstract,
+				      copyright,
+				      author,
+				      clip_begin,
+				      dur,
+				      subtitle_uri);
+		added = TRUE;
+		retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
 	return retval;
@@ -198,12 +254,17 @@ totem_pl_parser_add_smil_with_data (TotemPlParser *parser,
 {
 	xml_node_t* doc;
 	TotemPlParserResult retval;
+	char *contents_dup;
 
-	doc = totem_pl_parser_parse_xml_relaxed (contents, size);
-	if (doc == NULL)
+	contents_dup = g_strndup (contents, size);
+	doc = totem_pl_parser_parse_xml_relaxed (contents_dup, size);
+	if (doc == NULL) {
+		g_free (contents_dup);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
+	}
 
 	retval = totem_pl_parser_add_smil_with_doc (parser, file, base_file, doc);
+	g_free (contents_dup);
 	xml_parser_free_tree (doc);
 
 	return retval;

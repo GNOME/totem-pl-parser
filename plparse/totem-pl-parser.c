@@ -559,6 +559,10 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     "String representing the identifier for an entry", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("subtitle-uri", "uri",
+				     "Subtitle URI to be added", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 }
 
 static void
