@@ -24,7 +24,7 @@
 #define TOTEM_PL_PARSER_H
 
 #include <glib.h>
-
+#include <gio/gio.h>
 #include <gtk/gtk.h>
 #include "totem-pl-parser-features.h"
 #include "totem-pl-parser-builtins.h"
