@@ -22,6 +22,10 @@
 #ifndef XML_PARSER_H
 #define XML_PARSER_H
 
+#ifndef XINE_DEPRECATED
+#define XINE_DEPRECATED
+#endif
+
 #ifndef XINE_PROTECTED
 #define XINE_PROTECTED
 #endif
@@ -65,17 +69,28 @@ typedef struct xml_node_s {
 	struct xml_node_s *next;
 } xml_node_t;
 
-void xml_parser_init(const char * buf, int size, int mode) XINE_PROTECTED;
+/* xml parser */
+typedef struct xml_parser_s {
+	struct lexer *lexer;
+	int mode;
+} xml_parser_t;
 
-int xml_parser_build_tree(xml_node_t **root_node) XINE_PROTECTED;
-int xml_parser_build_tree_with_options(xml_node_t **root_node, int flags) XINE_PROTECTED;
+void xml_parser_init(const char * buf, int size, int mode) XINE_DEPRECATED XINE_PROTECTED;
+xml_parser_t *xml_parser_init_r(const char * buf, int size, int mode) XINE_PROTECTED;
+void xml_parser_finalize_r(xml_parser_t *xml_parser) XINE_PROTECTED;
+
+int xml_parser_build_tree(xml_node_t **root_node) XINE_DEPRECATED XINE_PROTECTED;
+int xml_parser_build_tree_r(xml_parser_t *xml_parser, xml_node_t **root_node) XINE_PROTECTED;
+
+int xml_parser_build_tree_with_options(xml_node_t **root_node, int flags) XINE_DEPRECATED XINE_PROTECTED;
+int xml_parser_build_tree_with_options_r(xml_parser_t *xml_parser, xml_node_t **root_node, int flags) XINE_PROTECTED;
 
 void xml_parser_free_tree(xml_node_t *root_node) XINE_PROTECTED;
 
 const char *xml_parser_get_property (const xml_node_t *node, const char *name) XINE_PROTECTED;
-int   xml_parser_get_property_int (const xml_node_t *node, const char *name, 
+int   xml_parser_get_property_int (const xml_node_t *node, const char *name,
 				   int def_value) XINE_PROTECTED;
-int xml_parser_get_property_bool (const xml_node_t *node, const char *name, 
+int xml_parser_get_property_bool (const xml_node_t *node, const char *name,
 				  int def_value) XINE_PROTECTED;
 
 /* for output:

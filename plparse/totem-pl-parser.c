@@ -1680,11 +1680,16 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 	xml_node_t* doc, *node;
 	char *encoding, *new_contents;
 	gsize new_size;
+	xml_parser_t *xml_parser;
 
 	totem_pl_parser_cleanup_xml (contents);
-	xml_parser_init (contents, size, XML_PARSER_CASE_INSENSITIVE);
-	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0)
+	xml_parser = xml_parser_init_r (contents, size, XML_PARSER_CASE_INSENSITIVE);
+	if (xml_parser_build_tree_with_options_r (xml_parser, &doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+		xml_parser_finalize_r (xml_parser);
 		return NULL;
+	}
+
+	xml_parser_finalize_r (xml_parser);
 
 	encoding = NULL;
 	for (node = doc; node != NULL; node = node->next) {
@@ -1709,12 +1714,14 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 	}
 	g_free (encoding);
 
-	xml_parser_init (new_contents, new_size, XML_PARSER_CASE_INSENSITIVE);
-	if (xml_parser_build_tree_with_options (&doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+	xml_parser = xml_parser_init_r (new_contents, new_size, XML_PARSER_CASE_INSENSITIVE);
+	if (xml_parser_build_tree_with_options_r (xml_parser, &doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
+		xml_parser_finalize_r (xml_parser);
 		g_free (new_contents);
 		return NULL;
 	}
 
+	xml_parser_finalize_r (xml_parser);
 	g_free (new_contents);
 
 	return doc;

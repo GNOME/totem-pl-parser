@@ -23,6 +23,10 @@
 #ifndef XML_LEXER_H
 #define XML_LEXER_H
 
+#ifndef XINE_DEPRECATED
+#define XINE_DEPRECATED
+#endif
+
 #ifndef XINE_PROTECTED
 #define XINE_PROTECTED
 #endif
@@ -51,9 +55,25 @@
 #define T_CDATA_STOP    19   /* ]]> */
 
 
+/* public structure */
+struct lexer
+{
+  const char * lexbuf;
+  int lexbuf_size;
+  int lexbuf_pos;
+  int lex_mode;
+  int in_comment;
+  char *lex_malloc;
+};
+
+
 /* public functions */
-void lexer_init(const char * buf, int size) XINE_PROTECTED;
-int lexer_get_token(char * tok, int tok_size) XINE_PROTECTED;
+void lexer_init(const char * buf, int size) XINE_DEPRECATED XINE_PROTECTED;
+struct lexer *lexer_init_r(const char * buf, int size) XINE_PROTECTED;
+void lexer_finalize_r(struct lexer * lexer) XINE_PROTECTED;
+int lexer_get_token_d_r(struct lexer * lexer, char ** tok, int * tok_size, int fixed) XINE_PROTECTED;
+int lexer_get_token_d(char ** tok, int * tok_size, int fixed) XINE_DEPRECATED XINE_PROTECTED;
+int lexer_get_token(char * tok, int tok_size) XINE_DEPRECATED XINE_PROTECTED;
 char *lexer_decode_entities (const char *tok) XINE_PROTECTED;
 
 #endif
