@@ -213,6 +213,38 @@ test_parsability (void)
 	}
 }
 
+static void
+entry_parsed_cb (TotemPlParser *parser,
+		 const char *uri,
+		 GHashTable *metadata,
+		 char **ret)
+{
+	if (*ret == NULL)
+		*ret = g_strdup (uri);
+}
+
+static char *
+parser_test_get_parse_result (const char *uri)
+{
+	TotemPlParserResult retval;
+	char *ret = NULL;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_object_set (pl, "recurse", !option_no_recurse,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	g_signal_connect (G_OBJECT (pl), "entry-parsed",
+			  G_CALLBACK (entry_parsed_cb), &ret);
+
+	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
+	g_object_unref (pl);
+
+	return ret;
+}
+
 static TotemPlParserResult
 simple_parser_test (const char *uri)
 {
@@ -230,6 +262,13 @@ simple_parser_test (const char *uri)
 	g_object_unref (pl);
 
 	return retval;
+}
+
+static void
+test_parsing_rtsp_text (void)
+{
+	g_test_bug ("602127");
+	g_assert_cmpstr (parser_test_get_parse_result ("file://" TEST_FILE_DIR "602127.qtl"), ==, "rtsp://host.org/video.mp4");
 }
 
 static void
@@ -441,6 +480,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/404_error", test_parsing_404_error);
 		g_test_add_func ("/parser/parsing/xml_head_comments", test_parsing_xml_head_comments);
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
+		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text);
 
 		return g_test_run ();
 	}
