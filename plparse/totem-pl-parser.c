@@ -2308,7 +2308,8 @@ totem_pl_parser_mime_type_from_data (gconstpointer data, int len)
 	if (mime_type != NULL &&
 	    (strcmp (mime_type, "text/plain") == 0 ||
 	     strcmp (mime_type, "application/octet-stream") == 0 ||
-	     strcmp (mime_type, "application/xml") == 0)) {
+	     strcmp (mime_type, "application/xml") == 0 ||
+	     strcmp (mime_type, "text/html") == 0)) {
 		PlaylistIdenCallback func;
 		guint i;
 
