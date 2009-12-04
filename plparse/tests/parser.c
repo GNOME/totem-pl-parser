@@ -265,10 +265,16 @@ simple_parser_test (const char *uri)
 }
 
 static void
-test_parsing_rtsp_text (void)
+test_parsing_rtsp_text_multi (void)
 {
 	g_test_bug ("602127");
 	g_assert_cmpstr (parser_test_get_parse_result ("file://" TEST_FILE_DIR "602127.qtl"), ==, "rtsp://host.org/video.mp4");
+}
+
+static void
+test_parsing_rtsp_text (void)
+{
+	g_assert_cmpstr (parser_test_get_parse_result ("file://" TEST_FILE_DIR "single-line.qtl"), ==, "rtsp://host.org/video.mp4");
 }
 
 static void
@@ -480,7 +486,8 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/404_error", test_parsing_404_error);
 		g_test_add_func ("/parser/parsing/xml_head_comments", test_parsing_xml_head_comments);
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
-		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text);
+		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
+		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
 
 		return g_test_run ();
 	}
