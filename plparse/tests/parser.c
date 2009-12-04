@@ -185,7 +185,7 @@ test_parsability (void)
 		if (files[i].slow && !g_test_slow ())
 			continue;
 
-		g_test_message ("Testing \"%s\"...", files[i].uri);
+		g_test_message ("Testing data parsing \"%s\"...", files[i].uri);
 
 		data = test_data_get_data (files[i].uri, &len);
 		if (files[i].parsable == TRUE)
@@ -208,7 +208,7 @@ test_parsability (void)
 		if (files[i].slow && !g_test_slow ())
 			continue;
 
-		g_test_message ("Testing \"%s\"...", files[i].uri);
+		g_test_message ("Testing filename parsing \"%s\"...", files[i].uri);
 		g_assert (totem_pl_parser_can_parse_from_filename (files[i].uri, TRUE) == files[i].parsable);
 	}
 }
@@ -226,6 +226,7 @@ simple_parser_test (const char *uri)
 			  NULL);
 
 	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
 	g_object_unref (pl);
 
 	return retval;
@@ -234,14 +235,15 @@ simple_parser_test (const char *uri)
 static void
 test_parsing_hadess (void)
 {
-	g_assert (simple_parser_test ("file:///home/hadess/Movies") != TOTEM_PL_PARSER_RESULT_ERROR);
+	if (g_strcmp0 (g_get_user_name (), "hadess"))
+		g_assert (simple_parser_test ("file:///home/hadess/Movies") == TOTEM_PL_PARSER_RESULT_SUCCESS);
 }
 
 static void
 test_parsing_nonexistent_files (void)
 {
 	g_test_bug ("330120");
-	g_assert (simple_parser_test ("file:///tmp/file_doesnt_exist.wmv") == TOTEM_PL_PARSER_RESULT_ERROR);
+	g_assert (simple_parser_test ("file:///tmp/file_doesnt_exist.wmv") == TOTEM_PL_PARSER_RESULT_SUCCESS);
 }
 
 static void
@@ -262,7 +264,7 @@ static void
 test_parsing_404_error (void)
 {
 	g_test_bug ("158052");
-	g_assert (simple_parser_test ("http://live.hujjat.org:7860/main") == TOTEM_PL_PARSER_RESULT_ERROR);
+	g_assert (simple_parser_test ("http://live.hujjat.org:7860/main") == TOTEM_PL_PARSER_RESULT_UNHANDLED);
 }
 
 static void
