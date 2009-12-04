@@ -1658,7 +1658,8 @@ totem_pl_parser_cleanup_xml (char *contents)
 {
 	char *needle;
 
-	while ((needle = strstr (contents, "<!--")) != NULL) {
+	needle = contents;
+	while ((needle = strstr (needle, "<!--")) != NULL) {
 		while (strncmp (needle, "-->", 3) != 0) {
 			*needle = ' ';
 			needle++;
