@@ -326,6 +326,14 @@ test_parsing_xml_comment_whitespace (void)
 	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "541405.xml") == TOTEM_PL_PARSER_RESULT_SUCCESS);
 }
 
+static void
+test_parsing_live_streaming (void)
+{
+	g_test_bug ("594036");
+	/* File from http://tools.ietf.org/html/draft-pantos-http-live-streaming-02#section-7.1 */
+	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "live-streaming.m3u") == TOTEM_PL_PARSER_RESULT_UNHANDLED);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -488,6 +496,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
 		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
 		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
+		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 
 		return g_test_run ();
 	}
