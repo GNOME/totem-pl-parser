@@ -1660,17 +1660,21 @@ totem_pl_parser_cleanup_xml (char *contents)
 
 	needle = contents;
 	while ((needle = strstr (needle, "<!--")) != NULL) {
-		while (strncmp (needle, "-->", 3) != 0) {
-			*needle = ' ';
-			needle++;
-			if (*needle == '\0')
-				break;
+		char *end;
+
+		/* Find end of comments */
+		end = strstr (needle, "-->");
+		/* Broken file? */
+		if (end == NULL)
+			return;
+		if (memmem (needle, end - needle,
+			    "]]>", strlen ("]]>")) != NULL) {
+			/* Advance 3 and skip */
+			needle += 3;
+			continue;
 		}
-		if (strncmp (needle, "-->", 3) == 0) {
-			guint i;
-			for (i = 0; i < 3; i++)
-				*(needle + i) = ' ';
-		}
+		/* Empty the comment */
+		memset (needle, ' ', end + 3 - needle);
 	}
 }
 
