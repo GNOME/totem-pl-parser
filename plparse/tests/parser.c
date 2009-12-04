@@ -334,6 +334,14 @@ test_parsing_live_streaming (void)
 	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "live-streaming.m3u") == TOTEM_PL_PARSER_RESULT_UNHANDLED);
 }
 
+static void
+test_parsing_xml_mixed_cdata (void)
+{
+	g_test_bug ("585407");
+	/* File from http://www.davidco.com/podcast.php */
+	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "585407.rss") == TOTEM_PL_PARSER_RESULT_SUCCESS);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -497,6 +505,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
 		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
+		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 
 		return g_test_run ();
 	}
