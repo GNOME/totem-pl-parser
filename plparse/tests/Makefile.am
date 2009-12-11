@@ -3,7 +3,7 @@ include $(top_srcdir)/Makefile.decl
 pwd=`pwd`
 INCLUDES = \
 	-I$(top_srcdir)/plparse	\
-	-DTEST_FILE_DIR=\""$(pwd)/"\"
+	-DTEST_SRCDIR=\""$(srcdir)/"\"
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
@@ -19,6 +19,7 @@ parser_CPPFLAGS			 = \
 				-I$(top_builddir)/plparse	\
 				-DGNOMELOCALEDIR=\""$(datadir)/locale"\"\
 				$(DISABLE_DEPRECATED)		\
+				$(INCLUDES)			\
 				$(AM_CPPFLAGS)
 parser_CFLAGS			 = \
 				$(TOTEM_PLPARSER_CFLAGS)\
@@ -35,9 +36,18 @@ disc_LDADD			 = \
 				$(TOTEM_PLPARSER_LIBS)
 disc_CPPFLAGS			 = \
 				$(common_defines)	\
+				$(INCLUDES)		\
 				$(AM_CPPFLAGS)
 disc_CFLAGS			 = \
 				$(WARN_CFLAGS)		\
 				$(TOTEM_PLPARSER_CFLAGS)\
 				$(AM_CFLAGS)
 disc_LDFLAGS			 = $(AM_LDFLAGS)
+
+EXTRA_DIST =			\
+	541405.xml		\
+	560051.xml		\
+	585407.rss		\
+	602127.qtl		\
+	live-streaming.m3u	\
+	single-line.qtl

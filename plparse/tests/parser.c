@@ -23,6 +23,20 @@ static char *option_base_uri = NULL;
 static char **uris = NULL;
 
 static char *
+get_relative_uri (const char *rel)
+{
+	GFile *file;
+	char *uri;
+
+	file = g_file_new_for_commandline_arg (rel);
+	uri = g_file_get_uri (file);
+	g_object_unref (file);
+	g_assert (uri != NULL);
+
+	return uri;
+}
+
+static char *
 test_relative_real (const char *uri, const char *output)
 {
 	GFile *output_file;
@@ -128,10 +142,22 @@ test_data_get_data (const char *uri, guint *len)
 	/* Open the file. */
 	stream = g_file_read (file, NULL, &error);
 	if (stream == NULL) {
-		g_test_message ("URI '%s' couldn't be opened in test_data_get_data: '%s'", uri, error->message);
-		g_error_free (error);
-		return NULL;
+		GFile *dir;
+
+		/* Try to open the relative path in the source dir */
+		g_object_unref (file);
+		dir = g_file_new_for_path (TEST_SRCDIR);
+		file = g_file_get_child (dir, uri);
+		g_object_unref (dir);
+		stream = g_file_read (file, NULL, NULL);
+		if (stream == NULL) {
+			g_object_unref (file);
+			g_test_message ("URI '%s' couldn't be opened in test_data_get_data: '%s'", uri, error->message);
+			g_error_free (error);
+			return NULL;
+		}
 	}
+	g_object_unref (file);
 
 	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
 	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
@@ -166,7 +192,7 @@ test_parsability (void)
 		gboolean slow;
 	} const files[] = {
 		/* NOTE: For relative paths, don't add a protocol. */
-		{ "560051.xml", TRUE, FALSE },
+		{ TEST_SRCDIR "560051.xml", TRUE, FALSE },
 		{ "itms://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewPodcast?id=271121520&ign-mscache=1", TRUE, TRUE },
 		{ "http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewPodcast?id=271121520", TRUE, TRUE },
 		{ "file:///tmp/file_doesnt_exist.wmv", FALSE, FALSE },
@@ -267,14 +293,20 @@ simple_parser_test (const char *uri)
 static void
 test_parsing_rtsp_text_multi (void)
 {
+	char *uri;
 	g_test_bug ("602127");
-	g_assert_cmpstr (parser_test_get_parse_result ("file://" TEST_FILE_DIR "602127.qtl"), ==, "rtsp://host.org/video.mp4");
+	uri = get_relative_uri (TEST_SRCDIR "602127.qtl");
+	g_assert_cmpstr (parser_test_get_parse_result (uri), ==, "rtsp://host.org/video.mp4");
+	g_free (uri);
 }
 
 static void
 test_parsing_rtsp_text (void)
 {
-	g_assert_cmpstr (parser_test_get_parse_result ("file://" TEST_FILE_DIR "single-line.qtl"), ==, "rtsp://host.org/video.mp4");
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "single-line.qtl");
+	g_assert_cmpstr (parser_test_get_parse_result (uri), ==, "rtsp://host.org/video.mp4");
+	g_free (uri);
 }
 
 static void
@@ -315,31 +347,43 @@ test_parsing_404_error (void)
 static void
 test_parsing_xml_head_comments (void)
 {
+	char *uri;
 	g_test_bug ("560051");
-	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "560051.xml") == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	uri = get_relative_uri (TEST_SRCDIR "560051.xml");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_free (uri);
 }
 
 static void
 test_parsing_xml_comment_whitespace (void)
 {
+	char *uri;
 	g_test_bug ("541405");
-	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "541405.xml") == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	uri = get_relative_uri (TEST_SRCDIR "541405.xml");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_free (uri);
 }
 
 static void
 test_parsing_live_streaming (void)
 {
+	char *uri;
 	g_test_bug ("594036");
 	/* File from http://tools.ietf.org/html/draft-pantos-http-live-streaming-02#section-7.1 */
-	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "live-streaming.m3u") == TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	uri = get_relative_uri (TEST_SRCDIR "live-streaming.m3u");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	g_free (uri);
 }
 
 static void
 test_parsing_xml_mixed_cdata (void)
 {
+	char *uri;
 	g_test_bug ("585407");
 	/* File from http://www.davidco.com/podcast.php */
-	g_assert (simple_parser_test ("file://" TEST_FILE_DIR "585407.rss") == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	uri = get_relative_uri (TEST_SRCDIR "585407.rss");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_free (uri);
 }
 
 #define MAX_DESCRIPTION_LEN 128
