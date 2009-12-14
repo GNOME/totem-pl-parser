@@ -1667,8 +1667,7 @@ totem_pl_parser_cleanup_xml (char *contents)
 		/* Broken file? */
 		if (end == NULL)
 			return;
-		if (memmem (needle, end - needle,
-			    "]]>", strlen ("]]>")) != NULL) {
+		if (g_strstr_len (needle, end - needle, "]]>") != NULL) {
 			/* Advance 3 and skip */
 			needle += 3;
 			continue;
