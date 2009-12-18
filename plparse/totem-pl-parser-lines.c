@@ -27,7 +27,7 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <glib/gi18n-lib.h>
-#include <gtk/gtk.h>
+
 #include <gio/gio.h>
 
 #include "totem-pl-parser.h"
@@ -78,13 +78,15 @@ totem_pl_parser_uri_to_dos (const char *uri, GFile *output)
 }
 
 gboolean
-totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
-			   TotemPlParserIterFunc func, GFile *output,
-			   gboolean dos_compatible, gpointer user_data, GError **error)
+totem_pl_parser_save_m3u (TotemPlParser    *parser,
+                          TotemPlPlaylist  *playlist,
+                          GFile            *output,
+                          gboolean          dos_compatible,
+                          GError          **error)
 {
+        TotemPlPlaylistIter iter;
 	GFileOutputStream *stream;
-	int num_entries_total, i;
-	gboolean success;
+	gboolean valid, success;
 	char *buf;
 	char *cr;
 
@@ -93,9 +95,6 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 		return FALSE;
 
 	cr = dos_compatible ? "\r\n" : "\n";
-	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
-	if (num_entries_total == 0)
-		return TRUE;
 
 	buf = g_strdup_printf ("#EXTM3U%s", cr);
 	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
@@ -103,18 +102,26 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 	if (success == FALSE)
 		return FALSE;
 
-	for (i = 1; i <= num_entries_total; i++) {
-		GtkTreeIter iter;
+        valid = totem_pl_playlist_iter_first (playlist, &iter);
+
+        while (valid) {
 		char *uri, *title, *path2;
-		gboolean custom_title;
 		GFile *file;
 
-		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
-			continue;
+                totem_pl_playlist_get (playlist, &iter,
+                                       TOTEM_PL_PARSER_FIELD_URI, &uri,
+                                       TOTEM_PL_PARSER_FIELD_TITLE, &title,
+                                       NULL);
 
-		func (model, &iter, &uri, &title, &custom_title, user_data);
+                valid = totem_pl_playlist_iter_next (playlist, &iter);
 
-		file = g_file_new_for_uri (uri);
+                if (!uri) {
+                        g_free (title);
+                        continue;
+                }
+
+                file = g_file_new_for_uri (uri);
+
 		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
 			g_object_unref (file);
 			g_free (uri);
@@ -123,7 +130,7 @@ totem_pl_parser_write_m3u (TotemPlParser *parser, GtkTreeModel *model,
 		}
 		g_object_unref (file);
 
-		if (custom_title != FALSE) {
+		if (title) {
 			buf = g_strdup_printf (EXTINF",%s%s", title, cr);
 			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 			g_free (buf);

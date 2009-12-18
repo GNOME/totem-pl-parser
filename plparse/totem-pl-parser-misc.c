@@ -26,7 +26,7 @@
 #include <glib.h>
 
 #ifndef TOTEM_PL_PARSER_MINI
-#include <gtk/gtk.h>
+
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #include "totem-disc.h"

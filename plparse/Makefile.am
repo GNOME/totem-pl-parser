@@ -16,6 +16,7 @@ plparserinclude_HEADERS =			\
 	totem-pl-parser-builtins.h		\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
+	totem-pl-playlist.h			\
 	totem-disc.h				\
 	totem-pl-parser-mini.h
 
@@ -53,6 +54,8 @@ libtotem_plparser_la_SOURCES =			\
 	totem-pl-parser-smil.h			\
 	totem-pl-parser-wm.h			\
 	totem-pl-parser-xspf.h			\
+	totem-pl-playlist.c			\
+	totem-pl-playlist.h			\
 	xmlparser.h xmlparser.c			\
 	xmllexer.h xmllexer.c			\
 	bswap.h
@@ -106,7 +109,9 @@ libtotem_plparser_mini_la_SOURCES =		\
 	totem-pl-parser-wm.c			\
 	totem-pl-parser-wm.h			\
 	totem-pl-parser-xspf.c			\
-	totem-pl-parser-xspf.h
+	totem-pl-parser-xspf.h			\
+	totem-pl-playlist.c			\
+	totem-pl-playlist.h
 
 libtotem_plparser_mini_la_CPPFLAGS = \
 	-I$(top_srcdir)			\

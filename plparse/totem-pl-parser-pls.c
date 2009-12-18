@@ -26,7 +26,7 @@
 #include <string.h>
 #include <glib.h>
 #include <glib/gi18n-lib.h>
-#include <gtk/gtk.h>
+
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -37,18 +37,19 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 gboolean
-totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
-			   TotemPlParserIterFunc func,
-			   GFile *output, const char *title,
-			   gpointer user_data, GError **error)
+totem_pl_parser_save_pls (TotemPlParser    *parser,
+                          TotemPlPlaylist  *playlist,
+                          GFile            *output,
+                          const gchar      *title,
+                          GError          **error)
 {
+        TotemPlPlaylistIter iter;
 	GFileOutputStream *stream;
-	int num_entries_total, num_entries, i;
+	int num_entries, i;
+	gboolean valid, success;
 	char *buf;
-	gboolean success;
 
-	num_entries = totem_pl_parser_num_entries (parser, model, func, user_data);
-	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
+	num_entries = totem_pl_parser_num_entries (parser, playlist);
 
 	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
 	if (stream == NULL)
@@ -74,49 +75,63 @@ totem_pl_parser_write_pls (TotemPlParser *parser, GtkTreeModel *model,
 	if (success == FALSE)
 		return FALSE;
 
-	for (i = 1; i <= num_entries_total; i++) {
-		GtkTreeIter iter;
-		char *uri, *title, *relative;
-		GFile *file;
-		gboolean custom_title;
+        valid = totem_pl_playlist_iter_first (playlist, &iter);
+        i = 0;
 
-		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
-			continue;
+        while (valid) {
+                gchar *uri, *title, *relative;
+                GFile *file;
 
-		func (model, &iter, &uri, &title, &custom_title, user_data);
+                totem_pl_playlist_get (playlist, &iter,
+                                       TOTEM_PL_PARSER_FIELD_URI, &uri,
+                                       TOTEM_PL_PARSER_FIELD_TITLE, &title,
+                                       NULL);
 
-		file = g_file_new_for_uri (uri);
-		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
-			g_free (uri);
-			g_free (title);
-			g_object_unref (file);
-			continue;
-		}
-		g_object_unref (file);
+                valid = totem_pl_playlist_iter_next (playlist, &iter);
 
-		relative = totem_pl_parser_relative (output, uri);
-		buf = g_strdup_printf ("File%d=%s\n", i, relative ? relative : uri);
-		g_free (relative);
-		g_free (uri);
-		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
-		g_free (buf);
-		if (success == FALSE) {
-			g_free (title);
-			return FALSE;
-		}
+                if (!uri) {
+                        g_free (title);
+                        continue;
+                }
 
-		if (custom_title == FALSE) {
-			g_free (title);
-			continue;
-		}
+                file = g_file_new_for_uri (uri);
 
-		buf = g_strdup_printf ("Title%d=%s\n", i, title);
-		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
-		g_free (buf);
-		g_free (title);
-		if (success == FALSE)
-			return FALSE;
-	}
+                if (totem_pl_parser_scheme_is_ignored (parser, file)) {
+                        g_object_unref (file);
+                        g_free (uri);
+                        g_free (title);
+                        continue;
+                }
+
+                g_object_unref (file);
+                i++;
+
+                relative = totem_pl_parser_relative (output, uri);
+                buf = g_strdup_printf ("File%d=%s\n", i, relative ? relative : uri);
+                g_free (relative);
+                g_free (uri);
+
+                success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+                g_free (buf);
+
+                if (success == FALSE) {
+                        g_free (title);
+                        return FALSE;
+                }
+
+                if (!title) {
+                        continue;
+                }
+
+                buf = g_strdup_printf ("Title%d=%s\n", i, title);
+                success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+                g_free (buf);
+                g_free (title);
+
+                if (success == FALSE) {
+                        return FALSE;
+                }
+        }
 
 	g_object_unref (stream);
 	return TRUE;

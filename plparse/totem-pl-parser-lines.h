@@ -36,13 +36,12 @@ G_BEGIN_DECLS
 const char * totem_pl_parser_is_uri_list (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
-gboolean totem_pl_parser_write_m3u (TotemPlParser *parser,
-				    GtkTreeModel *model,
-				    TotemPlParserIterFunc func,
-				    GFile *output,
-				    gboolean dos_compatible,
-				    gpointer user_data,
-				    GError **error);
+gboolean totem_pl_parser_save_m3u (TotemPlParser *parser,
+                                   TotemPlPlaylist *playlist,
+                                   GFile *output,
+                                   gboolean dos_compatible,
+                                   GError **error);
+
 TotemPlParserResult totem_pl_parser_add_ram (TotemPlParser *parser,
 					     GFile *file,
 					     TotemPlParseData *parse_data,

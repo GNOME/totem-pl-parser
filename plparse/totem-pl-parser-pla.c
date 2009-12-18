@@ -25,7 +25,7 @@
 #include <string.h>
 #include <glib.h>
 #include <glib/gi18n-lib.h>
-#include <gtk/gtk.h>
+
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -45,21 +45,23 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 gboolean
-totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
-			   TotemPlParserIterFunc func, 
-			   GFile *output, const char *title,
-			   gpointer user_data, GError **error)
+totem_pl_parser_save_pla (TotemPlParser    *parser,
+                          TotemPlPlaylist  *playlist,
+                          GFile            *output,
+                          const char       *title,
+                          GError          **error)
 {
+        TotemPlPlaylistIter iter;
 	GFileOutputStream *stream;
-	int num_entries_total, i;
+        gint num_entries_total, i;
 	char *buffer;
-	gboolean ret;
-
-	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
+	gboolean valid, ret;
 
 	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
 	if (stream == NULL)
 		return FALSE;
+
+        num_entries_total = totem_pl_playlist_size (playlist);
 
 	/* write the header */
 	buffer = g_malloc0 (RECORD_SIZE);
@@ -78,22 +80,28 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 	}
 
 	ret = TRUE;
-	for (i = 1; i <= num_entries_total; i++) {
-		GtkTreeIter iter;
-		char *euri, *title, *path, *converted, *filename;
+        valid = totem_pl_playlist_iter_first (playlist, &iter);
+        i = 0;
+
+        while (valid)
+        {
+		char *euri, *path, *converted, *filename;
 		gsize written;
-		gboolean custom_title;
 
-		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
-			continue;
+                totem_pl_playlist_get (playlist, &iter,
+                                       TOTEM_PL_PARSER_FIELD_URI, &euri,
+                                       NULL);
 
-		func (model, &iter, &euri, &title, &custom_title, user_data);
-		g_free (title);
+                valid = totem_pl_playlist_iter_next (playlist, &iter);
 
-		memset (buffer, 0, RECORD_SIZE);
+                if (!euri) {
+                        continue;
+                }
 
-		/* convert to filename */
+                memset (buffer, 0, RECORD_SIZE);
 		path = g_filename_from_uri (euri, NULL, error);
+                i++;
+
 		if (path == NULL)
 		{
 			DEBUG(NULL, g_print ("Couldn't convert URI '%s' to a filename: %s\n", euri, (*error)->message));
@@ -112,7 +120,9 @@ totem_pl_parser_write_pla (TotemPlParser *parser, GtkTreeModel *model,
 		{
 			/* should never happen, but this would be the right value */
 			buffer[1] = 0x01;
-		} else {
+		}
+                else
+                {
 			/* we want the char after the slash, and it's one-based */
 			guint name_offset = (filename - path) + 2;
 

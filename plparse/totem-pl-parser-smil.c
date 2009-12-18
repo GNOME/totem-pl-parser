@@ -24,7 +24,7 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <glib.h>
-#include <gtk/gtk.h>
+
 #include <gio/gio.h>
 #include "xmlparser.h"
 #include "totem-pl-parser.h"

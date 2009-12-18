@@ -25,9 +25,10 @@
 
 #include <glib.h>
 #include <gio/gio.h>
-#include <gtk/gtk.h>
+
 #include "totem-pl-parser-features.h"
 #include "totem-pl-parser-builtins.h"
+#include "totem-pl-playlist.h"
 
 G_BEGIN_DECLS
 
@@ -314,45 +315,17 @@ typedef enum {
 
 GQuark totem_pl_parser_error_quark (void);
 
-/**
- * TotemPlParserIterFunc:
- * @model: a #GtkTreeModel containing the playlist entries
- * @iter: a #GtkTreeIter pointing to the current row
- * @uri: (out) (transfer full): return location for the entry's URI, or %NULL
- * @title: (out) (transfer full): return location for the entry's title, or %NULL
- * @custom_title: (out) (transfer full): return location for a boolean which, if %TRUE, indicates that the entry's @title is custom; or %NULL
- * @user_data: user data to pass to the function
- *
- * Functions such as totem_pl_parser_write() accept pointers to TotemPlParserIterFunc()s
- * as callbacks to call for each entry in the playlist. These functions
- * are specific to each use of the playlist API, and should set the entry's
- * @uri, @title and @custom_title return values, getting the data from @model
- * or otherwise.
- **/
-typedef void (*TotemPlParserIterFunc) (GtkTreeModel *model, GtkTreeIter *iter,
-				       char **uri, char **title,
-				       gboolean *custom_title,
-				       gpointer user_data);
-
 GType    totem_pl_parser_get_type (void);
 
 gint64  totem_pl_parser_parse_duration (const char *duration, gboolean debug);
 guint64 totem_pl_parser_parse_date     (const char *date_str, gboolean debug);
 
-gboolean totem_pl_parser_write (TotemPlParser *parser, GtkTreeModel *model,
-				TotemPlParserIterFunc func,
-				const char *output, TotemPlParserType type,
-				gpointer user_data,
-				GError **error);
-
-gboolean   totem_pl_parser_write_with_title (TotemPlParser *parser,
-					     GtkTreeModel *model,
-					     TotemPlParserIterFunc func,
-					     const char *output,
-					     const char *title,
-					     TotemPlParserType type,
-					     gpointer user_data,
-					     GError **error);
+gboolean totem_pl_parser_save (TotemPlParser      *parser,
+			       TotemPlPlaylist    *playlist,
+			       GFile              *dest,
+			       const gchar        *title,
+			       TotemPlParserType   type,
+			       GError            **error);
 
 void	   totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 					       const char *scheme);

@@ -32,12 +32,10 @@ G_BEGIN_DECLS
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 #ifndef TOTEM_PL_PARSER_MINI
-gboolean totem_pl_parser_write_pls				(TotemPlParser *parser,
-								 GtkTreeModel *model,
-								 TotemPlParserIterFunc func, 
+gboolean totem_pl_parser_save_pls				(TotemPlParser *parser,
+                                                                 TotemPlPlaylist *playlist,
 								 GFile *file,
 								 const char *title,
-								 gpointer user_data,
 								 GError **error);
 TotemPlParserResult totem_pl_parser_add_pls_with_contents	(TotemPlParser *parser,
 								 GFile *file,

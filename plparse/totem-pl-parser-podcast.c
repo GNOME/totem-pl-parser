@@ -26,7 +26,7 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <zlib.h>
-#include <gtk/gtk.h>
+
 #include "xmlparser.h"
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"

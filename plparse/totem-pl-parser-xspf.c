@@ -28,7 +28,7 @@
 #include <glib/gi18n-lib.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
-#include <gtk/gtk.h>
+
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
@@ -74,17 +74,16 @@ totem_pl_parser_parse_xml_file (GFile *file)
 }
 
 gboolean
-totem_pl_parser_write_xspf (TotemPlParser *parser, GtkTreeModel *model,
-			   TotemPlParserIterFunc func, 
-			   GFile *output, const char *title,
-			   gpointer user_data, GError **error)
+totem_pl_parser_save_xspf (TotemPlParser    *parser,
+                           TotemPlPlaylist  *playlist,
+                           GFile            *output,
+                           const char       *title,
+                           GError          **error)
 {
+        TotemPlPlaylistIter iter;
 	GFileOutputStream *stream;
-	int num_entries_total, i;
 	char *buf;
-	gboolean success;
-
-	num_entries_total = gtk_tree_model_iter_n_children (model, NULL);
+	gboolean valid, success;
 
 	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
 	if (stream == NULL)
@@ -98,17 +97,25 @@ totem_pl_parser_write_xspf (TotemPlParser *parser, GtkTreeModel *model,
 	if (success == FALSE)
 		return FALSE;
 
-	for (i = 1; i <= num_entries_total; i++) {
-		GtkTreeIter iter;
+        valid = totem_pl_playlist_iter_first (playlist, &iter);
+
+        while (valid) {
 		char *uri, *uri_escaped, *relative, *title;
 		GFile *file;
-		gboolean custom_title;
 
-		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
-			continue;
+                totem_pl_playlist_get (playlist, &iter,
+                                       TOTEM_PL_PARSER_FIELD_URI, &uri,
+                                       TOTEM_PL_PARSER_FIELD_TITLE, &title,
+                                       NULL);
 
-		func (model, &iter, &uri, &title, &custom_title, user_data);
-		file = g_file_new_for_uri (uri);
+                valid = totem_pl_playlist_iter_next (playlist, &iter);
+
+                if (!uri) {
+                        g_free (title);
+                        continue;
+                }
+
+                file = g_file_new_for_uri (uri);
 
 		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
 			g_object_unref (file);
@@ -121,32 +128,35 @@ totem_pl_parser_write_xspf (TotemPlParser *parser, GtkTreeModel *model,
 		relative = totem_pl_parser_relative (output, uri);
 		uri_escaped = g_markup_escape_text (relative ? relative : uri, -1);
 		buf = g_strdup_printf ("  <track>\n"
-					"   <location>%s</location>\n", uri_escaped);
+                                       "   <location>%s</location>\n", uri_escaped);
 		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (uri);
 		g_free (uri_escaped);
 		g_free (relative);
 		g_free (buf);
-		if (success == FALSE) {
+
+                if (success == FALSE) {
 			g_free (title);
 			return FALSE;
 		}
 
-		if (custom_title == TRUE)
+		if (title) {
 			buf = g_strdup_printf ("   <title>%s</title>\n"
-						"  </track>\n", title);
-		else
+                                               "  </track>\n", title);
+                } else {
 			buf = g_strdup_printf ("  </track>\n");
-		
+                }
+
 		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 		g_free (buf);
 		g_free (title);
-		if (success == FALSE)
+
+                if (success == FALSE)
 			return FALSE;
 	}
 
 	buf = g_strdup_printf (" </trackList>\n"
-				"</playlist>");
+                               "</playlist>");
 	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 	g_free (buf);
 

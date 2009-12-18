@@ -116,10 +116,10 @@ gboolean totem_pl_parser_is_debugging_enabled	(TotemPlParser *parser);
 char *totem_pl_parser_base_uri			(GFile *file);
 void totem_pl_parser_playlist_end		(TotemPlParser *parser,
 						 const char *playlist_title);
-int totem_pl_parser_num_entries			(TotemPlParser *parser,
-						 GtkTreeModel *model,
-						 TotemPlParserIterFunc func,
-						 gpointer user_data);
+
+int totem_pl_parser_num_entries			(TotemPlParser   *parser,
+                                                 TotemPlPlaylist *playlist);
+
 gboolean totem_pl_parser_scheme_is_ignored	(TotemPlParser *parser,
 						 GFile *file);
 gboolean totem_pl_parser_line_is_empty		(const char *line);

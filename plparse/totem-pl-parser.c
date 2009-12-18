@@ -87,36 +87,35 @@
  * <example>
  *  <title>Writing a Playlist</title>
  *  <programlisting>
- * void
- * parser_func (GtkTreeModel *model, GtkTreeIter *iter,
- * 		gchar **uri, gchar **title, gboolean *custom_title,
- * 		gpointer user_data)
- * {
- * 	gtk_tree_model_get (model, iter,
- * 		0, uri,
- * 		1, title,
- * 		2, custom_title,
- * 		-1);
- * }
- *
  * {
  * 	TotemPlParser *pl;
- * 	GtkTreeModel *tree_model;
+ * 	TotemPlPlaylist *playlist;
+ * 	TotemPlPlaylistIter iter;
+ * 	GFile *file;
  *
  * 	pl = totem_pl_parser_new ();
+ * 	playlist = totem_pl_playlist_new ();
+ * 	file = g_file_new_for_path ("/tmp/playlist.pls");
  *
- * 	&slash;* Your tree model can be as simple or as complex as you like;
- * 	 * parser_func() will just have to return the entry title, URI and custom title flag from it. *&slash;
- * 	tree_model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
- * 	populate_model (tree_model);
+ * 	totem_pl_playlist_append (playlist, &iter);
+ * 	totem_pl_playlist_set (playlist, &iter,
+ * 			       TOTEM_PL_PARSER_FIELD_URI, "file:///1.ogg",
+ * 			       TOTEM_PL_PARSER_FIELD_TITLE, "1.ogg",
+ * 			       NULL);
  *
- * 	if (totem_pl_parser_write (pl, tree_model, parser_func, "/tmp/playlist.pls",
- * 				   TOTEM_PL_PARSER_PLS, NULL, NULL) != TRUE) {
+ * 	totem_pl_playlist_append (playlist, &iter);
+ * 	totem_pl_playlist_set (playlist, &iter,
+ * 			       TOTEM_PL_PARSER_FIELD_URI, "file:///2.ogg",
+ * 			       NULL);
+ *
+ * 	if (totem_pl_parser_save (pl, playlist, file, "Title",
+ * 				  TOTEM_PL_PARSER_PLS, NULL) != TRUE) {
  * 		g_error ("Playlist writing failed.");
  * 	}
  *
- * 	g_object_unref (tree_model);
+ * 	g_object_unref (playlist);
  * 	g_object_unref (pl);
+ * 	g_object_unref (file);
  * }
  *  </programlisting>
  * </example>
@@ -132,7 +131,6 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <gobject/gvaluecollector.h>
-#include <gtk/gtk.h>
 
 #ifdef HAVE_GMIME
 #include <gmime/gmime-utils.h>
@@ -884,43 +882,48 @@ totem_pl_parser_write_buffer (GOutputStream *stream, const char *buf, guint len,
 /**
  * totem_pl_parser_num_entries:
  * @parser: a #TotemPlParser
- * @model: a #GtkTreeModel
- * @func: a pointer to a #TotemPlParserIterFunc callback function
- * @user_data: a pointer to be passed to each call of @func
+ * @playlist: a #TotemPlPlaylist
  *
- * Returns the number of entries in @parser's playlist, and calls
- * @func for each valid entry in the playlist.
+ * Returns the number of valid entries in @playlist.
  *
  * Return value: the number of entries in the playlist
  **/
 int
-totem_pl_parser_num_entries (TotemPlParser *parser, GtkTreeModel *model,
-			     TotemPlParserIterFunc func, gpointer user_data)
+totem_pl_parser_num_entries (TotemPlParser   *parser,
+                             TotemPlPlaylist *playlist)
 {
-	int num_entries, i, ignored;
+	int num_entries, ignored;
+        TotemPlPlaylistIter iter;
+        gboolean valid;
 
-	num_entries = gtk_tree_model_iter_n_children (model, NULL);
+	num_entries = totem_pl_playlist_size (playlist);
+        valid = totem_pl_playlist_iter_first (playlist, &iter);
 	ignored = 0;
 
-	for (i = 1; i <= num_entries; i++)
-	{
-		GtkTreeIter iter;
-		char *uri, *title;
-		GFile *file;
-		gboolean custom_title;
+        while (valid) {
+                gchar *uri;
+                GFile *file;
 
-		if (gtk_tree_model_iter_nth_child (model, &iter, NULL, i - 1) == FALSE)
-			return i - ignored;
+                totem_pl_playlist_get (playlist, &iter,
+                                       TOTEM_PL_PARSER_FIELD_URI, &uri,
+                                       NULL);
 
-		func (model, &iter, &uri, &title, &custom_title, user_data);
-		file = g_file_new_for_uri (uri);
-		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE)
-			ignored++;
+                valid = totem_pl_playlist_iter_next (playlist, &iter);
 
-		g_object_unref (file);
-		g_free (uri);
-		g_free (title);
-	}
+                if (!uri) {
+                        ignored++;
+                        continue;
+                }
+
+                file = g_file_new_for_uri (uri);
+
+                if (totem_pl_parser_scheme_is_ignored (parser, file)) {
+                        ignored++;
+                }
+
+                g_object_unref (file);
+                g_free (uri);
+        }
 
 	return num_entries - ignored;
 }
@@ -1081,23 +1084,17 @@ totem_pl_parser_resolve_uri (GFile *base_gfile,
 
 #ifndef TOTEM_PL_PARSER_MINI
 /**
- * totem_pl_parser_write_with_title:
+ * totem_pl_parser_save:
  * @parser: a #TotemPlParser
- * @model: a #GtkTreeModel
- * @func: a pointer to a #TotemPlParserIterFunc callback function
- * @output: the output path and filename
+ * @playlist: a #TotemPlPlaylist
+ * @dest: output #GFile
  * @title: the playlist title
- * @type: a #TotemPlParserType for the ouputted playlist
- * @user_data: a pointer to be passed to each call of @func
- * @error: return location for a #GError, or %NULL
+ * @type: a #TotemPlParserType for the outputted playlist
+ * @error: return loction for a #GError, or %NULL
  *
- * Writes the playlist held by @parser and @model out to the file of
- * path @output. The playlist is written in the format @type and is
+ * Writes the playlist held by @parser and @playlist out to the path
+ * pointed by @dest. The playlist is written in the format @type and is
  * given the title @title.
- *
- * For each entry in the @model, the function @func is called (and passed
- * @user_data), which gets various metadata values about the entry for
- * the playlist writer.
  *
  * If the @output file is a directory the #G_IO_ERROR_IS_DIRECTORY error
  * will be returned, and if the file is some other form of non-regular file
@@ -1113,77 +1110,43 @@ totem_pl_parser_resolve_uri (GFile *base_gfile,
  * If writing a PLA playlist and there is an error converting a URI's encoding,
  * a code from #GConvertError will be returned.
  *
- * Return value: %TRUE on success
+ * Returns: %TRUE on success
  **/
 gboolean
-totem_pl_parser_write_with_title (TotemPlParser *parser, GtkTreeModel *model,
-				  TotemPlParserIterFunc func,
-				  const char *output, const char *title,
-				  TotemPlParserType type,
-				  gpointer user_data, GError **error)
+totem_pl_parser_save (TotemPlParser      *parser,
+                      TotemPlPlaylist    *playlist,
+                      GFile              *dest,
+                      const gchar        *title,
+                      TotemPlParserType   type,
+                      GError            **error)
 {
-	GFile *file;
+        g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), FALSE);
+        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
+        g_return_val_if_fail (G_IS_FILE (dest), FALSE);
 
-	file = g_file_new_for_commandline_arg (output);
+        if (totem_pl_playlist_size (playlist) == 0) {
+                return FALSE;
+        }
 
-	switch (type)
-	{
+        switch (type)
+        {
 	case TOTEM_PL_PARSER_PLS:
-		return totem_pl_parser_write_pls (parser, model, func,
-				file, title, user_data, error);
+		return totem_pl_parser_save_pls (parser, playlist, dest, title, error);
 	case TOTEM_PL_PARSER_M3U:
 	case TOTEM_PL_PARSER_M3U_DOS:
-		return totem_pl_parser_write_m3u (parser, model, func,
-				file, (type == TOTEM_PL_PARSER_M3U_DOS),
-                                user_data, error);
+		return totem_pl_parser_save_m3u (parser, playlist, dest,
+                                                 (type == TOTEM_PL_PARSER_M3U_DOS),
+                                                 error);
 	case TOTEM_PL_PARSER_XSPF:
-		return totem_pl_parser_write_xspf (parser, model, func,
-				file, title, user_data, error);
+		return totem_pl_parser_save_xspf (parser, playlist, dest, title, error);
 	case TOTEM_PL_PARSER_IRIVER_PLA:
-		return totem_pl_parser_write_pla (parser, model, func,
-				file, title, user_data, error);
+		return totem_pl_parser_save_pla (parser, playlist, dest, title, error);
 	default:
 		g_assert_not_reached ();
 	}
 
-	g_object_unref (file);
-
 	return FALSE;
 }
-
-/**
- * totem_pl_parser_write:
- * @parser: a #TotemPlParser
- * @model: a #GtkTreeModel
- * @func: a pointer to a #TotemPlParserIterFunc callback function
- * @output: the output path and filename
- * @type: a #TotemPlParserType for the ouputted playlist
- * @user_data: a pointer to be passed to each call of @func
- * @error: return location for a #GError, or %NULL
- *
- * Writes the playlist held by @parser and @model out to the file of
- * path @output. The playlist is written in the format @type and is given
- * a %NULL title.
- *
- * For each entry in the @model, the function @func is called (and passed
- * @user_data), which gets various metadata values about the entry for
- * the playlist writer.
- *
- * Possible error codes are as per totem_pl_parser_write_with_title().
- *
- * Return value: %TRUE on success
- **/
-gboolean
-totem_pl_parser_write (TotemPlParser *parser, GtkTreeModel *model,
-		       TotemPlParserIterFunc func,
-		       const char *output, TotemPlParserType type,
-		       gpointer user_data,
-		       GError **error)
-{
-	return totem_pl_parser_write_with_title (parser, model, func, output,
-			NULL, type, user_data, error);
-}
-
 #endif /* TOTEM_PL_PARSER_MINI */
 
 /**
