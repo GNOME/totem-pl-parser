@@ -19,36 +19,39 @@ plparserinclude_HEADERS =			\
 	totem-disc.h				\
 	totem-pl-parser-mini.h
 
-libtotem_plparser_la_SOURCES =			\
+plparser_sources =				\
 	totem-pl-parser-builtins.c		\
-	totem-pl-parser-builtins.h		\
 	totem-disc.c				\
-	totem-disc.h				\
 	totem-pl-parser.c			\
+	totem-pl-parser-lines.c			\
+	totemplparser-marshal.c			\
+	totem-pl-parser-media.c			\
+	totem-pl-parser-misc.c			\
+	totem-pl-parser-pla.c			\
+	totem-pl-parser-pls.c			\
+	totem-pl-parser-podcast.c		\
+	totem-pl-parser-qt.c			\
+	totem-pl-parser-smil.c			\
+	totem-pl-parser-wm.c			\
+	totem-pl-parser-xspf.c
+
+libtotem_plparser_la_SOURCES =			\
+	$(plparser_sources)			\
+	totem-pl-parser-builtins.h		\
+	totem-disc.h				\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
-	totem-pl-parser-lines.c			\
 	totem-pl-parser-lines.h			\
-	totemplparser-marshal.c			\
 	totemplparser-marshal.h			\
-	totem-pl-parser-media.c			\
 	totem-pl-parser-media.h			\
-	totem-pl-parser-misc.c			\
 	totem-pl-parser-misc.h			\
-	totem-pl-parser-pla.c			\
 	totem-pl-parser-pla.h			\
-	totem-pl-parser-pls.c			\
 	totem-pl-parser-pls.h			\
-	totem-pl-parser-podcast.c		\
 	totem-pl-parser-podcast.h		\
 	totem-pl-parser-private.h		\
-	totem-pl-parser-qt.c			\
 	totem-pl-parser-qt.h			\
-	totem-pl-parser-smil.c			\
 	totem-pl-parser-smil.h			\
-	totem-pl-parser-wm.c			\
 	totem-pl-parser-wm.h			\
-	totem-pl-parser-xspf.c			\
 	totem-pl-parser-xspf.h			\
 	xmlparser.h xmlparser.c			\
 	xmllexer.h xmllexer.c			\
@@ -163,3 +166,41 @@ EXTRA_DIST =				\
 	totem-pl-parser-features.h.in	\
 	plparser.symbols		\
 	plparser-mini.symbols
+
+# Introspection
+-include $(INTROSPECTION_MAKEFILE)
+INTROSPECTION_GIRS =
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
+
+if HAVE_INTROSPECTION
+introspection_sources = \
+	$(plparser_sources)		\
+	$(plparserinclude_HEADERS)
+
+TotemPlParser.gir: libtotem-plparser.la Makefile
+TotemPlParser_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPlParser
+TotemPlParser_gir_INCLUDES = GObject-2.0 Gtk-2.0
+TotemPlParser_gir_CFLAGS = \
+	$(TOTEM_PLPARSER_CFLAGS)	\
+	$(HAL_CFLAGS)			\
+	$(DBUS_CFLAGS)			\
+	$(AM_CFLAGS)			\
+	-D_FILE_OFFSET_BITS=64		\
+	-D_LARGEFILE64_SOURCE		\
+	-I$(top_srcdir)			\
+	-I$(top_srcdir)/lib		\
+	-I$(top_builddir)/plparse	\
+	-D_GNU_SOURCE
+TotemPlParser_gir_LIBS = libtotem-plparser.la
+TotemPlParser_gir_FILES = $(addprefix $(srcdir)/,$(introspection_sources))
+INTROSPECTION_GIRS += TotemPlParser.gir
+
+girdir = $(datadir)/gir-1.0
+dist_gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(dist_gir_DATA) $(typelib_DATA)
+endif

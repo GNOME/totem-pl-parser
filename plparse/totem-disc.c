@@ -663,7 +663,7 @@ totem_cd_dir_get_parent (const char *dir)
 /**
  * totem_cd_detect_type_from_dir:
  * @dir: a directory URI
- * @mrl: return location for the disc's MRL, or %NULL
+ * @mrl: (out) (transfer full) (allow-none): return location for the disc's MRL, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Detects the disc's type, given its mount directory URI. If
@@ -731,7 +731,7 @@ totem_cd_detect_type_from_dir (const char *dir, char **mrl, GError **error)
 /**
  * totem_cd_detect_type_with_url:
  * @device: a device node path
- * @mrl: return location for the disc's MRL, or %NULL
+ * @mrl: (out) (transfer full) (allow-none): return location for the disc's MRL, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Detects the disc's type, given its device node path. If

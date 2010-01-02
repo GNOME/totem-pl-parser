@@ -1,4 +1,4 @@
-AC_PREREQ(2.52)
+AC_PREREQ(2.62)
 
 m4_define(totem_version_major, 2)
 m4_define(totem_version_minor, 28)
@@ -121,6 +121,7 @@ AC_SUBST([AM_CXXFLAGS])
 AC_SUBST([AM_LDFLAGS])
 
 GTK_DOC_CHECK(1.11)
+GOBJECT_INTROSPECTION_CHECK([0.6.7])
 
 AC_CONFIG_FILES([
 Makefile

@@ -1980,11 +1980,11 @@ parse_thread (GSimpleAsyncResult *result, GObject *object, GCancellable *cancell
  * totem_pl_parser_parse_with_base_async:
  * @parser: a #TotemPlParser
  * @uri: the URI of the playlist to parse
- * @base: the base path for relative filenames
+ * @base: (allow-none): the base path for relative filenames, or %NULL
  * @fallback: %TRUE if the parser should add the playlist URI to the
  * end of the playlist on parse failure
- * @cancellable: optional #GCancellable object, or %NULL
- * @callback: a #GAsyncReadyCallback to call when parsing is finished
+ * @cancellable: (allow-none): optional #GCancellable object, or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when parsing is finished
  * @user_data: data to pass to the @callback function
  *
  * Starts asynchronous parsing of a playlist given by the absolute URI @uri, using @base to resolve relative paths where appropriate.
@@ -2021,7 +2021,7 @@ totem_pl_parser_parse_with_base_async (TotemPlParser *parser, const char *uri, c
  * totem_pl_parser_parse_with_base:
  * @parser: a #TotemPlParser
  * @uri: the URI of the playlist to parse
- * @base: the base path for relative filenames
+ * @base: (allow-none): the base path for relative filenames, or %NULL
  * @fallback: %TRUE if the parser should add the playlist URI to the
  * end of the playlist on parse failure
  *
@@ -2075,8 +2075,8 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *uri,
  * @uri: the URI of the playlist to parse
  * @fallback: %TRUE if the parser should add the playlist URI to the
  * end of the playlist on parse failure
- * @cancellable: optional #GCancellable object, or %NULL
- * @callback: a #GAsyncReadyCallback to call when parsing is finished
+ * @cancellable: (allow-none): optional #GCancellable object, or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when parsing is finished
  * @user_data: data to pass to the @callback function
  *
  * Starts asynchronous parsing of a playlist given by the absolute URI @uri. @self and @uri are both reffed/copied

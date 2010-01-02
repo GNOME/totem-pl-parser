@@ -318,9 +318,9 @@ GQuark totem_pl_parser_error_quark (void);
  * TotemPlParserIterFunc:
  * @model: a #GtkTreeModel containing the playlist entries
  * @iter: a #GtkTreeIter pointing to the current row
- * @uri: return location for the entry's URI, or %NULL
- * @title: return location for the entry's title, or %NULL
- * @custom_title: return location for a boolean which, if %TRUE, indicates that the entry's @title is custom; or %NULL
+ * @uri: (out) (transfer full): return location for the entry's URI, or %NULL
+ * @title: (out) (transfer full): return location for the entry's title, or %NULL
+ * @custom_title: (out) (transfer full): return location for a boolean which, if %TRUE, indicates that the entry's @title is custom; or %NULL
  * @user_data: user data to pass to the function
  *
  * Functions such as totem_pl_parser_write() accept pointers to TotemPlParserIterFunc()s
