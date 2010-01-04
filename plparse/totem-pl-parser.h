@@ -56,16 +56,16 @@ typedef enum {
 	TOTEM_PL_PARSER_RESULT_CANCELLED
 } TotemPlParserResult;
 
-typedef struct TotemPlParser	       TotemPlParser;
-typedef struct TotemPlParserClass      TotemPlParserClass;
-typedef struct TotemPlParserPrivate    TotemPlParserPrivate;
-
 /**
  * TotemPlParser:
  *
  * All the fields in the #TotemPlParser structure are private and should never be accessed directly.
  **/
-struct TotemPlParser {
+typedef struct _TotemPlParser	       TotemPlParser;
+typedef struct TotemPlParserClass      TotemPlParserClass;
+typedef struct TotemPlParserPrivate    TotemPlParserPrivate;
+
+struct _TotemPlParser {
 	GObject parent;
 	TotemPlParserPrivate *priv;
 };
