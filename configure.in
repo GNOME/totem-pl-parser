@@ -8,6 +8,7 @@ AC_INIT([totem-pl-parser],
         [totem_version_major.totem_version_minor.totem_version_micro],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=totem-pl-parser&component=General])
 
+AM_MAINTAINER_MODE
 AC_CONFIG_SRCDIR([plparse/totem-pl-parser.c])
 AC_CONFIG_HEADERS([config.h])
 AC_GNU_SOURCE
