@@ -523,8 +523,8 @@ cd_cache_unmount_callback (GObject *source_object,
 			   GAsyncResult *res,
 			   CdCacheCallbackData *data)
 {
-  data->result = g_mount_unmount_finish (G_MOUNT (source_object),
-					 res, NULL);
+  data->result = g_mount_unmount_with_operation_finish (G_MOUNT (source_object),
+                                                        res, NULL);
   data->called = TRUE;
 }
 
@@ -543,11 +543,13 @@ cd_cache_free (CdCache *cache)
 
       memset (&data, 0, sizeof(data));
 
-      g_mount_unmount (mount,
-		       G_MOUNT_UNMOUNT_NONE,
-		       NULL,
-		      (GAsyncReadyCallback) cd_cache_unmount_callback,
-		      &data);
+      g_mount_unmount_with_operation (mount,
+                                      G_MOUNT_UNMOUNT_NONE,
+                                      NULL,
+                                      NULL,
+                                      (GAsyncReadyCallback) cd_cache_unmount_callback,
+                                      &data);
+
       while (!data.called) g_main_context_iteration (NULL, TRUE);
       g_object_unref (mount);
     }
