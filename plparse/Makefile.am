@@ -185,7 +185,7 @@ introspection_sources = \
 
 TotemPlParser.gir: libtotem-plparser.la Makefile
 TotemPlParser_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPlParser
-TotemPlParser_gir_INCLUDES = GObject-2.0 Gtk-2.0
+TotemPlParser_gir_INCLUDES = GObject-2.0
 TotemPlParser_gir_CFLAGS = \
 	$(TOTEM_PLPARSER_CFLAGS)	\
 	$(HAL_CFLAGS)			\
