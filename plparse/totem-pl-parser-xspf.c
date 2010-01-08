@@ -73,6 +73,17 @@ totem_pl_parser_parse_xml_file (GFile *file)
 	return doc;
 }
 
+static struct {
+	const char *field;
+	const char *element;
+} fields[] = {
+	{ TOTEM_PL_PARSER_FIELD_TITLE, "title" },
+	{ TOTEM_PL_PARSER_FIELD_AUTHOR, "creator" },
+	{ TOTEM_PL_PARSER_FIELD_IMAGE_URI, "image" },
+	{ TOTEM_PL_PARSER_FIELD_ALBUM, "album" },
+	{ TOTEM_PL_PARSER_FIELD_DURATION_MS, "duration" },
+};
+
 gboolean
 totem_pl_parser_save_xspf (TotemPlParser    *parser,
                            TotemPlPlaylist  *playlist,
@@ -100,27 +111,26 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
         valid = totem_pl_playlist_iter_first (playlist, &iter);
 
         while (valid) {
-		char *uri, *uri_escaped, *relative, *title;
+		char *uri, *uri_escaped, *relative;
 		GFile *file;
+		guint i;
 
                 totem_pl_playlist_get (playlist, &iter,
                                        TOTEM_PL_PARSER_FIELD_URI, &uri,
-                                       TOTEM_PL_PARSER_FIELD_TITLE, &title,
                                        NULL);
 
-                valid = totem_pl_playlist_iter_next (playlist, &iter);
 
                 if (!uri) {
-                        g_free (title);
+			valid = totem_pl_playlist_iter_next (playlist, &iter);
                         continue;
-                }
+		}
 
                 file = g_file_new_for_uri (uri);
 
 		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
+			valid = totem_pl_playlist_iter_next (playlist, &iter);
 			g_object_unref (file);
 			g_free (uri);
-			g_free (title);
 			continue;
 		}
 		g_object_unref (file);
@@ -135,24 +145,42 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 		g_free (relative);
 		g_free (buf);
 
-                if (success == FALSE) {
-			g_free (title);
+                if (success == FALSE)
 			return FALSE;
+
+		for (i = 0; i < G_N_ELEMENTS (fields); i++) {
+			char *str, *escaped;
+
+			totem_pl_playlist_get (playlist, &iter,
+					       fields[i].field, &str,
+					       NULL);
+			if (!str)
+				continue;
+			escaped = g_markup_escape_text (str, -1);
+			g_free (str);
+			if (!escaped)
+				continue;
+			buf = g_strdup_printf ("   <%s>%s</%s>\n",
+					       fields[i].element,
+					       escaped,
+					       fields[i].element);
+
+			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+			g_free (buf);
+			g_free (escaped);
+
+			if (success == FALSE)
+				break;
 		}
-
-		if (title) {
-			buf = g_strdup_printf ("   <title>%s</title>\n"
-                                               "  </track>\n", title);
-                } else {
-			buf = g_strdup_printf ("  </track>\n");
-                }
-
-		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
-		g_free (buf);
-		g_free (title);
 
                 if (success == FALSE)
 			return FALSE;
+
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), "  </track>\n", error);
+		if (success == FALSE)
+			return FALSE;
+
+                valid = totem_pl_playlist_iter_next (playlist, &iter);
 	}
 
 	buf = g_strdup_printf (" </trackList>\n"
