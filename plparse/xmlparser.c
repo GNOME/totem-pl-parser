@@ -832,13 +832,14 @@ char *xml_escape_string (const char *s, xml_escape_quote_t quote_type)
 }
 
 static void xml_parser_dump_node (const xml_node_t *node, int indent) {
+  size_t l;
 
   xml_property_t *p;
   xml_node_t     *n;
 
   printf ("%*s<%s ", indent, "", node->name);
 
-  size_t l = strlen (node->name);
+  l = strlen (node->name);
 
   p = node->props;
   while (p) {
