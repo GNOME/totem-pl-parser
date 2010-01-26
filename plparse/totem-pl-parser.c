@@ -45,7 +45,7 @@
  *  </programlisting>
  * </example>
  *
-  * <example>
+ * <example>
  *  <title>Reading a Playlist Asynchronously</title>
  *  <programlisting>
  * TotemPlParser *pl = totem_pl_parser_new ();

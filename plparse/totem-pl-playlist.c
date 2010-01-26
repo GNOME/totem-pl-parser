@@ -28,6 +28,19 @@
  * #TotemPlPlaylist represents a playlist, provides API to either navigate through
  * the playlist elements, or perform additions or modifications. See also
  * totem_pl_parser_save().
+ *
+ **/
+
+/**
+ * SECTION:totem-pl-playlist-iter
+ * @short_description: playlist manipulation object
+ * @stability: Stable
+ * @totem-pl-playlist.h
+ *
+ * #TotemPlPlaylistIter refers to an element in a playlist and is designed
+ * to bridge between application provided playlist widgets or objects,
+ * and #TotemPlParser's saving code.
+ *
  **/
 
 #include "totem-pl-playlist.h"
