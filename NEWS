@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.29.1
+* Add introspection support
+* Remove GTK+ dependency
+* Remove deprecated symbols
+* Add more metadata to XSPF playlist saving
+* Fix compilation on *BSDs
+
 2.28.2
 * Add support for subtitle properties in SMIL files
 * Make totem-pl-parser's XML parsing thread-safe
