@@ -92,7 +92,14 @@ TOTEM_IS_PL_PLAYLIST_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>totem-pl-playlist-iter</FILE>
+<TITLE>TotemPlPlaylistIter</TITLE>
+TotemPlPlaylistIter
+</SECTION>
+
+<SECTION>
 <FILE>totem-disc</FILE>
+<TITLE>TotemDisc</TITLE>
 TotemDiscMediaType
 totem_cd_detect_type
 totem_cd_detect_type_with_url

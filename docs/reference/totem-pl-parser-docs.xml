@@ -17,6 +17,7 @@
 		<title>API Reference</title>
 		<xi:include href="xml/totem-pl-parser.xml"/>
 		<xi:include href="xml/totem-pl-playlist.xml"/>
+		<xi:include href="xml/totem-pl-playlist-iter.xml"/>
 		<xi:include href="xml/totem-disc.xml"/>
 	</chapter>
 
