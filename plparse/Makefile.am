@@ -183,10 +183,10 @@ introspection_sources = \
 	$(plparser_sources)		\
 	$(plparserinclude_HEADERS)
 
-TotemPlParser.gir: libtotem-plparser.la Makefile
-TotemPlParser_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPlParser
-TotemPlParser_gir_INCLUDES = GObject-2.0 Gio-2.0
-TotemPlParser_gir_CFLAGS = \
+TotemPlParser-1.0.gir: libtotem-plparser.la Makefile
+TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPlParser --nsversion=1.0
+TotemPlParser_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
+TotemPlParser_1_0_gir_CFLAGS = \
 	$(TOTEM_PLPARSER_CFLAGS)	\
 	$(HAL_CFLAGS)			\
 	$(DBUS_CFLAGS)			\
@@ -197,9 +197,9 @@ TotemPlParser_gir_CFLAGS = \
 	-I$(top_srcdir)/lib		\
 	-I$(top_builddir)/plparse	\
 	-D_GNU_SOURCE
-TotemPlParser_gir_LIBS = libtotem-plparser.la
-TotemPlParser_gir_FILES = $(addprefix $(srcdir)/,$(introspection_sources))
-INTROSPECTION_GIRS += TotemPlParser.gir
+TotemPlParser_1_0_gir_LIBS = libtotem-plparser.la
+TotemPlParser_1_0_gir_FILES = $(addprefix $(srcdir)/,$(introspection_sources))
+INTROSPECTION_GIRS += TotemPlParser-1.0.gir
 
 girdir = $(datadir)/gir-1.0
 dist_gir_DATA = $(INTROSPECTION_GIRS)
