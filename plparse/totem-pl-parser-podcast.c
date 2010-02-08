@@ -130,6 +130,27 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			duration = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "length") == 0) {
 			filesize = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "media:content") == 0) {
+			const char *tmp;
+
+			tmp = xml_parser_get_property (node, "type");
+			if (tmp != NULL &&
+			    g_str_has_prefix (tmp, "audio/") == FALSE)
+				continue;
+
+			tmp = xml_parser_get_property (node, "url");
+			if (tmp != NULL)
+				uri = tmp;
+			else
+				continue;
+
+			tmp = xml_parser_get_property (node, "fileSize");
+			if (tmp != NULL)
+				filesize = tmp;
+
+			tmp = xml_parser_get_property (node, "duration");
+			if (tmp != NULL)
+				duration = tmp;
 		} else if (g_ascii_strcasecmp (node->name, "enclosure") == 0) {
 			const char *tmp;
 
