@@ -1,68 +1,66 @@
 # translation of nn.po to Norwegian Nynorsk
 # This file is distributed under the same license as the totem-pl-parser package.
 # Copyright (C) 2006, 2008, The free software foundation
-# Åsmund Skjæveland <aasmunds@fys.uio.no>, 2006.
 #
+# Åsmund Skjæveland <aasmunds@fys.uio.no>, 2006.
+# Eirik U. Birkeland <eirbir@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-31 10:55+0200\n"
-"PO-Revision-Date: 2008-03-31 10:56+0200\n"
-"Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=totem&component=playlist parser\n"
+"POT-Creation-Date: 2009-04-17 18:07+0000\n"
+"PO-Revision-Date: 2009-12-19 01:56+0100\n"
+"Last-Translator: Eirik U. Birkeland <eirbir@gmail.com>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: KBabel 1.9.1\n"
+"X-Generator: Lokalize 1.0\n"
 
-#: ../plparse/totem-disc.c:294
+#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:499, c-format
+#| msgid "Failed to mount %s"
+msgid "Failed to mount %s."
+msgstr "Klarte ikkje montera %s."
+
+#: ../plparse/totem-disc.c:388
 #, c-format
-msgid "Failed to find mountpoint for device %s"
-msgstr "Klarte ikkje å finna monteringspunkt for eininga %s"
+msgid "No media in drive for device '%s'."
+msgstr "Ingen medium i stasjonen for eininga «%s»."
 
-#: ../plparse/totem-disc.c:304
-#, c-format
-msgid "Could not connect to the HAL daemon"
-msgstr "Klarte ikkje å kopla til HAL-tenaren"
-
-#: ../plparse/totem-disc.c:404
+#: ../plparse/totem-disc.c:442
 #, c-format
 msgid "Please check that a disc is present in the drive."
-msgstr "Kontroller at det står ei plate i stasjonen."
+msgstr "Sjå til at det står ei plate i stasjonen."
 
-#: ../plparse/totem-disc.c:451
-#, c-format
-msgid "Failed to mount %s"
-msgstr "Klarte ikkje å montera %s"
-
-#: ../plparse/totem-disc.c:475
-#, c-format
-msgid "Failed to find mountpoint for %s"
-msgstr "Klarte ikkje å finna monteringspunkt for %s"
-
-#: ../plparse/totem-disc.c:929
+#: ../plparse/totem-disc.c:881
 msgid "Audio CD"
 msgstr "Lyd-CD"
 
-#: ../plparse/totem-disc.c:931
+#: ../plparse/totem-disc.c:883
 msgid "Video CD"
 msgstr "Video-CD"
 
-#: ../plparse/totem-disc.c:933
+#: ../plparse/totem-disc.c:885
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:935
+#: ../plparse/totem-disc.c:887
 msgid "Digital Television"
 msgstr "Digital-TV"
 
-#: ../plparse/totem-pl-parser-pla.c:76 ../plparse/totem-pl-parser-pls.c:68
-#: ../plparse/totem-pl-parser-xspf.c:105
-#, c-format
-msgid "Couldn't open file '%s': %s"
-msgstr "Klarte ikkje å opna fila «%s»: %s"
+#~ msgid "Failed to find mountpoint for device %s"
+#~ msgstr "Klarte ikkje å finna monteringspunkt for eininga %s"
+
+#~ msgid "Could not connect to the HAL daemon"
+#~ msgstr "Klarte ikkje å kopla til HAL-tenaren"
+
+#~ msgid "Failed to find mountpoint for %s"
+#~ msgstr "Klarte ikkje å finna monteringspunkt for %s"
+
+#~ msgid "Couldn't open file '%s': %s"
+#~ msgstr "Klarte ikkje å opna fila «%s»: %s"
 
 #~ msgid "Add..."
 #~ msgstr "Legg til ..."
