@@ -271,6 +271,50 @@ parser_test_get_parse_result (const char *uri)
 	return ret;
 }
 
+static void
+playlist_started_order (TotemPlParser *parser,
+			const char *uri,
+			GHashTable *metadata,
+			gboolean *ret)
+{
+	*ret = TRUE;
+}
+
+static void
+entry_parsed_cb_order (TotemPlParser *parser,
+		       const char *uri,
+		       GHashTable *metadata,
+		       gboolean *ret)
+{
+	/* Check that the playlist started happened before the entry appeared */
+	g_assert (*ret != FALSE);
+}
+
+static gboolean
+parser_test_get_order_result (const char *uri)
+{
+	TotemPlParserResult retval;
+	gboolean pl_started;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_object_set (pl, "recurse", !option_no_recurse,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	g_signal_connect (G_OBJECT (pl), "playlist-started",
+			  G_CALLBACK (playlist_started_order), &pl_started);
+	g_signal_connect (G_OBJECT (pl), "entry-parsed",
+			  G_CALLBACK (entry_parsed_cb_order), &pl_started);
+
+	pl_started = FALSE;
+	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
+	g_object_unref (pl);
+
+	return pl_started;
+}
+
 static TotemPlParserResult
 simple_parser_test (const char *uri)
 {
@@ -335,6 +379,19 @@ test_parsing_broken_asx (void)
 	g_test_bug ("323683");
 	result = simple_parser_test ("http://www.comedycentral.com/sitewide/media_player/videoswitcher.jhtml?showid=934&category=/shows/the_daily_show/videos/headlines&sec=videoId%3D36032%3BvideoFeatureId%3D%3BpoppedFrom%3D_shows_the_daily_show_index.jhtml%3BisIE%3Dfalse%3BisPC%3Dtrue%3Bpagename%3Dmedia_player%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bgateway%3Dshows%3Bsection_1%3Dthe_daily_show%3Bsection_2%3Dvideos%3Bsection_3%3Dheadlines%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bera%3D%27%2Bif_nt_era%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bfla%3D%27%2Bif_nt_Flash%2B%27&itemid=36032&clip=com/dailyshow/headlines/10156_headline.wmv&mswmext=.asx");
 	g_assert (result != TOTEM_PL_PARSER_RESULT_ERROR);
+}
+
+static void
+test_parsing_out_of_order_asx (void)
+{
+	char *uri;
+	gboolean result;
+
+	/* From http://82.135.234.195/pukas.wax */
+	uri = get_relative_uri (TEST_SRCDIR "pukas.wax");
+	result = parser_test_get_order_result (uri);
+	g_free (uri);
+	g_assert (result != FALSE);
 }
 
 static void
@@ -544,6 +601,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/nonexistent_files", test_parsing_nonexistent_files);
 		g_test_add_func ("/parser/parsing/broken_asx", test_parsing_broken_asx);
 		g_test_add_func ("/parser/parsing/404_error", test_parsing_404_error);
+		g_test_add_func ("/parser/parsing/out_of_order_asx", test_parsing_out_of_order_asx);
 		g_test_add_func ("/parser/parsing/xml_head_comments", test_parsing_xml_head_comments);
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
 		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
