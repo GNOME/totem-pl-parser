@@ -319,10 +319,10 @@ parse_asx_entries (TotemPlParser *parser, const char *uri, GFile *base_file, xml
 
 	new_base = NULL;
 
+	/* Loop to look for playlist information first */
 	for (node = parent->child; node != NULL; node = node->next) {
 		if (node->name == NULL)
 			continue;
-
 		if (g_ascii_strcasecmp (node->name, "title") == 0) {
 			g_free (title);
 			title = g_strdup (node->data);
@@ -341,6 +341,13 @@ parse_asx_entries (TotemPlParser *parser, const char *uri, GFile *base_file, xml
 				new_base = g_file_new_for_uri (str);
 			}
 		}
+	}
+
+	/* Restart for the entries now */
+	for (node = parent->child; node != NULL; node = node->next) {
+		if (node->name == NULL)
+			continue;
+
 		if (g_ascii_strcasecmp (node->name, "entry") == 0) {
 			/* Whee! found an entry here, find the REF and TITLE */
 			if (parse_asx_entry (parser, new_base ? new_base : base_file, node, parse_data) != FALSE)
