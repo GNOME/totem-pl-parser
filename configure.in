@@ -38,7 +38,6 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 # Requirements
 GLIB_REQS=2.21.6
 GIO_REQS=2.17.3
-DBUS_REQS=0.61
 
 # Before making a release, the PLPARSER_LT_VERSION string should be modified.
 # The string is of the form C:R:A.
