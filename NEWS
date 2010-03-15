@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+2.29.92
+* Fix parsing of Guardian Podcasts
+* Fix parsing of pukas.wax playlist
+* Fix directory file descriptor leak
+* Fix versioning of the introspection support
+
 2.29.1
 * Add introspection support
 * Remove GTK+ dependency

@@ -50,4 +50,5 @@ EXTRA_DIST =			\
 	585407.rss		\
 	602127.qtl		\
 	live-streaming.m3u	\
-	single-line.qtl
+	single-line.qtl		\
+	pukas.wax
