@@ -8,15 +8,15 @@
 # Petr Tomeš <ptomes@gmail.com>, 2006.
 # Lukas Novotny <lukasnov@cvs.gnome.org>, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
-# Lucas Lommer <llommer@svn.gnome.org>, 2008, 2009.
+# Lucas Lommer <llommer@svn.gnome.org>, 2008, 2009, 2010.
 # Petr Kovar <pknbe@volny.cz>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-16 02:36+0100\n"
-"PO-Revision-Date: 2009-02-16 01:11+0100\n"
+"POT-Creation-Date: 2010-03-29 17:36+0200\n"
+"PO-Revision-Date: 2010-03-28 17:31+0100\n"
 "Last-Translator: Lucas Lommer <llommer@svn.gnome.org>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,33 +24,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
+#: ../plparse/totem-disc.c:359 ../plparse/totem-disc.c:503
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Nelze připojit %s."
 
-#: ../plparse/totem-disc.c:387
+#: ../plparse/totem-disc.c:392
 #, c-format
 msgid "No media in drive for device '%s'."
-msgstr "V mechanice zařízení '%s' není médium."
+msgstr "V mechanice zařízení „%s“ není médium."
 
-#: ../plparse/totem-disc.c:441
+#: ../plparse/totem-disc.c:446
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Zkontrolujte prosím, zda je v mechanice přítomen disk."
 
-#: ../plparse/totem-disc.c:880
+#: ../plparse/totem-disc.c:889
 msgid "Audio CD"
 msgstr "Zvukové CD"
 
-#: ../plparse/totem-disc.c:882
+#: ../plparse/totem-disc.c:891
 msgid "Video CD"
 msgstr "Video CD"
 
-#: ../plparse/totem-disc.c:884
+#: ../plparse/totem-disc.c:893
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:886
+#: ../plparse/totem-disc.c:895
 msgid "Digital Television"
 msgstr "Digitální televize"
