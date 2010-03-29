@@ -1,8 +1,8 @@
 AC_PREREQ(2.62)
 
 m4_define(totem_version_major, 2)
-m4_define(totem_version_minor, 29)
-m4_define(totem_version_micro, 92)
+m4_define(totem_version_minor, 30)
+m4_define(totem_version_micro, 0)
 
 AC_INIT([totem-pl-parser],
         [totem_version_major.totem_version_minor.totem_version_micro],
@@ -72,14 +72,20 @@ AC_ARG_ENABLE(gmime-i-know-what-im-doing,
 if test "x$enable_gmime" = "xyes" ; then
    PKG_CHECK_MODULES(GMIME,  
 		     gmime-2.4,
-                     [have_gmime=yes], 
+                     [have_gmime=yes GMIME=gmime-2.4], 
                      [have_gmime=no])
+   if test "x$have_gmime" != "xyes" ; then
+     PKG_CHECK_MODULES(GMIME,  
+		       gmime-2.6,
+		       [have_gmime=yes GMIME=gmime-2.6], 
+		       [have_gmime=no])
+   fi
 
    if test "x$have_gmime" = "xyes" ; then
-      AC_SUBST(GMIME, gmime-2.4)
+      AC_SUBST(GMIME, $GMIME)
       AC_SUBST(USEGMIME, yes)
       AC_DEFINE(HAVE_GMIME, 1, [GMime available in the system])
-      pkg_modules="$pkg_modules gmime-2.4"
+      pkg_modules="$pkg_modules $GMIME"
    else
       AC_MSG_ERROR([libgmime is required to compile totem-pl-parser.])
    fi
