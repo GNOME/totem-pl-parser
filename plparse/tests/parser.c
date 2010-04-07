@@ -443,6 +443,17 @@ test_parsing_xml_mixed_cdata (void)
 	g_free (uri);
 }
 
+static void
+test_parsing_not_asx_playlist (void)
+{
+	char *uri;
+	g_test_bug ("610471");
+	/* File from https://bugzilla.gnome.org/show_bug.cgi?id=610471#c0 */
+	uri = get_relative_uri (TEST_SRCDIR "asf-with-asx-suffix.asx");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_free (uri);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -608,6 +619,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
+		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
 
 		return g_test_run ();
 	}
