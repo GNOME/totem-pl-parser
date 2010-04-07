@@ -51,4 +51,5 @@ EXTRA_DIST =			\
 	602127.qtl		\
 	live-streaming.m3u	\
 	single-line.qtl		\
-	pukas.wax
+	pukas.wax		\
+	asf-with-asx-suffix.asx
