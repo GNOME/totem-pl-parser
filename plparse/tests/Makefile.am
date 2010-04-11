@@ -52,4 +52,5 @@ EXTRA_DIST =			\
 	live-streaming.m3u	\
 	single-line.qtl		\
 	pukas.wax		\
-	asf-with-asx-suffix.asx
+	asf-with-asx-suffix.asx	\
+	remote_xspf.php
