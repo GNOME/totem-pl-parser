@@ -1852,7 +1852,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 		for (i = 0; i < G_N_ELEMENTS(dual_types) && found == FALSE; i++) {
 			if (strcmp (dual_types[i].mimetype, mimetype) == 0) {
-				int j, new_i;
+				guint j;
+				int new_i;
 
 				DEBUG(file, g_print ("URI '%s' is dual type '%s'\n", uri, mimetype));
 				if (data == NULL) {
@@ -1869,7 +1870,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				}
 				/* Now look for the proper function to use */
 				new_i = -1;
-				for (j = 0; i < G_N_ELEMENTS(dual_types) && mimetype != NULL; j++) {
+				for (j = 0; j < G_N_ELEMENTS(dual_types) && mimetype != NULL; j++) {
 					if (strcmp (dual_types[j].mimetype, mimetype) == 0) {
 						new_i = j;
 						break;
