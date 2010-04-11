@@ -228,6 +228,7 @@ static PlaylistTypes dual_types[] = {
 	PLAYLIST_TYPE2 ("audio/vnd.rn-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
 	PLAYLIST_TYPE2 ("audio/x-realaudio", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
 	PLAYLIST_TYPE2 ("text/plain", totem_pl_parser_add_ra, totem_pl_parser_is_uri_list),
+	PLAYLIST_TYPE2 ("application/x-php", NULL, NULL),
 	PLAYLIST_TYPE2 ("audio/x-ms-asx", totem_pl_parser_add_asx, totem_pl_parser_is_asx),
 	PLAYLIST_TYPE2 ("video/x-ms-asf", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
 	PLAYLIST_TYPE2 ("video/x-ms-wmv", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
@@ -1749,6 +1750,25 @@ totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetyp
 	return FALSE;
 }
 
+static PlaylistCallback
+totem_pl_parser_get_function_for_mimetype (const char *mimetype)
+{
+	guint i;
+
+	if (mimetype == NULL)
+		return NULL;
+
+	for (i = 0; i < G_N_ELEMENTS(special_types); i++) {
+		if (strcmp (special_types[i].mimetype, mimetype) == 0)
+			return special_types[i].func;
+	}
+	for (i = 0; i < G_N_ELEMENTS(dual_types); i++) {
+		if (strcmp (dual_types[i].mimetype, mimetype) == 0)
+			return dual_types[i].func;
+	}
+	return NULL;
+}
+
 TotemPlParserResult
 totem_pl_parser_parse_internal (TotemPlParser *parser,
 				GFile *file,
@@ -1819,7 +1839,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	DEBUG(file, g_print ("_get_mime_type_for_name for '%s' returned '%s'\n", uri, mimetype));
 	if (mimetype == NULL || strcmp (UNKNOWN_TYPE, mimetype) == 0
 	    || (g_file_is_native (file) && g_content_type_is_a (mimetype, "text/plain") != FALSE)) {
-	    	char *new_mimetype;
+		char *new_mimetype;
 		new_mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
 		if (new_mimetype) {
 			g_free (mimetype);
@@ -1889,8 +1909,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 
 		for (i = 0; i < G_N_ELEMENTS(dual_types) && found == FALSE; i++) {
 			if (strcmp (dual_types[i].mimetype, mimetype) == 0) {
-				guint j;
-				int new_i;
+				PlaylistCallback func;
 
 				DEBUG(file, g_print ("URI '%s' is dual type '%s'\n", uri, mimetype));
 				if (data == NULL) {
@@ -1906,21 +1925,15 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 					break;
 				}
 				/* Now look for the proper function to use */
-				new_i = -1;
-				for (j = 0; j < G_N_ELEMENTS(dual_types) && mimetype != NULL; j++) {
-					if (strcmp (dual_types[j].mimetype, mimetype) == 0) {
-						new_i = j;
-						break;
-					}
-				}
-				if (new_i == -1 && mimetype != NULL) {
-					DEBUG(file, g_print ("Ignoring URI '%s' because we couldn't find a dual-type parser for '%s'\n", uri, mimetype));
+				func = totem_pl_parser_get_function_for_mimetype (mimetype);
+				if (func == NULL && mimetype != NULL) {
+					DEBUG(file, g_print ("Ignoring URI '%s' because we couldn't find a playlist parser for '%s'\n", uri, mimetype));
 					ret = TOTEM_PL_PARSER_RESULT_IGNORED;
 					g_free (mimetype);
 					mimetype = NULL;
 					break;
-				} else if (new_i != -1) {
-					i = new_i;
+				} else if (func == NULL) {
+					func = dual_types[i].func;
 				}
 
 				if (base_file == NULL)
@@ -1928,7 +1941,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				else
 					base_file = g_object_ref (base_file);
 
-				ret = (* dual_types[i].func) (parser, file, base_file ? base_file : file, parse_data, data);
+				ret = (* func) (parser, file, base_file ? base_file : file, parse_data, data);
 
 				if (base_file != NULL)
 					g_object_unref (base_file);
@@ -2352,6 +2365,8 @@ totem_pl_parser_mime_type_from_data (gconstpointer data, int len)
 			if (func == dual_types[i].iden)
 				continue;
 			func = dual_types[i].iden;
+			if (func == NULL)
+				continue;
 			res = func (data, len);
 			if (res != NULL) {
 				g_free (mime_type);
