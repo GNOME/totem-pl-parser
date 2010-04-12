@@ -6,7 +6,9 @@
 #include <gio/gio.h>
 
 #include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif /* HAVE_UNISTD_H */
 #include <stdlib.h>
 #include <time.h>
 
