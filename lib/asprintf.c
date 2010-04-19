@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <sys/varargs.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 int totem_private_asprintf(char **out, const char *fmt, ...)
 {
