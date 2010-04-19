@@ -26,13 +26,16 @@
 #ifdef XINE_COMPILE
 # include "config.h"
 #endif
-
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
 #include <ctype.h>
+
+#ifdef _MSC_VER
+#define snprintf sprintf_s
+#define strcasecmp stricmp
+#endif
 
 #define LOG_MODULE "xmlparser"
 #define LOG_VERBOSE
