@@ -21,14 +21,14 @@ int totem_private_asprintf(char **out, const char *fmt, ...)
     /* Warning: tmpfile() does not work well on Windows (MinGW)
      *          if user does not have write access on the drive where 
      *          working dir is? */
-#ifdef __MINGW32__
+#ifdef _WIN32
     /* file_name = G_tempfile(); */
     GetTempPath ( 2000, dir_name );
     GetTempFileName ( dir_name, "asprintf", 0, file_name );
     fp = fopen ( file_name, "w+" );
 #else
     fp = tmpfile(); 
-#endif /* __MINGW32__ */
+#endif /* _WIN32 */
 
     if ( fp ) {
         int count;
@@ -47,9 +47,9 @@ int totem_private_asprintf(char **out, const char *fmt, ...)
             }
         }
         fclose(fp);
-#ifdef __MINGW32__
+#ifdef _WIN32
         unlink ( file_name );
-#endif /* __MINGW32__ */
+#endif /* _WIN32 */
     }
     va_end(ap);
     *out = work;
