@@ -720,6 +720,7 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 
 	*data = NULL;
 
+#ifndef _WIN32
 	/* Stat for a block device, we're screwed as far as speed
 	 * is concerned now */
 	if (g_file_is_native (file) != FALSE) {
@@ -733,6 +734,7 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 		}
 		g_free (path);
 	}
+#endif
 
 	/* Open the file. */
 	stream = g_file_read (file, NULL, &error);
