@@ -7,9 +7,9 @@ MARSHALFILES = totemplparser-marshal.c totemplparser-marshal.h
 BUILT_SOURCES = $(MARSHALFILES)
 
 totemplparser-marshal.c: totemplparser-marshal.h
-	 ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --body --internal > totemplparser-marshal.c )
+	 $(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --body --internal > totemplparser-marshal.c )
 totemplparser-marshal.h: totemplparser-marshal.list
-	( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --internal > totemplparser-marshal.h )
+	$(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --internal > totemplparser-marshal.h )
 
 plparserincludedir = $(pkgincludedir)/1/plparser
 plparserinclude_HEADERS =			\
@@ -140,7 +140,7 @@ totem-pl-parser-builtins.h: stamp-totem-pl-parser-builtins.h
 	@true
 
 stamp-totem-pl-parser-builtins.h: totem-pl-parser.h Makefile
-	(cd $(srcdir) && $(GLIB_MKENUMS) \
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) \
 			--fhead "#ifndef __TOTEM_PL_PARSER_BUILTINS_H__\n#define __TOTEM_PL_PARSER_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 			--fprod "/* enumerations from \"@filename@\" */\n" \
 			--vhead "GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define TOTEM_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
@@ -150,7 +150,7 @@ stamp-totem-pl-parser-builtins.h: totem-pl-parser.h Makefile
 	&& echo timestamp > $(@F)
 
 totem-pl-parser-builtins.c: totem-pl-parser.h Makefile totem-pl-parser-builtins.h
-	(cd $(srcdir) && $(GLIB_MKENUMS) \
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) \
 			--fhead "#include \"totem-pl-parser.h\"\n#include \"totem-pl-parser-builtins.h\"" \
 			--fprod "\n/* enumerations from \"@filename@\" */" \
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
