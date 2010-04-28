@@ -364,6 +364,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 						    pname_buffer, pname_buffer_size,
 						    nname_buffer, nname_buffer_size,
 						    subtree, root_names, rec + 1, flags);
+	  tok = *token_buffer;
 	  free (root_names[rec + 1]);
 	  if (parse_res == -1 || parse_res > 0) {
 	    return parse_res;
@@ -412,8 +413,14 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  }
 	  /* make sure the buffer for the property name is big enough */
 	  if (*token_buffer_size > *pname_buffer_size) {
+	    char *tmp_prop;
 	    *pname_buffer_size = *token_buffer_size;
-	    *pname_buffer = realloc (*pname_buffer, *pname_buffer_size);
+	    tmp_prop = realloc (*pname_buffer, *pname_buffer_size);
+	    if (!tmp_prop)
+	      return -1;
+	    *pname_buffer = tmp_prop;
+	    property_name = tmp_prop;
+	  } else {
 	    property_name = *pname_buffer;
 	  }
 	  strcpy(property_name, tok);
