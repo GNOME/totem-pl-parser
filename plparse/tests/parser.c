@@ -200,8 +200,9 @@ test_parsability (void)
 		{ "file:///tmp/file_doesnt_exist.wmv", FALSE, FALSE },
 		{ "http://live.hujjat.org:7860/main", FALSE, TRUE },
 		{ "http://www.comedycentral.com/sitewide/media_player/videoswitcher.jhtml?showid=934&category=/shows/the_daily_show/videos/headlines&sec=videoId%3D36032%3BvideoFeatureId%3D%3BpoppedFrom%3D_shows_the_daily_show_index.jhtml%3BisIE%3Dfalse%3BisPC%3Dtrue%3Bpagename%3Dmedia_player%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bgateway%3Dshows%3Bsection_1%3Dthe_daily_show%3Bsection_2%3Dvideos%3Bsection_3%3Dheadlines%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bera%3D%27%2Bif_nt_era%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bfla%3D%27%2Bif_nt_Flash%2B%27&itemid=36032&clip=com/dailyshow/headlines/10156_headline.wmv&mswmext=.asx", TRUE, TRUE },
+		{ TEST_SRCDIR "HackerMedley", TRUE, FALSE }, /* From https://bugzilla.redhat.com/show_bug.cgi?id=582850 and http://feeds.feedburner.com/HackerMedley */
 		{ NULL,  FALSE, FALSE }
-	};	
+	};
 
 	/* Loop through the list, downloading the URIs and checking for parsability */
 	for (i = 0; files[i].uri != NULL; ++i) {
