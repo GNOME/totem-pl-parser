@@ -535,13 +535,18 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 
     /* pb */
     if (tok_pos >= tok_size) {
+      char *tmp_tok;
+      int new_size;
       if (fixed)
         return T_ERROR;
-      *_tok_size *= 2;
-      *_tok = realloc (*_tok, *_tok_size);
-      lprintf("token buffer is too small\n");
+      new_size = *_tok_size * 2;
+      tmp_tok = realloc (*_tok, new_size);
+      lprintf("token buffer is too small (need %d)\n", tok_pos);
       lprintf("increasing buffer size to %d bytes\n", *_tok_size);
-      if (*_tok) {
+      if (tmp_tok) {
+	  *_tok = tmp_tok;
+	  memset (*_tok + tok_size, 0, new_size - tok_size);
+	  *_tok_size = new_size;
           return lexer_get_token_d_r (lexer, _tok, _tok_size, 0);
       } else {
           return T_ERROR;
