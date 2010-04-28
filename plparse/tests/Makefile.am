@@ -53,5 +53,6 @@ EXTRA_DIST =			\
 	single-line.qtl		\
 	pukas.wax		\
 	asf-with-asx-suffix.asx	\
-	remote_xspf.php
+	remote_xspf.php		\
+	HackerMedley
 
