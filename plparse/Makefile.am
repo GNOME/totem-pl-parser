@@ -70,7 +70,6 @@ libtotem_plparser_la_CPPFLAGS = \
 
 libtotem_plparser_la_CFLAGS = \
 	$(TOTEM_PLPARSER_CFLAGS)	\
-	$(HAL_CFLAGS)			\
 	$(DBUS_CFLAGS)			\
 	$(WARN_CFLAGS)			\
 	$(AM_CFLAGS)			\
@@ -82,7 +81,7 @@ libtotem_plparser_la_CFLAGS = \
 libtotem_plparser_la_LIBADD = \
 	$(TOTEM_PLPARSER_LIBS)			\
 	$(top_builddir)/lib/libtotem_glibc.la	\
-	$(HAL_LIBS)
+	-lz
 
 libtotem_plparser_la_LDFLAGS =			\
 	-version-info $(PLPARSER_LT_VERSION)	\
@@ -188,7 +187,6 @@ TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=To
 TotemPlParser_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
 TotemPlParser_1_0_gir_CFLAGS = \
 	$(TOTEM_PLPARSER_CFLAGS)	\
-	$(HAL_CFLAGS)			\
 	$(DBUS_CFLAGS)			\
 	$(AM_CFLAGS)			\
 	-D_FILE_OFFSET_BITS=64		\

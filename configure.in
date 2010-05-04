@@ -106,6 +106,12 @@ PKG_CHECK_MODULES(TOTEM_PLPARSER, [$pkg_modules])
 AC_SUBST(TOTEM_PLPARSER_CFLAGS)
 AC_SUBST(TOTEM_PLPARSER_LIBS)
 
+dnl Check for zlib
+oldLibs=$LIBS
+AC_CHECK_HEADER(zlib.h, , AC_ERROR([zlib development headers are required to compile totem-pl-parser]))
+AC_CHECK_LIB(z, zlibVersion, , AC_ERROR([zlib development headers are required to compile totem-pl-parser]))
+LIBS=$oldLibs
+
 PKG_CHECK_MODULES([TOTEM_PLPARSER_MINI], [gio-2.0])
 
 GNOME_COMMON_INIT
