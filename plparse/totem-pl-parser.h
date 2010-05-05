@@ -302,13 +302,15 @@ typedef enum {
  * TotemPlParserError:
  * @TOTEM_PL_PARSER_ERROR_NO_DISC: Error attempting to open a disc device when no disc is present
  * @TOTEM_PL_PARSER_ERROR_MOUNT_FAILED: An attempted mount operation failed
+ * @TOTEM_PL_PARSER_ERROR_EMPTY_PLAYLIST: Playlist to be saved is empty
  *
  * Allows you to differentiate between different
  * errors occurring during file operations in a #TotemPlParser.
  **/
 typedef enum {
 	TOTEM_PL_PARSER_ERROR_NO_DISC,
-	TOTEM_PL_PARSER_ERROR_MOUNT_FAILED
+	TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
+	TOTEM_PL_PARSER_ERROR_EMPTY_PLAYLIST
 } TotemPlParserError;
 
 #define TOTEM_PL_PARSER_ERROR (totem_pl_parser_error_quark ())

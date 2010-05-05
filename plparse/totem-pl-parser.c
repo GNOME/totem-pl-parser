@@ -1128,6 +1128,11 @@ totem_pl_parser_save (TotemPlParser      *parser,
         g_return_val_if_fail (G_IS_FILE (dest), FALSE);
 
         if (totem_pl_playlist_size (playlist) == 0) {
+		/* FIXME add translation */
+		g_set_error (error,
+			     TOTEM_PL_PARSER_ERROR,
+			     TOTEM_PL_PARSER_ERROR_EMPTY_PLAYLIST,
+			     "Playlist selected for saving is empty");
                 return FALSE;
         }
 
