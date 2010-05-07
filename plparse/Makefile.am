@@ -12,20 +12,24 @@ totemplparser-marshal.h: totemplparser-marshal.list
 	$(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --internal > totemplparser-marshal.h )
 
 plparserincludedir = $(pkgincludedir)/1/plparser
-plparserinclude_HEADERS =			\
+plparser_headers =				\
 	totem-pl-parser-builtins.h		\
-	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
 	totem-pl-playlist.h			\
 	totem-disc.h				\
 	totem-pl-parser-mini.h
+plparser_built_headers = 			\
+	totem-pl-parser-features.h
+
+plparserinclude_HEADERS =			\
+	$(plparser_headers)			\
+	$(plparser_built_headers)
 
 plparser_sources =				\
 	totem-pl-parser-builtins.c		\
 	totem-disc.c				\
 	totem-pl-parser.c			\
 	totem-pl-parser-lines.c			\
-	totemplparser-marshal.c			\
 	totem-pl-parser-media.c			\
 	totem-pl-parser-misc.c			\
 	totem-pl-parser-pla.c			\
@@ -43,6 +47,7 @@ libtotem_plparser_la_SOURCES =			\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
 	totem-pl-parser-lines.h			\
+	totemplparser-marshal.c			\
 	totemplparser-marshal.h			\
 	totem-pl-parser-media.h			\
 	totem-pl-parser-misc.h			\
@@ -179,7 +184,10 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 if HAVE_INTROSPECTION
 introspection_sources = \
 	$(plparser_sources)		\
-	$(plparserinclude_HEADERS)
+	$(plparser_headers)
+introspection_built_sources = \
+	totemplparser-marshal.c		\
+	$(plparser_built_headers)
 
 TotemPlParser-1.0.gir: libtotem-plparser.la Makefile
 TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPlParser --nsversion=1.0
@@ -195,7 +203,9 @@ TotemPlParser_1_0_gir_CFLAGS = \
 	-I$(top_builddir)/plparse	\
 	-D_GNU_SOURCE
 TotemPlParser_1_0_gir_LIBS = libtotem-plparser.la
-TotemPlParser_1_0_gir_FILES = $(addprefix $(srcdir)/,$(introspection_sources))
+TotemPlParser_1_0_gir_FILES = \
+	$(addprefix $(srcdir)/,$(introspection_sources))	\
+	$(introspection_built_sources)
 INTROSPECTION_GIRS += TotemPlParser-1.0.gir
 
 girdir = $(datadir)/gir-1.0
