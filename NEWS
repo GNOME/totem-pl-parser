@@ -1,5 +1,14 @@
 New features and significant updates in version...
 
+2.28.3:
+* Fix compilation on non-GNU platforms
+* Add introspection support
+* Fix parsing of a number of Podcasts, including possible crashers
+* Fix out-of-order ASX playlists
+* Fix memory leak when parsing directories
+* Fix parsing of playlists on HTTP servers when they
+  don't match the suffix used (eg. PHP page giving an XSPF playlist)
+
 2.28.2
 * Add support for subtitle properties in SMIL files
 * Make totem-pl-parser's XML parsing thread-safe
