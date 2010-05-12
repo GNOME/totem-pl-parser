@@ -7,9 +7,9 @@ MARSHALFILES = totemplparser-marshal.c totemplparser-marshal.h
 BUILT_SOURCES = $(MARSHALFILES)
 
 totemplparser-marshal.c: totemplparser-marshal.h
-	 $(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --body --internal > totemplparser-marshal.c )
+	 $(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --body --internal > $(builddir)/totemplparser-marshal.c )
 totemplparser-marshal.h: totemplparser-marshal.list
-	$(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --internal > totemplparser-marshal.h )
+	$(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --internal > $(builddir)/totemplparser-marshal.h )
 
 plparserincludedir = $(pkgincludedir)/1/plparser
 plparser_headers =				\
@@ -40,15 +40,14 @@ plparser_sources =				\
 	totem-pl-parser-wm.c			\
 	totem-pl-parser-xspf.c
 
-libtotem_plparser_la_SOURCES =			\
+nodist_libtotem_plparser_la_SOURCES = $(MARSHALFILES)
+dist_libtotem_plparser_la_SOURCES =		\
 	$(plparser_sources)			\
 	totem-pl-parser-builtins.h		\
 	totem-disc.h				\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
 	totem-pl-parser-lines.h			\
-	totemplparser-marshal.c			\
-	totemplparser-marshal.h			\
 	totem-pl-parser-media.h			\
 	totem-pl-parser-misc.h			\
 	totem-pl-parser-pla.h			\
@@ -169,6 +168,8 @@ CLEANFILES = \
 	stamp-totem-pl-parser-builtins.h \
 	$(BUILT_SOURCES)
 
+DISTCLEANFILES = $(CLEANFILES)
+
 EXTRA_DIST =				\
 	totemplparser-marshal.list	\
 	totem-pl-parser-features.h.in	\
@@ -178,7 +179,7 @@ EXTRA_DIST =				\
 # Introspection
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --add-include-path=$(builddir)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 if HAVE_INTROSPECTION
@@ -189,7 +190,7 @@ introspection_built_sources = \
 	totemplparser-marshal.c		\
 	$(plparser_built_headers)
 
-TotemPlParser-1.0.gir: libtotem-plparser.la Makefile
+TotemPlParser-1.0.gir: libtotem-plparser.la Makefile totemplparser-marshal.c totemplparser-marshal.h
 TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPlParser --nsversion=1.0
 TotemPlParser_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
 TotemPlParser_1_0_gir_CFLAGS = \
