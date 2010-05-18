@@ -6,10 +6,11 @@ lib_LTLIBRARIES = libtotem-plparser.la libtotem-plparser-mini.la
 MARSHALFILES = totemplparser-marshal.c totemplparser-marshal.h
 BUILT_SOURCES = $(MARSHALFILES)
 
-totemplparser-marshal.c: totemplparser-marshal.h
-	 $(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --body --internal > $(builddir)/totemplparser-marshal.c )
+totemplparser-marshal.c: totemplparser-marshal.list
+	 $(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal --header --body --internal $< > $@
+
 totemplparser-marshal.h: totemplparser-marshal.list
-	$(AM_V_GEN) ( $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal $(srcdir)/totemplparser-marshal.list --header --internal > $(builddir)/totemplparser-marshal.h )
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal --header --internal $< > $@
 
 plparserincludedir = $(pkgincludedir)/1/plparser
 plparser_headers =				\
