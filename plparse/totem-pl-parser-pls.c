@@ -168,7 +168,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	GFile *base_file;
 	char **lines;
-	int i, num_entries;
+	guint i, num_entries;
 	char *playlist_title;
 	gboolean fallback;
 	GHashTable *entries;
