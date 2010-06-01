@@ -275,6 +275,37 @@ parser_test_get_parse_result (const char *uri)
 }
 
 static void
+entry_parsed_num_cb (TotemPlParser *parser,
+		     const char *uri,
+		     GHashTable *metadata,
+		     guint *ret)
+{
+	*ret = *ret + 1;
+}
+
+static guint
+parser_test_get_num_entries (const char *uri)
+{
+	TotemPlParserResult retval;
+	guint ret = 0;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_object_set (pl, "recurse", FALSE,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	g_signal_connect (G_OBJECT (pl), "entry-parsed",
+			  G_CALLBACK (entry_parsed_num_cb), &ret);
+
+	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
+	g_object_unref (pl);
+
+	return ret;
+}
+
+static void
 playlist_started_order (TotemPlParser *parser,
 			const char *uri,
 			GHashTable *metadata,
@@ -395,6 +426,18 @@ test_parsing_out_of_order_asx (void)
 	result = parser_test_get_order_result (uri);
 	g_free (uri);
 	g_assert (result != FALSE);
+}
+
+static void
+test_parsing_num_entries (void)
+{
+	char *uri;
+	guint num;
+
+	uri = get_relative_uri (TEST_SRCDIR "missing-items.pls");
+	num = parser_test_get_num_entries (uri);
+	g_free (uri);
+	g_assert (num == 19);
 }
 
 static void
@@ -635,6 +678,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
 		g_test_add_func ("/parser/parsing/not_really_php", test_parsing_not_really_php);
+		g_test_add_func ("/parser/parsing/num_items_in_pls", test_parsing_num_entries);
 
 		return g_test_run ();
 	}

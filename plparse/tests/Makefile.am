@@ -54,4 +54,5 @@ EXTRA_DIST =			\
 	pukas.wax		\
 	asf-with-asx-suffix.asx	\
 	remote_xspf.php		\
-	HackerMedley
+	HackerMedley		\
+	missing-items.pls
