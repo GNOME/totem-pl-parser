@@ -157,6 +157,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	char *playlist_title;
 	gboolean fallback;
 	GHashTable *entries;
+	guint found_entries;
 
 	entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
@@ -226,7 +227,8 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 
 	retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 
-	for (i = 1; i <= num_entries; i++) {
+	found_entries = 0;
+	for (i = 1; found_entries < num_entries; i++) {
 		char *file_str, *title, *genre, *length;
 		char *file_key, *title_key, *genre_key, *length_key;
 		gint64 length_num;
@@ -250,6 +252,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 
 		if (file_str == NULL)
 			continue;
+		found_entries++;
 
 		fallback = parse_data->fallback;
 		if (parse_data->recurse)
