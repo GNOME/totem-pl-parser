@@ -1,5 +1,5 @@
 
-/* Generated data (by glib-mkenums) */
+
 
 #include "totem-pl-parser.h"
 #include "totem-pl-parser-builtins.h"
@@ -54,5 +54,5 @@ totem_pl_parser_error_get_type (void)
   return etype;
 }
 
-/* Generated data ends here */
+
 

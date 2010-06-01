@@ -258,9 +258,6 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 			 TotemPlParseData *parse_data,
 			 gpointer data)
 {
-#ifndef HAVE_GMIME
-	WARN_NO_GMIME;
-#else
 	xml_node_t* doc, *channel;
 	char *contents;
 	gsize size;
@@ -300,7 +297,6 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 	xml_parser_free_tree (doc);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
-#endif /* !HAVE_GMIME */
 }
 
 /* http://www.apple.com/itunes/store/podcaststechspecs.html */
@@ -311,9 +307,6 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
-#ifndef HAVE_GMIME
-	WARN_NO_GMIME;
-#else
 	TotemPlParserResult ret;
 	char *uri, *new_uri, *uri_scheme;
 	GFile *new_file;
@@ -332,7 +325,6 @@ totem_pl_parser_add_itpc (TotemPlParser *parser,
 	g_object_unref (new_file);
 
 	return ret;
-#endif /* !HAVE_GMIME */
 }
 
 TotemPlParserResult
@@ -342,9 +334,6 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
-#ifndef HAVE_GMIME
-	WARN_NO_GMIME;
-#else
 	TotemPlParserResult ret;
 	char *uri, *new_uri;
 	GFile *new_file;
@@ -371,7 +360,6 @@ totem_pl_parser_add_zune (TotemPlParser *parser,
 	g_object_unref (new_file);
 
 	return ret;
-#endif /* !HAVE_GMIME */
 }
 
 /* Atom docs:
@@ -509,9 +497,6 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
-#ifndef HAVE_GMIME
-	WARN_NO_GMIME;
-#else
 	xml_node_t* doc;
 	char *contents, *uri;
 	gsize size;
@@ -541,7 +526,6 @@ totem_pl_parser_add_atom (TotemPlParser *parser,
 	xml_parser_free_tree (doc);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
-#endif /* !HAVE_GMIME */
 }
 
 TotemPlParserResult
@@ -551,9 +535,6 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 			      TotemPlParseData *parse_data,
 			      gpointer data)
 {
-#ifndef HAVE_GMIME
-	WARN_NO_GMIME;
-#else
 	guint len;
 
 	if (data == NULL)
@@ -569,7 +550,6 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 		return totem_pl_parser_add_opml (parser, file, base_file, parse_data, data);
 
 	return TOTEM_PL_PARSER_RESULT_UNHANDLED;
-#endif /* !HAVE_GMIME */
 }
 
 /* From libgsf's gsf-utils.h */
@@ -742,9 +722,6 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
-#ifndef HAVE_GMIME
-	WARN_NO_GMIME;
-#else
 	char *contents, *uncompressed, *itms_uri;
 	GFile *itms_file, *feed_file;
 	TotemPlParserResult ret;
@@ -803,7 +780,6 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	g_object_unref (feed_file);
 
 	return ret;
-#endif /* !HAVE_GMIME */
 }
 
 gboolean
@@ -903,9 +879,6 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 			  TotemPlParseData *parse_data,
 			  gpointer data)
 {
-#ifndef HAVE_GMIME
-	WARN_NO_GMIME;
-#else
 	xml_node_t* doc;
 	char *contents, *uri;
 	gsize size;
@@ -935,7 +908,6 @@ totem_pl_parser_add_opml (TotemPlParser *parser,
 	xml_parser_free_tree (doc);
 
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
-#endif /* !HAVE_GMIME */
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

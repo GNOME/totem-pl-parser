@@ -40,6 +40,8 @@ libtotem_plparser_la_SOURCES =			\
 	totem-pl-parser-builtins.h		\
 	totem-disc.h				\
 	totem-pl-parser-features.h		\
+	totem-pl-parser-decode-date.h		\
+	totem-pl-parser-decode-date.c		\
 	totem-pl-parser.h			\
 	totem-pl-parser-lines.h			\
 	totemplparser-marshal.h			\

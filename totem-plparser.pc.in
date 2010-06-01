@@ -9,7 +9,7 @@ Name: totem-plparser
 Description: Totem Playlist Parser library
 Version: @VERSION@
 Requires: gtk+-2.0
-Requires.private: libxml-2.0 @GMIME@
+Requires.private: libxml-2.0
 Libs: -L${libdir} -ltotem-plparser
 Cflags: -I${includedir}/totem-pl-parser/1/plparser
 uselibcamel=@USEGMIME@

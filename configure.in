@@ -62,41 +62,50 @@ pkg_modules="glib-2.0 >= $GLIB_REQS gtk+-2.0 libxml-2.0 gthread-2.0 gio-2.0 >= $
 ##################################
 # Checking libgmime dependency
 ##################################
-gmime_message=""
+AC_SUBST(USEGMIME, yes)
 
-AC_ARG_ENABLE(gmime-i-know-what-im-doing,
-	      AS_HELP_STRING([--disable-gmime-i-know-what-im-doing],
-			     [Disable libgmime (Unsupported, breaks Podcast support).]),
-			     [enable_gmime=no],
-			     [enable_gmime=yes])
-
-if test "x$enable_gmime" = "xyes" ; then
-   PKG_CHECK_MODULES(GMIME,  
-		     gmime-2.4,
-                     [have_gmime=yes GMIME=gmime-2.4], 
-                     [have_gmime=no])
-   if test "x$have_gmime" != "xyes" ; then
-     PKG_CHECK_MODULES(GMIME,  
-		       gmime-2.6,
-		       [have_gmime=yes GMIME=gmime-2.6], 
-		       [have_gmime=no])
-   fi
-
-   if test "x$have_gmime" = "xyes" ; then
-      AC_SUBST(GMIME, $GMIME)
-      AC_SUBST(USEGMIME, yes)
-      AC_DEFINE(HAVE_GMIME, 1, [GMime available in the system])
-      pkg_modules="$pkg_modules $GMIME"
-   else
-      AC_MSG_ERROR([libgmime is required to compile totem-pl-parser.])
-   fi
+dnl Timezone checks
+AC_CACHE_CHECK(for tm_gmtoff in struct tm, ac_cv_struct_tm_gmtoff,
+	AC_TRY_COMPILE([
+		#include <time.h>
+		], [
+		struct tm tm;
+		tm.tm_gmtoff = 1;
+		return tm.tm_gmtoff;
+		], ac_cv_struct_tm_gmtoff="yes", ac_cv_struct_tm_gmtoff="no"))
+if test "$ac_cv_struct_tm_gmtoff" = "yes"; then
+	AC_DEFINE(HAVE_TM_GMTOFF, 1, [Define if struct tm has a tm_gmtoff member])
 else
-   AC_SUBST(USEGMIME, no)
-   gmime_message="
- **************************************************************
- Compiling totem-pl-parser without libgmime.
- This will break podcast support and is completely unsupported.
- **************************************************************"
+	AC_CACHE_CHECK(for timezone variable, ac_cv_var_timezone,
+		AC_TRY_COMPILE([
+			#include <time.h>
+		], [
+			timezone = 1;
+		], ac_cv_var_timezone="yes", ac_cv_var_timezone="no"))
+	if test "$ac_cv_var_timezone" = "yes"; then
+		AC_DEFINE(HAVE_TIMEZONE, 1, [Define if libc defines a timezone variable])
+		AC_CACHE_CHECK(for altzone variable, ac_cv_var_altzone,
+			AC_TRY_COMPILE([
+				#include <time.h>
+			], [
+				altzone = 1;
+			], ac_cv_var_altzone="yes", ac_cv_var_altzone="no"))
+		if test "$ac_cv_var_altzone" = "yes"; then
+			AC_DEFINE(HAVE_ALTZONE, 1, [Define if libc defines an altzone variable])
+		fi
+	else
+		AC_CACHE_CHECK(for _timezone variable, ac_cv_var__timezone,
+			AC_TRY_COMPILE([
+				#include <time.h>
+			], [
+				_timezone = 1;
+			], ac_cv_var__timezone="yes", ac_cv_var__timezone="no"))
+		if test "$ac_cv_var__timezone" = "yes"; then
+			AC_DEFINE(HAVE__TIMEZONE, 1, [Define if libc defines a _timezone variable])
+		else
+			AC_ERROR(unable to find a way to determine timezone)
+		fi
+	fi
 fi
 
 dnl Check for packages for building libtotem-plparser.la

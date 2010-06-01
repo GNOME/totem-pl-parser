@@ -1,5 +1,5 @@
 
-/* Generated data (by glib-mkenums) */
+
 
 #ifndef __TOTEM_PL_PARSER_BUILTINS_H__
 #define __TOTEM_PL_PARSER_BUILTINS_H__
@@ -18,5 +18,5 @@ G_END_DECLS
 
 #endif /* __TOTEM_PL_PARSER_BUILTINS_H__ */
 
-/* Generated data ends here */
+
 
