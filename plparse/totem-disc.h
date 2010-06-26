@@ -23,6 +23,7 @@
 #define TOTEM_DISC_H
 
 #include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
@@ -46,10 +47,13 @@ typedef enum {
   MEDIA_TYPE_VCD,
   MEDIA_TYPE_DVD,
   MEDIA_TYPE_DVB,
-  MEDIA_TYPE_NUM_TYPES
+  MEDIA_TYPE_NUM_TYPES /*< skip >*/
 } TotemDiscMediaType;
 
 #define MediaType TotemDiscMediaType
+
+GQuark totem_disc_media_type_quark	(void) G_GNUC_CONST;
+#define TOTEM_DISC_MEDIA_TYPE		totem_disc_media_type_quark ()
 
 TotemDiscMediaType	totem_cd_detect_type	(const char *device,
 						 GError     **error);

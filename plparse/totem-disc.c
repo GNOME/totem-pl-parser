@@ -900,6 +900,16 @@ totem_cd_get_human_readable_name (TotemDiscMediaType type)
   return NULL;
 }
 
+GQuark
+totem_disc_media_type_quark (void)
+{
+  static GQuark quark = 0;
+  if (!quark)
+    quark = g_quark_from_static_string ("totem_disc_media_type");
+
+  return quark;
+}
+
 /*
  * vim: sw=2 ts=8 cindent noai bs=2
  */
