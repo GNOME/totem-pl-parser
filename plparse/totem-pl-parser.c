@@ -784,7 +784,7 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
  **/
 gboolean
 totem_pl_parser_is_debugging_enabled (TotemPlParser *parser)
-{return TRUE;
+{
 	return parser->priv->debug;
 }
 
