@@ -511,6 +511,17 @@ test_parsing_not_really_php (void)
 	g_free (uri);
 }
 
+static void
+test_parsing_not_really_php_but_html_instead (void)
+{
+	char *uri;
+	g_test_bug ("624341");
+	/* File from http://www.novabrasilfm.com.br/ao-vivo/audio.php */
+	uri = get_relative_uri (TEST_SRCDIR "audio.php");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_IGNORED);
+	g_free (uri);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -678,6 +689,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
 		g_test_add_func ("/parser/parsing/not_really_php", test_parsing_not_really_php);
+		g_test_add_func ("/parser/parsing/not_really_php_but_html_instead", test_parsing_not_really_php_but_html_instead);
 		g_test_add_func ("/parser/parsing/num_items_in_pls", test_parsing_num_entries);
 
 		return g_test_run ();
