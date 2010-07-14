@@ -784,7 +784,7 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
  **/
 gboolean
 totem_pl_parser_is_debugging_enabled (TotemPlParser *parser)
-{
+{return TRUE;
 	return parser->priv->debug;
 }
 
@@ -1896,7 +1896,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				}
 				/* Now look for the proper function to use */
 				func = totem_pl_parser_get_function_for_mimetype (mimetype);
-				if (func == NULL && mimetype != NULL) {
+				if ((func == NULL && mimetype != NULL) || (mimetype == NULL && dual_types[i].func == NULL)) {
 					DEBUG(file, g_print ("Ignoring URI '%s' because we couldn't find a playlist parser for '%s'\n", uri, mimetype));
 					ret = TOTEM_PL_PARSER_RESULT_IGNORED;
 					g_free (mimetype);
