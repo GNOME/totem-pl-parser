@@ -55,4 +55,5 @@ EXTRA_DIST =			\
 	asf-with-asx-suffix.asx	\
 	remote_xspf.php		\
 	HackerMedley		\
-	missing-items.pls
+	missing-items.pls	\
+	playlist.xspf

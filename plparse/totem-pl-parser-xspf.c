@@ -82,6 +82,7 @@ static struct {
 	{ TOTEM_PL_PARSER_FIELD_IMAGE_URI, "image" },
 	{ TOTEM_PL_PARSER_FIELD_ALBUM, "album" },
 	{ TOTEM_PL_PARSER_FIELD_DURATION_MS, "duration" },
+	{ TOTEM_PL_PARSER_FIELD_GENRE, NULL },
 };
 
 gboolean
@@ -160,10 +161,17 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 			g_free (str);
 			if (!escaped)
 				continue;
-			buf = g_strdup_printf ("   <%s>%s</%s>\n",
-					       fields[i].element,
-					       escaped,
-					       fields[i].element);
+			if (g_str_equal (fields[i].field, TOTEM_PL_PARSER_FIELD_GENRE) == FALSE) {
+				buf = g_strdup_printf ("   <%s>%s</%s>\n",
+						       fields[i].element,
+						       escaped,
+						       fields[i].element);
+			} else {
+				buf = g_strdup_printf ("   <extension application=\"http://www.rhythmbox.org\">\n"
+						       "     <genre>%s</genre>\n"
+						       "   </extension>\n",
+						       escaped);
+			}
 
 			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
 			g_free (buf);
@@ -199,11 +207,11 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 {
 	xmlNodePtr node;
 	xmlChar *title, *uri, *image_uri, *artist, *album, *duration, *moreinfo;
-	xmlChar *download_uri, *id;
+	xmlChar *download_uri, *id, *genre;
 	GFile *resolved;
 	char *resolved_uri;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
-	
+
 	title = NULL;
 	uri = NULL;
 	image_uri = NULL;
@@ -213,6 +221,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 	moreinfo = NULL;
 	download_uri = NULL;
 	id = NULL;
+	genre = NULL;
 
 	for (node = parent->children; node != NULL; node = node->next)
 	{
@@ -244,6 +253,20 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 				/* If we don't have a rel="", then it's not a last.fm playlist */
 				moreinfo = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 			}
+		/* Parse the genre extension for Rhythmbox */
+		} else if (g_ascii_strcasecmp ((char *)node->name, "extension") == 0) {
+			xmlChar *app;
+			app = xmlGetProp (node, (const xmlChar *) "application");
+			if (app != NULL && g_ascii_strcasecmp ((char *) app, "http://www.rhythmbox.org") == 0) {
+				xmlNodePtr child;
+				for (child = node->xmlChildrenNode ; child; child = child->next) {
+					if (child->name != NULL &&
+					    g_ascii_strcasecmp ((char *)child->name, "genre") == 0) {
+						genre = xmlNodeListGetString (doc, child->xmlChildrenNode, 0);
+						break;
+					}
+				}
+			}
 		} else if (g_ascii_strcasecmp ((char *)node->name, "album") == 0)
 			album = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 		else if (g_ascii_strcasecmp ((char *)node->name, "trackauth") == 0)
@@ -269,6 +292,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 				 TOTEM_PL_PARSER_FIELD_MOREINFO, moreinfo,
 				 TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI, download_uri,
 				 TOTEM_PL_PARSER_FIELD_ID, id,
+				 TOTEM_PL_PARSER_FIELD_GENRE, genre,
 				 NULL);
 	g_object_unref (resolved);
 
@@ -284,6 +308,7 @@ bail:
 	SAFE_FREE (moreinfo);
 	SAFE_FREE (download_uri);
 	SAFE_FREE (id);
+	SAFE_FREE (genre);
 
 	return retval;
 }
