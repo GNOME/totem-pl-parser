@@ -6,21 +6,22 @@
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
 # Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2007.
-# Fran Diéguez <fran.dieguez@mabishu.com>, 2009.
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
+# Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-15 17:30+0100\n"
-"PO-Revision-Date: 2009-12-29 21:10+0100\n"
-"Last-Translator: Francisco Diéguez <frandieguez@ubuntu.com>\n"
-"Language-Team: Galego <proxecto@trasno.net>\n"
+"POT-Creation-Date: 2010-07-21 16:15+0200\n"
+"PO-Revision-Date: 2010-07-21 16:16+0200\n"
+"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
+"Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../plparse/totem-disc.c:359 ../plparse/totem-disc.c:503
 #, c-format
@@ -30,7 +31,7 @@ msgstr "Produciuse un fallo ao montar %s."
 #: ../plparse/totem-disc.c:392
 #, c-format
 msgid "No media in drive for device '%s'."
-msgstr "Non hai un soporte físico no dispositivo '%s'."
+msgstr "Non hai un soporte físico no dispositivo «%s»."
 
 #: ../plparse/totem-disc.c:446
 #, c-format
@@ -52,21 +53,3 @@ msgstr "DVD"
 #: ../plparse/totem-disc.c:895
 msgid "Digital Television"
 msgstr "Televisión dixital"
-
-#~ msgid "Failed to find mountpoint for device %s"
-#~ msgstr "Fallou ao encontrar o punto de montaxe para o dispositivo %s"
-
-#~ msgid "Could not connect to the HAL daemon"
-#~ msgstr "Non se puido conectar ao daemon HAL"
-
-#~ msgid "Failed to mount %s"
-#~ msgstr "Fallou ao montar %s"
-
-#~ msgid "Failed to find mountpoint for %s"
-#~ msgstr "Fallou ao encontrar o punto de montaxe para %s"
-
-#~ msgid "Couldn't write parser: %s"
-#~ msgstr "Non se puido escribir o analizador: %s"
-
-#~ msgid "Couldn't open file '%s': %s"
-#~ msgstr "Non se puido abrir o ficheiro '%s': %s"
