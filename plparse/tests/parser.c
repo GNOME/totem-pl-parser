@@ -401,6 +401,43 @@ parser_test_get_parse_genre (const char *uri)
 }
 
 static void
+playlist_started_title_cb (TotemPlParser *parser,
+			   const char *uri,
+			   GHashTable *metadata,
+			   char **ret)
+{
+	*ret = g_strdup (uri);
+}
+
+static char *
+parser_test_get_playlist_title (const char *uri)
+{
+	TotemPlParserResult retval;
+	char *ret = NULL;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_object_set (pl, "recurse", !option_no_recurse,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	g_signal_connect (G_OBJECT (pl), "playlist-started",
+			  G_CALLBACK (playlist_started_title_cb), &ret);
+
+	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
+	g_object_unref (pl);
+
+	return ret;
+}
+
+static void
+test_itms_parsing (void)
+{
+	g_assert_cmpstr (parser_test_get_playlist_title ("itms://itunes.apple.com/gb/podcast/best-of-chris-moyles-enhanced/id142102961?ign-mpt=uo%3D4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/moylesen/rss.xml");
+}
+
+static void
 test_parsing_xspf_genre (void)
 {
 	char *uri;
@@ -733,6 +770,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/not_really_php_but_html_instead", test_parsing_not_really_php_but_html_instead);
 		g_test_add_func ("/parser/parsing/num_items_in_pls", test_parsing_num_entries);
 		g_test_add_func ("/parser/parsing/xspf_genre", test_parsing_xspf_genre);
+		g_test_add_func ("/parser/parsing/itms_link", test_itms_parsing);
 
 		return g_test_run ();
 	}
