@@ -25,8 +25,7 @@
 #include <glib.h>
 
 #ifndef TOTEM_PL_PARSER_MINI
-#include <zlib.h>
-
+#include <libsoup/soup-gnome.h>
 #include "xmlparser.h"
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
@@ -629,69 +628,33 @@ totem_pl_parser_get_feed_uri (char *data, gsize len)
 }
 
 static GByteArray *
-totem_pl_parser_get_content_decompressed (GFile *file)
+totem_pl_parser_load_http_itunes (const char *uri)
 {
-	GFileInputStream *file_in;
-	GInputStream *converter_in;
-	GConverter *decompressor;
+	SoupMessage *msg;
+	SoupSession *session;
 	GByteArray *data;
-	gsize position;
-	gssize n_read;
 
-	file_in = g_file_read (file, NULL, NULL);
-	if (file_in == NULL)
-		return NULL;
+	session = soup_session_sync_new_with_options (
+	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_GNOME_FEATURES_2_26,
+	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
+	    SOUP_SESSION_USER_AGENT, "iTunes/7.4.1",
+	    SOUP_SESSION_ACCEPT_LANGUAGE_AUTO, TRUE,
+	    NULL);
 
-	decompressor = G_CONVERTER (g_zlib_decompressor_new (G_ZLIB_COMPRESSOR_FORMAT_GZIP));
-	converter_in = g_converter_input_stream_new (G_INPUT_STREAM (file_in), decompressor);
-	g_object_unref (file_in);
-	g_object_unref (decompressor);
-
-#define BLOCK_SIZE 8192
-	position = 0;
-	data = g_byte_array_sized_new (BLOCK_SIZE + 1);
-	while ((n_read = g_input_stream_read (converter_in,
-					      data->data + position,
-					      BLOCK_SIZE,
-					      NULL, NULL)) > 0) {
-		position += n_read;
-		g_byte_array_set_size (data, position + BLOCK_SIZE + 1);
-	}
-
-	g_object_unref (converter_in);
-
-	if (n_read < 0) {
-		g_byte_array_free (data, TRUE);
+	msg = soup_message_new (SOUP_METHOD_GET, uri);
+	soup_session_send_message (session, msg);
+	if (SOUP_STATUS_IS_SUCCESSFUL (msg->status_code)) {
+		data = g_byte_array_new ();
+		g_byte_array_append (data,
+				     (guchar *) msg->response_body->data,
+				     msg->response_body->length);
+	} else {
 		return NULL;
 	}
+	g_object_unref (msg);
+	g_object_unref (session);
 
 	return data;
-}
-
-static char *
-totem_pl_parser_get_itms_uri (const char *data,
-			      gsize data_len)
-{
-	char *s, *end, *ret;
-#define ITMS_OPEN "<body onload=\"return itmsOpen('"
-
-	/* The bit of text looks like:
-	 * <body onload="return itmsOpen('itms://ax.phobos.apple.com.edgesuite.net/WebObjects/MZStore.woa/wa/viewPodcast?id=207870198&amp;ign-mscache=1','http://www.apple.com/uk/itunes/affiliates/download/?itmsUrl=itms%3A%2F%2Fax.phobos.apple.com.edgesuite.net%2FWebObjects%2FMZStore.woa%2Fwa%2FviewPodcast%3Fid%3D207870198%26ign-mscache%3D1','userOverridePanel',false)"> */
-
-	s = g_strstr_len (data, data_len, ITMS_OPEN);
-	if (s == NULL)
-		return NULL;
-	s += strlen (ITMS_OPEN);
-	if (s[0] != 'i' || s[1] != 't' || s[2] != 'm' || s[3] != 's')
-		return NULL;
-
-	end = g_strstr_len (s, data + data_len - s, "\'");
-	if (end == NULL)
-		return NULL;
-
-	ret = g_strndup (s, end - s);
-	memcpy (ret, "http", 4);
-	return ret;
 }
 
 TotemPlParserResult
@@ -706,36 +669,20 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 #else
 	GByteArray *content;
 	char *itms_uri;
-	GFile *itms_file, *feed_file;
+	GFile *feed_file;
 	TotemPlParserResult ret;
 
 	if (g_file_has_uri_scheme (file, "itms") == FALSE) {
-		content = totem_pl_parser_get_content_decompressed (file);
-		if (content == NULL)
-			return TOTEM_PL_PARSER_RESULT_ERROR;
-
-		/* Look for the link to the itms on phobos */
-		itms_uri = totem_pl_parser_get_itms_uri ((const char*) content->data, content->len);
-		g_byte_array_free (content, TRUE);
-	} else {
-		itms_uri= g_file_get_uri (file);
-		memcpy (itms_uri, "http", 4);
+		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
+	itms_uri= g_file_get_uri (file);
+	memcpy (itms_uri, "http", 4);
 
 	if (itms_uri == NULL)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
-	/* Get the phobos linked, in some weird iTunes only format */
-	itms_file = g_file_new_for_uri (itms_uri);
-	g_free (itms_uri);
-
-	content = totem_pl_parser_get_content_decompressed (itms_file);
-	if (content == NULL) {
-		DEBUG(itms_file, g_print ("Couldn't load contents for itms_file %s\n", uri));
-		g_object_unref (itms_file);
-		return TOTEM_PL_PARSER_RESULT_ERROR;
-	}
-	g_object_unref (itms_file);
+	/* Load the file using iTunes user-agent */
+	content = totem_pl_parser_load_http_itunes (itms_uri);
 
 	/* And look in the file for the feedURL */
 	feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len);
@@ -762,24 +709,10 @@ totem_pl_parser_is_itms_feed (GFile *file)
 	uri = g_file_get_uri (file);
 
 	if (g_file_has_uri_scheme (file, "itms") != FALSE) {
-		if (strstr (uri, "phobos.apple.com") != NULL ||
-		    strstr (uri, "itunes.apple.com") != NULL) {
-			if (strstr (uri, "viewPodcast") != NULL) {
-				g_free (uri);
-				return TRUE;
-			}
+		if (strstr (uri, "/podcast/") != NULL) {
+			g_free (uri);
+			return TRUE;
 		}
-	}
-
-	if (strstr (uri, "phobos.apple.com/") != NULL
-	    && strstr (uri, "viewPodcast") != NULL) {
-		g_free (uri);
-		return TRUE;
-	}
-
-	if (strstr (uri, "itunes.com/podcast") != NULL) {
-		g_free (uri);
-		return TRUE;
 	}
 
 	g_free (uri);
