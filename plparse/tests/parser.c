@@ -438,6 +438,88 @@ test_itms_parsing (void)
 }
 
 static void
+entry_parsed_id_cb (TotemPlParser *parser,
+		 const char *uri,
+		 GHashTable *metadata,
+		 char **ret)
+{
+	if (*ret == NULL)
+		*ret = g_strdup (g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_ID));
+}
+
+static char *
+parser_test_get_id (const char *uri)
+{
+	TotemPlParserResult retval;
+	char *ret = NULL;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_object_set (pl, "recurse", !option_no_recurse,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	g_signal_connect (G_OBJECT (pl), "entry-parsed",
+			  G_CALLBACK (entry_parsed_id_cb), &ret);
+
+	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
+	g_object_unref (pl);
+
+	return ret;
+}
+
+static void
+entry_parsed_download_cb (TotemPlParser *parser,
+		 const char *uri,
+		 GHashTable *metadata,
+		 char **ret)
+{
+	if (*ret == NULL)
+		*ret = g_strdup (g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI));
+}
+
+static char *
+parser_test_get_download_uri (const char *uri)
+{
+	TotemPlParserResult retval;
+	char *ret = NULL;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_object_set (pl, "recurse", !option_no_recurse,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	g_signal_connect (G_OBJECT (pl), "entry-parsed",
+			  G_CALLBACK (entry_parsed_download_cb), &ret);
+
+	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
+	g_object_unref (pl);
+
+	return ret;
+}
+
+static void
+test_lastfm_parsing (void)
+{
+	char *uri;
+
+	g_test_bug ("625823");
+
+	uri = get_relative_uri (TEST_SRCDIR "old-lastfm-output.xspf");
+	g_assert_cmpstr (parser_test_get_download_uri (uri), ==, "http://freedownloads.last.fm/download/188024406/Kondratiev%2BWinter.mp3");
+	g_assert_cmpstr (parser_test_get_id (uri), ==, "d092a");
+	g_free (uri);
+
+	uri = get_relative_uri (TEST_SRCDIR "new-lastfm-output.xspf");
+	g_assert_cmpstr (parser_test_get_download_uri (uri), ==, "http://freedownloads.last.fm/download/402599273/Yellow.mp3");
+	g_assert_cmpstr (parser_test_get_id (uri), ==, "20a82");
+	g_free (uri);
+}
+
+static void
 test_parsing_xspf_genre (void)
 {
 	char *uri;
@@ -771,6 +853,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/num_items_in_pls", test_parsing_num_entries);
 		g_test_add_func ("/parser/parsing/xspf_genre", test_parsing_xspf_genre);
 		g_test_add_func ("/parser/parsing/itms_link", test_itms_parsing);
+		g_test_add_func ("/parser/parsing/lastfm-attributes", test_lastfm_parsing);
 
 		return g_test_run ();
 	}

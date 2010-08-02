@@ -56,4 +56,6 @@ EXTRA_DIST =			\
 	remote_xspf.php		\
 	HackerMedley		\
 	missing-items.pls	\
-	playlist.xspf
+	playlist.xspf		\
+	new-lastfm-output.xspf	\
+	old-lastfm-output.xspf

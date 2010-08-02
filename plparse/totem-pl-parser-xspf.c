@@ -266,6 +266,20 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 						break;
 					}
 				}
+			} else if (app != NULL && g_ascii_strcasecmp ((char *) app, "http://www.last.fm") == 0) {
+				xmlNodePtr child;
+				for (child = node->xmlChildrenNode ; child; child = child->next) {
+					if (child->name != NULL) {
+						if (g_ascii_strcasecmp ((char *)child->name, "trackauth") == 0) {
+							id = xmlNodeListGetString (doc, child->xmlChildrenNode, 0);
+							continue;
+						}
+						if (g_ascii_strcasecmp ((char *)child->name, "freeTrackURL") == 0) {
+							download_uri = xmlNodeListGetString (doc, child->xmlChildrenNode, 0);
+							continue;
+						}
+					}
+				}
 			}
 		} else if (g_ascii_strcasecmp ((char *)node->name, "album") == 0)
 			album = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
