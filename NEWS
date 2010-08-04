@@ -1,5 +1,13 @@
 New features and significant updates in version...
 
+2.30.2
+* Fix parsing PLS playlists with "holes" in the numbering
+* Fix crash in totem_pl_parser_parse_with_base when parsing
+  PHP files that really are PHP files
+* Add Genre extension to XSPF playlists
+* Fix itms links parsing
+* Add support for Last.fm's new XSPF extensions
+
 2.30.1
 * Fix parsing of a number of Podcasts, including possible crashers
 * Fix parsing of playlists on HTTP servers when they
