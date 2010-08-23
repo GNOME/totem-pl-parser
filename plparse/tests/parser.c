@@ -16,6 +16,11 @@
 #include "totem-pl-parser-mini.h"
 #include "totem-pl-parser-private.h"
 
+typedef struct {
+	const char *field;
+	char *ret;
+} ParserResult;
+
 static GMainLoop *loop = NULL;
 static gboolean option_no_recurse = FALSE;
 static gboolean option_debug = FALSE;
@@ -246,32 +251,10 @@ static void
 entry_parsed_cb (TotemPlParser *parser,
 		 const char *uri,
 		 GHashTable *metadata,
-		 char **ret)
+		 ParserResult *res)
 {
-	if (*ret == NULL)
-		*ret = g_strdup (uri);
-}
-
-static char *
-parser_test_get_parse_result (const char *uri)
-{
-	TotemPlParserResult retval;
-	char *ret = NULL;
-	TotemPlParser *pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_cb), &ret);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return ret;
+	if (res->ret == NULL)
+		res->ret = g_strdup (g_hash_table_lookup (metadata, res->field));
 }
 
 static void
@@ -368,36 +351,28 @@ simple_parser_test (const char *uri)
 	return retval;
 }
 
-static void
-entry_parsed_genre_cb (TotemPlParser *parser,
-		 const char *uri,
-		 GHashTable *metadata,
-		 char **ret)
-{
-	if (*ret == NULL)
-		*ret = g_strdup (g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_GENRE));
-}
-
 static char *
-parser_test_get_parse_genre (const char *uri)
+parser_test_get_entry_field (const char *uri, const char *field)
 {
 	TotemPlParserResult retval;
-	char *ret = NULL;
 	TotemPlParser *pl = totem_pl_parser_new ();
+	ParserResult res;
 
 	g_object_set (pl, "recurse", !option_no_recurse,
 			  "debug", option_debug,
 			  "force", option_force,
 			  "disable-unsafe", option_disable_unsafe,
 			  NULL);
+	res.field = field;
+	res.ret = NULL;
 	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_genre_cb), &ret);
+			  G_CALLBACK (entry_parsed_cb), &res);
 
 	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
 	g_test_message ("Got retval %d for uri '%s'", retval, uri);
 	g_object_unref (pl);
 
-	return ret;
+	return res.ret;
 }
 
 static void
@@ -438,70 +413,6 @@ test_itms_parsing (void)
 }
 
 static void
-entry_parsed_id_cb (TotemPlParser *parser,
-		 const char *uri,
-		 GHashTable *metadata,
-		 char **ret)
-{
-	if (*ret == NULL)
-		*ret = g_strdup (g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_ID));
-}
-
-static char *
-parser_test_get_id (const char *uri)
-{
-	TotemPlParserResult retval;
-	char *ret = NULL;
-	TotemPlParser *pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_id_cb), &ret);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return ret;
-}
-
-static void
-entry_parsed_download_cb (TotemPlParser *parser,
-		 const char *uri,
-		 GHashTable *metadata,
-		 char **ret)
-{
-	if (*ret == NULL)
-		*ret = g_strdup (g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI));
-}
-
-static char *
-parser_test_get_download_uri (const char *uri)
-{
-	TotemPlParserResult retval;
-	char *ret = NULL;
-	TotemPlParser *pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_download_cb), &ret);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return ret;
-}
-
-static void
 test_lastfm_parsing (void)
 {
 	char *uri;
@@ -509,13 +420,13 @@ test_lastfm_parsing (void)
 	g_test_bug ("625823");
 
 	uri = get_relative_uri (TEST_SRCDIR "old-lastfm-output.xspf");
-	g_assert_cmpstr (parser_test_get_download_uri (uri), ==, "http://freedownloads.last.fm/download/188024406/Kondratiev%2BWinter.mp3");
-	g_assert_cmpstr (parser_test_get_id (uri), ==, "d092a");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI), ==, "http://freedownloads.last.fm/download/188024406/Kondratiev%2BWinter.mp3");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_ID), ==, "d092a");
 	g_free (uri);
 
 	uri = get_relative_uri (TEST_SRCDIR "new-lastfm-output.xspf");
-	g_assert_cmpstr (parser_test_get_download_uri (uri), ==, "http://freedownloads.last.fm/download/402599273/Yellow.mp3");
-	g_assert_cmpstr (parser_test_get_id (uri), ==, "20a82");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI), ==, "http://freedownloads.last.fm/download/402599273/Yellow.mp3");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_ID), ==, "20a82");
 	g_free (uri);
 }
 
@@ -524,7 +435,7 @@ test_parsing_xspf_genre (void)
 {
 	char *uri;
 	uri = get_relative_uri (TEST_SRCDIR "playlist.xspf");
-	g_assert_cmpstr (parser_test_get_parse_genre (uri), ==, "Test Genre");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, "Test Genre");
 	g_free (uri);
 }
 
@@ -534,7 +445,7 @@ test_parsing_rtsp_text_multi (void)
 	char *uri;
 	g_test_bug ("602127");
 	uri = get_relative_uri (TEST_SRCDIR "602127.qtl");
-	g_assert_cmpstr (parser_test_get_parse_result (uri), ==, "rtsp://host.org/video.mp4");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "rtsp://host.org/video.mp4");
 	g_free (uri);
 }
 
@@ -543,7 +454,7 @@ test_parsing_rtsp_text (void)
 {
 	char *uri;
 	uri = get_relative_uri (TEST_SRCDIR "single-line.qtl");
-	g_assert_cmpstr (parser_test_get_parse_result (uri), ==, "rtsp://host.org/video.mp4");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "rtsp://host.org/video.mp4");
 	g_free (uri);
 }
 
