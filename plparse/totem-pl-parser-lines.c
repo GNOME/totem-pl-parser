@@ -322,13 +322,6 @@ totem_pl_parser_get_extinfo_title (const char *extinfo)
 	if (res[0] == '\0')
 		return NULL;
 
-	/* Handle ':' as a field separator */
-	sep = strstr (res, ":");
-	if (sep != NULL && sep[1] != '\0') {
-		sep++;
-		return sep;
-	}
-
 	/* Handle ',' as a field separator */
 	sep = strstr (res, ",");
 	if (sep == NULL || sep[1] == '\0') {

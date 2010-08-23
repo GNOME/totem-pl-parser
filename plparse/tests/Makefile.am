@@ -58,4 +58,5 @@ EXTRA_DIST =			\
 	missing-items.pls	\
 	playlist.xspf		\
 	new-lastfm-output.xspf	\
-	old-lastfm-output.xspf
+	old-lastfm-output.xspf	\
+	separator.m3u
