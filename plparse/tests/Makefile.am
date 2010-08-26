@@ -59,4 +59,5 @@ EXTRA_DIST =			\
 	playlist.xspf		\
 	new-lastfm-output.xspf	\
 	old-lastfm-output.xspf	\
-	separator.m3u
+	separator.m3u		\
+	3gpp-file.mp4

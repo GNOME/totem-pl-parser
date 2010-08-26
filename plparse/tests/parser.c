@@ -531,6 +531,17 @@ test_parsing_404_error (void)
 }
 
 static void
+test_parsing_3gpp_not_ignored (void)
+{
+	char *uri;
+
+	uri = get_relative_uri (TEST_SRCDIR "3gpp-file.mp4");
+	g_test_bug ("594359@bugs.debian.org");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	g_free (uri);
+}
+
+static void
 test_parsing_xml_head_comments (void)
 {
 	char *uri;
@@ -763,6 +774,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/nonexistent_files", test_parsing_nonexistent_files);
 		g_test_add_func ("/parser/parsing/broken_asx", test_parsing_broken_asx);
 		g_test_add_func ("/parser/parsing/404_error", test_parsing_404_error);
+		g_test_add_func ("/parser/parsing/3gpp_not_ignored", test_parsing_3gpp_not_ignored);
 		g_test_add_func ("/parser/parsing/out_of_order_asx", test_parsing_out_of_order_asx);
 		g_test_add_func ("/parser/parsing/xml_head_comments", test_parsing_xml_head_comments);
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
