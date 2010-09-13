@@ -55,4 +55,5 @@ EXTRA_DIST =			\
 	asf-with-asx-suffix.asx	\
 	remote_xspf.php		\
 	HackerMedley		\
-	3gpp-file.mp4
+	3gpp-file.mp4		\
+	really-flv.mp4

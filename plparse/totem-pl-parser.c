@@ -231,7 +231,6 @@ static PlaylistTypes dual_types[] = {
 	PLAYLIST_TYPE2 ("video/x-ms-wmv", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
 	PLAYLIST_TYPE2 ("video/quicktime", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
 	PLAYLIST_TYPE2 ("video/mp4", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
-	PLAYLIST_TYPE2 ("video/3gpp", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
 	PLAYLIST_TYPE2 ("application/x-quicktime-media-link", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
 	PLAYLIST_TYPE2 ("application/x-quicktimeplayer", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
 	PLAYLIST_TYPE2 ("application/xml", totem_pl_parser_add_xml_feed, totem_pl_parser_is_xml_feed),
@@ -1916,7 +1915,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 					DEBUG(file, g_print ("URI '%s' dual type has type '%s' from data\n", uri, mimetype));
 				}
 				/* If it's _still_ a text/plain, we don't want it */
-				if (mimetype != NULL && strcmp (mimetype, "text/plain") == 0) {
+				if (mimetype != NULL && g_content_type_is_a (mimetype, "text/plain")) {
 					ret = TOTEM_PL_PARSER_RESULT_IGNORED;
 					g_free (mimetype);
 					mimetype = NULL;
@@ -1926,7 +1925,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				func = totem_pl_parser_get_function_for_mimetype (mimetype);
 				if (func == NULL && mimetype != NULL) {
 					DEBUG(file, g_print ("Ignoring URI '%s' because we couldn't find a playlist parser for '%s'\n", uri, mimetype));
-					ret = TOTEM_PL_PARSER_RESULT_IGNORED;
+					ret = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 					g_free (mimetype);
 					mimetype = NULL;
 					break;
