@@ -185,7 +185,7 @@ introspection_sources = \
 	totemplparser-marshal.c
 
 TotemPlParser-1.0.gir: libtotem-plparser.la Makefile totemplparser-marshal.c totemplparser-marshal.h
-TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPlParser --nsversion=1.0
+TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPl --nsversion=1.0
 TotemPlParser_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
 TotemPlParser_1_0_gir_CFLAGS = \
 	$(TOTEM_PLPARSER_CFLAGS)	\
