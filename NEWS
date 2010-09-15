@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+2.31.92
+* Fix introspection build with gobject-introspection 0.9.5, breaking the GIR API
+
 2.30.3
 * Fix parsing of M3U files with ":" in their titles
 * Fix parsing of files hiding as MP4 files (eg. an FLV with an MP4 extension)
