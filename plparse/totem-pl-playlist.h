@@ -36,14 +36,29 @@ typedef struct TotemPlPlaylist TotemPlPlaylist;
 typedef struct TotemPlPlaylistClass TotemPlPlaylistClass;
 typedef struct TotemPlPlaylistIter TotemPlPlaylistIter;
 
+/**
+ * TotemPlPlaylist:
+ *
+ * All the fields in the #TotemPlPlaylist structure are private and should never be accessed directly.
+ **/
 struct TotemPlPlaylist {
         GObject parent_instance;
 };
 
+/**
+ * TotemPlPlaylistClass:
+ *
+ * All the fields in the #TotemPlPlaylistClass structure are private and should never be accessed directly.
+ **/
 struct TotemPlPlaylistClass {
         GObjectClass parent_class;
 };
 
+/**
+ * TotemPlPlaylistIter:
+ *
+ * All the fields in the #TotemPlPlaylistIter structure are private and should never be accessed directly.
+ **/
 struct TotemPlPlaylistIter {
         gpointer data1;
         gpointer data2;

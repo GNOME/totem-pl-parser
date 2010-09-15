@@ -108,6 +108,10 @@ totem_cd_get_human_readable_name
 totem_cd_mrl_from_type
 totem_cd_has_medium
 <SUBSECTION Standard>
+TOTEM_DISC_MEDIA_TYPE
+totem_disc_media_type_quark
+<SUBSECTION Private>
 MediaType
+MEDIA_TYPE_NUM_TYPES
 </SECTION>
 
