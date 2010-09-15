@@ -100,6 +100,8 @@ include $(top_srcdir)/gtk-doc.make
 EXTRA_DIST += version.xml.in
 
 if ENABLE_GTK_DOC
-TESTS_ENVIRONMENT = cd $(srcdir) && 
+TESTS_ENVIRONMENT = \
+  DOC_MODULE=$(DOC_MODULE) DOC_MAIN_SGML_FILE=$(DOC_MAIN_SGML_FILE) \
+  cd $(srcdir) &&
 TESTS = $(GTKDOC_CHECK)
 endif
