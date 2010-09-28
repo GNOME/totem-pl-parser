@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+2.32.0
+* Updated translations
+
 2.31.92
 * Fix introspection build with gobject-introspection 0.9.5, breaking the GIR API
 
