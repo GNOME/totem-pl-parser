@@ -452,6 +452,15 @@ test_parsing_xspf_genre (void)
 }
 
 static void
+test_smi_starttime (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "big5.smi");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_STARTTIME), ==, "00:04:00");
+	g_free (uri);
+}
+
+static void
 test_parsing_rtsp_text_multi (void)
 {
 	char *uri;
@@ -802,6 +811,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/itms_link", test_itms_parsing);
 		g_test_add_func ("/parser/parsing/lastfm-attributes", test_lastfm_parsing);
 		g_test_add_func ("/parser/parsing/m3u_separator", test_m3u_separator);
+		g_test_add_func ("/parser/parsing/smi_starttime", test_smi_starttime);
 
 		return g_test_run ();
 	}

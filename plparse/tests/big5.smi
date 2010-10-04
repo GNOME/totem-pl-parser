@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="big5" ?>			
+<smil>
+	<head>   
+		<meta name="title" content="講東講西 (星期一至五) " />
+		<meta name="author" content="RTHK ON INTERNET" />
+		<meta name="copyright" content="Radio Television Hong Kong" />
+	</head>
+	<body>
+		<seq>
+		<audio title="講東講西 (星期一至五) " src="rtsp://59.188.18.228/rthk/201007/radio1/12/2010071223.ra" clip-begin="00:04:00" clip-end="00:59:58"/>
+		<audio title="講東講西 (星期一至五) " src="rtsp://59.188.18.228/rthk/201007/radio1/13/2010071300.ra" clip-begin="00:05:00" clip-end="00:59:58"/>
+		</seq>
+	</body>
+</smil>
