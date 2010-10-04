@@ -175,7 +175,7 @@ EXTRA_DIST =				\
 # Introspection
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --add-include-path=$(builddir)
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --add-include-path=$(builddir) --warn-all
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 if HAVE_INTROSPECTION
@@ -185,7 +185,7 @@ introspection_sources = \
 	totemplparser-marshal.c
 
 TotemPlParser-1.0.gir: libtotem-plparser.la Makefile totemplparser-marshal.c totemplparser-marshal.h
-TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --strip-prefix=TotemPl --nsversion=1.0
+TotemPlParser_1_0_gir_SCANNERFLAGS = --namespace=TotemPlParser --identifier-prefix=TotemPl --symbol-prefix=totem_pl --identifier-prefix=TotemDisc --symbol-prefix=totem_disc --identifier-prefix=TotemCd --symbol-prefix=totem_cd --nsversion=1.0
 TotemPlParser_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
 TotemPlParser_1_0_gir_CFLAGS = \
 	$(TOTEM_PLPARSER_CFLAGS)	\
