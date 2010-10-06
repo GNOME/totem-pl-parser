@@ -386,44 +386,52 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	num_lines--;
 
 	for (i = 0; lines[i] != NULL; i++) {
-		if (lines[i][0] == '\0')
+		const char *line;
+
+		line = lines[i];
+
+		if (line[0] == '\0')
 			continue;
 
 		retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 
+		/* Ignore leading spaces */
+		for (; g_ascii_isspace (line[0]); line++)
+			;
+
 		/* Ignore comments, but mark it if we have extra info */
-		if (lines[i][0] == '#') {
-			if (extinfo == NULL && g_str_has_prefix (lines[i], EXTINF) != FALSE)
-				extinfo = lines[i];
+		if (line[0] == '#') {
+			if (extinfo == NULL && g_str_has_prefix (line, EXTINF) != FALSE)
+				extinfo = line;
 			continue;
 		}
 
 		/* Either it's a URI, or it has a proper path ... */
-		if (strstr(lines[i], "://") != NULL
-				|| lines[i][0] == G_DIR_SEPARATOR) {
+		if (strstr(line, "://") != NULL
+				|| line[0] == G_DIR_SEPARATOR) {
 			GFile *uri;
 
-			uri = g_file_new_for_commandline_arg (lines[i]);
+			uri = g_file_new_for_commandline_arg (line);
 			if (totem_pl_parser_parse_internal (parser, uri, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
-				totem_pl_parser_add_one_uri (parser, lines[i],
+				totem_pl_parser_add_one_uri (parser, line,
 						totem_pl_parser_get_extinfo_title (extinfo));
 			}
 			g_object_unref (uri);
 			extinfo = NULL;
-		} else if (g_ascii_isalpha (lines[i][0]) != FALSE
-			   && g_str_has_prefix (lines[i] + 1, ":\\")) {
+		} else if (g_ascii_isalpha (line[0]) != FALSE
+			   && g_str_has_prefix (line + 1, ":\\")) {
 			/* Path relative to a drive on Windows, we need to use
 			 * the base that was passed to us */
 			GFile *uri;
 
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
 			/* + 2, skip drive letter */
-			uri = g_file_get_child (base_file, lines[i] + 2);
+			uri = g_file_get_child (base_file, line + 2);
 			totem_pl_parser_add_one_file (parser, uri,
 						     totem_pl_parser_get_extinfo_title (extinfo));
 			g_object_unref (uri);
 			extinfo = NULL;
-		} else if (lines[i][0] == '\\' && lines[i][1] == '\\') {
+		} else if (line[0] == '\\' && line[1] == '\\') {
 			/* ... Or it's in the windows smb form
 			 * (\\machine\share\filename), Note drive names
 			 * (C:\ D:\ etc) are unhandled (unknown base for
@@ -431,9 +439,9 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		        char *tmpuri;
 
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
-			tmpuri = g_strjoin (NULL, "smb:", lines[i], NULL);
+			tmpuri = g_strjoin (NULL, "smb:", line, NULL);
 
-			totem_pl_parser_add_one_uri (parser, lines[i],
+			totem_pl_parser_add_one_uri (parser, line,
 					totem_pl_parser_get_extinfo_title (extinfo));
 			extinfo = NULL;
 
@@ -447,7 +455,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			sep = (dos_mode ? '\\' : '/');
 			if (sep == '\\')
 				lines[i] = g_strdelimit (lines[i], "\\", '/');
-			uri = g_file_get_child (_base_file, lines[i]);
+			uri = g_file_get_child (_base_file, line);
 			g_object_unref (_base_file);
 			totem_pl_parser_add_one_file (parser, uri,
 						     totem_pl_parser_get_extinfo_title (extinfo));

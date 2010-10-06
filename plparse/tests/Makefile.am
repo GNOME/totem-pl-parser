@@ -63,4 +63,5 @@ EXTRA_DIST =			\
 	3gpp-file.mp4		\
 	really-flv.mp4		\
 	audio.php		\
-	big5.smi
+	big5.smi		\
+	O_G_Money_-_Girl_Gotta_girlfriend_Feat._O_G_Money_Snoop_Dogg.m3u
