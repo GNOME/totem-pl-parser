@@ -22,7 +22,8 @@ dnl Add the languages which your application supports to po/LINGUAS
 GETTEXT_PACKAGE=totem-pl-parser
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"], [Define to the Gettext package name])
 AC_SUBST(GETTEXT_PACKAGE)
-AM_GLIB_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.17])
 IT_PROG_INTLTOOL([0.35.0])
 
 AC_PROG_CXX
