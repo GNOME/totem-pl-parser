@@ -471,6 +471,15 @@ test_m3u_leading_tabs (void)
 }
 
 static void
+test_empty_asx (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "empty-asx.asx");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_free (uri);
+}
+
+static void
 test_parsing_rtsp_text_multi (void)
 {
 	char *uri;
@@ -823,6 +832,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/m3u_separator", test_m3u_separator);
 		g_test_add_func ("/parser/parsing/smi_starttime", test_smi_starttime);
 		g_test_add_func ("/parser/parsing/m3u_leading_tabs", test_m3u_leading_tabs);
+		g_test_add_func ("/parser/parsing/empty-asx.asx", test_empty_asx);
 
 		return g_test_run ();
 	}
