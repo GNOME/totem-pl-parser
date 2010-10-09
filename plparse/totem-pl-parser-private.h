@@ -41,15 +41,19 @@
  * thread to a stored GThread pointer known to be from the main thread
  * (TotemPlParser->priv->main_thread).
  *
+ * When using idle functions for async signal emission, we specify the same priority as
+ * GSimpleAsyncResult uses for its completion function (G_PRIORITY_DEFAULT). If the
+ * completion function has higher priority, the main loop will call it first.
+ *
  * @p: a #TotemPlParser
  * @c: callback (as if for g_idle_add())
  * @d: callback data
  */
-#define CALL_ASYNC(p, c, d) {				\
-	if (g_thread_self () == p->priv->main_thread)	\
-		c (d);					\
-	else						\
-		g_idle_add ((GSourceFunc) c, d);	\
+#define CALL_ASYNC(p, c, d) {							\
+	if (g_thread_self () == p->priv->main_thread)				\
+		c (d);								\
+	else									\
+		g_idle_add_full (G_PRIORITY_DEFAULT, (GSourceFunc) c, d, NULL);	\
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
