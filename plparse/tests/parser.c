@@ -385,7 +385,7 @@ playlist_started_title_cb (TotemPlParser *parser,
 }
 
 static char *
-parser_test_get_playlist_title (const char *uri)
+parser_test_get_playlist_uri (const char *uri)
 {
 	TotemPlParserResult retval;
 	char *ret = NULL;
@@ -409,7 +409,8 @@ parser_test_get_playlist_title (const char *uri)
 static void
 test_itms_parsing (void)
 {
-	g_assert_cmpstr (parser_test_get_playlist_title ("itms://itunes.apple.com/gb/podcast/best-of-chris-moyles-enhanced/id142102961?ign-mpt=uo%3D4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/moylesen/rss.xml");
+	g_assert_cmpstr (parser_test_get_playlist_uri ("itms://itunes.apple.com/gb/podcast/best-of-chris-moyles-enhanced/id142102961?ign-mpt=uo%3D4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/moylesen/rss.xml");
+	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/r1mix/rss.xml");
 }
 
 static void

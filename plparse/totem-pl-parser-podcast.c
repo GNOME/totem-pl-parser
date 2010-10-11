@@ -571,6 +571,60 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 #endif /* !HAVE_GMIME */
 }
 
+static GByteArray *
+totem_pl_parser_load_http_itunes (const char *uri)
+{
+	SoupMessage *msg;
+	SoupSession *session;
+	GByteArray *data;
+
+	session = soup_session_sync_new_with_options (
+	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_GNOME_FEATURES_2_26,
+	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
+	    SOUP_SESSION_USER_AGENT, "iTunes/7.4.1",
+	    SOUP_SESSION_ACCEPT_LANGUAGE_AUTO, TRUE,
+	    NULL);
+
+	msg = soup_message_new (SOUP_METHOD_GET, uri);
+	soup_session_send_message (session, msg);
+	if (SOUP_STATUS_IS_SUCCESSFUL (msg->status_code)) {
+		data = g_byte_array_new ();
+		g_byte_array_append (data,
+				     (guchar *) msg->response_body->data,
+				     msg->response_body->length);
+	} else {
+		return NULL;
+	}
+	g_object_unref (msg);
+	g_object_unref (session);
+
+	return data;
+}
+
+static const char *
+totem_pl_parser_parse_itms_link_doc (xml_node_t *item)
+{
+	for (item = item->child; item != NULL; item = item->next) {
+		/* What we're looking for looks like:
+		 * <key>url</key><string>URL</string> */
+		if (g_ascii_strcasecmp (item->name, "key") == 0
+		    && g_ascii_strcasecmp (item->data, "url") == 0
+		    && item->next != NULL) {
+			item = item->next;
+			if (g_ascii_strcasecmp (item->name, "string") == 0)
+				return item->data;
+		} else {
+			const char *ret;
+
+			ret = totem_pl_parser_parse_itms_link_doc (item);
+			if (ret != NULL)
+				return ret;
+		}
+	}
+
+	return NULL;
+}
+
 static const char *
 totem_pl_parser_parse_itms_doc (xml_node_t *item)
 {
@@ -617,44 +671,34 @@ totem_pl_parser_get_feed_uri (char *data, gsize len)
 
 	uri = totem_pl_parser_parse_itms_doc (doc);
 	if (uri == NULL) {
+		/* Maybe it's just a link instead */
+		const char *link;
+		GByteArray *content;
+		GFile *feed_file;
+
+		link = totem_pl_parser_parse_itms_link_doc (doc);
+		if (link == NULL) {
+			xml_parser_free_tree (doc);
+			return NULL;
+		}
+
+		content = totem_pl_parser_load_http_itunes (link);
+		if (content == NULL) {
+			xml_parser_free_tree (doc);
+			return NULL;
+		}
 		xml_parser_free_tree (doc);
-		return NULL;
+
+		feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len);
+		g_byte_array_free (content, TRUE);
+
+		return feed_file;
 	}
 
 	ret = g_file_new_for_uri (uri);
 	xml_parser_free_tree (doc);
 
 	return ret;
-}
-
-static GByteArray *
-totem_pl_parser_load_http_itunes (const char *uri)
-{
-	SoupMessage *msg;
-	SoupSession *session;
-	GByteArray *data;
-
-	session = soup_session_sync_new_with_options (
-	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_GNOME_FEATURES_2_26,
-	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
-	    SOUP_SESSION_USER_AGENT, "iTunes/7.4.1",
-	    SOUP_SESSION_ACCEPT_LANGUAGE_AUTO, TRUE,
-	    NULL);
-
-	msg = soup_message_new (SOUP_METHOD_GET, uri);
-	soup_session_send_message (session, msg);
-	if (SOUP_STATUS_IS_SUCCESSFUL (msg->status_code)) {
-		data = g_byte_array_new ();
-		g_byte_array_append (data,
-				     (guchar *) msg->response_body->data,
-				     msg->response_body->length);
-	} else {
-		return NULL;
-	}
-	g_object_unref (msg);
-	g_object_unref (session);
-
-	return data;
 }
 
 TotemPlParserResult
@@ -672,14 +716,14 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	GFile *feed_file;
 	TotemPlParserResult ret;
 
-	if (g_file_has_uri_scheme (file, "itms") == FALSE) {
+	if (g_file_has_uri_scheme (file, "itms") != FALSE) {
+		itms_uri= g_file_get_uri (file);
+		memcpy (itms_uri, "http", 4);
+	} else if (g_file_has_uri_scheme (file, "http") != FALSE) {
+		itms_uri = g_file_get_uri (file);
+	} else {
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
-	itms_uri= g_file_get_uri (file);
-	memcpy (itms_uri, "http", 4);
-
-	if (itms_uri == NULL)
-		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	/* Load the file using iTunes user-agent */
 	content = totem_pl_parser_load_http_itunes (itms_uri);
@@ -708,8 +752,11 @@ totem_pl_parser_is_itms_feed (GFile *file)
 
 	uri = g_file_get_uri (file);
 
-	if (g_file_has_uri_scheme (file, "itms") != FALSE) {
-		if (strstr (uri, "/podcast/") != NULL) {
+	if (g_file_has_uri_scheme (file, "itms") != FALSE ||
+	    (g_file_has_uri_scheme (file, "http") != FALSE &&
+	     g_str_has_prefix (uri, "http://itunes.apple.com/") != FALSE)) {
+		if (strstr (uri, "/podcast/") != NULL ||
+		    strstr (uri, "viewPodcast") != NULL) {
 			g_free (uri);
 			return TRUE;
 		}
