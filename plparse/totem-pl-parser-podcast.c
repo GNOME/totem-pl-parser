@@ -754,7 +754,7 @@ totem_pl_parser_is_itms_feed (GFile *file)
 
 	if (g_file_has_uri_scheme (file, "itms") != FALSE ||
 	    (g_file_has_uri_scheme (file, "http") != FALSE &&
-	     g_str_has_prefix (uri, "http://itunes.apple.com/") != FALSE)) {
+	     strstr (uri, ".apple.com/") != FALSE)) {
 		if (strstr (uri, "/podcast/") != NULL ||
 		    strstr (uri, "viewPodcast") != NULL) {
 			g_free (uri);
