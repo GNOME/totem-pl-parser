@@ -275,7 +275,9 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 		item = g_file_get_child (file, g_file_info_get_name (info));
 
 		ret = totem_pl_parser_parse_internal (parser, item, NULL, parse_data);
-		if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS && ret != TOTEM_PL_PARSER_RESULT_IGNORED) {
+		if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS &&
+		    ret != TOTEM_PL_PARSER_RESULT_IGNORED &&
+		    ret != TOTEM_PL_PARSER_RESULT_ERROR) {
 			char *item_uri;
 
 			item_uri = g_file_get_uri (item);

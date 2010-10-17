@@ -472,6 +472,23 @@ test_m3u_leading_tabs (void)
 }
 
 static void
+test_directory_recurse (void)
+{
+	char *uri, *path;
+
+	uri = get_relative_uri (TEST_SRCDIR "foo");
+	path = g_filename_from_uri (uri, NULL, NULL);
+	if (g_file_test (path, G_FILE_TEST_IS_DIR)) {
+		/* The file inside the directory will be ignored */
+		g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_TITLE), ==, NULL);
+		/* But the parsing will succeed */
+		g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	}
+	g_free (path);
+	g_free (uri);
+}
+
+static void
 test_empty_asx (void)
 {
 	char *uri;
@@ -834,6 +851,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/smi_starttime", test_smi_starttime);
 		g_test_add_func ("/parser/parsing/m3u_leading_tabs", test_m3u_leading_tabs);
 		g_test_add_func ("/parser/parsing/empty-asx.asx", test_empty_asx);
+		g_test_add_func ("/parser/parsing/dir_recurse", test_directory_recurse);
 
 		return g_test_run ();
 	}
