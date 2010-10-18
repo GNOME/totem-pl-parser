@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.32.1
+* Make introspection work for TotemCd and TotemDisc namespaces
+* Ignore leading tabs and spaces before EXTINF comments in M3U files
+* Fix out-of-order signals when using async API
+* Fix parsing of iTunes Podcast links
+* Don't force add directories to the playlist when the recurse level is too high
+
 2.32.0
 * Updated translations
 

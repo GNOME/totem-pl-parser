@@ -466,7 +466,7 @@ test_m3u_leading_tabs (void)
 {
 	char *uri;
 	/* From http://media.artistserver.com/tracks/23985/21898/1/1/1/O_G_Money_-_Girl_Gotta_girlfriend_Feat._O_G_Money_Snoop_Dogg.m3u */
-	uri = get_relative_uri (TEST_SRCDIR "O_G_Money_-_Girl_Gotta_girlfriend_Feat._O_G_Money_Snoop_Dogg.m3u");
+	uri = get_relative_uri (TEST_SRCDIR "O_G_Money_Snoop_Dogg.m3u");
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_TITLE), ==, "O G Money - Girl Gotta girlfriend Feat. O G Money, Snoop Dogg");
 	g_free (uri);
 }
