@@ -627,6 +627,69 @@ test_parsing_not_really_php_but_html_instead (void)
 	g_free (uri);
 }
 
+
+typedef struct {
+	int count;
+	GMainLoop *mainloop;
+	char *uri;
+} AsyncParseData;
+
+static void
+parse_async_ready (GObject *pl, GAsyncResult *result, gpointer userdata)
+{
+	AsyncParseData *data = userdata;
+	TotemPlParserResult retval;
+
+	retval = totem_pl_parser_parse_finish (TOTEM_PL_PARSER (pl), result, NULL);
+	g_test_message ("Got retval %d for uri '%s'", retval, data->uri);
+	g_test_message ("Parsed entry count is %d for uri '%s'", data->count, data->uri);
+
+	g_assert (data->count > 0);
+
+	g_main_loop_quit (data->mainloop);
+	g_object_unref (pl);
+}
+
+static gboolean
+block_main_loop_idle (gpointer data)
+{
+	/* one second should be long enough to parse a local file */
+	g_usleep (G_USEC_PER_SEC);
+	return FALSE;
+}
+
+static void
+test_async_parsing_signal_order (void)
+{
+	AsyncParseData data;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_test_bug ("631727");
+	/* doesn't really matter what test file we use here, we just want something
+	 * with at least one valid entry in it.
+	 */
+	data.uri = get_relative_uri (TEST_SRCDIR "separator.m3u");
+	data.mainloop = g_main_loop_new (NULL, FALSE);
+
+	g_object_set (pl, "recurse", FALSE,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	g_signal_connect (G_OBJECT (pl), "entry-parsed",
+			  G_CALLBACK (entry_parsed_num_cb), &data.count);
+
+	/* we need the mainloop to be busy while the signal emission idle sources are
+	 * added, so we just block it for a while.
+	 */
+	g_idle_add_full (G_PRIORITY_HIGH, block_main_loop_idle, NULL, NULL);
+	totem_pl_parser_parse_async (pl, data.uri, FALSE, NULL, parse_async_ready, &data);
+	g_main_loop_run (data.mainloop);
+
+	g_free (data.uri);
+	g_main_loop_unref (data.mainloop);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -802,6 +865,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/itms_link", test_itms_parsing);
 		g_test_add_func ("/parser/parsing/lastfm-attributes", test_lastfm_parsing);
 		g_test_add_func ("/parser/parsing/m3u_separator", test_m3u_separator);
+		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
 
 		return g_test_run ();
 	}
