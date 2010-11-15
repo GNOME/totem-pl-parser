@@ -214,8 +214,6 @@ totem_pl_parser_load_directory (GFile *file, GList **list, gboolean *unhandled)
 	if (e == NULL) {
 		if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED) != FALSE)
 			*unhandled = TRUE;
-		g_file_enumerator_close (e, NULL, NULL);
-		g_object_unref (e);
 		g_error_free (err);
 		return FALSE;
 	}
