@@ -714,7 +714,7 @@ static char *
 my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlParser *parser)
 {
 	char *buffer;
-	gssize bytes_read;
+	gsize bytes_read;
 	GFileInputStream *stream;
 	GError *error = NULL;
 
@@ -751,13 +751,13 @@ my_g_file_info_get_mime_type_with_data (GFile *file, gpointer *data, TotemPlPars
 
 	/* Read the whole thing, up to MIME_READ_CHUNK_SIZE */
 	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
-	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
-	g_object_unref (G_INPUT_STREAM (stream));
-	if (bytes_read == -1) {
+	if (g_input_stream_read_all (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, &bytes_read, NULL, &error) == FALSE) {
+		g_object_unref (stream);
 		DEBUG(file, g_print ("Couldn't read data from '%s'\n", uri));
 		g_free (buffer);
 		return NULL;
 	}
+	g_object_unref (G_INPUT_STREAM (stream));
 
 	/* Empty file */
 	if (bytes_read == 0) {
