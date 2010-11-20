@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Abduxukur Abdurixit <abduxukur.abdurixit@t-systems.ch>, 2005
 # Sahran <sahran.ug@gmail.com>, 2010
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&component=playlist parser\n"
-"POT-Creation-Date: 2010-10-29 20:56+0000\n"
+"POT-Creation-Date: 2010-11-13 21:59+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sahran <sahran.ug@gmail.com>\n"
 "Language-Team: GNOME Uighur Translation Project <gnome-uighur@yahoogroups.com>\n"
