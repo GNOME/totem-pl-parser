@@ -1,6 +1,5 @@
-/* 
-   Copyright (C) 2002, 2003, 2004, 2005, 2006 Bastien Nocera
-   Copyright (C) 2003 Colin Walters <walters@verbum.org>
+/*
+   Copyright (C) 2010 Bastien Nocera <hadess@hadess.net>
 
    The Gnome Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public License as
@@ -20,21 +19,31 @@
    Author: Bastien Nocera <hadess@hadess.net>
  */
 
-#ifndef TOTEM_PL_PARSER_MINI_H
-#define TOTEM_PL_PARSER_MINI_H
-
-#include <glib.h>
+#ifndef TOTEM_PL_PARSER_VIDEOSITE_H
+#define TOTEM_PL_PARSER_VIDEOSITE_H
 
 G_BEGIN_DECLS
 
-gboolean totem_pl_parser_can_parse_from_data	 (const char *data,
- 						  gsize len,
-						  gboolean debug);
-gboolean totem_pl_parser_can_parse_from_filename (const char *filename,
-						  gboolean debug);
-gboolean totem_pl_parser_can_parse_from_uri (const char *uri,
-					     gboolean debug);
+#ifndef TOTEM_PL_PARSER_MINI
+#include "totem-pl-parser.h"
+#include "totem-pl-parser-private.h"
+#include <gio/gio.h>
+#else
+#include "totem-pl-parser-mini.h"
+#endif /* !TOTEM_PL_PARSER_MINI */
+
+gboolean totem_pl_parser_is_videosite (const char *uri, gboolean debug);
+
+#ifndef TOTEM_PL_PARSER_MINI
+
+TotemPlParserResult totem_pl_parser_add_videosite (TotemPlParser *parser,
+						   GFile *file,
+						   GFile *base_file,
+						   TotemPlParseData *parse_data,
+						   gpointer data);
+
+#endif /* !TOTEM_PL_PARSER_MINI */
 
 G_END_DECLS
 
-#endif /* TOTEM_PL_PARSER_MINI_H */
+#endif /* TOTEM_PL_PARSER_VIDEOSITE_H */

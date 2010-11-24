@@ -134,6 +134,8 @@ test_duration (void)
 	g_assert_cmpint (totem_pl_parser_parse_duration ("01:00:01.01", verbose), ==, 3601);
 	g_assert_cmpint (totem_pl_parser_parse_duration ("01:00.01", verbose), ==, 60);
 	g_assert_cmpint (totem_pl_parser_parse_duration ("24.59", verbose), ==, 1499);
+	g_assert_cmpint (totem_pl_parser_parse_duration ("02m25s", verbose), ==, 145);
+	g_assert_cmpint (totem_pl_parser_parse_duration ("2m25s", verbose), ==, 145);
 }
 
 static void
@@ -207,6 +209,17 @@ test_data_get_data (const char *uri, guint *len)
 	*len = bytes_read;
 
 	return buffer;
+}
+
+static void
+test_videosite (void)
+{
+#ifdef HAVE_QUVI
+	char *uri = "http://www.youtube.com/watch?v=oMLCrzy9TEs";
+
+	g_test_message ("Testing data parsing \"%s\"...", uri);
+	g_assert (totem_pl_parser_can_parse_from_uri (uri, TRUE));
+#endif
 }
 
 static void
@@ -915,6 +928,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/relative", test_relative);
 		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
+		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
 		g_test_add_func ("/parser/parsing/nonexistent_files", test_parsing_nonexistent_files);
 		g_test_add_func ("/parser/parsing/broken_asx", test_parsing_broken_asx);

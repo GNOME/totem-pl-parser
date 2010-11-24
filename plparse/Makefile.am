@@ -33,6 +33,7 @@ plparser_sources =				\
 	totem-pl-parser-podcast.c		\
 	totem-pl-parser-qt.c			\
 	totem-pl-parser-smil.c			\
+	totem-pl-parser-videosite.c		\
 	totem-pl-parser-wm.c			\
 	totem-pl-parser-xspf.c
 
@@ -52,6 +53,7 @@ dist_libtotem_plparser_la_SOURCES =		\
 	totem-pl-parser-private.h		\
 	totem-pl-parser-qt.h			\
 	totem-pl-parser-smil.h			\
+	totem-pl-parser-videosite.h		\
 	totem-pl-parser-wm.h			\
 	totem-pl-parser-xspf.h			\
 	totem-pl-playlist.c			\
