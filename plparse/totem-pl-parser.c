@@ -280,7 +280,6 @@ enum {
 
 static int totem_pl_parser_table_signals[LAST_SIGNAL];
 static GParamSpecPool *totem_pl_parser_pspec_pool = NULL;
-static gboolean i18n_done = FALSE;
 
 static void totem_pl_parser_class_init (TotemPlParserClass *klass);
 static void totem_pl_parser_base_class_finalize	(TotemPlParserClass *klass);
@@ -645,15 +644,19 @@ totem_pl_parser_error_quark (void)
 	return quark;
 }
 
+static gpointer
+totem_pl_parser_real_init_i18n (gpointer data)
+{
+	bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	return NULL;
+}
+
 static void
 totem_pl_parser_init_i18n (void)
 {
-	if (i18n_done == FALSE) {
-		/* set up translation catalog */
-		bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
-		bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-		i18n_done = TRUE;
-	}
+	static GOnce my_once = G_ONCE_INIT;
+	g_once (&my_once, totem_pl_parser_real_init_i18n, NULL);
 }
 
 /**
