@@ -717,6 +717,7 @@ test_async_parsing_signal_order (void)
 	 */
 	data.uri = get_relative_uri (TEST_SRCDIR "separator.m3u");
 	data.mainloop = g_main_loop_new (NULL, FALSE);
+	data.count = 0;
 
 	g_object_set (pl, "recurse", FALSE,
 			  "debug", option_debug,
@@ -732,6 +733,9 @@ test_async_parsing_signal_order (void)
 	g_idle_add_full (G_PRIORITY_HIGH, block_main_loop_idle, NULL, NULL);
 	totem_pl_parser_parse_async (pl, data.uri, FALSE, NULL, parse_async_ready, &data);
 	g_main_loop_run (data.mainloop);
+
+	/* The number of entries in separator.m3u */
+	g_assert(data.count == 1);
 
 	g_free (data.uri);
 	g_main_loop_unref (data.mainloop);
