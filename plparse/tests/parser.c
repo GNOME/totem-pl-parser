@@ -91,6 +91,26 @@ test_resolution_real (const char *base_uri,
 static void
 test_resolution (void)
 {
+	const char * const *schemes;
+	gboolean http_supported = FALSE;
+	GVfs *vfs;
+	guint i;
+
+	vfs = g_vfs_get_default ();
+	if (vfs == NULL)
+		g_error ("gvfs with http support is required to test link resolution");
+	schemes = g_vfs_get_supported_uri_schemes (vfs);
+	if (schemes == NULL)
+		g_error ("gvfs with http support is required to test link resolution");
+	for (i = 0; schemes[i] != NULL; i++) {
+		if (g_str_equal (schemes[i], "http")) {
+			http_supported = TRUE;
+			break;
+		}
+	}
+	if (http_supported == FALSE)
+		g_error ("gvfs is installed but does not support http");
+
 	/* http://bugzilla.gnome.org/show_bug.cgi?id=555417 */
 	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
 	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp?actionpage=3&id=288629&locale", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
