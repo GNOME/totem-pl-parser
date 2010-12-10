@@ -32,8 +32,6 @@ gboolean totem_pl_parser_can_parse_from_data	 (const char *data,
 						  gboolean debug);
 gboolean totem_pl_parser_can_parse_from_filename (const char *filename,
 						  gboolean debug);
-gboolean totem_pl_parser_can_parse_from_uri (const char *uri,
-					     gboolean debug);
 
 G_END_DECLS
 

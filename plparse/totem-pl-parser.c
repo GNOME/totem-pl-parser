@@ -154,10 +154,6 @@
 #include "totem-pl-parser-misc.h"
 #include "totem-pl-parser-private.h"
 
-#ifdef HAVE_QUVI
-#include "totem-pl-parser-videosite.h"
-#endif
-
 #define READ_CHUNK_SIZE 8192
 #define RECURSE_LEVEL_MAX 4
 
@@ -1792,20 +1788,6 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	if (!parse_data->recurse && parse_data->recurse_level > 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
-#if HAVE_QUVI
-	/* Should we try to parse it with quvi? */
-	if (g_file_has_uri_scheme (file, "http")) {
-		char *url;
-		url = g_file_get_uri (file);
-		if (url != NULL && totem_pl_parser_is_videosite (url, parser->priv->debug) != FALSE) {
-			ret = totem_pl_parser_add_videosite (parser, file, base_file, parse_data, NULL);
-			if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS)
-				return ret;
-		}
-		g_free (url);
-	}
-#endif /* HAVE_QUVI */
-
 	/* In force mode we want to get the data */
 	if (parse_data->force != FALSE) {
 		mimetype = my_g_file_info_get_mime_type_with_data (file, &data, parser);
@@ -2271,11 +2253,6 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 		D(g_print ("Used broken float format (00.00)\n"));
 		return minutes * 60 + seconds;
 	}
-	/* YouTube format */
-	if (sscanf (duration, "%dm%ds", &minutes, &seconds) == 2) {
-		D(g_print ("Used YouTube format\n"));
-		return minutes * 60 + seconds;
-	}
 	/* PLS files format */
 	if (sscanf (duration, "%d", &seconds) == 1) {
 		D(g_print ("Used PLS format\n"));
@@ -2463,25 +2440,6 @@ totem_pl_parser_can_parse_from_filename (const char *filename, gboolean debug)
 	g_mapped_file_unref (map);
 
 	return retval;
-}
-
-/**
- * totem_pl_parser_can_parse_from_uri:
- * @uri: the remote URI to check for parsability
- * @debug: %TRUE if debug statements should be printed
- *
- * Checks if the remote URI can be parsed. Note that this does
- * not actually try to open the remote URI, or deduce its content-type
- * from its filename, as this would bring too many false positives.
- *
- * Return value: %TRUE if @uri could be parsed
- *
- * Since: 2.30.3
- **/
-gboolean
-totem_pl_parser_can_parse_from_uri (const char *uri, gboolean debug)
-{
-	return totem_pl_parser_is_videosite (uri, debug);
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
