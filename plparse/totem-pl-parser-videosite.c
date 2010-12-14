@@ -28,9 +28,9 @@
 #include "totem-disc.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
 
-#if HAVE_QUVI
+#ifdef HAVE_QUVI
 #include <quvi/quvi.h>
-#endif
+#endif /* HAVE_QUVI */
 
 #include "totem-pl-parser-mini.h"
 #include "totem-pl-parser-videosite.h"
@@ -39,6 +39,7 @@
 gboolean
 totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 {
+#ifdef HAVE_QUVI
 	quvi_t handle;
 	QUVIcode rc;
 
@@ -53,6 +54,9 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 			 uri, rc, (rc == QUVI_OK) ? "true" : "false");
 
 	return (rc == QUVI_OK);
+#else
+	return FALSE;
+#endif /* HAVE_QUVI */
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
@@ -68,7 +72,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 			       TotemPlParseData *parse_data,
 			       gpointer data)
 {
-#if HAVE_QUVI
+#ifdef HAVE_QUVI
 	QUVIcode rc;
 	quvi_t handle;
 	quvi_video_t v;

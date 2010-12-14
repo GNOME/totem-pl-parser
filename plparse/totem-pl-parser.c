@@ -153,10 +153,7 @@
 #include "totem-pl-parser-lines.h"
 #include "totem-pl-parser-misc.h"
 #include "totem-pl-parser-private.h"
-
-#ifdef HAVE_QUVI
 #include "totem-pl-parser-videosite.h"
-#endif
 
 #define READ_CHUNK_SIZE 8192
 #define RECURSE_LEVEL_MAX 4
@@ -1792,7 +1789,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	if (!parse_data->recurse && parse_data->recurse_level > 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
-#if HAVE_QUVI
+#ifdef HAVE_QUVI
 	/* Should we try to parse it with quvi? */
 	if (g_file_has_uri_scheme (file, "http")) {
 		char *url;

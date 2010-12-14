@@ -101,6 +101,7 @@ else
 fi
 
 enable_quvi=auto
+QUVI=""
 AC_ARG_ENABLE(enable-quvi,
 	      AS_HELP_STRING([--enable-quvi],
 			     [Enable libquvi support (default is auto).]),
@@ -115,9 +116,11 @@ if test "x$enable_quvi" != "xno" ; then
 	fi
 	if test "x$have_quvi" = "xyes" ; then
 		pkg_modules="$pkg_modules libquvi"
+		QUVI="libquvi"
 		AC_DEFINE(HAVE_QUVI, 1, [libquvi available in the system])
 	fi
 fi
+AC_SUBST(QUVI, $QUVI)
 
 dnl Check for packages for building libtotem-plparser.la
 PKG_CHECK_MODULES(TOTEM_PLPARSER, [$pkg_modules])
