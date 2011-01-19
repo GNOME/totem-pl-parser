@@ -686,6 +686,18 @@ test_parsing_not_asx_playlist (void)
 }
 
 static void
+test_parsing_wma_asf (void)
+{
+	char *uri;
+	g_test_bug ("639958");
+	/* File from https://bugzilla.gnome.org/show_bug.cgi?id=639958#c5 */
+	uri = get_relative_uri (TEST_SRCDIR "WMA9.1_98_quality_48khz_vbr_s.wma");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "mmsh://195.134.224.231/wma/WMA9.1_98_quality_48khz_vbr_s.wma?MSWMExt=.asf");
+	g_free (uri);
+}
+
+static void
 test_parsing_not_really_php (void)
 {
 	char *uri;
@@ -955,6 +967,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/empty-asx.asx", test_empty_asx);
 		g_test_add_func ("/parser/parsing/dir_recurse", test_directory_recurse);
 		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
+		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
 
 		return g_test_run ();
 	}

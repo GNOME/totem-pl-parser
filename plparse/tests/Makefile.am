@@ -65,4 +65,5 @@ EXTRA_DIST =			\
 	audio.php		\
 	big5.smi		\
 	O_G_Money_Snoop_Dogg.m3u \
-	empty-asx.asx
+	empty-asx.asx		\
+	WMA9.1_98_quality_48khz_vbr_s.wma
