@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+2.32.2:
+* Parse links to video websites using libquvi
+* Fix parsing data from broken HTTP servers
+* Fix warning when opening a directory fails
+* Fix parsing some ASF redirections masquerading as WMA files
+
 2.32.1
 * Make introspection work for TotemCd and TotemDisc namespaces
 * Ignore leading tabs and spaces before EXTINF comments in M3U files
