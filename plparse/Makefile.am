@@ -106,6 +106,8 @@ libtotem_plparser_mini_la_SOURCES =		\
 	totem-pl-parser-qt.h			\
 	totem-pl-parser-smil.c			\
 	totem-pl-parser-smil.h			\
+	totem-pl-parser-videosite.c		\
+	totem-pl-parser-videosite.h		\
 	totem-pl-parser-wm.c			\
 	totem-pl-parser-wm.h			\
 	totem-pl-parser-xspf.c			\
