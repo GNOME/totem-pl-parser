@@ -1,6 +1,6 @@
 SUBDIRS = lib plparse po docs
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 EXTRA_DIST =			\
 	COPYING.LIB		\
