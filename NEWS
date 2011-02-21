@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+2.32.3:
+* quvi related build fixes
+
 2.32.2:
 * Parse links to video websites using libquvi
 * Fix parsing data from broken HTTP servers
