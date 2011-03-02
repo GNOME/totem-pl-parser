@@ -66,4 +66,5 @@ EXTRA_DIST =			\
 	big5.smi		\
 	O_G_Money_Snoop_Dogg.m3u \
 	empty-asx.asx		\
+	emptyplaylist.pls	\
 	WMA9.1_98_quality_48khz_vbr_s.wma

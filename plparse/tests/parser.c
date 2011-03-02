@@ -532,6 +532,15 @@ test_empty_asx (void)
 }
 
 static void
+test_empty_pls (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "emptyplaylist.pls");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	g_free (uri);
+}
+
+static void
 test_parsing_rtsp_text_multi (void)
 {
 	char *uri;
@@ -965,6 +974,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/smi_starttime", test_smi_starttime);
 		g_test_add_func ("/parser/parsing/m3u_leading_tabs", test_m3u_leading_tabs);
 		g_test_add_func ("/parser/parsing/empty-asx.asx", test_empty_asx);
+		g_test_add_func ("/parser/parsing/emptyplaylist.pls", test_empty_pls);
 		g_test_add_func ("/parser/parsing/dir_recurse", test_directory_recurse);
 		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
 		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
