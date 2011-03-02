@@ -184,7 +184,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	playlist_title = NULL;
 
 	/* Ignore empty lines */
-	while (totem_pl_parser_line_is_empty (lines[i]) != FALSE)
+	while (lines[i] != NULL && totem_pl_parser_line_is_empty (lines[i]) != FALSE)
 		i++;
 
 	if (lines[i] == NULL
