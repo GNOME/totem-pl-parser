@@ -253,6 +253,13 @@ struct _TotemPlParser {
  * #TotemPlParser::playlist-ended signal handlers.
  **/
 #define TOTEM_PL_PARSER_FIELD_IS_PLAYLIST	"is-playlist"
+/**
+ * TOTEM_PL_PARSER_FIELD_CONTENT_TYPE:
+ *
+ * Metadata field for an entry's content-type (usually a mime-type coming
+ * from a web server).
+ **/
+#define TOTEM_PL_PARSER_FIELD_CONTENT_TYPE	"content-type"
 
 /**
  * TotemPlParserClass:
