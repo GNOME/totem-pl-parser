@@ -103,10 +103,10 @@ static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
 	const char *title, *uri, *description, *author;
-	const char *pub_date, *duration, *filesize;
+	const char *pub_date, *duration, *filesize, *content_type;
 	xml_node_t *node;
 
-	title = uri = description = author = NULL;
+	title = uri = description = author = content_type = NULL;
 	pub_date = duration = filesize = NULL;
 
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -136,6 +136,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			if (tmp != NULL &&
 			    g_str_has_prefix (tmp, "audio/") == FALSE)
 				continue;
+			content_type = tmp;
 
 			tmp = xml_parser_get_property (node, "url");
 			if (tmp != NULL)
@@ -173,6 +174,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 					 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
 					 TOTEM_PL_PARSER_FIELD_DURATION, duration,
 					 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
+					 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, content_type,
 					 NULL);
 	}
 

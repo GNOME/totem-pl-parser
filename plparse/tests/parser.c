@@ -560,6 +560,15 @@ test_parsing_rtsp_text (void)
 }
 
 static void
+test_parsing_content_type (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "HackerMedley");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "audio/mpeg");
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -961,6 +970,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
 		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
 		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
+		g_test_add_func ("/parser/parsing/podcast_content_type", test_parsing_content_type);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
