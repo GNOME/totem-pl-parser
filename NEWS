@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+2.32.4:
+* Fix --enable-quvi option
+* Fix getting past the last line of PLS files
+* Add "content-type" property when available
+
 2.32.3:
 * quvi related build fixes
 
