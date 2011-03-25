@@ -86,6 +86,9 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	const char *page_uri;
 	const char *starttime;
 	const char *content_type;
+	const char *thumb_url;
+	double duration;
+	char *duration_str;
 
 	if (quvi_init (&handle) != QUVI_OK)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
@@ -107,12 +110,16 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	else
 		length_str = NULL;
 	getprop (QUVIPROP_PAGETITLE, title);
-	getprop (QUVIPROP_VIDEOID, id);
+	getprop (QUVIPROP_MEDIAID, id);
 	getprop (QUVIPROP_PAGEURL, page_uri);
 	getprop (QUVIPROP_STARTTIME, starttime);
-	getprop (QUVIPROP_VIDEOFILECONTENTTYPE, content_type);
+	getprop (QUVIPROP_MEDIACONTENTTYPE, content_type);
+	getprop (QUVIPROP_MEDIATHUMBNAILURL, thumb_url);
+	if (quvi_getprop (v, QUVIPROP_MEDIADURATION, &duration) == QUVI_OK && duration)
+		duration_str = g_strdup_printf ("%f", duration);
+	else
+		duration_str = NULL;
 
-	length_str = g_strdup_printf ("%d", (int) length);
 	if (video_uri != NULL)
 		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_TITLE, title,
@@ -122,9 +129,12 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 					 TOTEM_PL_PARSER_FIELD_FILESIZE, length_str,
 					 TOTEM_PL_PARSER_FIELD_STARTTIME, starttime,
 					 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, content_type,
+					 TOTEM_PL_PARSER_FIELD_IMAGE_URI, thumb_url,
+					 TOTEM_PL_PARSER_FIELD_DURATION, duration_str,
 					 NULL);
 	g_free (uri);
 	g_free (length_str);
+	g_free (duration_str);
 
 	quvi_parse_close (&v);
 	quvi_close (&handle);
