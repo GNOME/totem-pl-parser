@@ -58,6 +58,11 @@
 #include <glib/gi18n.h>
 #include <gio/gio.h>
 
+#ifdef HAVE_LIBARCHIVE
+#include <archive.h>
+#include <archive_entry.h>
+#endif /* HAVE_ARCHIVE */
+
 #include "totem-disc.h"
 #include "totem-pl-parser.h"
 
@@ -261,27 +266,57 @@ cd_cache_has_content_type (CdCache *cache, const char *content_type)
   return FALSE;
 }
 
-static char *
-cd_cache_uri_to_archive (const char *uri)
+static gboolean
+cd_cache_check_archive (CdCache *cache,
+			const char *filename,
+			GError **error)
 {
-  char *escaped, *escaped2, *retval;
+#ifndef HAVE_LIBARCHIVE
+  g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
+	       _("Failed to mount %s."), filename);
+  return FALSE;
+#else
+  struct archive *a;
+  struct archive_entry *entry;
+  char *content_types[] = { NULL, NULL };
+  int r;
 
-  escaped = g_uri_escape_string (uri, NULL, FALSE);
-  escaped2 = g_uri_escape_string (escaped, NULL, FALSE);
-  g_free (escaped);
-  retval = g_strdup_printf ("archive://%s/", escaped2);
-  g_free (escaped2);
+  a = archive_read_new();
+  archive_read_support_compression_all(a);
+  archive_read_support_format_all(a);
+  r = archive_read_open_filename(a, filename, 10240);
+  if (r != ARCHIVE_OK) {
+    g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
+		 _("Failed to mount %s."), filename);
+    return FALSE;
+  }
+  while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
+    const char *name;
 
-  return retval;
-}
-
-static void
-cd_cache_mount_archive_callback (GObject *source_object,
-				 GAsyncResult *res,
-				 CdCacheCallbackData *data)
-{
-  data->result = g_file_mount_enclosing_volume_finish (G_FILE (source_object), res, &data->error);
-  data->called = TRUE;
+    name = archive_entry_pathname (entry);
+    if (g_ascii_strcasecmp (name, "VIDEO_TS/VIDEO_TS.IFO") == 0) {
+      content_types[0] = "x-content/video-dvd";
+      cache->content_types = g_strdupv (content_types);
+      break;
+    } else if (g_ascii_strcasecmp (name, "mpegav/AVSEQ01.DAT") == 0) {
+      content_types[0] = "x-content/video-vcd";
+      cache->content_types = g_strdupv (content_types);
+      break;
+    } else if (g_ascii_strcasecmp (name, "MPEG2/AVSEQ01.MPG") == 0) {
+      content_types[0] = "x-content/video-svcd";
+      cache->content_types = g_strdupv (content_types);
+      break;
+    }
+    archive_read_data_skip(a);
+  }
+  r = archive_read_finish(a);
+  if (r != ARCHIVE_OK) {
+    g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
+		 _("Failed to mount %s."), filename);
+    return FALSE;
+  }
+  return TRUE;
+#endif
 }
 
 static CdCache *
@@ -320,59 +355,20 @@ cd_cache_new (const char *dev,
 
     return cache;
   } else if (g_file_test (local, G_FILE_TEST_IS_REGULAR)) {
-    GMount *mount;
-    GError *err = NULL;
-    char *uri, *archive_path;
-
     cache = g_new0 (CdCache, 1);
     cache->is_iso = TRUE;
     cache->is_media = FALSE;
 
-    uri = g_file_get_uri (file);
     g_object_unref (file);
-    archive_path = cd_cache_uri_to_archive (uri);
-    g_free (uri);
-    cache->device = local;
 
-    cache->iso_file = g_file_new_for_uri (archive_path);
-    g_free (archive_path);
-
-    mount = g_file_find_enclosing_mount (cache->iso_file, NULL, &err);
-    if (mount == NULL && g_error_matches (err, G_IO_ERROR, G_IO_ERROR_NOT_MOUNTED)) {
-      CdCacheCallbackData data;
-
-      memset (&data, 0, sizeof(data));
-      data.cache = cache;
-      g_file_mount_enclosing_volume (cache->iso_file,
-				     G_MOUNT_MOUNT_NONE,
-				     NULL,
-				     NULL,
-				     (GAsyncReadyCallback) cd_cache_mount_archive_callback,
-				     &data);
-      while (!data.called) g_main_context_iteration (NULL, TRUE);
-
-      if (!data.result) {
-	if (data.error) {
-	  g_propagate_error (error, data.error);
-	} else {
-	  g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
-		       _("Failed to mount %s."), cache->device);
-	}
-	cd_cache_free (cache);
-	return FALSE;
-      }
-      self_mounted = TRUE;
-    } else if (mount == NULL) {
+    if (cd_cache_check_archive (cache, local, error) == FALSE) {
       cd_cache_free (cache);
       return FALSE;
-    } else {
-      g_object_unref (mount);
     }
 
-    cache->content_types = g_content_type_guess_for_tree (cache->iso_file);
-    cache->mountpoint = g_file_get_path (cache->iso_file);
-    cache->self_mounted = self_mounted;
-    cache->mounted = TRUE;
+    cache->device = local;
+    cache->self_mounted = FALSE;
+    cache->mounted = FALSE;
 
     return cache;
   }
@@ -468,7 +464,7 @@ cd_cache_open_mountpoint (CdCache *cache,
   GFile *root;
 
   /* already opened? */
-  if (cache->mounted || cache->is_media == FALSE)
+  if (cache->mounted || cache->is_media == FALSE || cache->is_iso)
     return TRUE;
 
   /* check for mounting - assume we'll mount ourselves */
@@ -569,12 +565,10 @@ cd_cache_disc_is_cdda (CdCache *cache,
 		       GError **error)
 {
   /* We can't have audio CDs on disc, yet */
-  if (cache->is_media == FALSE) {
+  if (cache->is_media == FALSE)
     return MEDIA_TYPE_DATA;
-  }
   if (!cd_cache_open_device (cache, error))
     return MEDIA_TYPE_ERROR;
-
   if (cd_cache_has_content_type (cache, "x-content/audio-cdda") != FALSE)
     return MEDIA_TYPE_CDDA;
 
@@ -589,8 +583,6 @@ cd_cache_disc_is_vcd (CdCache *cache,
   if (!cd_cache_open_device (cache, error))
     return MEDIA_TYPE_ERROR;
   if (!cd_cache_open_mountpoint (cache, error))
-    return MEDIA_TYPE_ERROR;
-  if (!cache->mountpoint)
     return MEDIA_TYPE_ERROR;
 
   if (cd_cache_has_content_type (cache, "x-content/video-vcd") != FALSE)
@@ -609,8 +601,6 @@ cd_cache_disc_is_dvd (CdCache *cache,
   if (!cd_cache_open_device (cache, error))
     return MEDIA_TYPE_ERROR;
   if (!cd_cache_open_mountpoint (cache, error))
-    return MEDIA_TYPE_ERROR;
-  if (!cache->mountpoint)
     return MEDIA_TYPE_ERROR;
 
   if (cd_cache_has_content_type (cache, "x-content/video-dvd") != FALSE)
