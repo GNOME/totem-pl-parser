@@ -574,11 +574,15 @@ totem_pl_parser_add_xml_feed (TotemPlParser *parser,
 }
 
 static GByteArray *
-totem_pl_parser_load_http_itunes (const char *uri)
+totem_pl_parser_load_http_itunes (const char *uri,
+				  gboolean    debug)
 {
 	SoupMessage *msg;
 	SoupSession *session;
 	GByteArray *data;
+
+	if (debug)
+		g_print ("Loading ITMS playlist '%s'\n", uri);
 
 	session = soup_session_sync_new_with_options (
 	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_GNOME_FEATURES_2_26,
@@ -652,7 +656,7 @@ totem_pl_parser_parse_itms_doc (xml_node_t *item)
 }
 
 static GFile *
-totem_pl_parser_get_feed_uri (char *data, gsize len)
+totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 {
 	xml_node_t* doc;
 	const char *uri;
@@ -684,14 +688,14 @@ totem_pl_parser_get_feed_uri (char *data, gsize len)
 			return NULL;
 		}
 
-		content = totem_pl_parser_load_http_itunes (link);
+		content = totem_pl_parser_load_http_itunes (link, debug);
 		if (content == NULL) {
 			xml_parser_free_tree (doc);
 			return NULL;
 		}
 		xml_parser_free_tree (doc);
 
-		feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len);
+		feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len, debug);
 		g_byte_array_free (content, TRUE);
 
 		return feed_file;
@@ -728,10 +732,11 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	}
 
 	/* Load the file using iTunes user-agent */
-	content = totem_pl_parser_load_http_itunes (itms_uri);
+	content = totem_pl_parser_load_http_itunes (itms_uri, totem_pl_parser_is_debugging_enabled (parser));
 
 	/* And look in the file for the feedURL */
-	feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len);
+	feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len,
+						  totem_pl_parser_is_debugging_enabled (parser));
 	g_byte_array_free (content, TRUE);
 	if (feed_file == NULL)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
