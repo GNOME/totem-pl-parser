@@ -587,7 +587,7 @@ totem_pl_parser_load_http_itunes (const char *uri,
 	session = soup_session_sync_new_with_options (
 	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_GNOME_FEATURES_2_26,
 	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
-	    SOUP_SESSION_USER_AGENT, "iTunes/7.4.1",
+	    SOUP_SESSION_USER_AGENT, "iTunes/10.0.0",
 	    SOUP_SESSION_ACCEPT_LANGUAGE_AUTO, TRUE,
 	    NULL);
 
@@ -608,21 +608,36 @@ totem_pl_parser_load_http_itunes (const char *uri,
 }
 
 static const char *
-totem_pl_parser_parse_itms_link_doc (xml_node_t *item)
+totem_pl_parser_parse_plist (xml_node_t *item)
 {
 	for (item = item->child; item != NULL; item = item->next) {
 		/* What we're looking for looks like:
-		 * <key>url</key><string>URL</string> */
+		 *  <key>action</key>
+		 *  <dict>
+		 *    <key>kind</key><string>Goto</string>
+		 *    <key>url</key><string>URL</string>
+		 */
 		if (g_ascii_strcasecmp (item->name, "key") == 0
-		    && g_ascii_strcasecmp (item->data, "url") == 0
-		    && item->next != NULL) {
-			item = item->next;
-			if (g_ascii_strcasecmp (item->name, "string") == 0)
-				return item->data;
+		    && g_ascii_strcasecmp (item->data, "action") == 0) {
+			xml_node_t *node = item->next;
+
+			if (node && g_ascii_strcasecmp (node->name, "[CDATA]") == 0)
+				node = node->next;
+			if (node && g_ascii_strcasecmp (node->name, "dict") == 0) {
+				for (node = node->child; node != NULL; node = node->next) {
+					if (g_ascii_strcasecmp (node->name, "key") == 0 &&
+					    g_ascii_strcasecmp (node->data, "url") == 0 &&
+					    node->next != NULL) {
+						node = node->next;
+						if (g_ascii_strcasecmp (node->name, "string") == 0)
+							return node->data;
+					}
+				}
+			}
 		} else {
 			const char *ret;
 
-			ret = totem_pl_parser_parse_itms_link_doc (item);
+			ret = totem_pl_parser_parse_plist (item);
 			if (ret != NULL)
 				return ret;
 		}
@@ -631,28 +646,21 @@ totem_pl_parser_parse_itms_link_doc (xml_node_t *item)
 	return NULL;
 }
 
-static const char *
-totem_pl_parser_parse_itms_doc (xml_node_t *item)
+static char *
+totem_pl_parser_parse_html (char *data, gsize len, gboolean debug)
 {
-	for (item = item->child; item != NULL; item = item->next) {
-		/* What we're looking for looks like:
-		 * <key>feedURL</key><string>URL</string> */
-		if (g_ascii_strcasecmp (item->name, "key") == 0
-		    && g_ascii_strcasecmp (item->data, "feedURL") == 0
-		    && item->next != NULL) {
-			item = item->next;
-			if (g_ascii_strcasecmp (item->name, "string") == 0)
-				return item->data;
-		} else {
-			const char *ret;
+	char *s, *end;
 
-			ret = totem_pl_parser_parse_itms_doc (item);
-			if (ret != NULL)
-				return ret;
-		}
-	}
-
-	return NULL;
+	s = g_strstr_len (data, len, "feed-url=\"");
+	if (s == NULL)
+		return NULL;
+	s += strlen ("feed-url=\"");
+	if (*s == '\0')
+		return NULL;
+	end = g_strstr_len (s, len - (s - data), "\"");
+	if (end == NULL)
+		return NULL;
+	return g_strndup (s, end - s);
 }
 
 static GFile *
@@ -661,8 +669,22 @@ totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 	xml_node_t* doc;
 	const char *uri;
 	GFile *ret;
+	GByteArray *content;
 
 	uri = NULL;
+
+	/* Probably HTML, look for feed-url */
+	if (g_strstr_len (data, len, "feed-url") != NULL) {
+		char *uri;
+		uri = totem_pl_parser_parse_html (data, len, debug);
+		if (debug)
+			g_print ("Found feed-url in HTML: '%s'\n", uri);
+		if (uri == NULL)
+			return NULL;
+		ret = g_file_new_for_uri (uri);
+		g_free (uri);
+		return ret;
+	}
 
 	doc = totem_pl_parser_parse_xml_relaxed (data, len);
 	if (doc == NULL)
@@ -670,39 +692,25 @@ totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 
 	/* If the document has no name */
 	if (doc->name == NULL
-	    || g_ascii_strcasecmp (doc->name , "Document") != 0) {
+	    || g_ascii_strcasecmp (doc->name, "plist") != 0) {
 		xml_parser_free_tree (doc);
 		return NULL;
 	}
 
-	uri = totem_pl_parser_parse_itms_doc (doc);
+	/* Redirect plist? Find a goto action */
+	uri = totem_pl_parser_parse_plist (doc);
+
+	if (debug)
+		g_print ("Found redirect URL: %s\n", uri);
+
 	if (uri == NULL) {
-		/* Maybe it's just a link instead */
-		const char *link;
-		GByteArray *content;
-		GFile *feed_file;
+		return NULL;
+	} else {
 
-		link = totem_pl_parser_parse_itms_link_doc (doc);
-		if (link == NULL) {
-			xml_parser_free_tree (doc);
-			return NULL;
-		}
-
-		content = totem_pl_parser_load_http_itunes (link, debug);
-		if (content == NULL) {
-			xml_parser_free_tree (doc);
-			return NULL;
-		}
-		xml_parser_free_tree (doc);
-
-		feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len, debug);
+		content = totem_pl_parser_load_http_itunes (uri, debug);
+		ret = totem_pl_parser_get_feed_uri ((char *) content->data, content->len, debug);
 		g_byte_array_free (content, TRUE);
-
-		return feed_file;
 	}
-
-	ret = g_file_new_for_uri (uri);
-	xml_parser_free_tree (doc);
 
 	return ret;
 }
