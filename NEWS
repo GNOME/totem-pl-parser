@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+2.32.5:
+* Fix parsing of iTunes podcasts
+* Use libarchive to detect media discs in ISO files,
+  instead of gvfs, which makes it more reliable
+* Add support for new quvi properties (duration
+  and thumbnail URL)
+
 2.32.4:
 * Fix --enable-quvi option
 * Fix getting past the last line of PLS files
