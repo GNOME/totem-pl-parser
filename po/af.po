@@ -1,0 +1,52 @@
+# Afrikaans translation for totem-pl-parser.
+# Copyright (C) 2011 totem-pl-parser's COPYRIGHT HOLDER
+# This file is distributed under the same license as the totem-pl-parser package.
+# F Wolff <friedel@translate.org.za>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: totem-pl-parser master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&"
+"keywords=I18N+L10N&component=playlist parser\n"
+"POT-Creation-Date: 2011-05-10 16:58+0000\n"
+"PO-Revision-Date: 2011-07-18 10:11+0200\n"
+"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"Language-Team: translate-discuss-af@lists.sourceforge.net\n"
+"Language: af\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
+
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:290
+#: ../plparse/totem-disc.c:315 ../plparse/totem-disc.c:499
+#, c-format
+msgid "Failed to mount %s."
+msgstr "Kon nie %s heg nie."
+
+#: ../plparse/totem-disc.c:388
+#, c-format
+msgid "No media in drive for device '%s'."
+msgstr "Geen media in aandrywer vir toestel '%s' nie."
+
+#: ../plparse/totem-disc.c:442
+#, c-format
+msgid "Please check that a disc is present in the drive."
+msgstr "Kontroleer dat 'n skyf in die aandrywer is."
+
+#: ../plparse/totem-disc.c:879
+msgid "Audio CD"
+msgstr "Oudio-CD"
+
+#: ../plparse/totem-disc.c:881
+msgid "Video CD"
+msgstr "Video-CD"
+
+#: ../plparse/totem-disc.c:883
+msgid "DVD"
+msgstr "DVD"
+
+#: ../plparse/totem-disc.c:885
+msgid "Digital Television"
+msgstr "Digitale televisie"
