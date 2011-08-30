@@ -597,6 +597,17 @@ test_parsing_broken_asx (void)
 }
 
 static void
+test_xml_is_text_plain (void)
+{
+	TotemPlParserResult result;
+
+	g_test_bug ("655378");
+	result = simple_parser_test ("http://leoville.tv/podcasts/floss.xml");
+	g_message ("result %d", result);
+	g_assert (result == TOTEM_PL_PARSER_RESULT_SUCCESS);
+}
+
+static void
 test_parsing_out_of_order_asx (void)
 {
 	char *uri;
@@ -959,6 +970,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/videosite", test_videosite);
+		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
 		g_test_add_func ("/parser/parsing/nonexistent_files", test_parsing_nonexistent_files);
 		g_test_add_func ("/parser/parsing/broken_asx", test_parsing_broken_asx);
