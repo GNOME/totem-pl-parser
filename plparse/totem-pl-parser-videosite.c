@@ -50,7 +50,7 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 	quvi_close (&handle);
 
 	if (debug)
-		g_print ("Checking videosite for URI '%s' returned %d (%s)",
+		g_print ("Checking videosite for URI '%s' returned %d (%s)\n",
 			 uri, rc, (rc == QUVI_OK) ? "true" : "false");
 
 	return (rc == QUVI_OK);
