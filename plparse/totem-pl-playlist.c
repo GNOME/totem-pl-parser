@@ -343,7 +343,6 @@ totem_pl_playlist_get_value (TotemPlPlaylist     *playlist,
                              const gchar         *key,
                              GValue              *value)
 {
-        TotemPlPlaylistPrivate *priv;
         GHashTable *item_data;
         gchar *str;
 
@@ -352,7 +351,6 @@ totem_pl_playlist_get_value (TotemPlPlaylist     *playlist,
         g_return_val_if_fail (key != NULL, FALSE);
         g_return_val_if_fail (value != NULL, FALSE);
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
         item_data = ((GList *) iter->data2)->data;
 
         str = g_hash_table_lookup (item_data, key);
@@ -380,14 +378,12 @@ totem_pl_playlist_get_valist (TotemPlPlaylist     *playlist,
                               TotemPlPlaylistIter *iter,
                               va_list              args)
 {
-        TotemPlPlaylistPrivate *priv;
         GHashTable *item_data;
         gchar *key, **value;
 
         g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
         g_return_if_fail (check_iter (playlist, iter));
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
         item_data = ((GList *) iter->data2)->data;
 
         key = va_arg (args, gchar *);
@@ -447,7 +443,6 @@ totem_pl_playlist_set_value (TotemPlPlaylist     *playlist,
                              const gchar         *key,
                              GValue              *value)
 {
-        TotemPlPlaylistPrivate *priv;
         GHashTable *item_data;
         gchar *str;
 
@@ -456,7 +451,6 @@ totem_pl_playlist_set_value (TotemPlPlaylist     *playlist,
         g_return_val_if_fail (key != NULL, FALSE);
         g_return_val_if_fail (value != NULL, FALSE);
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
         item_data = ((GList *) iter->data2)->data;
 
         if (G_VALUE_TYPE (value) == G_TYPE_STRING) {
@@ -498,14 +492,12 @@ totem_pl_playlist_set_valist (TotemPlPlaylist     *playlist,
                               TotemPlPlaylistIter *iter,
                               va_list              args)
 {
-        TotemPlPlaylistPrivate *priv;
         GHashTable *item_data;
         gchar *key, *value;
 
         g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
         g_return_if_fail (check_iter (playlist, iter));
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
         item_data = ((GList *) iter->data2)->data;
 
         key = va_arg (args, gchar *);
