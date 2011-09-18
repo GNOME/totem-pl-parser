@@ -470,6 +470,17 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 }
 
 TotemPlParserResult
+totem_pl_parser_add_m4u (TotemPlParser *parser,
+			 GFile *file,
+			 GFile *base_file,
+			 TotemPlParseData *parse_data,
+			 gpointer data)
+{
+	return totem_pl_parser_add_m3u (parser, file,
+					base_file, parse_data, data);
+}
+
+TotemPlParserResult
 totem_pl_parser_add_ra (TotemPlParser *parser,
 			GFile *file,
 			GFile *base_file,
