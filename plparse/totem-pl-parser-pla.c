@@ -104,7 +104,7 @@ totem_pl_parser_save_pla (TotemPlParser    *parser,
 
 		if (path == NULL)
 		{
-			DEBUG(NULL, g_print ("Couldn't convert URI '%s' to a filename: %s\n", euri, (*error)->message));
+			DEBUG1(g_print ("Couldn't convert URI '%s' to a filename: %s\n", euri, (*error)->message));
 			g_free (euri);
 			ret = FALSE;
 			break;
@@ -137,7 +137,7 @@ totem_pl_parser_save_pla (TotemPlParser    *parser,
 		converted = g_convert (path, -1, "UTF-16BE", "UTF-8", NULL, &written, error);
 		if (converted == NULL)
 		{
-			DEBUG(NULL, g_print ("Couldn't convert filename '%s' to UTF-16BE\n", path));
+			DEBUG1(g_print ("Couldn't convert filename '%s' to UTF-16BE\n", path));
 			g_free (path);
 			ret = FALSE;
 			break;
@@ -152,7 +152,7 @@ totem_pl_parser_save_pla (TotemPlParser    *parser,
 
 		if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, error) == FALSE)
 		{
-			DEBUG(NULL, g_print ("Couldn't write entry %d to the file\n", i));
+			DEBUG1(g_print ("Couldn't write entry %d to the file\n", i));
 			ret = FALSE;
 			break;
 		}
@@ -220,7 +220,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 				  NULL, NULL, &error);
 		if (path == NULL)
 		{
-			DEBUG(NULL, g_print ("error converting entry %d to UTF-8: %s\n", entry, error->message));
+			DEBUG1(g_print ("error converting entry %d to UTF-8: %s\n", entry, error->message));
 			g_error_free (error);
 			retval = TOTEM_PL_PARSER_RESULT_ERROR;
 			break;
@@ -233,7 +233,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 		uri = g_filename_to_uri (path, NULL, NULL);
 		if (uri == NULL)
 		{
-			DEBUG(file, g_print ("error converting path %s to URI: %s\n", path, error->message));
+			DEBUG1(g_print ("error converting path %s to URI: %s\n", path, error->message));
 			g_error_free (error);
 			retval = TOTEM_PL_PARSER_RESULT_ERROR;
 			break;

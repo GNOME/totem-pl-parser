@@ -84,7 +84,6 @@
 #define TOTEM_PL_PARSER_FIELD_FILE		"gfile-object"
 #define TOTEM_PL_PARSER_FIELD_BASE_FILE		"gfile-object-base"
 
-#ifndef TOTEM_PL_PARSER_MINI
 #define DEBUG(file, x) {					\
 	if (totem_pl_parser_is_debugging_enabled (parser)) {	\
 		if (file != NULL) {				\
@@ -99,9 +98,11 @@
 		}						\
 	}							\
 }
-#else
-#define DEBUG(x) { if (totem_pl_parser_is_debugging_enabled (parser)) x; }
-#endif
+#define DEBUG1(x) {						\
+	if (totem_pl_parser_is_debugging_enabled (parser)) {	\
+		x;						\
+	}							\
+}
 
 typedef struct {
 	guint recurse_level;
