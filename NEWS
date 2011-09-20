@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+2.32.6:
+* Fix parsing of remote RSS feeds
+* Add support for M4U/MXU playlists
+
 2.32.5:
 * Fix parsing of iTunes podcasts
 * Use libarchive to detect media discs in ISO files,
