@@ -308,7 +308,6 @@ parse_asx_entryref (TotemPlParser *parser, GFile *base_file, xml_node_t *node, T
 	return retval;
 }
 
-//FIXME the retval is completely wrong
 static gboolean
 parse_asx_entries (TotemPlParser *parser, const char *uri, GFile *base_file, xml_node_t *parent, TotemPlParseData *parse_data)
 {
