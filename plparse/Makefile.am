@@ -7,10 +7,10 @@ MARSHALFILES = totemplparser-marshal.c totemplparser-marshal.h
 BUILT_SOURCES = $(MARSHALFILES)
 
 totemplparser-marshal.c: totemplparser-marshal.list
-	 $(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal --header --body --internal $< > $@
+	 $(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_totemplparser_marshal --header --body --internal $< > $@
 
 totemplparser-marshal.h: totemplparser-marshal.list
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=totemplparser_marshal --header --internal $< > $@
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_totemplparser_marshal --header --internal $< > $@
 
 plparserincludedir = $(pkgincludedir)/1/plparser
 plparserinclude_HEADERS =			\
