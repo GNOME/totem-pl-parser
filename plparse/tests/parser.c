@@ -28,6 +28,7 @@ static gboolean option_force = FALSE;
 static gboolean option_disable_unsafe = FALSE;
 static char *option_base_uri = NULL;
 static char **uris = NULL;
+static gboolean http_supported = FALSE;
 
 static char *
 get_relative_uri (const char *rel)
@@ -91,25 +92,8 @@ test_resolution_real (const char *base_uri,
 static void
 test_resolution (void)
 {
-	const char * const *schemes;
-	gboolean http_supported = FALSE;
-	GVfs *vfs;
-	guint i;
-
-	vfs = g_vfs_get_default ();
-	if (vfs == NULL)
-		g_error ("gvfs with http support is required to test link resolution");
-	schemes = g_vfs_get_supported_uri_schemes (vfs);
-	if (schemes == NULL)
-		g_error ("gvfs with http support is required to test link resolution");
-	for (i = 0; schemes[i] != NULL; i++) {
-		if (g_str_equal (schemes[i], "http")) {
-			http_supported = TRUE;
-			break;
-		}
-	}
 	if (http_supported == FALSE)
-		g_error ("gvfs is installed but does not support http");
+		g_test_message ("HTTP support required to test resolution");
 
 	/* http://bugzilla.gnome.org/show_bug.cgi?id=555417 */
 	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
@@ -242,6 +226,9 @@ test_parsability (void)
 		{ "http://faif.us/feeds/cast-mp3", TRUE, TRUE },
 		{ NULL,  FALSE, FALSE }
 	};
+
+	if (http_supported == FALSE)
+		g_test_message ("HTTP support required to test parseability");
 
 	/* Loop through the list, downloading the URIs and checking for parsability */
 	for (i = 0; files[i].uri != NULL; ++i) {
@@ -443,6 +430,9 @@ parser_test_get_playlist_uri (const char *uri)
 static void
 test_itms_parsing (void)
 {
+	if (http_supported == FALSE)
+		g_test_message ("HTTP support required to test ITMS");
+
 	g_assert_cmpstr (parser_test_get_playlist_uri ("itms://itunes.apple.com/gb/podcast/best-of-chris-moyles-enhanced/id142102961?ign-mpt=uo%3D4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/moylesen/rss.xml");
 	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/r1mix/rss.xml");
 }
@@ -591,6 +581,9 @@ test_parsing_broken_asx (void)
 	if (!g_test_slow ())
 		return;
 
+	if (http_supported == FALSE)
+		g_test_message ("HTTP support required to test broken ASX");
+
 	g_test_bug ("323683");
 	result = simple_parser_test ("http://www.comedycentral.com/sitewide/media_player/videoswitcher.jhtml?showid=934&category=/shows/the_daily_show/videos/headlines&sec=videoId%3D36032%3BvideoFeatureId%3D%3BpoppedFrom%3D_shows_the_daily_show_index.jhtml%3BisIE%3Dfalse%3BisPC%3Dtrue%3Bpagename%3Dmedia_player%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bgateway%3Dshows%3Bsection_1%3Dthe_daily_show%3Bsection_2%3Dvideos%3Bsection_3%3Dheadlines%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bera%3D%27%2Bif_nt_era%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bfla%3D%27%2Bif_nt_Flash%2B%27&itemid=36032&clip=com/dailyshow/headlines/10156_headline.wmv&mswmext=.asx");
 	g_assert (result != TOTEM_PL_PARSER_RESULT_ERROR);
@@ -600,6 +593,9 @@ static void
 test_xml_is_text_plain (void)
 {
 	TotemPlParserResult result;
+
+	if (http_supported == FALSE)
+		g_test_message ("HTTP support required to test text/plain XML");
 
 	g_test_bug ("655378");
 	result = simple_parser_test ("http://leoville.tv/podcasts/floss.xml");
@@ -635,6 +631,9 @@ test_parsing_num_entries (void)
 static void
 test_parsing_404_error (void)
 {
+	if (http_supported == FALSE)
+		g_test_message ("HTTP support required to test 404");
+
 	g_test_bug ("158052");
 	g_assert (simple_parser_test ("http://live.hujjat.org:7860/main") == TOTEM_PL_PARSER_RESULT_UNHANDLED);
 }
@@ -932,6 +931,50 @@ test_parsing (void)
 	g_main_loop_run (loop);
 }
 
+static void
+check_http (void)
+{
+	GVfs *vfs;
+	gboolean error_out_on_http = FALSE;
+
+	if (g_strcmp0 (g_get_user_name (), "hadess") == 0 &&
+	    http_supported == FALSE)
+		error_out_on_http = TRUE;
+
+	vfs = g_vfs_get_default ();
+	if (vfs == NULL) {
+		if (error_out_on_http)
+			g_error ("gvfs with http support is required (no gvfs)");
+		else
+			g_message ("gvfs with http support is required (no gvfs)");
+	} else {
+		const char * const *schemes;
+
+		schemes = g_vfs_get_supported_uri_schemes (vfs);
+		if (schemes == NULL) {
+			if (error_out_on_http)
+				g_error ("gvfs with http support is required (no http)");
+			else
+				g_message ("gvfs with http support is required (no http)");
+		} else {
+			guint i;
+			for (i = 0; schemes[i] != NULL; i++) {
+				if (g_str_equal (schemes[i], "http")) {
+					http_supported = TRUE;
+					break;
+				}
+			}
+		}
+	}
+
+	if (http_supported == FALSE) {
+		if (error_out_on_http)
+			g_error ("gvfs with http support is required (no http)");
+		else
+			g_message ("gvfs with http support is required (no http)");
+	}
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -964,6 +1007,8 @@ main (int argc, char *argv[])
 
 	/* If we've been given no URIs, run the static tests */
 	if (uris == NULL) {
+		check_http ();
+
 		g_test_add_func ("/parser/duration", test_duration);
 		g_test_add_func ("/parser/date", test_date);
 		g_test_add_func ("/parser/relative", test_relative);
