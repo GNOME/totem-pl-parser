@@ -31,7 +31,6 @@
 #include <gio/gio.h>
 
 #include "totem-pl-parser.h"
-#include "totemplparser-marshal.h"
 #include "totem-pl-parser-pls.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
 

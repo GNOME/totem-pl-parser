@@ -28,7 +28,6 @@
 #include <stdio.h>
 
 #include "totem-pl-parser.h"
-#include "totemplparser-marshal.h"
 #include "totem-disc.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
 

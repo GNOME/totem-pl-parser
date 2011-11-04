@@ -29,7 +29,6 @@
 #include "xmlparser.h"
 
 #include "totem-pl-parser.h"
-#include "totemplparser-marshal.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 #include "totem-pl-parser-mini.h"
