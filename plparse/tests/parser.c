@@ -599,7 +599,21 @@ test_xml_is_text_plain (void)
 
 	g_test_bug ("655378");
 	result = simple_parser_test ("http://leoville.tv/podcasts/floss.xml");
-	g_message ("result %d", result);
+	g_assert (result == TOTEM_PL_PARSER_RESULT_SUCCESS);
+}
+
+static void
+test_compressed_content_encoding (void)
+{
+	TotemPlParserResult result;
+
+	if (http_supported == FALSE)
+		g_test_message ("HTTP support required to test compressed content-encoding");
+
+	/* Requires:
+	 * http://git.gnome.org/browse/gvfs/commit/?id=6929e9f9661b4d1e68f8912d8e60107366255a47
+	 * http://thread.gmane.org/gmane.comp.gnome.apps.rhythmbox.devel/11887 */
+	result = simple_parser_test ("http://escapepod.org/podcast.xml");
 	g_assert (result == TOTEM_PL_PARSER_RESULT_SUCCESS);
 }
 
@@ -1016,6 +1030,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);
+		g_test_add_func ("/parser/compressed_content_encoding", test_compressed_content_encoding);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
 		g_test_add_func ("/parser/parsing/nonexistent_files", test_parsing_nonexistent_files);
 		g_test_add_func ("/parser/parsing/broken_asx", test_parsing_broken_asx);
