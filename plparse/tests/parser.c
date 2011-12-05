@@ -1019,6 +1019,10 @@ main (int argc, char *argv[])
 		return 1;
 	}
 
+	if (option_debug) {
+		g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+	}
+
 	/* If we've been given no URIs, run the static tests */
 	if (uris == NULL) {
 		check_http ();
