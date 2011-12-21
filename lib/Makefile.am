@@ -13,3 +13,4 @@ libtotem_glibc_la_LIBADD = @LTLIBOBJS@
 
 EXTRA_DIST = asprintf.c
 
+-include $(top_srcdir)/git.mk
