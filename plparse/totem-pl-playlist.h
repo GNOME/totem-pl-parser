@@ -32,37 +32,35 @@ G_BEGIN_DECLS
 #define TOTEM_IS_PL_PLAYLIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TOTEM_TYPE_PL_PLAYLIST))
 #define TOTEM_IS_PL_PLAYLIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TOTEM_TYPE_PL_PLAYLIST))
 
-typedef struct TotemPlPlaylist TotemPlPlaylist;
-typedef struct TotemPlPlaylistClass TotemPlPlaylistClass;
-typedef struct TotemPlPlaylistIter TotemPlPlaylistIter;
-
 /**
  * TotemPlPlaylist:
  *
  * All the fields in the #TotemPlPlaylist structure are private and should never be accessed directly.
  **/
-struct TotemPlPlaylist {
+typedef struct {
         GObject parent_instance;
-};
+} TotemPlPlaylist;
 
 /**
  * TotemPlPlaylistClass:
+ * @parent_class: the parent class
  *
  * All the fields in the #TotemPlPlaylistClass structure are private and should never be accessed directly.
  **/
-struct TotemPlPlaylistClass {
+typedef struct {
         GObjectClass parent_class;
-};
+} TotemPlPlaylistClass;
 
 /**
  * TotemPlPlaylistIter:
  *
  * All the fields in the #TotemPlPlaylistIter structure are private and should never be accessed directly.
  **/
-struct TotemPlPlaylistIter {
+typedef struct {
+        /*< private >*/
         gpointer data1;
         gpointer data2;
-};
+} TotemPlPlaylistIter;
 
 GType totem_pl_playlist_get_type (void) G_GNUC_CONST;
 

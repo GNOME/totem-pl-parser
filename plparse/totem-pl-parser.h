@@ -57,19 +57,17 @@ typedef enum {
 	TOTEM_PL_PARSER_RESULT_CANCELLED
 } TotemPlParserResult;
 
+typedef struct TotemPlParserPrivate TotemPlParserPrivate;
+
 /**
  * TotemPlParser:
  *
  * All the fields in the #TotemPlParser structure are private and should never be accessed directly.
  **/
-typedef struct _TotemPlParser	       TotemPlParser;
-typedef struct TotemPlParserClass      TotemPlParserClass;
-typedef struct TotemPlParserPrivate    TotemPlParserPrivate;
-
-struct _TotemPlParser {
+typedef struct {
 	GObject parent;
 	TotemPlParserPrivate *priv;
-};
+} TotemPlParser;
 
 /* Known metadata fields */
 
@@ -273,7 +271,7 @@ struct _TotemPlParser {
  *
  * The class structure for the #TotemPlParser type.
  **/
-struct TotemPlParserClass {
+typedef struct {
 	GObjectClass parent_class;
 
 	/* signals */
@@ -285,7 +283,7 @@ struct TotemPlParserClass {
 				  GHashTable *metadata);
 	void (*playlist_ended) (TotemPlParser *parser,
 				const char *uri);
-};
+} TotemPlParserClass;
 
 /**
  * TotemPlParserType:
