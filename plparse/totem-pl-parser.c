@@ -394,7 +394,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	 * TotemPlParser::entry-parsed:
 	 * @parser: the object which received the signal
 	 * @uri: the URI of the entry parsed
-	 * @metadata: a #GHashTable of metadata relating to the entry added
+	 * @metadata: (type TotemPlParser.ParserMetadata): a #GHashTable of metadata relating to the entry added
 	 *
 	 * The ::entry-parsed signal is emitted when a new entry is parsed.
 	 */
@@ -410,7 +410,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	 * TotemPlParser::playlist-started:
 	 * @parser: the object which received the signal
 	 * @uri: the URI of the new playlist started
-	 * @metadata: a #GHashTable of metadata relating to the playlist that
+	 * @metadata: (type TotemPlParser.ParserMetadata): a #GHashTable of metadata relating to the playlist that
 	 * started.
 	 *
 	 * The ::playlist-started signal is emitted when a playlist parsing has
