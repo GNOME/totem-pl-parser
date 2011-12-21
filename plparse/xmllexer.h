@@ -55,13 +55,19 @@
 #define T_CDATA_STOP    19   /* ]]> */
 
 
+typedef enum {
+  NORMAL,
+  DATA,
+  CDATA,
+} LexMode;
+
 /* public structure */
 struct lexer
 {
   const char * lexbuf;
   int lexbuf_size;
   int lexbuf_pos;
-  int lex_mode;
+  LexMode lex_mode;
   int in_comment;
   char *lex_malloc;
 };

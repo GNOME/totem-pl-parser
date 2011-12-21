@@ -101,20 +101,20 @@ static void cd_cache_free (CdCache *cache);
 static char *
 totem_resolve_symlink (const char *device, GError **error)
 {
-  char *dir, *link;
+  char *dir, *_link;
   char *f;
   char *f1;
 
   f = g_strdup (device);
   while (g_file_test (f, G_FILE_TEST_IS_SYMLINK)) {
-    link = g_file_read_link (f, error);
-    if(link == NULL) {
+    _link = g_file_read_link (f, error);
+    if (_link == NULL) {
       g_free (f);
       return NULL;
     }
 
     dir = g_path_get_dirname (f);
-    f1 = g_build_filename (dir, link, NULL);
+    f1 = g_build_filename (dir, _link, NULL);
     g_free (dir);
     g_free (f);
     f = f1;
@@ -278,7 +278,7 @@ cd_cache_check_archive (CdCache *cache,
 #else
   struct archive *a;
   struct archive_entry *entry;
-  char *content_types[] = { NULL, NULL };
+  const char * content_types[] = { NULL, NULL };
   int r;
 
   a = archive_read_new();
@@ -296,15 +296,15 @@ cd_cache_check_archive (CdCache *cache,
     name = archive_entry_pathname (entry);
     if (g_ascii_strcasecmp (name, "VIDEO_TS/VIDEO_TS.IFO") == 0) {
       content_types[0] = "x-content/video-dvd";
-      cache->content_types = g_strdupv (content_types);
+      cache->content_types = g_strdupv ((gchar**) content_types);
       break;
     } else if (g_ascii_strcasecmp (name, "mpegav/AVSEQ01.DAT") == 0) {
       content_types[0] = "x-content/video-vcd";
-      cache->content_types = g_strdupv (content_types);
+      cache->content_types = g_strdupv ((gchar**) content_types);
       break;
     } else if (g_ascii_strcasecmp (name, "MPEG2/AVSEQ01.MPG") == 0) {
       content_types[0] = "x-content/video-svcd";
-      cache->content_types = g_strdupv (content_types);
+      cache->content_types = g_strdupv ((gchar**) content_types);
       break;
     }
     archive_read_data_skip(a);
@@ -811,6 +811,8 @@ totem_cd_detect_type_with_url (const char *device,
 	*mrl = g_strdup (cache->mountpoint);
     }
     break;
+  case MEDIA_TYPE_ERROR:
+  case MEDIA_TYPE_DVB:
   default:
     break;
   }
@@ -883,6 +885,8 @@ totem_cd_get_human_readable_name (TotemDiscMediaType type)
     return N_("DVD");
   case MEDIA_TYPE_DVB:
     return N_("Digital Television");
+  case MEDIA_TYPE_ERROR:
+  case MEDIA_TYPE_DATA:
   default:
     g_assert_not_reached ();
   }

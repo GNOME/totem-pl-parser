@@ -65,6 +65,7 @@ static void lex_convert (struct lexer * lexer, const char * buf, int size, enum 
     case UTF32LE: c = _X_LE_32 (buf); buf += 4; break;
     case UTF16BE: c = _X_BE_16 (buf); buf += 2; break;
     case UTF16LE: c = _X_LE_16 (buf); buf += 2; break;
+    default: /* erk! */ abort ();
     }
     if (!c)
       break; /* embed a NUL, get a truncated string */
@@ -95,12 +96,6 @@ void lexer_init(const char * buf, int size) {
   }
   static_lexer = lexer_init_r(buf, size);
 }
-
-static enum {
-  NORMAL,
-  DATA,
-  CDATA,
-} lex_mode = NORMAL;
 
 struct lexer *lexer_init_r(const char * buf, int size) {
   static const char boms[] = { 0xFF, 0xFE, 0, 0, 0xFE, 0xFF },
@@ -488,6 +483,7 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 	    lexer->lexbuf_pos++;
 	  }
 	  break;
+	case STATE_UNKNOWN:
 	default:
 	  lprintf("expected char \'%c\'\n", tok[tok_pos - 1]); /* FIX ME */
 	  return T_ERROR;
@@ -528,6 +524,10 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 	  lexer->lexbuf_pos++;
 	}
 	break;
+
+      default:
+        lprintf ("Unexpected mode: %u\n", lexer->lex_mode);
+        return T_ERROR;
       }
     }
     lprintf ("loop done tok_pos = %d, tok_size=%d, lexbuf_pos=%d, lexbuf_size=%d\n",
@@ -580,6 +580,11 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 	case STATE_IDENT:
 	  return T_DATA;
 	  break;
+	case STATE_UNKNOWN:
+	case STATE_T_COMMENT:
+	case STATE_T_TI_STOP:
+	case STATE_T_DASHDASH:
+	case STATE_T_C_STOP:
 	default:
 	  lprintf("unknown state, state=%d\n", state);
 	}

@@ -78,18 +78,18 @@ totem_pl_parser_save_pls (TotemPlParser    *parser,
         i = 0;
 
         while (valid) {
-                gchar *uri, *title, *relative;
+                gchar *uri, *entry_title, *relative;
                 GFile *file;
 
                 totem_pl_playlist_get (playlist, &iter,
                                        TOTEM_PL_PARSER_FIELD_URI, &uri,
-                                       TOTEM_PL_PARSER_FIELD_TITLE, &title,
+                                       TOTEM_PL_PARSER_FIELD_TITLE, &entry_title,
                                        NULL);
 
                 valid = totem_pl_playlist_iter_next (playlist, &iter);
 
                 if (!uri) {
-                        g_free (title);
+                        g_free (entry_title);
                         continue;
                 }
 
@@ -98,7 +98,7 @@ totem_pl_parser_save_pls (TotemPlParser    *parser,
                 if (totem_pl_parser_scheme_is_ignored (parser, file)) {
                         g_object_unref (file);
                         g_free (uri);
-                        g_free (title);
+                        g_free (entry_title);
                         continue;
                 }
 
@@ -114,18 +114,18 @@ totem_pl_parser_save_pls (TotemPlParser    *parser,
                 g_free (buf);
 
                 if (success == FALSE) {
-                        g_free (title);
+                        g_free (entry_title);
                         return FALSE;
                 }
 
-                if (!title) {
+                if (!entry_title) {
                         continue;
                 }
 
-                buf = g_strdup_printf ("Title%d=%s\n", i, title);
+                buf = g_strdup_printf ("Title%d=%s\n", i, entry_title);
                 success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
                 g_free (buf);
-                g_free (title);
+                g_free (entry_title);
 
                 if (success == FALSE) {
                         return FALSE;

@@ -44,7 +44,7 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 			 gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
-	char *contents, **lines, *title, *link, *version;
+	char *contents, **lines, *title, *url_link, *version;
 	gsize size;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
@@ -67,8 +67,8 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 	}
 	g_free (version);
 
-	link = totem_pl_parser_read_ini_line_string_with_sep (lines, "url", ":");
-	if (link == NULL) {
+	url_link = totem_pl_parser_read_ini_line_string_with_sep (lines, "url", ":");
+	if (url_link == NULL) {
 		g_strfreev (lines);
 		return retval;
 	}
@@ -77,9 +77,9 @@ totem_pl_parser_add_gvp (TotemPlParser *parser,
 
 	title = totem_pl_parser_read_ini_line_string_with_sep (lines, "title", ":");
 
-	totem_pl_parser_add_one_uri (parser, link, title);
+	totem_pl_parser_add_one_uri (parser, url_link, title);
 
-	g_free (link);
+	g_free (url_link);
 	g_free (title);
 	g_strfreev (lines);
 

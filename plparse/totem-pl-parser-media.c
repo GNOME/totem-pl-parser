@@ -242,15 +242,15 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 	g_free (uri);
 
 	if (type != MEDIA_TYPE_DATA && type != MEDIA_TYPE_ERROR && media_uri != NULL) {
-		char *basename = NULL, *fname;
+		char *base_name = NULL, *fname;
 
 		fname = g_file_get_path (file);
 		if (fname != NULL) {
-			basename = g_filename_display_basename (fname);
+			base_name = g_filename_display_basename (fname);
 			g_free (fname);
 		}
-		totem_pl_parser_add_one_uri (parser, media_uri, basename);
-		g_free (basename);
+		totem_pl_parser_add_one_uri (parser, media_uri, base_name);
+		g_free (base_name);
 		g_free (media_uri);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}

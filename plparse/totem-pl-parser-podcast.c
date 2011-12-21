@@ -674,14 +674,14 @@ totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 
 	/* Probably HTML, look for feed-url */
 	if (g_strstr_len (data, len, "feed-url") != NULL) {
-		char *uri;
-		uri = totem_pl_parser_parse_html (data, len, debug);
+		char *feed_uri;
+		feed_uri = totem_pl_parser_parse_html (data, len, debug);
 		if (debug)
-			g_print ("Found feed-url in HTML: '%s'\n", uri);
-		if (uri == NULL)
+			g_print ("Found feed-url in HTML: '%s'\n", feed_uri);
+		if (feed_uri == NULL)
 			return NULL;
-		ret = g_file_new_for_uri (uri);
-		g_free (uri);
+		ret = g_file_new_for_uri (feed_uri);
+		g_free (feed_uri);
 		return ret;
 	}
 

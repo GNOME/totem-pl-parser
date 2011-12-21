@@ -218,7 +218,7 @@ static xml_node_t *xml_parser_append_text (xml_node_t *node, xml_node_t *subnode
     } else {
       /* most recent node is not CDATA - add a sibling */
       subnode->next = new_xml_node ();
-      subnode->next->name = cdata;
+      subnode->next->name = (char*) cdata; /* we never free cdata */
       subnode->next->data = strdup (text);
       subnode = subnode->next;
     }
@@ -655,6 +655,8 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	break;
 
 
+      case STATE_Q_NODE_CLOSE:
+      case STATE_Q_TAG_TERM:
       default:
 	lprintf("error: unknown parser state, state=%d\n", state);
 	return -1;
@@ -680,7 +682,7 @@ static int xml_parser_get_node (xml_parser_t *xml_parser, xml_node_t *current_no
   char *pname_buffer = calloc(1, pname_buffer_size);
   char *nname_buffer = calloc(1, nname_buffer_size);
   char *root_names[MAX_RECURSION + 1];
-  root_names[0] = "";
+  root_names[0] = (char*) ""; /* xml_parser_get_node_internal() only frees names which it allocates */
 
   res = xml_parser_get_node_internal (xml_parser,
 			     &token_buffer, &token_buffer_size,
@@ -858,7 +860,7 @@ static void xml_parser_dump_node (const xml_node_t *node, int indent) {
     free (value);
     p = p->next;
     if (p) {
-      printf ("\n%*s", indent+2+l, "");
+      printf ("\n%*s", indent + 2 + (int) l, "");
     }
   }
   printf (">\n");

@@ -129,8 +129,6 @@ totem_pl_parser_add_quicktime_metalink (TotemPlParser *parser,
 		return totem_pl_parser_add_quicktime_rtsptext (parser, file, base_file, parse_data, data);
 	}
 	if (g_str_has_prefix (data, "SMILtext") != FALSE) {
-		char *contents;
-		gsize size;
 		TotemPlParserResult retval;
 
 		if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)

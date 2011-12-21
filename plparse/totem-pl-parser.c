@@ -167,7 +167,7 @@ typedef TotemPlParserResult (*PlaylistCallback) (TotemPlParser *parser, GFile *u
 #endif
 
 typedef struct {
-	char *mimetype;
+	const char *mimetype;
 #ifndef TOTEM_PL_PARSER_MINI
 	PlaylistCallback func;
 #endif
@@ -289,8 +289,6 @@ static void totem_pl_parser_base_class_finalize	(TotemPlParserClass *klass);
 static void totem_pl_parser_init       (TotemPlParser *parser);
 static void totem_pl_parser_finalize   (GObject *object);
 
-static void totem_pl_parser_init       (TotemPlParser      *self);
-static void totem_pl_parser_class_init (TotemPlParserClass *klass);
 static gpointer totem_pl_parser_parent_class = NULL;
 
 #define TOTEM_PL_PARSER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate))
@@ -1057,7 +1055,6 @@ totem_pl_parser_resolve_uri (GFile *base_gfile,
 		resolved_gfile = g_file_resolve_relative_path (base_parent_gfile, new_relative_uri);
 		g_object_unref (base_parent_gfile);
 		if (!resolved_gfile) {
-			char *base_uri;
 			base_uri = g_file_get_uri (base_gfile);
 			g_warning ("Failed to resolve relative URI '%s' against base '%s'\n", relative_uri, base_uri);
 			g_free (base_uri);
@@ -1079,7 +1076,6 @@ totem_pl_parser_resolve_uri (GFile *base_gfile,
 		resolved_gfile = g_file_resolve_relative_path (base_parent_gfile, relative_uri);
 		g_object_unref (base_parent_gfile);
 		if (!resolved_gfile) {
-			char *base_uri;
 			base_uri = g_file_get_uri (base_gfile);
 			g_warning ("Failed to resolve relative URI '%s' against base '%s'\n", relative_uri, base_uri);
 			g_free (base_uri);

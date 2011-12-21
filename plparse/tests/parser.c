@@ -199,7 +199,7 @@ static void
 test_videosite (void)
 {
 #ifdef HAVE_QUVI
-	char *uri = "http://www.youtube.com/watch?v=oMLCrzy9TEs";
+	const char *uri = "http://www.youtube.com/watch?v=oMLCrzy9TEs";
 
 	g_test_message ("Testing data parsing \"%s\"...", uri);
 	g_assert (totem_pl_parser_can_parse_from_uri (uri, TRUE));
@@ -892,6 +892,8 @@ test_parsing_real (TotemPlParser *pl, const char *uri)
 		case TOTEM_PL_PARSER_RESULT_IGNORED:
 			g_message ("Ignored URI \"%s\".", uri);
 			break;
+		case TOTEM_PL_PARSER_RESULT_SUCCESS:
+		case TOTEM_PL_PARSER_RESULT_CANCELLED:
 		default:
 			g_assert_not_reached ();
 			;;

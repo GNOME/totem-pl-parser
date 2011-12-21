@@ -44,10 +44,10 @@ test_disc (gconstpointer data)
 
 		mon = g_volume_monitor_get ();
 		for (or = list = g_volume_monitor_get_connected_drives (mon); list != NULL; list = list->next) {
-			char *device;
-			device = g_drive_get_identifier ((GDrive *) list->data, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-			g_message ("\t%s", device);
-			g_free (device);
+			char *device_id;
+			device_id = g_drive_get_identifier ((GDrive *) list->data, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+			g_message ("\t%s", device_id);
+			g_free (device_id);
 			g_object_unref (list->data);
 		}
 		if (or == NULL)
@@ -57,14 +57,14 @@ test_disc (gconstpointer data)
 
 		g_message ("List of volumes:");
 		for (or = list = g_volume_monitor_get_volumes (mon); list != NULL; list = list->next) {
-			char *device;
+			char *device_id;
 
-			device = g_volume_get_identifier ((GVolume *) list->data, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+			device_id = g_volume_get_identifier ((GVolume *) list->data, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
 			if (g_volume_get_mount ((GVolume *) list->data) == NULL)
-				g_message ("\t%s", device);
+				g_message ("\t%s", device_id);
 			else
-				g_message ("\t%s (mounted)", device);
-			g_free (device);
+				g_message ("\t%s (mounted)", device_id);
+			g_free (device_id);
 			g_object_unref (list->data);
 		}
 
