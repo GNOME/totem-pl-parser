@@ -62,6 +62,7 @@ IGNORE_HFILES=					\
 	totem-pl-parser-private.h		\
 	totem-pl-parser-qt.h			\
 	totem-pl-parser-smil.h			\
+	totem-pl-parser-videosite.h		\
 	totem-pl-parser-wm.h			\
 	totem-pl-parser-xspf.h			\
 	xmllexer.h				\

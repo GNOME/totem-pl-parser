@@ -364,6 +364,20 @@ void totem_pl_parser_parse_with_base_async (TotemPlParser *parser,
 
 TotemPlParser *totem_pl_parser_new (void);
 
+/**
+ * TotemPlParserMetadata:
+ *
+ * An alias for #GHashTable, used in the #TotemPlParser::entry-parsed and
+ * #TotemPlParser::playlist-started signals due to #GHashTable not being a
+ * boxed type when totem-pl-parser was originally written.
+ *
+ * The hash table is a mapping from field names (such as
+ * %TOTEM_PL_PARSER_FIELD_ALBUM) to their associated values.
+ *
+ * It is safe to use #GHashTable instead of #TotemPlParserMetadata everywhere.
+ */
+typedef GHashTable TotemPlParserMetadata;
+
 GType totem_pl_parser_metadata_get_type (void) G_GNUC_CONST;
 #define TOTEM_TYPE_PL_PARSER_METADATA (totem_pl_parser_metadata_get_type())
 
