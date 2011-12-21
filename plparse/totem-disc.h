@@ -49,7 +49,8 @@ typedef enum {
 } TotemDiscMediaType;
 
 /**
- * MEDIA_TYPE_NUM_TYPES: (skip):
+ * MEDIA_TYPE_NUM_TYPES: (skip)
+ *
  * Number of media types
  **/
 #define MEDIA_TYPE_NUM_TYPES MEDIA_TYPE_DVB + 1

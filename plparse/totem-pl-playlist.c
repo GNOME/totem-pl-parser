@@ -35,7 +35,7 @@
  * SECTION:totem-pl-playlist-iter
  * @short_description: playlist manipulation object
  * @stability: Stable
- * @totem-pl-playlist.h
+ * @include: totem-pl-playlist.h
  *
  * #TotemPlPlaylistIter refers to an element in a playlist and is designed
  * to bridge between application provided playlist widgets or objects,
