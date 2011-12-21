@@ -25,7 +25,7 @@ SCANGOBJ_OPTIONS=
 
 # Extra options to supply to gtkdoc-scan.
 # e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED" 
-SCAN_OPTIONS=
+SCAN_OPTIONS=--rebuild-types
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
@@ -90,6 +90,10 @@ GTKDOC_LIBS=$(top_builddir)/plparse/libtotem-plparser.la $(TOTEM_PLPARSER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make
+
+# This should be in gtk-doc.make, since we are calling gtkdoc-scan with
+# --rebuild-types
+SCANOBJ_FILES += $(DOC_MODULE).types
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
