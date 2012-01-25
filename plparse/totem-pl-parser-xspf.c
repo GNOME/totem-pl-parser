@@ -206,7 +206,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 {
 	xmlNodePtr node;
 	xmlChar *title, *uri, *image_uri, *artist, *album, *duration, *moreinfo;
-	xmlChar *download_uri, *id, *genre;
+	xmlChar *download_uri, *id, *genre, *filesize;
 	GFile *resolved;
 	char *resolved_uri;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
@@ -221,6 +221,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 	download_uri = NULL;
 	id = NULL;
 	genre = NULL;
+	filesize = NULL;
 
 	for (node = parent->children; node != NULL; node = node->next)
 	{
@@ -280,6 +281,19 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 					}
 				}
 			}
+		/* Parse Amazon AMZ extensions */
+		} else if (g_ascii_strcasecmp ((char *)node->name, "meta") == 0) {
+			xmlChar *rel;
+
+			rel = xmlGetProp (node, (const xmlChar *) "rel");
+			if (rel != NULL) {
+				if (g_ascii_strcasecmp ((char *) rel, "http://www.amazon.com/dmusic/primaryGenre") == 0)
+					genre = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+				else if (g_ascii_strcasecmp ((char *) rel, "http://www.amazon.com/dmusic/ASIN") == 0)
+					id = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+				else if (g_ascii_strcasecmp ((char *) rel, "http://www.amazon.com/dmusic/fileSize") == 0)
+					filesize = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+			}
 		} else if (g_ascii_strcasecmp ((char *)node->name, "album") == 0)
 			album = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 		else if (g_ascii_strcasecmp ((char *)node->name, "trackauth") == 0)
@@ -306,6 +320,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 				 TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI, download_uri,
 				 TOTEM_PL_PARSER_FIELD_ID, id,
 				 TOTEM_PL_PARSER_FIELD_GENRE, genre,
+				 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
 				 NULL);
 	g_object_unref (resolved);
 
