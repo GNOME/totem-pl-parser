@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist version="1" xmlns="http://xspf.org/ns/0/">
+<title>AmazonMP3 Purchase</title>
+<creator>AmazonMP3</creator>
+<extension application="http://www.amazon.com">
+  <meta rel="http://www.amazon.com/dmusic/softwareVersion"><ArrayOfProduct xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- en_us -->
+  <Product name="DownloadManager" platform="Win32" latestVersion="1.0.3" criticalSince="0.0.815" url="http://www.amazon.com/gp/dmusic/help/amd.html/ref=sv_dmusic_4/104-6316145-7055166">
+    <Download id="Win32" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/AmazonMP3Installer_1.0.3.exe" />
+  </Product>
+  <Product name="DownloadManager" platform="OSX" latestVersion="1.0.3" criticalSince="0.0.815" url="http://www.amazon.com/gp/dmusic/help/amd.html/ref=sv_dmusic_4/104-6316145-7055166">
+    <Download id="OSX" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/AmazonMP3Downloader_1.0.3.dmg" />
+  </Product>
+  <Product name="DownloadManager" platform="Linux" latestVersion="1.0.3" criticalSince="1.0.2" url="http://www.amazon.com/gp/dmusic/help/amd.html/ref=sv_dmusic_4/104-6316145-7055166">
+    <Download id="Ubuntu" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/amazonmp3_1.0.3~gutsy_i386.deb" />
+    <Download id="OpenSUSE" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/amazonmp3-1.0.3-1.opensuse.i586.rpm" />
+    <Download id="Debian" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/amazonmp3_1.0.3~etch_i386.deb" />
+    <Download id="Fedora" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/amazonmp3-1.0.3-1.fedora8.i386.rpm" />
+  </Product>
+  <!-- en_uk -->
+  <Product name="DownloadManager" platform="Win32-en_uk" latestVersion="1.0.4" criticalSince="0.0.815" url="http://www.amazon.co.uk/gp/dmusic/help/amd.html">
+    <Download id="Win32-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/AmazonMP3Installer_1.0.9.en_GB.exe" />
+    <PreProdDownload id="Win32-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/AmazonMP3Installer_1.0.9.en_GB.exe"/>
+  </Product>
+  <Product name="DownloadManager" platform="OSX-en_uk" latestVersion="1.0.13" criticalSince="1.0.13" url="http://www.amazon.co.uk/gp/dmusic/help/amd.html">
+    <Download id="OSX-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.13/AmazonMP3Downloader.dmg" />
+    <PreProdDownload id="OSX-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.13/AmazonMP3Downloader.dmg"/>
+  </Product>
+  <Product name="DownloadManager" platform="Linux-en_uk" latestVersion="1.0.4" criticalSince="0.0.815" url="http://www.amazon.co.uk/gp/dmusic/help/amd.html">
+    <Download id="Ubuntu-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3_1.0.9~ubuntu_i386.en_GB.deb" />
+    <Download id="OpenSUSE-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3-1.0.9-1.opensuse.i586.en_GB.rpm" />
+    <Download id="Debian-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3_1.0.9~debian_i386.en_GB.deb" />
+    <Download id="Fedora-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3-1.0.9-1.fedora.i686.en_GB.rpm" />
+    <PreProdDownload id="Ubuntu-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3_1.0.9~ubuntu_i386.en_GB.deb" />
+    <PreProdDownload id="OpenSUSE-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3-1.0.9-1.opensuse.i586.en_GB.rpm" />
+    <PreProdDownload id="Debian-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3_1.0.9~debian_i386.en_GB.deb" />
+    <PreProdDownload id="Fedora-en_uk" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/en_UK/1.0.9/amazonmp3-1.0.9-1.fedora.i686.en_GB.rpm" />
+  </Product>
+  <Product name="DownloadManager" platform="Android-en_uk" latestVersion="1.0.0" criticalSince="0.0.1" url="http://www.amazon.co.uk/mp3" otaEnabled="true">
+    <Download id="Android" url="http://www.amazon.co.uk/mp3"/>
+  </Product>
+  <!-- de_de -->
+  <Product name="DownloadManager" platform="Win32-de_de" latestVersion="1.0.5" criticalSince="0.0.815" url="http://www.amazon.de/gp/dmusic/help/amd.html">
+    <Download id="Win32-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/AmazonMP3Installer_1.0.9.de_DE.exe" />
+    <PreProdDownload id="Win32-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/AmazonMP3Installer_1.0.9.de_DE.exe"/>
+  </Product>
+  <Product name="DownloadManager" platform="OSX-de_de" latestVersion="1.0.13" criticalSince="1.0.13" url="http://www.amazon.de/gp/dmusic/help/amd.html">
+    <Download id="OSX-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.13/AmazonMP3Downloader.dmg" />
+    <PreProdDownload id="OSX-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.13/AmazonMP3Downloader.dmg"/>
+  </Product>
+  <Product name="DownloadManager" platform="Linux-de_de" latestVersion="1.0.5" criticalSince="0.0.815" url="http://www.amazon.de/gp/dmusic/help/amd.html">
+    <Download id="Ubuntu-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3_1.0.9~ubuntu_i386.de_DE.deb" />
+    <Download id="OpenSUSE-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3-1.0.9-1.opensuse.i586.de_DE.rpm" />
+    <Download id="Debian-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3_1.0.9~debian_i386.de_DE.deb" />
+    <Download id="Fedora-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3-1.0.9-1.fedora.i686.de_DE.rpm" />
+    <PreProdDownload id="Ubuntu-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3_1.0.9~ubuntu_i386.de_DE.deb" />
+    <PreProdDownload id="OpenSUSE-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3-1.0.9-1.opensuse.i586.de_DE.rpm" />
+    <PreProdDownload id="Debian-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3_1.0.9~debian_i386.de_DE.deb" />
+    <PreProdDownload id="Fedora-de_de" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/de_DE/1.0.9/amazonmp3-1.0.9-1.fedora.i686.de_DE.rpm" />
+  </Product>
+  <Product name="DownloadManager" platform="Android-de_de" latestVersion="1.0.0" criticalSince="0.0.1" url="http://www.amazon.de/mp3" otaEnabled="true">
+    <Download id="Android" url="http://www.amazon.co.uk/mp3"/>
+  </Product>
+  <!-- fr_fr -->
+  <Product name="DownloadManager" platform="Win32-fr_fr" latestVersion="1.0.6" criticalSince="0.0.0" url="http://www.amazon.fr/gp/dmusic/help/amd.html">
+    <Download id="Win32-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/AmazonMP3Installer_1.0.9.fr_FR.exe" />
+    <PreProdDownload id="Win32-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/AmazonMP3Installer_1.0.9.fr_FR.exe"/>
+  </Product>
+  <Product name="DownloadManager" platform="OSX-fr_fr" latestVersion="1.0.13" criticalSince="1.0.13" url="http://www.amazon.fr/gp/dmusic/help/amd.html">
+    <Download id="OSX-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.13/AmazonMP3Downloader.dmg" />
+    <PreProdDownload id="OSX-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.13/AmazonMP3Downloader.dmg"/>
+  </Product>
+  <Product name="DownloadManager" platform="Linux-fr_fr" latestVersion="1.0.6" criticalSince="0.0.0" url="http://www.amazon.fr/gp/dmusic/help/amd.html">
+    <Download id="Ubuntu-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3_1.0.9~ubuntu_i386.fr_FR.deb" />
+    <Download id="OpenSUSE-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3-1.0.9-1.opensuse.i586.fr_FR.rpm" />
+    <Download id="Debian-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3_1.0.9~debian_i386.fr_FR.deb" />
+    <Download id="Fedora-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3-1.0.9-1.fedora.i686.fr_FR.rpm" />
+    <PreProdDownload id="Ubuntu-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3_1.0.9~ubuntu_i386.fr_FR.deb" />
+    <PreProdDownload id="OpenSUSE-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3-1.0.9-1.opensuse.i586.fr_FR.rpm" />
+    <PreProdDownload id="Debian-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3_1.0.9~debian_i386.fr_FR.deb" />
+    <PreProdDownload id="Fedora-fr_fr" url="http://amazonm-002.vo.llnwd.net/u/d1/clients/fr_FR/1.0.9/amazonmp3-1.0.9-1.fedora.i686.fr_FR.rpm" />
+  </Product>
+  <Product name="DownloadManager" platform="Android-fr_fr" latestVersion="1.0.0" criticalSince="0.0.1" url="http://www.amazon.fr/mp3" otaEnabled="true">
+    <Download id="Android" url="http://www.amazon.co.uk/mp3"/>
+  </Product>
+</ArrayOfProduct></meta>
+</extension>
+<trackList>
+ <track>
+  <location>http://www.amazon.co.uk/gp/dmusic/media/log_action.mp3/ref=?ie=UTF8&amp;ASIN=B0062JKC1A&amp;TYPE=DigitalMusicFullLengthDownloadDM&amp;CustomerID=DEADBEEF&amp;URL=http%3A%2F%2Famazonm-529.vo.llnwd.net%2Fs%2Fd13%2F102434%2F102434089%2F225801529_256.mp3%3Fmarketplace%3D3%26httpHeader_Content-Type%3Daudio%252Fx-amzaudio%26httpHeader_Content-Disposition%3Dattachment%253B%2520filename%253D%252209%2520-%2520Dr%2520Funkenstein%2520%2528Original%2520Mix%2529.mp3%2522%26amd%3D1%26l%3D%26e%3D1327558602%26h%3Dfbb96673745bf0dc082bf09f20012f98</location>
+  <creator>Deadmau5</creator>
+  <album>Deadmau5 At Play [Explicit]</album>
+  <title>Dr Funkenstein (Original Mix)</title>
+  <image>https://images-na.ssl-images-amazon.com/images/I/51Rpt2SMYrL._SS75_.jpg</image>
+  <duration>433000</duration>
+  <trackNum>9</trackNum>
+  <meta rel="http://www.amazon.com/dmusic/ASIN">B0062JKC1A</meta>
+  <meta rel="http://www.amazon.com/dmusic/productTypeName">DOWNLOADABLE_MUSIC_TRACK</meta>
+  <meta rel="http://www.amazon.com/dmusic/primaryGenre">Dance &amp; DJ/House</meta>
+  <meta rel="http://www.amazon.com/dmusic/fileSize">12810958</meta>
+  <meta rel="http://www.amazon.com/dmusic/discNum">1</meta>
+  <meta rel="http://www.amazon.com/dmusic/albumASIN">B0062JK3P0</meta>
+  <meta rel="http://www.amazon.com/dmusic/albumPrimaryArtist">Deadmau5</meta>
+  <meta rel="http://www.amazon.com/dmusic/trackType">mp3</meta>
+ </track>
+ <track>
+  <location>http://www.amazon.co.uk/gp/dmusic/media/log_action.mp3/ref=?ie=UTF8&amp;ASIN=B004JVIOOA&amp;TYPE=DigitalMusicFullLengthDownloadDM&amp;CustomerID=DEADBEEF&amp;URL=http%3A%2F%2Famazonm-023.vo.llnwd.net%2Fs%2Fd2%2F100111%2F100111075%2F201369023_256.mp3%3Fmarketplace%3D3%26httpHeader_Content-Type%3Daudio%252Fx-amzaudio%26httpHeader_Content-Disposition%3Dattachment%253B%2520filename%253D%252202%2520-%2520I%2520Feel%2520Space.mp3%2522%26amd%3D1%26l%3D%26e%3D1327558602%26h%3Dcf01f586e10467524818715c6df28f8d</location>
+  <creator>Lindstrøm</creator>
+  <album>I Feel Space</album>
+  <title>I Feel Space</title>
+  <image>https://images-na.ssl-images-amazon.com/images/I/31%2BfHg6rupL._SS75_.jpg</image>
+  <duration>420000</duration>
+  <trackNum>2</trackNum>
+  <meta rel="http://www.amazon.com/dmusic/ASIN">B004JVIOOA</meta>
+  <meta rel="http://www.amazon.com/dmusic/productTypeName">DOWNLOADABLE_MUSIC_TRACK</meta>
+  <meta rel="http://www.amazon.com/dmusic/primaryGenre">Dance &amp; DJ/House</meta>
+  <meta rel="http://www.amazon.com/dmusic/fileSize">14277394</meta>
+  <meta rel="http://www.amazon.com/dmusic/discNum">1</meta>
+  <meta rel="http://www.amazon.com/dmusic/albumASIN">B004JVGJVU</meta>
+  <meta rel="http://www.amazon.com/dmusic/albumPrimaryArtist">Lindstrøm</meta>
+  <meta rel="http://www.amazon.com/dmusic/trackType">mp3</meta>
+ </track>
+</trackList>
+</playlist>

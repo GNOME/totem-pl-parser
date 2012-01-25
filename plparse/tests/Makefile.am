@@ -67,6 +67,7 @@ EXTRA_DIST =			\
 	O_G_Money_Snoop_Dogg.m3u \
 	empty-asx.asx		\
 	emptyplaylist.pls	\
+	decrypted-amazon-track.xspf	\
 	WMA9.1_98_quality_48khz_vbr_s.wma
 
 -include $(top_srcdir)/git.mk
