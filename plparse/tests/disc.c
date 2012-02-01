@@ -99,7 +99,7 @@ main (int argc, char *argv[])
 {
 	GError *error = NULL;
 	GOptionContext *context;
-	gchar **device_paths;
+	gchar **device_paths = NULL;
 	guint i = 0;
 	const GOptionEntry entries[] = {
 		{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &device_paths, "[Device paths...]", NULL },
