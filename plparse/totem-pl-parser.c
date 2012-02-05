@@ -394,7 +394,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	 * TotemPlParser::entry-parsed:
 	 * @parser: the object which received the signal
 	 * @uri: the URI of the entry parsed
-	 * @metadata: (type TotemPlParser.ParserMetadata): a #GHashTable of metadata relating to the entry added
+	 * @metadata: (type GHashTable) (element-type utf8 utf8): a #GHashTable of metadata relating to the entry added
 	 *
 	 * The ::entry-parsed signal is emitted when a new entry is parsed.
 	 */
@@ -410,7 +410,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 	 * TotemPlParser::playlist-started:
 	 * @parser: the object which received the signal
 	 * @uri: the URI of the new playlist started
-	 * @metadata: (type TotemPlParser.ParserMetadata): a #GHashTable of metadata relating to the playlist that
+	 * @metadata: (type GHashTable) (element-type utf8 utf8): a #GHashTable of metadata relating to the playlist that
 	 * started.
 	 *
 	 * The ::playlist-started signal is emitted when a playlist parsing has
@@ -2490,6 +2490,9 @@ totem_pl_parser_metadata_get_type (void)
 	static volatile gsize g_define_type_id__volatile = 0;
 	if (g_once_init_enter (&g_define_type_id__volatile))
 	{
+		/* NOTE: This is equivalent to the definition for GHashTable in gboxed.c, in that it uses the same copy/free functions.
+		 * This means that if we box a TotemPlParserMetadata inside a GValue, we can safely unbox it as a GHashTable (and vice-versa).
+		 * This means we can hide TotemPlParserMetadata from introspection, and just pretend it's actually been a GHashTable all along. */
 		GType g_define_type_id = g_boxed_type_register_static (
 		    g_intern_static_string ("TotemPlParserMetadata"),
 		    (GBoxedCopyFunc) g_hash_table_ref,

@@ -363,7 +363,7 @@ void totem_pl_parser_parse_with_base_async (TotemPlParser *parser,
 TotemPlParser *totem_pl_parser_new (void);
 
 /**
- * TotemPlParserMetadata:
+ * TotemPlParserMetadata: (skip)
  *
  * An alias for #GHashTable, used in the #TotemPlParser::entry-parsed and
  * #TotemPlParser::playlist-started signals due to #GHashTable not being a
