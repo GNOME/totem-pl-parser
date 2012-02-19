@@ -1,5 +1,14 @@
 New features and significant updates in version...
 
+3.2.0:
+- Add support AmazonMP3 download files
+- Update for glib deprecations
+- Update API for newer versions of quvi
+- Avoid quvi poking the remote files by verifying the URLs
+  it generates. No good for one-time links.
+- Fixes for warnings in introspection generation
+- Add more test cases
+
 2.32.6:
 * Fix parsing of remote RSS feeds
 * Add support for M4U/MXU playlists
