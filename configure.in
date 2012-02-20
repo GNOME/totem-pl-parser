@@ -152,6 +152,28 @@ if test "x$enable_libarchive" != "xno" ; then
 fi
 AC_SUBST(ARCHIVE, $ARCHIVE)
 
+################################
+# Checking libgcrypt dependency
+################################
+
+AM_PATH_LIBGCRYPT([],[have_libgcrypt=yes],[have_libgcrypt=no])
+
+ARCHIVE=""
+AC_ARG_ENABLE(libgcrypt,
+	      AS_HELP_STRING([--enable-libgcrypt],
+			     [Enable libgcrypt support (default is auto).]),
+			     [],
+			     [enable_libgcrypt=auto])
+if test "x$enable_libgcrypt" != "xno" ; then
+	if test "x$enable_libgcrypt" = "xyes" -a "x$have_libgcrypt" = "xno" ; then
+		AC_MSG_ERROR([Libgcrypt support requested but not available.])
+	fi
+	if test "x$have_libgcrypt" = "xyes" ; then
+		AC_DEFINE(HAVE_LIBGCRYPT, 1, [libgcrypt available in the system])
+		use_libgcrypt=yes
+	fi
+fi
+
 dnl Check for packages for building libtotem-plparser.la
 PKG_CHECK_MODULES(TOTEM_PLPARSER, [$pkg_modules])
 AC_SUBST(TOTEM_PLPARSER_CFLAGS)
@@ -212,6 +234,11 @@ if test "x$have_libarchive" = "xyes"; then
 	AC_MSG_NOTICE([** ISO detection with libarchive enabled])
 else
 	AC_MSG_NOTICE([   ISO detection with libarchive disabled])
+fi
+if test "x$use_libgcrypt" = "xyes"; then
+	AC_MSG_NOTICE([** AmazonAMZ decoding with libgcrypt enabled])
+else
+	AC_MSG_NOTICE([   AmazonAMZ decoding with libgcrypt disabled])
 fi
 
 echo "
