@@ -39,6 +39,11 @@ gboolean totem_pl_parser_save_xspf (TotemPlParser *parser,
                                     const char *title,
                                     GError **error);
 
+TotemPlParserResult totem_pl_parser_add_xspf_with_contents (TotemPlParser *parser,
+							    GFile *file,
+							    GFile *base_file,
+							    const char *contents,
+							    TotemPlParseData *parse_data);
 
 TotemPlParserResult totem_pl_parser_add_xspf (TotemPlParser *parser,
 					      GFile *file,

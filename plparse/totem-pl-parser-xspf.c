@@ -380,6 +380,49 @@ parse_xspf_entries (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 	return retval;
 }
 
+static gboolean
+is_xspf_doc (xmlDocPtr doc)
+{
+	/* If the document has no root, or no name */
+	if(!doc ||
+	   !doc->children ||
+	   !doc->children->name ||
+	   g_ascii_strcasecmp ((char *)doc->children->name, "playlist") != 0) {
+		return FALSE;
+	}
+	return TRUE;
+}
+
+TotemPlParserResult
+totem_pl_parser_add_xspf_with_contents (TotemPlParser *parser,
+					GFile *file,
+					GFile *base_file,
+					const char *contents,
+					TotemPlParseData *parse_data)
+{
+	xmlDocPtr doc;
+	xmlNodePtr node;
+	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
+
+	doc = xmlParseMemory (contents, strlen (contents));
+	if (doc == NULL)
+		doc = xmlRecoverMemory (contents, strlen (contents));
+
+	if (is_xspf_doc (doc) == FALSE) {
+		if (doc != NULL)
+			xmlFreeDoc(doc);
+		return TOTEM_PL_PARSER_RESULT_ERROR;
+	}
+
+	for (node = doc->children; node != NULL; node = node->next) {
+		if (parse_xspf_entries (parser, base_file, doc, node) != FALSE)
+			retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
+	}
+
+	xmlFreeDoc(doc);
+	return retval;
+}
+
 TotemPlParserResult
 totem_pl_parser_add_xspf (TotemPlParser *parser,
 			  GFile *file,
@@ -392,12 +435,7 @@ totem_pl_parser_add_xspf (TotemPlParser *parser,
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
 	doc = totem_pl_parser_parse_xml_file (file);
-
-	/* If the document has no root, or no name */
-	if(!doc || !doc->children
-			|| !doc->children->name
-			|| g_ascii_strcasecmp ((char *)doc->children->name,
-				"playlist") != 0) {
+	if (is_xspf_doc (doc) == FALSE) {
 		if (doc != NULL)
 			xmlFreeDoc(doc);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
