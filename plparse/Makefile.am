@@ -25,6 +25,7 @@ plparser_sources =				\
 	totem-pl-parser-builtins.c		\
 	totem-disc.c				\
 	totem-pl-parser.c			\
+	totem-pl-parser-amz.c			\
 	totem-pl-parser-lines.c			\
 	totem-pl-parser-media.c			\
 	totem-pl-parser-misc.c			\
@@ -58,6 +59,7 @@ dist_libtotem_plparser_la_SOURCES =		\
 	totem-pl-parser-xspf.h			\
 	totem-pl-playlist.c			\
 	totem-pl-playlist.h			\
+	totem-pl-parser-amz.h			\
 	xmlparser.h xmlparser.c			\
 	xmllexer.h xmllexer.c			\
 	bswap.h
@@ -114,6 +116,8 @@ libtotem_plparser_mini_la_SOURCES =		\
 	totem-pl-parser-wm.h			\
 	totem-pl-parser-xspf.c			\
 	totem-pl-parser-xspf.h			\
+	totem-pl-parser-amz.h			\
+	totem-pl-parser-amz.c			\
 	totem-pl-playlist.c			\
 	totem-pl-playlist.h
 

@@ -154,6 +154,7 @@
 #include "totem-pl-parser-misc.h"
 #include "totem-pl-parser-private.h"
 #include "totem-pl-parser-videosite.h"
+#include "totem-pl-parser-amz.h"
 
 #define READ_CHUNK_SIZE 8192
 #define RECURSE_LEVEL_MAX 4
@@ -206,6 +207,7 @@ static PlaylistTypes special_types[] = {
 	PLAYLIST_TYPE ("application/atom+xml", totem_pl_parser_add_atom, NULL, FALSE),
 	PLAYLIST_TYPE ("application/rss+xml", totem_pl_parser_add_rss, totem_pl_parser_is_rss, FALSE),
 	PLAYLIST_TYPE ("text/x-opml+xml", totem_pl_parser_add_opml, NULL, FALSE),
+	PLAYLIST_TYPE ("audio/x-amzxml", totem_pl_parser_add_amz, NULL, FALSE),
 #ifndef TOTEM_PL_PARSER_MINI
 	PLAYLIST_TYPE ("application/x-desktop", totem_pl_parser_add_desktop, NULL, TRUE),
 	PLAYLIST_TYPE ("application/x-gnome-app-info", totem_pl_parser_add_desktop, NULL, TRUE),
