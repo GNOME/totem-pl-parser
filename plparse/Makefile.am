@@ -75,6 +75,7 @@ libtotem_plparser_la_CPPFLAGS = \
 libtotem_plparser_la_CFLAGS = \
 	$(TOTEM_PLPARSER_CFLAGS)	\
 	$(ARCHIVE_CFLAGS)		\
+	$(LIBGCRYPT_CFLAGS)		\
 	$(DBUS_CFLAGS)			\
 	$(WARN_CFLAGS)			\
 	$(AM_CFLAGS)			\
@@ -86,6 +87,7 @@ libtotem_plparser_la_CFLAGS = \
 libtotem_plparser_la_LIBADD = \
 	$(TOTEM_PLPARSER_LIBS)			\
 	$(ARCHIVE_LIBS)				\
+	$(LIBGCRYPT_LIBS)			\
 	$(top_builddir)/lib/libtotem_glibc.la
 
 libtotem_plparser_la_LDFLAGS =			\
