@@ -721,6 +721,24 @@ test_parsing_xml_mixed_cdata (void)
 }
 
 static void
+test_parsing_rss_id (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "rss.xml");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_ID), ==, "http://example.com/video1/from-rss");
+	g_free (uri);
+}
+
+static void
+test_parsing_rss_link (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "rss.xml");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "http://www.guardian.co.uk/technology/audio/2011/may/03/tech-weekly-art-love-bin-laden");
+	g_free (uri);
+}
+
+static void
 test_parsing_not_asx_playlist (void)
 {
 	char *uri;
@@ -1055,6 +1073,8 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_content_type", test_parsing_content_type);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
+		g_test_add_func ("/parser/parsing/rss_id", test_parsing_rss_id);
+		g_test_add_func ("/parser/parsing/rss_link", test_parsing_rss_link);
 		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
 		g_test_add_func ("/parser/parsing/not_really_php", test_parsing_not_really_php);
 		g_test_add_func ("/parser/parsing/not_really_php_but_html_instead", test_parsing_not_really_php_but_html_instead);

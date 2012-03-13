@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+    <title>Title</title>
+    <link>http://example.com</link>
+
+    <item>
+      <title>Video #1</title>
+      <link>http://www.guardian.co.uk/technology/audio/2011/may/03/tech-weekly-art-love-bin-laden</link>
+      <guid>http://example.com/video1/from-rss</guid>
+      <description>Video #1 description</description>
+    </item>
+    </channel>
+</rss>

@@ -33,6 +33,7 @@
 
 #include "totem-pl-parser-mini.h"
 #include "totem-pl-parser-podcast.h"
+#include "totem-pl-parser-videosite.h"
 #include "totem-pl-parser-private.h"
 
 #define RSS_NEEDLE "<rss "
@@ -102,11 +103,11 @@ static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
 	const char *title, *uri, *description, *author;
-	const char *pub_date, *duration, *filesize, *content_type;
+	const char *pub_date, *duration, *filesize, *content_type, *id;
 	xml_node_t *node;
 
 	title = uri = description = author = content_type = NULL;
-	pub_date = duration = filesize = NULL;
+	pub_date = duration = filesize = id = NULL;
 
 	for (node = parent->child; node != NULL; node = node->next) {
 		if (node->name == NULL)
@@ -118,6 +119,8 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			uri = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "pubDate") == 0) {
 			pub_date = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "guid") == 0) {
+			id = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "description") == 0
 			   || g_ascii_strcasecmp (node->name, "itunes:summary") == 0) {
 			description = node->data;
@@ -161,12 +164,16 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			tmp = xml_parser_get_property (node, "length");
 			if (tmp != NULL)
 				filesize = tmp;
+		} else if (g_ascii_strcasecmp (node->name, "link") == 0 &&
+			   totem_pl_parser_is_videosite (node->data, FALSE) != FALSE) {
+			uri = node->data;
 		}
 	}
 
 	if (uri != NULL) {
 		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_URI, uri,
+					 TOTEM_PL_PARSER_FIELD_ID, id,
 					 TOTEM_PL_PARSER_FIELD_TITLE, title,
 					 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
 					 TOTEM_PL_PARSER_FIELD_DESCRIPTION, description,
