@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+3.3.92:
+- Fix introspection of TotemPlParserMetadata
+- Fix compilation with libgcrypt
+- Handle RSS feeds for video sites
+
 3.2.0:
 - Add support AmazonMP3 download files
 - Update for glib deprecations
