@@ -2,49 +2,51 @@
 # Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the totem package.
 # Evgeni Boevski <linkej@yahoo.com>, 2003.
-# Alexander Shopov <ash@contact.bg>, 2004, 2005, 2007, 2008, 2009.
-# Vladimir Petkov <vpetkov@i-space.org> 2006, 2007.
+# Alexander Shopov <ash@kambanaria.org>, 2004, 2005, 2007, 2008, 2009.
+# Vladimir Petkov <kaladan@gmail.com> 2006, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem-pl-parser trunk\n"
+"Project-Id-Version: totem-pl-parser master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-10 06:27+0200\n"
-"PO-Revision-Date: 2009-02-10 06:27+0200\n"
+"POT-Creation-Date: 2012-03-23 06:41+0200\n"
+"PO-Revision-Date: 2012-03-23 06:42+0200\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
+"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:290
+#: ../plparse/totem-disc.c:315 ../plparse/totem-disc.c:499
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Неуспех при монтирането на %s."
 
-#: ../plparse/totem-disc.c:387
+#: ../plparse/totem-disc.c:388
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "В устройство „%s“ няма носител."
 
-#: ../plparse/totem-disc.c:441
+#: ../plparse/totem-disc.c:442
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Проверете има ли носител в устройството."
 
-#: ../plparse/totem-disc.c:880
+#: ../plparse/totem-disc.c:881
 msgid "Audio CD"
 msgstr "Аудио CD"
 
-#: ../plparse/totem-disc.c:882
+#: ../plparse/totem-disc.c:883
 msgid "Video CD"
 msgstr "Видео CD"
 
-#: ../plparse/totem-disc.c:884
+#: ../plparse/totem-disc.c:885
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:886
+#: ../plparse/totem-disc.c:887
 msgid "Digital Television"
 msgstr "Цифрова телевизия"
