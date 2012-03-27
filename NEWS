@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+3.4.0:
+- Translation updates
+
 3.3.92:
 - Fix introspection of TotemPlParserMetadata
 - Fix compilation with libgcrypt
