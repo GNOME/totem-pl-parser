@@ -94,6 +94,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	quvi_setopt(handle, QUVIOPT_NOVERIFY, TRUE);
+	quvi_setopt(handle, QUVIOPT_FORMAT, "best");
 
 	uri = g_file_get_uri (file);
 	rc = quvi_parse(handle, uri, &v);
