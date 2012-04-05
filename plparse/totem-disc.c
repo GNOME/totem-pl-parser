@@ -352,8 +352,16 @@ cd_cache_new (const char *dev,
     local = g_strdup (dev);
     file = g_file_new_for_path (dev);
   } else {
-    file = g_file_new_for_commandline_arg (dev);
-    local = g_file_get_path (file);
+    if (g_str_has_prefix (dev, "archive://")) {
+      char *orig_uri;
+      orig_uri = unescape_archive_name (dev);
+      file = g_file_new_for_uri (orig_uri);
+      g_free (orig_uri);
+      local = g_file_get_path (file);
+    } else {
+      file = g_file_new_for_commandline_arg (dev);
+      local = g_file_get_path (file);
+    }
   }
 
   if (local == NULL) {
