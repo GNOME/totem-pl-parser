@@ -316,7 +316,7 @@ totem_pl_parser_add_block (TotemPlParser *parser,
 		DEBUG(file, g_print ("Couldn't get CD type for URI '%s': %s\n", uri, err->message));
 		g_error_free (err);
 	}
-	if (type == MEDIA_TYPE_DATA || media_uri == NULL)
+	if (media_uri == NULL)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	else if (type == MEDIA_TYPE_ERROR)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
