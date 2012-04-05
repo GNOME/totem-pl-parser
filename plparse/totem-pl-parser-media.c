@@ -238,6 +238,7 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 	gboolean unhandled;
 
 	uri = g_file_get_uri (file);
+	media_uri = NULL;
 	type = totem_cd_detect_type_from_dir (uri, &media_uri, NULL);
 	g_free (uri);
 
@@ -254,6 +255,7 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 		g_free (media_uri);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
+	g_free (media_uri);
 
 	if (totem_pl_parser_load_directory (file, &list, &unhandled) == FALSE) {
 		if (unhandled != FALSE)
