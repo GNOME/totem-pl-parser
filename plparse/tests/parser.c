@@ -566,7 +566,7 @@ static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
-		g_assert (simple_parser_test ("file:///home/hadess/Movies") == TOTEM_PL_PARSER_RESULT_SUCCESS);
+		g_assert (simple_parser_test ("file:///home/hadess/Videos") == TOTEM_PL_PARSER_RESULT_SUCCESS);
 }
 
 static void
