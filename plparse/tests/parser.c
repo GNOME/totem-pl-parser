@@ -914,8 +914,10 @@ test_parsing_real (TotemPlParser *pl, const char *uri)
 		case TOTEM_PL_PARSER_RESULT_IGNORED:
 			g_message ("Ignored URI \"%s\".", uri);
 			break;
-		case TOTEM_PL_PARSER_RESULT_SUCCESS:
 		case TOTEM_PL_PARSER_RESULT_CANCELLED:
+			g_message ("Cancelled URI \"%s\".", uri);
+			break;
+		case TOTEM_PL_PARSER_RESULT_SUCCESS:
 		default:
 			g_assert_not_reached ();
 			;;
