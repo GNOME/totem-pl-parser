@@ -2013,7 +2013,7 @@ parse_thread (GSimpleAsyncResult *result, GObject *object, GCancellable *cancell
  * @user_data: data to pass to the @callback function
  *
  * Starts asynchronous parsing of a playlist given by the absolute URI @uri, using @base to resolve relative paths where appropriate.
- * @self and @uri are both reffed/copied when this function is called, so can safely be freed after this function returns.
+ * @parser and @uri are both reffed/copied when this function is called, so can safely be freed after this function returns.
  *
  * For more details, see totem_pl_parser_parse_with_base(), which is the synchronous version of this function.
  *
@@ -2104,7 +2104,7 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *uri,
  * @callback: (allow-none): a #GAsyncReadyCallback to call when parsing is finished
  * @user_data: data to pass to the @callback function
  *
- * Starts asynchronous parsing of a playlist given by the absolute URI @uri. @self and @uri are both reffed/copied
+ * Starts asynchronous parsing of a playlist given by the absolute URI @uri. @parser and @uri are both reffed/copied
  * when this function is called, so can safely be freed after this function returns.
  *
  * For more details, see totem_pl_parser_parse(), which is the synchronous version of this function.
