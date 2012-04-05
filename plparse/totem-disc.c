@@ -309,12 +309,7 @@ cd_cache_check_archive (CdCache *cache,
     }
     archive_read_data_skip(a);
   }
-  r = archive_read_finish(a);
-  if (r != ARCHIVE_OK) {
-    g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
-		 _("Failed to mount %s."), filename);
-    return FALSE;
-  }
+  archive_read_finish(a);
   return TRUE;
 #endif
 }
