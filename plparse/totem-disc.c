@@ -314,6 +314,29 @@ cd_cache_check_archive (CdCache *cache,
 #endif
 }
 
+static char *
+unescape_archive_name (const char *orig_uri)
+{
+  char *uri;
+  guint len;
+  char *escape1, *escape2;
+
+  uri = g_strdup (orig_uri);
+
+  /* Remove trailing slash */
+  len = strlen (uri);
+  if (uri[len - 1] == '/')
+    uri[len - 1] = '\0';
+
+  /* Unescape the path */
+  escape1 = g_uri_unescape_string (uri + strlen ("archive://"), NULL);
+  escape2 = g_uri_unescape_string (escape1, NULL);
+  g_free (escape1);
+  g_free (uri);
+
+  return escape2;
+}
+
 static CdCache *
 cd_cache_new (const char *dev,
 	      GError     **error)
