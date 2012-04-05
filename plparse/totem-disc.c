@@ -736,7 +736,7 @@ totem_cd_detect_type_from_dir (const char *dir, char **mrl, GError **error)
   }
 
   if (type == MEDIA_TYPE_DVD) {
-    *mrl = totem_cd_mrl_from_type ("dvd", cache->mountpoint);
+    *mrl = totem_cd_mrl_from_type ("dvd", cache->mountpoint ? cache->mountpoint : cache->device);
   } else if (type == MEDIA_TYPE_VCD) {
     *mrl = totem_cd_mrl_from_type ("vcd", cache->mountpoint);
   }
