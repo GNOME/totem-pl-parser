@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+3.4.1:
+- archive:// URI fixes
+- Use the best available format for video sites
+- Test case updates
+
 3.4.0:
 - Translation updates
 
