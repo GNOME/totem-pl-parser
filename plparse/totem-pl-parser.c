@@ -2383,8 +2383,7 @@ totem_pl_parser_mime_type_from_data (gconstpointer data, int len)
  * @len: the length of data to check
  * @debug: %TRUE if debug statements should be printed
  *
- * Checks if the first @len bytes of @data can be parsed, using the same checks
- * and precedences as totem_pl_parser_ignore().
+ * Checks if the first @len bytes of @data can be parsed.
  *
  * Return value: %TRUE if @data can be parsed
  **/

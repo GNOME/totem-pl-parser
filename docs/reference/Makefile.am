@@ -55,7 +55,6 @@ IGNORE_HFILES=					\
 	totem-pl-parser-lines.h			\
 	totemplparser-marshal.h			\
 	totem-pl-parser-media.h			\
-	totem-pl-parser-mini.h			\
 	totem-pl-parser-misc.h			\
 	totem-pl-parser-pla.h			\
 	totem-pl-parser-pls.h			\
