@@ -1271,6 +1271,7 @@ totem_pl_parser_init (TotemPlParser *parser)
 {
 	parser->priv = G_TYPE_INSTANCE_GET_PRIVATE (parser, TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate);
 	parser->priv->main_thread = g_thread_self ();
+	g_mutex_init (&parser->priv->ignore_mutex);
 }
 
 static void
