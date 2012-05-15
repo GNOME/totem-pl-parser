@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+3.4.2:
+- Add totem-pl-parser-mini API documentation
+- Fix possible crash with newer versions of GLib/GThread
+
 3.4.1:
 - archive:// URI fixes
 - Use the best available format for video sites
