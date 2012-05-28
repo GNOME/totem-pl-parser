@@ -99,11 +99,12 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	uri = g_file_get_uri (file);
 	rc = quvi_parse(handle, uri, &v);
 	if (rc != QUVI_OK) {
-		if (totem_pl_parser_is_debugging_enabled (parser)) {
+		if (totem_pl_parser_is_debugging_enabled (parser))
 			g_print ("quvi_parse for '%s' returned %d\n", uri, rc);
-		}
 		g_free (uri);
 		quvi_close (&handle);
+		if (rc == QUVI_NOSUPPORT)
+			return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
