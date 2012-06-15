@@ -1827,7 +1827,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	}
 
 	/* We're much more likely to have an MP2T file instead */
-	if (g_strcmp0 (mimetype, "application/x-linguist") == 0) {
+	if (g_strcmp0 (mimetype, "application/x-linguist") == 0 ||
+	    g_strcmp0 (mimetype, "text/vnd.trolltech.linguist") == 0) {
 		g_free (mimetype);
 		mimetype = g_strdup ("video/mp2t");
 	}
