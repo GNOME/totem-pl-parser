@@ -1826,6 +1826,12 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		g_free (uri);
 	}
 
+	/* We're much more likely to have an MP2T file instead */
+	if (g_strcmp0 (mimetype, "application/x-linguist") == 0) {
+		g_free (mimetype);
+		mimetype = g_strdup ("video/mp2t");
+	}
+
 	DEBUG(file, g_print ("_get_mime_type_for_name for '%s' returned '%s'\n", uri, mimetype));
 	if (mimetype == NULL || strcmp (UNKNOWN_TYPE, mimetype) == 0
 	    || (g_file_is_native (file) && g_content_type_is_a (mimetype, "text/plain") != FALSE)) {
