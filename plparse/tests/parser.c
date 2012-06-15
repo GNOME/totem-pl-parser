@@ -668,6 +668,17 @@ test_parsing_3gpp_not_ignored (void)
 }
 
 static void
+test_parsing_ts_not_ignored (void)
+{
+	char *uri;
+
+	uri = get_relative_uri (TEST_SRCDIR "dont-ignore-mp2t.ts");
+	g_test_bug ("678163");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	g_free (uri);
+}
+
+static void
 test_parsing_mp4_is_flv (void)
 {
 	char *uri;
@@ -1066,6 +1077,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/broken_asx", test_parsing_broken_asx);
 		g_test_add_func ("/parser/parsing/404_error", test_parsing_404_error);
 		g_test_add_func ("/parser/parsing/3gpp_not_ignored", test_parsing_3gpp_not_ignored);
+		g_test_add_func ("/parser/parsing/parsing_ts_not_ignored", test_parsing_ts_not_ignored);
 		g_test_add_func ("/parser/parsing/mp4_is_flv", test_parsing_mp4_is_flv);
 		g_test_add_func ("/parser/parsing/out_of_order_asx", test_parsing_out_of_order_asx);
 		g_test_add_func ("/parser/parsing/xml_head_comments", test_parsing_xml_head_comments);

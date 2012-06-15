@@ -69,6 +69,7 @@ EXTRA_DIST =			\
 	emptyplaylist.pls	\
 	decrypted-amazon-track.xspf	\
 	WMA9.1_98_quality_48khz_vbr_s.wma \
-	rss.xml
+	rss.xml			\
+	dont-ignore-mp2t.ts
 
 -include $(top_srcdir)/git.mk
