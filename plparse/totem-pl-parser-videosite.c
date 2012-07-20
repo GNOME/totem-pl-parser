@@ -109,7 +109,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	}
 
 	getprop (QUVIPROP_MEDIAURL, video_uri);
-	if (quvi_getprop (v, QUVIPROP_MEDIACONTENTLENGTH, &length) == QUVI_OK)
+	if (quvi_getprop (v, QUVIPROP_MEDIACONTENTLENGTH, &length) == QUVI_OK && length)
 		length_str = g_strdup_printf ("%f", length);
 	else
 		length_str = NULL;
