@@ -99,6 +99,21 @@ totem_pl_parser_is_xml_feed (const char *data, gsize len)
 
 #ifndef TOTEM_PL_PARSER_MINI
 
+static gboolean
+is_image (const char *url)
+{
+	char *content_type;
+	gboolean retval = FALSE;
+
+	content_type = g_content_type_guess (url, NULL, 0, NULL);
+	if (content_type == NULL)
+		return FALSE;
+	if (g_content_type_is_a (content_type, "image/*"))
+		retval = TRUE;
+	g_free (content_type);
+	return retval;
+}
+
 static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
@@ -157,7 +172,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			const char *tmp;
 
 			tmp = xml_parser_get_property (node, "url");
-			if (tmp != NULL)
+			if (tmp != NULL && is_image (tmp) == FALSE)
 				uri = tmp;
 			else
 				continue;

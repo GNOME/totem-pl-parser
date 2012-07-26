@@ -428,6 +428,19 @@ parser_test_get_playlist_uri (const char *uri)
 }
 
 static void
+test_image_link (void)
+{
+#ifdef HAVE_QUVI
+	char *uri;
+
+	/* From http://www.101greatgoals.com/feed/ */
+	uri = get_relative_uri (TEST_SRCDIR "empty-feed.xml");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, NULL);
+	g_free (uri);
+#endif
+}
+
+static void
 test_itms_parsing (void)
 {
 	if (http_supported == FALSE)
@@ -1070,6 +1083,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/videosite", test_videosite);
+		g_test_add_func ("/parser/image_link", test_image_link);
 		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);
 		g_test_add_func ("/parser/compressed_content_encoding", test_compressed_content_encoding);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
