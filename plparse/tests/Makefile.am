@@ -71,6 +71,7 @@ EXTRA_DIST =			\
 	WMA9.1_98_quality_48khz_vbr_s.wma \
 	rss.xml			\
 	dont-ignore-mp2t.ts	\
-	empty-feed.xml
+	empty-feed.xml		\
+	no-url-podcast.xml
 
 -include $(top_srcdir)/git.mk

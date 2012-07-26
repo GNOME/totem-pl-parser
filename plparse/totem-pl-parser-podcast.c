@@ -185,6 +185,11 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 		}
 	}
 
+	if (id != NULL &&
+	    uri == NULL &&
+	    totem_pl_parser_is_videosite (id, FALSE) != FALSE)
+		uri = id;
+
 	if (uri != NULL) {
 		totem_pl_parser_add_uri (parser,
 					 TOTEM_PL_PARSER_FIELD_URI, uri,

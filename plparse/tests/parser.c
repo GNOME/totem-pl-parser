@@ -441,6 +441,19 @@ test_image_link (void)
 }
 
 static void
+test_no_url_podcast (void)
+{
+#ifdef HAVE_QUVI
+	char *uri;
+
+	/* From http://feeds.guardian.co.uk/theguardian/football/rss */
+	uri = get_relative_uri (TEST_SRCDIR "no-url-podcast.xml");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "http://www.guardian.co.uk/sport/video/2012/jul/26/london-2012-north-korea-flag-video");
+	g_free (uri);
+#endif
+}
+
+static void
 test_itms_parsing (void)
 {
 	if (http_supported == FALSE)
@@ -1084,6 +1097,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/image_link", test_image_link);
+		g_test_add_func ("/parser/no_url_podcast", test_no_url_podcast);
 		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);
 		g_test_add_func ("/parser/compressed_content_encoding", test_compressed_content_encoding);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
