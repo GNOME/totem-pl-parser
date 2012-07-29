@@ -986,7 +986,7 @@ is_probably_dir (const char *filename)
 	short_name = relative_uri_remove_query (filename, NULL);
 	if (short_name == NULL)
 		short_name = g_strdup (filename);
-	content_type = g_content_type_guess (short_name, NULL, -1, NULL);
+	content_type = g_content_type_guess (short_name, NULL, 0, NULL);
 	if (g_content_type_is_unknown (content_type) != FALSE) {
 		guint i;
 		for (i = 0; i < G_N_ELEMENTS (suffixes); i++) {
