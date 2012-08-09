@@ -20,7 +20,7 @@ EXTRA_DIST =			\
 CLEANFILES = totem-plparser.pc
 
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update \
-		 gnome-doc-utils.make gtk-doc.make
+		 gtk-doc.make
 
 MAINTAINERCLEANFILES = \
 	INSTALL \
