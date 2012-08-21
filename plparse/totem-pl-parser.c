@@ -2448,8 +2448,11 @@ totem_pl_parser_can_parse_from_data (const char *data,
  * @filename: the file to check for parsability
  * @debug: %TRUE if debug statements should be printed
  *
- * Checks if the file can be parsed, using the same checks and precedences
- * as totem_pl_parser_ignore().
+ * Checks if the file can be parsed. Files can be parsed if:
+ * <itemizedlist>
+ *  <listitem><para>they have a special mimetype, or</para></listitem>
+ *  <listitem><para>they have a mimetype which could be a video or a playlist.</para></listitem>
+ * </itemizedlist>
  *
  * Return value: %TRUE if @filename can be parsed
  **/
