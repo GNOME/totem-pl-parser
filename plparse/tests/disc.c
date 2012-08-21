@@ -124,7 +124,7 @@ main (int argc, char *argv[])
 	if (device_paths == NULL) {
 		/* Don't want to error during check on some other machines */
 		if (g_strcmp0 (g_get_user_name (), "hadess") != 0)
-			return;
+			return 0;
 
 		/* We need to handle log messages produced by g_message so they're interpreted correctly by the GTester framework */
 		g_log_set_handler (NULL, G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG, log_handler, NULL);
