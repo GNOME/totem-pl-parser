@@ -146,34 +146,26 @@ libtotem_plparser_mini_la_LDFLAGS =			\
 	-no-undefined					\
 	$(AM_LDFLAGS)
 
-totem-pl-parser-builtins.h: stamp-totem-pl-parser-builtins.h
-	@true
-
-stamp-totem-pl-parser-builtins.h: totem-pl-parser.h totem-disc.h Makefile
-	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) \
+totem-pl-parser-builtins.h: totem-pl-parser.h totem-disc.h
+	$(AM_V_GEN) ($(GLIB_MKENUMS) \
 			--fhead "#ifndef __TOTEM_PL_PARSER_BUILTINS_H__\n#define __TOTEM_PL_PARSER_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 			--fprod "/* enumerations from \"@filename@\" */\n" \
 			--vhead "GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define TOTEM_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
-			--ftail "G_END_DECLS\n\n#endif /* __TOTEM_PL_PARSER_BUILTINS_H__ */" totem-pl-parser.h totem-disc.h) >> xgen-gtbh \
-	&& (cmp -s xgen-gtbh totem-pl-parser-builtins.h || cp xgen-gtbh totem-pl-parser-builtins.h ) \
-	&& rm -f xgen-gtbh \
-	&& echo timestamp > $(@F)
+			--ftail "G_END_DECLS\n\n#endif /* __TOTEM_PL_PARSER_BUILTINS_H__ */" $^ > xgen-$(@F) \
+		&& mv -f xgen-$(@F) $@)
 
-totem-pl-parser-builtins.c: totem-pl-parser.h totem-disc.h Makefile totem-pl-parser-builtins.h
-	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) \
+totem-pl-parser-builtins.c: totem-pl-parser.h totem-disc.h totem-pl-parser-builtins.h
+	$(AM_V_GEN) ($(GLIB_MKENUMS) \
 			--fhead "#include \"totem-pl-parser.h\"\n#include \"totem-disc.h\"\n#include \"totem-pl-parser-builtins.h\"" \
 			--fprod "\n/* enumerations from \"@filename@\" */" \
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
 			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
-			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		totem-pl-parser.h totem-disc.h) > xgen-gtbc \
-	&& cp xgen-gtbc totem-pl-parser-builtins.c  \
-	&& rm -f xgen-gtbc
+			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" $^ > xgen-$(@F) \
+		&& mv -f xgen-$(@F) $@)
 
 CLEANFILES = \
 	totem-pl-parser-builtins.h \
 	totem-pl-parser-builtins.c \
-	stamp-totem-pl-parser-builtins.h \
 	$(BUILT_SOURCES)
 
 DISTCLEANFILES = $(CLEANFILES)
