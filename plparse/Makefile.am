@@ -78,6 +78,7 @@ libtotem_plparser_la_CFLAGS = \
 	$(LIBGCRYPT_CFLAGS)		\
 	$(DBUS_CFLAGS)			\
 	$(WARN_CFLAGS)			\
+	$(CODE_COVERAGE_CFLAGS)		\
 	$(AM_CFLAGS)			\
 	-D_FILE_OFFSET_BITS=64		\
 	-D_LARGEFILE64_SOURCE		\
@@ -94,6 +95,7 @@ libtotem_plparser_la_LDFLAGS =			\
 	-version-info $(PLPARSER_LT_VERSION)	\
 	-export-symbols $(srcdir)/plparser.symbols \
 	-no-undefined				\
+	$(CODE_COVERAGE_LDFLAGS)		\
 	$(AM_LDFLAGS)
 
 libtotem_plparser_mini_la_SOURCES =		\
@@ -134,6 +136,7 @@ libtotem_plparser_mini_la_CPPFLAGS = \
 libtotem_plparser_mini_la_CFLAGS = \
 	$(TOTEM_PLPARSER_MINI_CFLAGS)	\
 	$(WARN_CFLAGS)			\
+	$(CODE_COVERAGE_CFLAGS)		\
 	$(AM_CFLAGS)
 
 libtotem_plparser_mini_la_LIBADD =		\
@@ -144,6 +147,7 @@ libtotem_plparser_mini_la_LDFLAGS =			\
 	-version-info $(PLPARSER_LT_VERSION)		\
 	-export-symbols $(srcdir)/plparser-mini.symbols	\
 	-no-undefined					\
+	$(CODE_COVERAGE_LDFLAGS)			\
 	$(AM_LDFLAGS)
 
 totem-pl-parser-builtins.h: totem-pl-parser.h totem-disc.h
@@ -213,5 +217,7 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
+
+@GNOME_CODE_COVERAGE_RULES@
 
 -include $(top_srcdir)/git.mk
