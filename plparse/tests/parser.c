@@ -92,8 +92,10 @@ test_resolution_real (const char *base_uri,
 static void
 test_resolution (void)
 {
-	if (http_supported == FALSE)
+	if (http_supported == FALSE) {
 		g_test_message ("HTTP support required to test resolution");
+		return;
+	}
 
 	/* http://bugzilla.gnome.org/show_bug.cgi?id=555417 */
 	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
@@ -227,8 +229,10 @@ test_parsability (void)
 		{ NULL,  FALSE, FALSE }
 	};
 
-	if (http_supported == FALSE)
+	if (http_supported == FALSE) {
 		g_test_message ("HTTP support required to test parseability");
+		return;
+	}
 
 	/* Loop through the list, downloading the URIs and checking for parsability */
 	for (i = 0; files[i].uri != NULL; ++i) {
@@ -456,8 +460,10 @@ test_no_url_podcast (void)
 static void
 test_itms_parsing (void)
 {
-	if (http_supported == FALSE)
+	if (http_supported == FALSE) {
 		g_test_message ("HTTP support required to test ITMS");
+		return;
+	}
 
 	g_assert_cmpstr (parser_test_get_playlist_uri ("itms://itunes.apple.com/gb/podcast/best-of-chris-moyles-enhanced/id142102961?ign-mpt=uo%3D4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/moylesen/rss.xml");
 	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/r1mix/rss.xml");
@@ -611,8 +617,10 @@ test_parsing_broken_asx (void)
 	if (!g_test_slow ())
 		return;
 
-	if (http_supported == FALSE)
+	if (http_supported == FALSE) {
 		g_test_message ("HTTP support required to test broken ASX");
+		return;
+	}
 
 	g_test_bug ("323683");
 	result = simple_parser_test ("http://www.comedycentral.com/sitewide/media_player/videoswitcher.jhtml?showid=934&category=/shows/the_daily_show/videos/headlines&sec=videoId%3D36032%3BvideoFeatureId%3D%3BpoppedFrom%3D_shows_the_daily_show_index.jhtml%3BisIE%3Dfalse%3BisPC%3Dtrue%3Bpagename%3Dmedia_player%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bgateway%3Dshows%3Bsection_1%3Dthe_daily_show%3Bsection_2%3Dvideos%3Bsection_3%3Dheadlines%3Bzyg%3D%27%2Bif_nt_zyg%2B%27%3Bspan%3D%27%2Bif_nt_span%2B%27%3Bdemo%3D%27%2Bif_nt_demo%2B%27%3Bera%3D%27%2Bif_nt_era%2B%27%3Bbps%3D%27%2Bif_nt_bandwidth%2B%27%3Bfla%3D%27%2Bif_nt_Flash%2B%27&itemid=36032&clip=com/dailyshow/headlines/10156_headline.wmv&mswmext=.asx");
@@ -624,8 +632,10 @@ test_xml_is_text_plain (void)
 {
 	TotemPlParserResult result;
 
-	if (http_supported == FALSE)
+	if (http_supported == FALSE) {
 		g_test_message ("HTTP support required to test text/plain XML");
+		return;
+	}
 
 	g_test_bug ("655378");
 	result = simple_parser_test ("http://leoville.tv/podcasts/floss.xml");
@@ -637,8 +647,10 @@ test_compressed_content_encoding (void)
 {
 	TotemPlParserResult result;
 
-	if (http_supported == FALSE)
+	if (http_supported == FALSE) {
 		g_test_message ("HTTP support required to test compressed content-encoding");
+		return;
+	}
 
 	/* Requires:
 	 * http://git.gnome.org/browse/gvfs/commit/?id=6929e9f9661b4d1e68f8912d8e60107366255a47
@@ -675,8 +687,10 @@ test_parsing_num_entries (void)
 static void
 test_parsing_404_error (void)
 {
-	if (http_supported == FALSE)
+	if (http_supported == FALSE) {
 		g_test_message ("HTTP support required to test 404");
+		return;
+	}
 
 	g_test_bug ("158052");
 	g_assert (simple_parser_test ("http://live.hujjat.org:7860/main") == TOTEM_PL_PARSER_RESULT_UNHANDLED);
@@ -1024,6 +1038,7 @@ check_http (void)
 			g_error ("gvfs with http support is required (no gvfs)");
 		else
 			g_message ("gvfs with http support is required (no gvfs)");
+		return;
 	} else {
 		const char * const *schemes;
 
@@ -1033,6 +1048,7 @@ check_http (void)
 				g_error ("gvfs with http support is required (no http)");
 			else
 				g_message ("gvfs with http support is required (no http)");
+			return;
 		} else {
 			guint i;
 			for (i = 0; schemes[i] != NULL; i++) {
