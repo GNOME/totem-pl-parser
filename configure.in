@@ -75,15 +75,9 @@ AC_ARG_ENABLE(gmime-i-know-what-im-doing,
 
 if test "x$enable_gmime" = "xyes" ; then
    PKG_CHECK_MODULES(GMIME,  
-		     gmime-2.4,
-                     [have_gmime=yes GMIME=gmime-2.4], 
-                     [have_gmime=no])
-   if test "x$have_gmime" != "xyes" ; then
-     PKG_CHECK_MODULES(GMIME,  
 		       gmime-2.6,
 		       [have_gmime=yes GMIME=gmime-2.6], 
 		       [have_gmime=no])
-   fi
 
    if test "x$have_gmime" = "xyes" ; then
       AC_SUBST(GMIME, $GMIME)
