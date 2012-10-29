@@ -72,6 +72,7 @@ EXTRA_DIST =			\
 	rss.xml			\
 	dont-ignore-mp2t.ts	\
 	empty-feed.xml		\
-	no-url-podcast.xml
+	no-url-podcast.xml	\
+	xml-base.xspf
 
 -include $(top_srcdir)/git.mk
