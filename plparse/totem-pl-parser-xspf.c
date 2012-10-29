@@ -306,23 +306,41 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 	}
 
 	resolved_uri = totem_pl_parser_resolve_uri (base_file, (char *) uri);
-	resolved = g_file_new_for_uri (resolved_uri);
-	g_free (resolved_uri);
 
-	totem_pl_parser_add_uri (parser,
-				 TOTEM_PL_PARSER_FIELD_FILE, resolved,
-				 TOTEM_PL_PARSER_FIELD_TITLE, title,
-				 TOTEM_PL_PARSER_FIELD_DURATION_MS, duration,
-				 TOTEM_PL_PARSER_FIELD_IMAGE_URI, image_uri,
-				 TOTEM_PL_PARSER_FIELD_AUTHOR, artist,
-				 TOTEM_PL_PARSER_FIELD_ALBUM, album,
-				 TOTEM_PL_PARSER_FIELD_MOREINFO, moreinfo,
-				 TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI, download_uri,
-				 TOTEM_PL_PARSER_FIELD_ID, id,
-				 TOTEM_PL_PARSER_FIELD_GENRE, genre,
-				 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
-				 NULL);
-	g_object_unref (resolved);
+	if (g_strcmp0 (resolved_uri, (char *) uri) == 0) {
+		g_free (resolved_uri);
+		totem_pl_parser_add_uri (parser,
+					 TOTEM_PL_PARSER_FIELD_URI, uri,
+					 TOTEM_PL_PARSER_FIELD_TITLE, title,
+					 TOTEM_PL_PARSER_FIELD_DURATION_MS, duration,
+					 TOTEM_PL_PARSER_FIELD_IMAGE_URI, image_uri,
+					 TOTEM_PL_PARSER_FIELD_AUTHOR, artist,
+					 TOTEM_PL_PARSER_FIELD_ALBUM, album,
+					 TOTEM_PL_PARSER_FIELD_MOREINFO, moreinfo,
+					 TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI, download_uri,
+					 TOTEM_PL_PARSER_FIELD_ID, id,
+					 TOTEM_PL_PARSER_FIELD_GENRE, genre,
+					 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
+					 NULL);
+	} else {
+		resolved = g_file_new_for_uri (resolved_uri);
+		g_free (resolved_uri);
+
+		totem_pl_parser_add_uri (parser,
+					 TOTEM_PL_PARSER_FIELD_FILE, resolved,
+					 TOTEM_PL_PARSER_FIELD_TITLE, title,
+					 TOTEM_PL_PARSER_FIELD_DURATION_MS, duration,
+					 TOTEM_PL_PARSER_FIELD_IMAGE_URI, image_uri,
+					 TOTEM_PL_PARSER_FIELD_AUTHOR, artist,
+					 TOTEM_PL_PARSER_FIELD_ALBUM, album,
+					 TOTEM_PL_PARSER_FIELD_MOREINFO, moreinfo,
+					 TOTEM_PL_PARSER_FIELD_DOWNLOAD_URI, download_uri,
+					 TOTEM_PL_PARSER_FIELD_ID, id,
+					 TOTEM_PL_PARSER_FIELD_GENRE, genre,
+					 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
+					 NULL);
+		g_object_unref (resolved);
+	}
 
 	retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 

@@ -513,6 +513,15 @@ test_parsing_xspf_genre (void)
 }
 
 static void
+test_parsing_xspf_escaping (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "playlist.xspf");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "http://207.200.96.226:8000 extraparam=1");
+	g_free (uri);
+}
+
+static void
 test_smi_starttime (void)
 {
 	char *uri;
@@ -1138,6 +1147,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/not_really_php_but_html_instead", test_parsing_not_really_php_but_html_instead);
 		g_test_add_func ("/parser/parsing/num_items_in_pls", test_parsing_num_entries);
 		g_test_add_func ("/parser/parsing/xspf_genre", test_parsing_xspf_genre);
+		g_test_add_func ("/parser/parsing/xspf_escaping", test_parsing_xspf_escaping);
 		g_test_add_func ("/parser/parsing/itms_link", test_itms_parsing);
 		g_test_add_func ("/parser/parsing/lastfm-attributes", test_lastfm_parsing);
 		g_test_add_func ("/parser/parsing/m3u_separator", test_m3u_separator);

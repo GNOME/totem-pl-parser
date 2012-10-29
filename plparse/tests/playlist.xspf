@@ -3,7 +3,7 @@
   <creator>audacious-plugins-1.4.5</creator>
   <trackList>
     <track>
-      <location>http://207.200.96.226:8000</location>
+      <location>http://207.200.96.226:8000 extraparam=1</location>
       <title>Sven Van Hess - Ocean Jive (Groove Salad: a nicely chilled plate of ambient beats and grooves. [SomaFM])</title>
       <meta rel="mtime">0</meta>
       <extension application="http://www.rhythmbox.org">
