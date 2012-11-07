@@ -639,6 +639,10 @@ test_parsing_broken_asx (void)
 {
 	TotemPlParserResult result;
 
+	/* FIXME
+	 * URL is gone now */
+	return;
+
 	/* Slow test! */
 	if (!g_test_slow ())
 		return;
