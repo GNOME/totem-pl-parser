@@ -262,6 +262,10 @@ test_parsability (void)
 		/* Slow test! */
 		if (files[i].slow && !g_test_slow ())
 			continue;
+		if (!g_str_has_prefix (files[i].uri, "file://") &&
+		    *files[i].uri != '/') {
+			continue;
+		}
 
 		g_test_message ("Testing filename parsing \"%s\"...", files[i].uri);
 		g_assert (totem_pl_parser_can_parse_from_filename (files[i].uri, TRUE) == files[i].parsable);
