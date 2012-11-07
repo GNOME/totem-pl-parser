@@ -144,11 +144,12 @@ test_date (void)
 static char *
 test_data_get_data (const char *uri, guint *len)
 {
-	gssize bytes_read;
+	gsize bytes_read;
 	GFileInputStream *stream;
 	GFile *file;
 	GError *error = NULL;
 	char *buffer;
+	gboolean res;
 
 	*len = 0;
 
@@ -175,14 +176,9 @@ test_data_get_data (const char *uri, guint *len)
 	g_object_unref (file);
 
 	buffer = g_malloc (MIME_READ_CHUNK_SIZE);
-	bytes_read = g_input_stream_read (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, NULL, &error);
+	res = g_input_stream_read_all (G_INPUT_STREAM (stream), buffer, MIME_READ_CHUNK_SIZE, &bytes_read, NULL, &error);
 	g_object_unref (G_INPUT_STREAM (stream));
-	if (bytes_read == -1) {
-		g_free (buffer);
-		return NULL;
-	}
-
-	if (bytes_read == -1) {
+	if (res == FALSE) {
 		g_test_message ("URI '%s' couldn't be read or closed in _get_mime_type_with_data: '%s'", uri, error->message);
 		g_error_free (error);
 		g_free (buffer);
