@@ -756,7 +756,8 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	GFile *feed_file;
 	TotemPlParserResult ret;
 
-	if (g_file_has_uri_scheme (file, "itms") != FALSE) {
+	if (g_file_has_uri_scheme (file, "itms") != FALSE ||
+	    g_file_has_uri_scheme (file, "itmss") != FALSE) {
 		itms_uri= g_file_get_uri (file);
 		memcpy (itms_uri, "http", 4);
 	} else if (g_file_has_uri_scheme (file, "http") != FALSE) {
@@ -794,6 +795,7 @@ totem_pl_parser_is_itms_feed (GFile *file)
 	uri = g_file_get_uri (file);
 
 	if (g_file_has_uri_scheme (file, "itms") != FALSE ||
+	    g_file_has_uri_scheme (file, "itmss") != FALSE ||
 	    (g_file_has_uri_scheme (file, "http") != FALSE &&
 	     strstr (uri, ".apple.com/") != FALSE)) {
 		if (strstr (uri, "/podcast/") != NULL ||
