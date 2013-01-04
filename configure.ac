@@ -8,12 +8,13 @@ AC_INIT([totem-pl-parser],
         [totem_version_major.totem_version_minor.totem_version_micro],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=totem-pl-parser&component=General])
 
-AM_MAINTAINER_MODE([enable])
 AC_CONFIG_SRCDIR([plparse/totem-pl-parser.c])
 AC_CONFIG_HEADERS([config.h])
-AC_GNU_SOURCE
+AC_CONFIG_MACRO_DIR([m4])
+AC_USE_SYSTEM_EXTENSIONS
 
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 no-dist-gzip check-news subdir-objects])
+AM_MAINTAINER_MODE([enable])
 
 # Enable silent build when available (Automake 1.11)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
@@ -175,7 +176,6 @@ AC_SUBST(TOTEM_PLPARSER_LIBS)
 
 PKG_CHECK_MODULES([TOTEM_PLPARSER_MINI], [gio-2.0 $QUVI])
 
-GNOME_COMMON_INIT
 GNOME_DEBUG_CHECK
 GNOME_COMPILE_WARNINGS([maximum])
 GNOME_CXX_WARNINGS
