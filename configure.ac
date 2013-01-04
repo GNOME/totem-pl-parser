@@ -27,7 +27,11 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AC_PROG_CXX
 AM_PROG_CC_C_O
-AC_PROG_LIBTOOL()
+
+# Initialize libtool
+LT_PREREQ([2.2])
+LT_INIT([])
+
 PKG_PROG_PKG_CONFIG
 
 dnl Use local version of asprintf when not on the current system.
