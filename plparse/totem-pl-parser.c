@@ -2423,6 +2423,7 @@ totem_pl_parser_can_parse_from_data (const char *data,
 	for (i = 0; i < G_N_ELEMENTS(special_types); i++) {
 		if (strcmp (special_types[i].mimetype, mimetype) == 0) {
 			D(g_message ("Is special type '%s'", mimetype));
+			g_free (mimetype);
 			return TRUE;
 		}
 	}
@@ -2434,13 +2435,17 @@ totem_pl_parser_can_parse_from_data (const char *data,
 				gboolean retval = ((* dual_types[i].iden) (data, len) != NULL);
 				D(g_message ("%s dual type '%s'",
 					     retval ? "Is" : "Is not", mimetype));
+				g_free (mimetype);
 				return retval;
 			}
+			g_free (mimetype);
 			return FALSE;
 		}
 	}
 
 	D(g_message ("Is unsupported mime-type '%s'", mimetype));
+
+	g_free (mimetype);
 
 	return FALSE;
 }
