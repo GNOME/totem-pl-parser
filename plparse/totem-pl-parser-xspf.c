@@ -201,12 +201,25 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 }
 
 static gboolean
+parse_bool_str (const char *str)
+{
+	if (str == NULL)
+		return FALSE;
+	if (g_ascii_strcasecmp (str, "true") == 0)
+		return TRUE;
+	if (g_ascii_strcasecmp (str, "false") == 0)
+		return FALSE;
+	return atoi (str);
+}
+
+static gboolean
 parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 		xmlNodePtr parent)
 {
 	xmlNodePtr node;
 	xmlChar *title, *uri, *image_uri, *artist, *album, *duration, *moreinfo;
-	xmlChar *download_uri, *id, *genre, *filesize;
+	xmlChar *download_uri, *id, *genre, *filesize, *subtitle, *mime_type;
+	xmlChar *playing;
 	GFile *resolved;
 	char *resolved_uri;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
@@ -222,6 +235,9 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 	id = NULL;
 	genre = NULL;
 	filesize = NULL;
+	subtitle = NULL;
+	mime_type = NULL;
+	playing = NULL;
 
 	for (node = parent->children; node != NULL; node = node->next)
 	{
@@ -264,6 +280,21 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 					    g_ascii_strcasecmp ((char *)child->name, "genre") == 0) {
 						genre = xmlNodeListGetString (doc, child->xmlChildrenNode, 0);
 						break;
+					}
+				}
+			} else if (app != NULL && g_ascii_strcasecmp ((char *) app, "http://www.gnome.org") == 0) {
+				xmlNodePtr child;
+				for (child = node->xmlChildrenNode ; child; child = child->next) {
+					if (child->name == NULL)
+						continue;
+					if (g_ascii_strcasecmp ((char *)child->name, "playing") == 0) {
+						xmlChar *str;
+						str = xmlNodeListGetString (doc, child->xmlChildrenNode, 0);
+						playing = parse_bool_str ((char *) str) ? (xmlChar *) "true" : NULL;
+					} else if (g_ascii_strcasecmp ((char *)child->name, "subtitle") == 0) {
+						subtitle = xmlNodeListGetString (doc, child->xmlChildrenNode, 0);
+					} else if (g_ascii_strcasecmp ((char *)child->name, "mime-type") == 0) {
+						mime_type = xmlNodeListGetString (doc, child->xmlChildrenNode, 0);
 					}
 				}
 			} else if (app != NULL && g_ascii_strcasecmp ((char *) app, "http://www.last.fm") == 0) {
@@ -321,6 +352,9 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 					 TOTEM_PL_PARSER_FIELD_ID, id,
 					 TOTEM_PL_PARSER_FIELD_GENRE, genre,
 					 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
+					 TOTEM_PL_PARSER_FIELD_SUBTITLE_URI, subtitle,
+					 TOTEM_PL_PARSER_FIELD_PLAYING, playing,
+					 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, mime_type,
 					 NULL);
 	} else {
 		resolved = g_file_new_for_uri (resolved_uri);
@@ -338,6 +372,9 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 					 TOTEM_PL_PARSER_FIELD_ID, id,
 					 TOTEM_PL_PARSER_FIELD_GENRE, genre,
 					 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
+					 TOTEM_PL_PARSER_FIELD_SUBTITLE_URI, subtitle,
+					 TOTEM_PL_PARSER_FIELD_PLAYING, playing,
+					 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, mime_type,
 					 NULL);
 		g_object_unref (resolved);
 	}
