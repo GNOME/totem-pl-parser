@@ -975,6 +975,18 @@ entry_metadata_foreach (const char *key, const char *value, gpointer data)
 		}
 		return;
 	}
+	if (g_ascii_strcasecmp (key, TOTEM_PL_PARSER_FIELD_STARTTIME) == 0) {
+		gint64 res;
+
+		res = totem_pl_parser_parse_duration (value, option_debug);
+		if (res == -1)
+			g_message ("\t%s = '%s' (duration parsing failed)", key, value);
+		else
+			g_message ("\t%s = '%s' (%"G_GINT64_FORMAT" sec)", key, value, res);
+
+		return;
+	}
+
 	g_message ("\t%s = '%s'", key, value);
 }
 
