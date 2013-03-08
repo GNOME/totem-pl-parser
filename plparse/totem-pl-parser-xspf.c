@@ -82,6 +82,9 @@ static struct {
 	{ TOTEM_PL_PARSER_FIELD_ALBUM, "album" },
 	{ TOTEM_PL_PARSER_FIELD_DURATION_MS, "duration" },
 	{ TOTEM_PL_PARSER_FIELD_GENRE, NULL },
+	{ TOTEM_PL_PARSER_FIELD_SUBTITLE_URI, NULL },
+	{ TOTEM_PL_PARSER_FIELD_PLAYING, NULL },
+	{ TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, NULL }
 };
 
 gboolean
@@ -114,6 +117,7 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 		char *uri, *uri_escaped, *relative;
 		GFile *file;
 		guint i;
+		gboolean wrote_ext;
 
                 totem_pl_playlist_get (playlist, &iter,
                                        TOTEM_PL_PARSER_FIELD_URI, &uri,
@@ -135,6 +139,10 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 		}
 		g_object_unref (file);
 
+		/* Whether we already wrote the GNOME extensions section header
+		 * for that particular track */
+		wrote_ext = FALSE;
+
 		relative = totem_pl_parser_relative (output, uri);
 		uri_escaped = g_markup_escape_text (relative ? relative : uri, -1);
 		buf = g_strdup_printf ("  <track>\n"
@@ -154,22 +162,36 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 			totem_pl_playlist_get (playlist, &iter,
 					       fields[i].field, &str,
 					       NULL);
-			if (!str)
+			if (!str || *str == '\0') {
+				g_free (str);
 				continue;
+			}
 			escaped = g_markup_escape_text (str, -1);
 			g_free (str);
 			if (!escaped)
 				continue;
-			if (g_str_equal (fields[i].field, TOTEM_PL_PARSER_FIELD_GENRE) == FALSE) {
-				buf = g_strdup_printf ("   <%s>%s</%s>\n",
-						       fields[i].element,
-						       escaped,
-						       fields[i].element);
-			} else {
+			if (g_str_equal (fields[i].field, TOTEM_PL_PARSER_FIELD_GENRE)) {
 				buf = g_strdup_printf ("   <extension application=\"http://www.rhythmbox.org\">\n"
 						       "     <genre>%s</genre>\n"
 						       "   </extension>\n",
 						       escaped);
+			} else if (g_str_equal (fields[i].field, TOTEM_PL_PARSER_FIELD_SUBTITLE_URI) ||
+				   g_str_equal (fields[i].field, TOTEM_PL_PARSER_FIELD_PLAYING) ||
+				   g_str_equal (fields[i].field, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE)) {
+				if (!wrote_ext) {
+					buf = g_strdup_printf ("   <extension application=\"http://www.gnome.org\">\n"
+							       "     <%s>%s</%s>\n",
+							       fields[i].field, escaped, fields[i].field);
+					wrote_ext = TRUE;
+				} else {
+					buf = g_strdup_printf ("     <%s>%s</%s>\n",
+							       fields[i].field, escaped, fields[i].field);
+				}
+			} else if (g_str_equal (fields[i].field, TOTEM_PL_PARSER_FIELD_GENRE) == FALSE) {
+				buf = g_strdup_printf ("   <%s>%s</%s>\n",
+						       fields[i].element,
+						       escaped,
+						       fields[i].element);
 			}
 
 			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
@@ -181,6 +203,12 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 		}
 
                 if (success == FALSE)
+			return FALSE;
+
+		if (wrote_ext)
+			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), "   </extension>\n", error);
+
+		if (success == FALSE)
 			return FALSE;
 
 		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), "  </track>\n", error);
