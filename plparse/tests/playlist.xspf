@@ -9,6 +9,11 @@
       <extension application="http://www.rhythmbox.org">
         <genre>Test Genre</genre>
       </extension>
+      <extension application="http://www.gnome.org">
+        <playing>1</playing>
+        <subtitle>http://207.200.96.226/test.sub</subtitle>
+        <mime-type>audio/mpeg</mime-type>
+      </extension>
     </track>
   </trackList>
 </playlist>
