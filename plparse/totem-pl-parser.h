@@ -258,6 +258,13 @@ typedef struct {
  * from a web server).
  **/
 #define TOTEM_PL_PARSER_FIELD_CONTENT_TYPE	"content-type"
+/**
+ * TOTEM_PL_PARSER_FIELD_PLAYING:
+ *
+ * Metadata field for an entry's status in a playlist. This is usually
+ * used when saving the state of an on-going playlist.
+ **/
+#define TOTEM_PL_PARSER_FIELD_PLAYING           "playing"
 
 /**
  * TotemPlParserClass:
