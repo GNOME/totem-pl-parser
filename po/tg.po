@@ -1,0 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Victor Ibragimov <victor.ibragimov@gmail.com>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Tajik Gnome\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=totem&keywords=I18N+L10N&component=playlist parser\n"
+"POT-Creation-Date: 2013-01-04 11:03+0000\n"
+"PO-Revision-Date: 2013-01-21 13:40+0500\n"
+"Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
+"Language-Team: \n"
+"Language: Tajik\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:290
+#: ../plparse/totem-disc.c:525
+#, c-format
+msgid "Failed to mount %s."
+msgstr "Хатогии васлкунии %s."
+
+#: ../plparse/totem-disc.c:414
+#, c-format
+msgid "No media in drive for device '%s'."
+msgstr "Ягон медиа дар драйв барои дастгоҳи '%s' вуҷуд надорад."
+
+#: ../plparse/totem-disc.c:468
+#, c-format
+msgid "Please check that a disc is present in the drive."
+msgstr "Лутфан, мавҷудияти дискро дар драйв санҷед."
+
+#: ../plparse/totem-disc.c:907
+msgid "Audio CD"
+msgstr "Аудиои CD"
+
+#: ../plparse/totem-disc.c:909
+msgid "Video CD"
+msgstr "Видеои CD"
+
+#: ../plparse/totem-disc.c:911
+msgid "DVD"
+msgstr "DVD"
+
+#: ../plparse/totem-disc.c:913
+msgid "Digital Television"
+msgstr "Телевизиони рақамӣ"
