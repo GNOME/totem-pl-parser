@@ -732,6 +732,18 @@ test_parsing_out_of_order_asx (void)
 }
 
 static void
+test_parsing_out_of_order_xspf (void)
+{
+	char *uri;
+	gboolean result;
+
+	uri = get_relative_uri (TEST_SRCDIR "new-lastfm-output.xspf");
+	result = parser_test_get_order_result (uri);
+	g_free (uri);
+	g_assert (result != FALSE);
+}
+
+static void
 test_parsing_num_entries (void)
 {
 	char *uri;
@@ -1197,6 +1209,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/parsing_ts_not_ignored", test_parsing_ts_not_ignored);
 		g_test_add_func ("/parser/parsing/mp4_is_flv", test_parsing_mp4_is_flv);
 		g_test_add_func ("/parser/parsing/out_of_order_asx", test_parsing_out_of_order_asx);
+		g_test_add_func ("/parser/parsing/out_of_order_xspf", test_parsing_out_of_order_xspf);
 		g_test_add_func ("/parser/parsing/xml_head_comments", test_parsing_xml_head_comments);
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
 		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
