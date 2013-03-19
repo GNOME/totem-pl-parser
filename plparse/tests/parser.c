@@ -318,31 +318,50 @@ parser_test_get_num_entries (const char *uri)
 	return ret;
 }
 
+typedef struct {
+	gboolean pl_started;
+	gboolean parsed_item;
+	gboolean pl_ended;
+} PlOrderingData;
+
 static void
 playlist_started_order (TotemPlParser *parser,
 			const char *uri,
 			GHashTable *metadata,
-			gboolean *ret)
+			PlOrderingData *data)
 {
-	*ret = TRUE;
+	data->pl_started = TRUE;
+}
+
+static void
+playlist_ended_order (TotemPlParser *parser,
+		      const char *uri,
+		      PlOrderingData *data)
+{
+	g_assert (data->pl_started != FALSE);
+	g_assert (data->parsed_item != FALSE);
+	data->pl_ended = TRUE;
 }
 
 static void
 entry_parsed_cb_order (TotemPlParser *parser,
 		       const char *uri,
 		       GHashTable *metadata,
-		       gboolean *ret)
+		       PlOrderingData *data)
 {
 	/* Check that the playlist started happened before the entry appeared */
-	g_assert (*ret != FALSE);
+	g_assert (data->pl_started != FALSE);
+	data->parsed_item = TRUE;
 }
 
 static gboolean
 parser_test_get_order_result (const char *uri)
 {
 	TotemPlParserResult retval;
-	gboolean pl_started;
-	TotemPlParser *pl = totem_pl_parser_new ();
+	PlOrderingData data;
+	TotemPlParser *pl;
+
+	pl = totem_pl_parser_new ();
 
 	g_object_set (pl, "recurse", !option_no_recurse,
 			  "debug", option_debug,
@@ -350,16 +369,21 @@ parser_test_get_order_result (const char *uri)
 			  "disable-unsafe", option_disable_unsafe,
 			  NULL);
 	g_signal_connect (G_OBJECT (pl), "playlist-started",
-			  G_CALLBACK (playlist_started_order), &pl_started);
+			  G_CALLBACK (playlist_started_order), &data);
+	g_signal_connect (G_OBJECT (pl), "playlist-ended",
+			  G_CALLBACK (playlist_ended_order), &data);
 	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_cb_order), &pl_started);
+			  G_CALLBACK (entry_parsed_cb_order), &data);
 
-	pl_started = FALSE;
+	data.pl_started = FALSE;
+	data.pl_ended = FALSE;
+	data.parsed_item = FALSE;
 	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_assert (data.pl_ended != FALSE);
 	g_test_message ("Got retval %d for uri '%s'", retval, uri);
 	g_object_unref (pl);
 
-	return pl_started;
+	return data.pl_started && data.pl_ended && data.parsed_item;
 }
 
 static TotemPlParserResult
