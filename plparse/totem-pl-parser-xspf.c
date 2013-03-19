@@ -452,19 +452,52 @@ parse_xspf_trackList (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 }
 
 static gboolean
-parse_xspf_entries (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
-		xmlNodePtr parent)
+parse_xspf_entries (TotemPlParser *parser,
+		    GFile         *file,
+		    GFile         *base_file,
+		    xmlDocPtr      doc,
+		    xmlNodePtr     parent)
 {
 	xmlNodePtr node;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_ERROR;
+	const xmlChar *title;
+	char *uri;
+
+	uri = g_file_get_uri (file);
+	title = NULL;
+
+	/* We go through the list twice to avoid the playlist-started
+	 * signal being out of order */
 
 	for (node = parent->children; node != NULL; node = node->next) {
 		if (node->name == NULL)
 			continue;
 
-		if (g_ascii_strcasecmp ((char *)node->name, "trackList") == 0)
+		if (g_ascii_strcasecmp ((char *)node->name, "title") == 0) {
+			title = node->name;
+			break;
+		}
+	}
+
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
+				 TOTEM_PL_PARSER_FIELD_URI, uri,
+				 TOTEM_PL_PARSER_FIELD_TITLE, title,
+				 NULL);
+
+	for (node = parent->children; node != NULL; node = node->next) {
+		if (node->name == NULL)
+			continue;
+
+		if (g_ascii_strcasecmp ((char *)node->name, "trackList") == 0) {
 			if (parse_xspf_trackList (parser, base_file, doc, node) != FALSE)
 				retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
+		}
+	}
+
+	if (uri != NULL) {
+		totem_pl_parser_playlist_end (parser, uri);
+		g_free (uri);
 	}
 
 	return retval;
@@ -505,7 +538,7 @@ totem_pl_parser_add_xspf_with_contents (TotemPlParser *parser,
 	}
 
 	for (node = doc->children; node != NULL; node = node->next) {
-		if (parse_xspf_entries (parser, base_file, doc, node) != FALSE)
+		if (parse_xspf_entries (parser, file, base_file, doc, node) != FALSE)
 			retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
@@ -532,7 +565,7 @@ totem_pl_parser_add_xspf (TotemPlParser *parser,
 	}
 
 	for (node = doc->children; node != NULL; node = node->next) {
-		if (parse_xspf_entries (parser, base_file, doc, node) != FALSE)
+		if (parse_xspf_entries (parser, file, base_file, doc, node) != FALSE)
 			retval = TOTEM_PL_PARSER_RESULT_SUCCESS;
 	}
 
