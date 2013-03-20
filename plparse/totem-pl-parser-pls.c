@@ -174,8 +174,6 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	guint found_entries;
 	char *uri;
 
-	entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
-
 	lines = g_strsplit_set (contents, "\r\n", 0);
 
 	/* [playlist] */
@@ -190,7 +188,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	    || g_ascii_strncasecmp (lines[i], "[playlist]",
 				    (gsize)strlen ("[playlist]")) != 0) {
 		g_strfreev (lines);
-		goto bail;
+		return retval;
 	}
 
 	playlist_title = totem_pl_parser_read_ini_line_string (lines,
@@ -203,6 +201,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	g_free (playlist_title);
 
 	/* Load the file in hash table to speed up the later processing */
+	entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	for (i = 0; lines[i] != NULL; i++) {
 		char **bits;
 		char *value;
@@ -316,9 +315,6 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	g_free (uri);
 
 	g_object_unref (base_file);
-
-bail:
-	g_free (playlist_title);
         g_hash_table_destroy (entries);
 
 	return retval;
