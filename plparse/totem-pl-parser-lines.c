@@ -390,6 +390,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	totem_pl_parser_add_uri (parser,
 				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
 				 TOTEM_PL_PARSER_FIELD_URI, pl_uri,
+				 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, "audio/x-mpegurl",
 				 NULL);
 
 	for (i = 0; lines[i] != NULL; i++) {

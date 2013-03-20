@@ -197,6 +197,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
 				 TOTEM_PL_PARSER_FIELD_FILE, file,
 				 TOTEM_PL_PARSER_FIELD_TITLE, playlist_title,
+				 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, "audio/x-scpls",
 				 NULL);
 	g_free (playlist_title);
 

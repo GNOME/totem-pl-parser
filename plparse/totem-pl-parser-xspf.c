@@ -483,6 +483,7 @@ parse_xspf_entries (TotemPlParser *parser,
 				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
 				 TOTEM_PL_PARSER_FIELD_URI, uri,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
+				 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, "application/xspf+xml",
 				 NULL);
 
 	for (node = parent->children; node != NULL; node = node->next) {
