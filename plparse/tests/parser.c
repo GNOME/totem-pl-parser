@@ -461,6 +461,40 @@ parser_test_get_playlist_uri (const char *uri)
 }
 
 static void
+playlist_started_field_cb (TotemPlParser *parser,
+			   const char *uri,
+			   GHashTable *metadata,
+			   ParserResult *res)
+{
+	res->ret = g_strdup (g_hash_table_lookup (metadata, res->field));
+}
+
+static char *
+parser_test_get_playlist_field (const char *uri,
+				const char *field)
+{
+	TotemPlParserResult retval;
+	ParserResult res;
+	TotemPlParser *pl = totem_pl_parser_new ();
+
+	g_object_set (pl, "recurse", !option_no_recurse,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	res.field = field;
+	res.ret = NULL;
+	g_signal_connect (G_OBJECT (pl), "playlist-started",
+			  G_CALLBACK (playlist_started_field_cb), &res);
+
+	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
+	g_test_message ("Got retval %d for uri '%s'", retval, uri);
+	g_object_unref (pl);
+
+	return res.ret;
+}
+
+static void
 test_image_link (void)
 {
 #ifdef HAVE_QUVI
@@ -498,6 +532,16 @@ test_itms_parsing (void)
 	g_assert_cmpstr (parser_test_get_playlist_uri ("itmss://itunes.apple.com/us/podcast/best-of-chris-moyles/id77318908?ign-msr=https%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D3%26ved%3D0CEEQFjAC%26url%3Dhttps%253A%252F%252Fitunes.apple.com%252Fus%252Fpodcast%252Fbest-of-chris-moyles%252Fid77318908%26ei%3DiMeaUO_ZIsfCtAbvk4DADA%26usg%3DAFQjCNE5YyukECjJE3fmrLIJICX5dMSyyg%26sig2%3DGM631xTbZq7E6m-eaGc3HA"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/moyles/rss.xml");
 	g_assert_cmpstr (parser_test_get_playlist_uri ("itms://itunes.apple.com/gb/podcast/best-of-chris-moyles-enhanced/id142102961?ign-mpt=uo%3D4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/moylesen/rss.xml");
 	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "http://downloads.bbc.co.uk/podcasts/radio1/r1mix/rss.xml");
+}
+
+static void
+test_pl_content_type (void)
+{
+	char *uri;
+
+	uri = get_relative_uri (TEST_SRCDIR "old-lastfm-output.xspf");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "application/xspf+xml");
+	g_free (uri);
 }
 
 static void
@@ -1228,6 +1272,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xspf_genre", test_parsing_xspf_genre);
 		g_test_add_func ("/parser/parsing/xspf_escaping", test_parsing_xspf_escaping);
 		g_test_add_func ("/parser/parsing/xspf_xml_base", test_parsing_xspf_xml_base);
+		g_test_add_func ("/parser/parsing/test_pl_content_type", test_pl_content_type);
 		g_test_add_func ("/parser/parsing/itms_link", test_itms_parsing);
 		g_test_add_func ("/parser/parsing/lastfm-attributes", test_lastfm_parsing);
 		g_test_add_func ("/parser/parsing/m3u_separator", test_m3u_separator);
