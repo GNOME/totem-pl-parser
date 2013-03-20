@@ -172,6 +172,7 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	gboolean fallback;
 	GHashTable *entries;
 	guint found_entries;
+	char *uri;
 
 	entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
@@ -180,7 +181,6 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 	/* [playlist] */
 	i = 0;
 	num_entries = 0;
-	playlist_title = NULL;
 
 	/* Ignore empty lines */
 	while (lines[i] != NULL && totem_pl_parser_line_is_empty (lines[i]) != FALSE)
@@ -195,14 +195,12 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 
 	playlist_title = totem_pl_parser_read_ini_line_string (lines,
 							       "X-GNOME-Title");
-
-	if (playlist_title != NULL) {
-		totem_pl_parser_add_uri (parser,
-					 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
-					 TOTEM_PL_PARSER_FIELD_FILE, file,
-					 TOTEM_PL_PARSER_FIELD_TITLE, playlist_title,
-					 NULL);
-	}
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
+				 TOTEM_PL_PARSER_FIELD_FILE, file,
+				 TOTEM_PL_PARSER_FIELD_TITLE, playlist_title,
+				 NULL);
+	g_free (playlist_title);
 
 	/* Load the file in hash table to speed up the later processing */
 	for (i = 0; lines[i] != NULL; i++) {
@@ -313,8 +311,9 @@ totem_pl_parser_add_pls_with_contents (TotemPlParser *parser,
 		parse_data->fallback = fallback;
 	}
 
-	if (playlist_title != NULL)
-		totem_pl_parser_playlist_end (parser, playlist_title);
+	uri = g_file_get_uri (file);
+	totem_pl_parser_playlist_end (parser, uri);
+	g_free (uri);
 
 	g_object_unref (base_file);
 
