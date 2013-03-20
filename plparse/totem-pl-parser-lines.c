@@ -346,6 +346,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	guint i, num_lines;
 	gboolean dos_mode = FALSE;
 	const char *extinfo;
+	char *pl_uri;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
@@ -383,6 +384,13 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	num_lines = g_strv_length (lines);
 	/* We don't count the terminating NULL */
 	num_lines--;
+
+	/* Send out the playlist start and get crackin' */
+	pl_uri = g_file_get_uri (file);
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
+				 TOTEM_PL_PARSER_FIELD_URI, pl_uri,
+				 NULL);
 
 	for (i = 0; lines[i] != NULL; i++) {
 		const char *line;
@@ -464,6 +472,9 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	}
 
 	g_strfreev (lines);
+
+	totem_pl_parser_playlist_end (parser, pl_uri);
+	g_free (pl_uri);
 
 	return retval;
 }
