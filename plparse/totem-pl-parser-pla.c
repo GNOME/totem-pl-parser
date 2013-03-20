@@ -171,7 +171,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 			 gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
-	char *contents, *title;
+	char *contents, *title, *uri;
 	guint offset, max_entries, entry;
 	gsize size;
 
@@ -197,19 +197,18 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 	/* read playlist title starting at offset 32 */
 	title = NULL;
 	if (contents[TITLE_OFFSET] != '\0')
-	{
 		title = contents + TITLE_OFFSET;
-		totem_pl_parser_add_uri (parser,
-					 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
-					 TOTEM_PL_PARSER_FIELD_FILE, file,
-					 TOTEM_PL_PARSER_FIELD_TITLE, title,
-					 NULL);
-	}
+
+	totem_pl_parser_add_uri (parser,
+				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
+				 TOTEM_PL_PARSER_FIELD_FILE, file,
+				 TOTEM_PL_PARSER_FIELD_TITLE, title,
+				 NULL);
 
 	offset = RECORD_SIZE;
 	entry = 0;
 	while (offset + RECORD_SIZE <= size && entry < max_entries) {
-		char *path, *uri;
+		char *path;
 		GError *error = NULL;
 
 		/* path starts at +2, is at most 500 bytes, in big-endian utf16 .. */
@@ -246,8 +245,9 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 		entry++;
 	}
 
-	if (title != NULL)
-		totem_pl_parser_playlist_end (parser, title);
+	uri = g_file_get_uri (file);
+	totem_pl_parser_playlist_end (parser, uri);
+	g_free (uri);
 
 	g_free (contents);
 
