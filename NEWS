@@ -1,5 +1,16 @@
 New features and significant updates in version...
 
+3.4.4:
+- Remove dependency on newer versions of glib
+- Fix overescaping of URIs in XSPF playlists
+- Add support for the itmss URI scheme
+- Require gmime 2.6
+- Fix small memory leak in totem_pl_parser_can_parse_from_data()
+- Add read and write support for Totem XSPF extensions
+  (starttime and playing attributes)
+- Send content-type along with playlist-started/-ended signals
+  for PLS, M3U and XSPF playlist types
+
 3.4.3:
 - Report "unsupported" errors from quvi
 - Fix *.ts files being ignored (most of them aren't Qt Linguist files)
