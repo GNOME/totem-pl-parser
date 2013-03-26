@@ -101,8 +101,8 @@ SCANOBJ_FILES += $(DOC_MODULE).types
 EXTRA_DIST += version.xml.in
 
 if ENABLE_GTK_DOC
-TESTS_ENVIRONMENT = cd $(builddir) &&
-TESTS = $(GTKDOC_CHECK)
+#TESTS_ENVIRONMENT = cd $(builddir) &&
+#TESTS = $(GTKDOC_CHECK)
 endif
 
 -include $(top_srcdir)/git.mk
