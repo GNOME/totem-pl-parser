@@ -448,8 +448,10 @@ cd_cache_has_medium (CdCache *cache)
     return FALSE;
 
   drive = g_volume_get_drive (cache->volume);
-  if (drive == NULL)
-    return FALSE;
+  if (drive == NULL) {
+    /* No drive, so not something that can have a medium */
+    return TRUE;
+  }
   retval = g_drive_has_media (drive);
   g_object_unref (drive);
 
