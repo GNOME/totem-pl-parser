@@ -429,8 +429,10 @@ cd_cache_new (const char *dev,
     GMount *mount;
 
     mount = g_volume_get_mount (volume);
-    cache->content_types = g_mount_guess_content_type_sync (mount, FALSE, NULL, NULL);
-    g_object_unref (mount);
+    if (mount) {
+      cache->content_types = g_mount_guess_content_type_sync (mount, FALSE, NULL, NULL);
+      g_object_unref (mount);
+    }
   }
 
   return cache;
