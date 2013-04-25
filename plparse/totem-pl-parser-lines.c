@@ -333,6 +333,30 @@ totem_pl_parser_get_extinfo_title (const char *extinfo)
 	return sep;
 }
 
+static char *
+totem_pl_parser_get_extinfo_length (const char *extinfo)
+{
+	char *res, **items;
+
+	if (extinfo == NULL)
+		return NULL;
+
+	/* It's bound to have an EXTINF if we have extinfo */
+	res = (char *) extinfo + strlen(EXTINF);
+	if (res[0] == '\0')
+		return NULL;
+
+	/* Handle ',' as a field separator */
+	items = g_strsplit (res, ",", 2);
+	if (!items || !items[0] || *items[0] == '\0') {
+		g_strfreev (items);
+		return NULL;
+	}
+	res = g_strdup (items[0]);
+	g_strfreev (items);
+	return res;
+}
+
 TotemPlParserResult
 totem_pl_parser_add_m3u (TotemPlParser *parser,
 			 GFile *file,
@@ -395,6 +419,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 
 	for (i = 0; lines[i] != NULL; i++) {
 		const char *line;
+		char *length;
+		gint64 length_num = 0;
 
 		line = lines[i];
 
@@ -414,13 +440,19 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			continue;
 		}
 
+		length = totem_pl_parser_get_extinfo_length (extinfo);
+		if (length != NULL)
+			length_num = totem_pl_parser_parse_duration (length, totem_pl_parser_is_debugging_enabled (parser));
+		g_free (length);
+
 		/* Either it's a URI, or it has a proper path ... */
 		if (strstr(line, "://") != NULL
 				|| line[0] == G_DIR_SEPARATOR) {
 			GFile *uri;
 
 			uri = g_file_new_for_commandline_arg (line);
-			if (totem_pl_parser_parse_internal (parser, uri, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
+			if (length_num < 0 ||
+			    totem_pl_parser_parse_internal (parser, uri, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
 				totem_pl_parser_add_one_uri (parser, line,
 						totem_pl_parser_get_extinfo_title (extinfo));
 			}

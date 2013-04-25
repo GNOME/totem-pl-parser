@@ -73,6 +73,7 @@ EXTRA_DIST =			\
 	dont-ignore-mp2t.ts	\
 	empty-feed.xml		\
 	no-url-podcast.xml	\
-	xml-base.xspf
+	xml-base.xspf		\
+	radioclasica.mp3.m3u
 
 -include $(top_srcdir)/git.mk

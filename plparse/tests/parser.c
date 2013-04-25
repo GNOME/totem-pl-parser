@@ -886,6 +886,18 @@ test_parsing_xml_mixed_cdata (void)
 	g_free (uri);
 }
 
+static void
+test_parsing_m3u_streaming (void)
+{
+	char *uri;
+	g_test_bug ("695652");
+
+	/* File from http://radioclasica.rtve.stream.flumotion.com/rtve/radioclasica.mp3.m3u */
+	uri = get_relative_uri (TEST_SRCDIR "radioclasica.mp3.m3u");
+	g_assert (simple_parser_test (uri) == TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_free (uri);
+}
+
 #ifdef HAVE_QUVI
 static void
 test_parsing_rss_id (void)
@@ -1261,6 +1273,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_content_type", test_parsing_content_type);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
+		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
 #ifdef HAVE_QUVI
 		g_test_add_func ("/parser/parsing/rss_id", test_parsing_rss_id);
 		g_test_add_func ("/parser/parsing/rss_link", test_parsing_rss_link);
