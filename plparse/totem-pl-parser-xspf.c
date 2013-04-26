@@ -116,7 +116,6 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 
         while (valid) {
 		char *uri, *uri_escaped, *relative;
-		GFile *file;
 		guint i;
 		gboolean wrote_ext;
 
@@ -129,16 +128,6 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 			valid = totem_pl_playlist_iter_next (playlist, &iter);
                         continue;
 		}
-
-                file = g_file_new_for_uri (uri);
-
-		if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
-			valid = totem_pl_playlist_iter_next (playlist, &iter);
-			g_object_unref (file);
-			g_free (uri);
-			continue;
-		}
-		g_object_unref (file);
 
 		/* Whether we already wrote the GNOME extensions section header
 		 * for that particular track */
