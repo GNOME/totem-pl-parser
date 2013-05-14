@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+3.4.5:
+- Avoid warnings when the volume doesn't have a mount
+- Fix media detection on loopback devices
+- Work-around hang-on-close() bugs in gvfs when parsing M3U playlists
+- Save everything we're told to in XSPF playlists
+
 3.4.4:
 - Remove dependency on newer versions of glib
 - Fix overescaping of URIs in XSPF playlists
