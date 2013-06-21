@@ -45,7 +45,7 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 # Requirements
 GLIB_REQS=2.31.0
 GIO_REQS=2.24.0
-QUVI_REQS=0.2.15
+QUVI_REQS=0.9.1
 LIBARCHIVE_REQS=2.8.4
 
 # Before making a release, the PLPARSER_LT_VERSION string should be modified.
@@ -113,18 +113,19 @@ AC_ARG_ENABLE(quvi,
 			     [enable_quvi=auto])
 if test "x$enable_quvi" != "xno" ; then
 	PKG_CHECK_MODULES(QUVI,
-			  libquvi >= $QUVI_REQS,
+			  libquvi-0.9 >= $QUVI_REQS glib-2.0,
 			  [have_quvi=yes], [have_quvi=no])
 	if test "x$enable_quvi" = "xyes" -a "x$have_quvi" = "xno" ; then
 		AC_MSG_ERROR([Quvi support requested but not available.])
 	fi
 	if test "x$have_quvi" = "xyes" ; then
-		pkg_modules="$pkg_modules libquvi"
-		QUVI="libquvi"
+		pkg_modules="$pkg_modules libquvi-0.9"
+		QUVI="libquvi-0.9"
 		AC_DEFINE(HAVE_QUVI, 1, [libquvi available in the system])
 	fi
 fi
 AC_SUBST(QUVI, $QUVI)
+AM_CONDITIONAL([HAVE_QUVI], [test "$have_quvi" = "yes"])
 
 ##################################
 # Checking libarchive dependency

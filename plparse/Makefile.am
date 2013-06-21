@@ -69,6 +69,7 @@ libtotem_plparser_la_CPPFLAGS = \
 	-I$(top_srcdir)/lib			\
 	-I$(top_builddir)/plparse		\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"\
+	-DLIBEXECDIR=\""$(libexecdir)"\"	\
 	$(DISABLE_DEPRECATED)			\
 	$(AM_CPPFLAGS)
 
@@ -130,6 +131,7 @@ libtotem_plparser_mini_la_CPPFLAGS = \
 	-I$(top_srcdir)/lib		\
 	-I$(top_builddir)/plparse	\
 	-DTOTEM_PL_PARSER_MINI		\
+	-DLIBEXECDIR=\""$(libexecdir)"\"\
 	$(DISABLE_DEPRECATED)		\
 	$(AM_CPPFLAGS)
 
@@ -179,6 +181,13 @@ EXTRA_DIST =				\
 	totem-pl-parser-features.h.in	\
 	plparser.symbols		\
 	plparser-mini.symbols
+
+if HAVE_QUVI
+libexec_PROGRAMS = totem-pl-parser-videosite
+totem_pl_parser_videosite_SOURCES = videosite-parser.c
+totem_pl_parser_videosite_CFLAGS = $(QUVI_CFLAGS) -DLIBEXECDIR=\""$(libexecdir)"\"
+totem_pl_parser_videosite_LDADD = $(QUVI_LIBS)
+endif
 
 # Introspection
 -include $(INTROSPECTION_MAKEFILE)
