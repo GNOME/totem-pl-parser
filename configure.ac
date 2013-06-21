@@ -46,7 +46,7 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 GLIB_REQS=2.31.0
 GIO_REQS=2.24.0
 QUVI_REQS=0.9.1
-LIBARCHIVE_REQS=2.8.4
+LIBARCHIVE_REQS=3.0
 
 # Before making a release, the PLPARSER_LT_VERSION string should be modified.
 # The string is of the form C:R:A.
