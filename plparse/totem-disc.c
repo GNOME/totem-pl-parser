@@ -282,8 +282,7 @@ cd_cache_check_archive (CdCache *cache,
   int r;
 
   a = archive_read_new();
-  archive_read_support_filter_all(a);
-  archive_read_support_format_all(a);
+  archive_read_support_format_iso9660(a);
   r = archive_read_open_filename(a, filename, 10240);
   if (r != ARCHIVE_OK) {
     g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_MOUNT_FAILED,
