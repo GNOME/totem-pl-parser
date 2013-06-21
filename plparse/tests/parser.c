@@ -193,16 +193,16 @@ test_data_get_data (const char *uri, guint *len)
 	return buffer;
 }
 
+#ifdef HAVE_QUVI
 static void
 test_videosite (void)
 {
-#ifdef HAVE_QUVI
 	const char *uri = "http://www.youtube.com/watch?v=oMLCrzy9TEs";
 
 	g_test_message ("Testing data parsing \"%s\"...", uri);
 	g_assert (totem_pl_parser_can_parse_from_uri (uri, TRUE));
-#endif
 }
+#endif
 
 static void
 test_parsability (void)
@@ -1252,7 +1252,6 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/relative", test_relative);
 		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
-		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/image_link", test_image_link);
 		g_test_add_func ("/parser/no_url_podcast", test_no_url_podcast);
 		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);
@@ -1275,6 +1274,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
 #ifdef HAVE_QUVI
+		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/parsing/rss_id", test_parsing_rss_id);
 		g_test_add_func ("/parser/parsing/rss_link", test_parsing_rss_link);
 #endif /* HAVE_QUVI */
