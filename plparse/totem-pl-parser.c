@@ -1318,10 +1318,10 @@ emit_entry_parsed_signal (EntryParsedSignalData *data)
 	return FALSE;
 }
 
-static gboolean
-fix_string (const char  *name,
-	    const char  *value,
-	    char       **ret)
+gboolean
+totem_pl_parser_fix_string (const char  *name,
+			    const char  *value,
+			    char       **ret)
 {
 	char *fixed = NULL;
 
@@ -1347,7 +1347,7 @@ fix_string (const char  *name,
 	return TRUE;
 }
 
-static void
+void
 totem_pl_parser_add_hash_table (TotemPlParser *parser,
 				GHashTable    *metadata,
 				const char    *uri,
@@ -1452,7 +1452,7 @@ totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 		if (string != NULL && string[0] != '\0') {
 			char *fixed = NULL;
 
-			if (!fix_string (name, string, &fixed)) {
+			if (!totem_pl_parser_fix_string (name, string, &fixed)) {
 				g_value_unset (&value);
 				name = va_arg (var_args, char*);
 				continue;

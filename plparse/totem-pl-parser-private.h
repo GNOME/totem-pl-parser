@@ -152,10 +152,17 @@ void totem_pl_parser_add_one_file		(TotemPlParser *parser,
 void totem_pl_parser_add_uri			(TotemPlParser *parser,
 						 const char *first_property_name,
 						 ...);
+void totem_pl_parser_add_hash_table		(TotemPlParser *parser,
+						 GHashTable    *metadata,
+						 const char    *uri,
+						 gboolean       is_playlist);
 gboolean totem_pl_parser_ignore			(TotemPlParser *parser,
 						 const char *uri);
 xml_node_t * totem_pl_parser_parse_xml_relaxed	(char *contents,
 						 gsize size);
+gboolean totem_pl_parser_fix_string		(const char  *name,
+						 const char  *value,
+						 char       **ret);
 
 #endif /* !TOTEM_PL_PARSER_MINI */
 
