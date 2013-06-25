@@ -1319,6 +1319,31 @@ emit_entry_parsed_signal (EntryParsedSignalData *data)
 }
 
 static void
+totem_pl_parser_add_hash_table (TotemPlParser *parser,
+				GHashTable    *metadata,
+				const char    *uri,
+				gboolean       is_playlist)
+{
+	if (g_hash_table_size (metadata) > 0 || uri != NULL) {
+		EntryParsedSignalData *data;
+
+		/* Make sure to emit the signals asynchronously, as we could be in the main loop
+		 * *or* a worker thread at this point. */
+		data = g_new (EntryParsedSignalData, 1);
+		data->parser = g_object_ref (parser);
+		data->uri = g_strdup (uri);
+		data->metadata = g_hash_table_ref (metadata);
+
+		if (is_playlist == FALSE)
+			data->signal_id = totem_pl_parser_table_signals[ENTRY_PARSED];
+		else
+			data->signal_id = totem_pl_parser_table_signals[PLAYLIST_STARTED];
+
+		CALL_ASYNC (parser, emit_entry_parsed_signal, data);
+	}
+}
+
+static void
 totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 				const gchar *first_property_name,
 				va_list      var_args)
@@ -1429,23 +1454,10 @@ totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 		//FIXME fix this! 396710
 	}
 
-	if (g_hash_table_size (metadata) > 0 || uri != NULL) {
-		EntryParsedSignalData *data;
-
-		/* Make sure to emit the signals asynchronously, as we could be in the main loop
-		 * *or* a worker thread at this point. */
-		data = g_new (EntryParsedSignalData, 1);
-		data->parser = g_object_ref (parser);
-		data->uri = g_strdup (uri);
-		data->metadata = g_hash_table_ref (metadata);
-
-		if (is_playlist == FALSE)
-			data->signal_id = totem_pl_parser_table_signals[ENTRY_PARSED];
-		else
-			data->signal_id = totem_pl_parser_table_signals[PLAYLIST_STARTED];
-
-		CALL_ASYNC (parser, emit_entry_parsed_signal, data);
-	}
+	totem_pl_parser_add_hash_table (parser,
+					metadata,
+					uri,
+					is_playlist);
 
 	g_hash_table_unref (metadata);
 
