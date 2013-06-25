@@ -1318,6 +1318,35 @@ emit_entry_parsed_signal (EntryParsedSignalData *data)
 	return FALSE;
 }
 
+static gboolean
+fix_string (const char  *name,
+	    const char  *value,
+	    char       **ret)
+{
+	char *fixed = NULL;
+
+	/* Check for UTF-8 or ISO8859-1 string */
+	if (g_utf8_validate (value, -1, NULL) == FALSE) {
+		fixed = g_convert (value, -1, "UTF-8", "ISO8859-1", NULL, NULL, NULL);
+		if (fixed == NULL) {
+			g_warning ("Ignored non-UTF-8 and non-ISO8859-1 string for field '%s'", name);
+			return FALSE;
+		}
+	}
+
+	/* Remove trailing spaces from titles */
+	if (g_str_equal (name, TOTEM_PL_PARSER_FIELD_TITLE)) {
+		if (fixed == NULL)
+			fixed = g_strchomp (g_strdup (value));
+		else
+			g_strchomp (fixed);
+	}
+
+	*ret = fixed;
+
+	return TRUE;
+}
+
 static void
 totem_pl_parser_add_hash_table (TotemPlParser *parser,
 				GHashTable    *metadata,
@@ -1423,21 +1452,10 @@ totem_pl_parser_add_uri_valist (TotemPlParser *parser,
 		if (string != NULL && string[0] != '\0') {
 			char *fixed = NULL;
 
-			if (g_utf8_validate (string, -1, NULL) == FALSE) {
-				fixed = g_convert (string, -1, "UTF-8", "ISO8859-1", NULL, NULL, NULL);
-				if (fixed == NULL) {
-					g_value_unset (&value);
-					name = va_arg (var_args, char*);
-					continue;
-				}
-			}
-
-			/* Remove trailing spaces from titles */
-			if (strcmp (name, "title") == 0) {
-				if (fixed == NULL)
-					fixed = g_strchomp (g_strdup (string));
-				else
-					g_strchomp (fixed);
+			if (!fix_string (name, string, &fixed)) {
+				g_value_unset (&value);
+				name = va_arg (var_args, char*);
+				continue;
 			}
 
 			/* Add other values to the metadata hashtable */
