@@ -47,6 +47,7 @@ GLIB_REQS=2.31.0
 GIO_REQS=2.24.0
 QUVI_REQS=0.9.1
 LIBARCHIVE_REQS=3.0
+LIBSOUP_REQS=2.43.0
 
 # Before making a release, the PLPARSER_LT_VERSION string should be modified.
 # The string is of the form C:R:A.
@@ -65,7 +66,7 @@ AC_SUBST(TOTEM_PL_PARSER_VERSION_MAJOR)
 AC_SUBST(TOTEM_PL_PARSER_VERSION_MINOR)
 AC_SUBST(TOTEM_PL_PARSER_VERSION_MICRO)
 
-pkg_modules="glib-2.0 >= $GLIB_REQS libxml-2.0 gthread-2.0 gio-2.0 >= $GIO_REQS libsoup-gnome-2.4"
+pkg_modules="glib-2.0 >= $GLIB_REQS libxml-2.0 gthread-2.0 gio-2.0 >= $GIO_REQS libsoup-2.4 >= $LIBSOUP_REQS"
 
 ##################################
 # Checking libgmime dependency

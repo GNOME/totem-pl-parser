@@ -25,7 +25,7 @@
 #include <glib.h>
 
 #ifndef TOTEM_PL_PARSER_MINI
-#include <libsoup/soup-gnome.h>
+#include <libsoup/soup.h>
 #include "xmlparser.h"
 #include "totem-pl-parser.h"
 #include "totem-disc.h"
@@ -611,7 +611,6 @@ totem_pl_parser_load_http_itunes (const char *uri,
 		g_print ("Loading ITMS playlist '%s'\n", uri);
 
 	session = soup_session_sync_new_with_options (
-	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_GNOME_FEATURES_2_26,
 	    SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
 	    SOUP_SESSION_USER_AGENT, "iTunes/10.0.0",
 	    SOUP_SESSION_ACCEPT_LANGUAGE_AUTO, TRUE,
