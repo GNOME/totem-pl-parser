@@ -13,7 +13,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
 
-AM_INIT_AUTOMAKE([1.9 dist-bzip2 no-dist-gzip check-news subdir-objects])
+AM_INIT_AUTOMAKE([1.9 dist-xz no-dist-gzip check-news subdir-objects])
 AM_MAINTAINER_MODE([enable])
 
 # Enable silent build when available (Automake 1.11)
