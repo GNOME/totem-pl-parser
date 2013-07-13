@@ -334,6 +334,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 					}
 				}
 			}
+			g_clear_pointer (&app, xmlFree);
 		/* Parse Amazon AMZ extensions */
 		} else if (g_ascii_strcasecmp ((char *)node->name, "meta") == 0) {
 			xmlChar *rel;
@@ -346,6 +347,7 @@ parse_xspf_track (TotemPlParser *parser, GFile *base_file, xmlDocPtr doc,
 					id = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 				else if (g_ascii_strcasecmp ((char *) rel, "http://www.amazon.com/dmusic/fileSize") == 0)
 					filesize = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
+				xmlFree (rel);
 			}
 		} else if (g_ascii_strcasecmp ((char *)node->name, "album") == 0)
 			album = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
