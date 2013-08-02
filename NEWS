@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+3.9.5:
+- Port to libquvi 0.9
+- Update for libarchive 3.0
+- Update for libsoup 2.44
+- Fix small memory leaks
+
 3.4.5:
 - Avoid warnings when the volume doesn't have a mount
 - Fix media detection on loopback devices
