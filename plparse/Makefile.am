@@ -18,7 +18,6 @@ plparserinclude_HEADERS =			\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
 	totem-pl-playlist.h			\
-	totem-disc.h				\
 	totem-pl-parser-mini.h
 
 plparser_sources =				\
@@ -152,7 +151,7 @@ libtotem_plparser_mini_la_LDFLAGS =			\
 	$(CODE_COVERAGE_LDFLAGS)			\
 	$(AM_LDFLAGS)
 
-totem-pl-parser-builtins.h: totem-pl-parser.h totem-disc.h
+totem-pl-parser-builtins.h: totem-pl-parser.h
 	$(AM_V_GEN) ($(GLIB_MKENUMS) \
 			--fhead "#ifndef __TOTEM_PL_PARSER_BUILTINS_H__\n#define __TOTEM_PL_PARSER_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 			--fprod "/* enumerations from \"@filename@\" */\n" \
@@ -160,9 +159,9 @@ totem-pl-parser-builtins.h: totem-pl-parser.h totem-disc.h
 			--ftail "G_END_DECLS\n\n#endif /* __TOTEM_PL_PARSER_BUILTINS_H__ */" $^ > xgen-$(@F) \
 		&& mv -f xgen-$(@F) $@)
 
-totem-pl-parser-builtins.c: totem-pl-parser.h totem-disc.h totem-pl-parser-builtins.h
+totem-pl-parser-builtins.c: totem-pl-parser.h totem-pl-parser-builtins.h
 	$(AM_V_GEN) ($(GLIB_MKENUMS) \
-			--fhead "#include \"totem-pl-parser.h\"\n#include \"totem-disc.h\"\n#include \"totem-pl-parser-builtins.h\"" \
+			--fhead "#include \"totem-pl-parser.h\"\n#include \"totem-pl-parser-builtins.h\"" \
 			--fprod "\n/* enumerations from \"@filename@\" */" \
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
 			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \

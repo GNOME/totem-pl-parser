@@ -49,6 +49,7 @@ CFILE_GLOB=$(top_srcdir)/plparse/*.c
 IGNORE_HFILES=					\
 	bswap.h					\
 	stamp-totem-pl-parser-builtins.h	\
+	totem-disc.h				\
 	totem-pl-parser-amz.h			\
 	totem-pl-parser-builtins.h		\
 	totem-pl-parser-features.h		\
