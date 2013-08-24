@@ -120,7 +120,6 @@ if test "x$enable_quvi" != "xno" ; then
 		AC_MSG_ERROR([Quvi support requested but not available.])
 	fi
 	if test "x$have_quvi" = "xyes" ; then
-		pkg_modules="$pkg_modules libquvi-0.9"
 		QUVI="libquvi-0.9"
 		AC_DEFINE(HAVE_QUVI, 1, [libquvi available in the system])
 	fi
