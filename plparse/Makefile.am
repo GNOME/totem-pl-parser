@@ -35,7 +35,8 @@ plparser_sources =				\
 	totem-pl-parser-smil.c			\
 	totem-pl-parser-videosite.c		\
 	totem-pl-parser-wm.c			\
-	totem-pl-parser-xspf.c
+	totem-pl-parser-xspf.c			\
+	totem-pl-playlist.c
 
 nodist_libtotem_plparser_la_SOURCES = $(MARSHALFILES)
 dist_libtotem_plparser_la_SOURCES =		\
@@ -56,7 +57,6 @@ dist_libtotem_plparser_la_SOURCES =		\
 	totem-pl-parser-videosite.h		\
 	totem-pl-parser-wm.h			\
 	totem-pl-parser-xspf.h			\
-	totem-pl-playlist.c			\
 	totem-pl-playlist.h			\
 	totem-pl-parser-amz.h			\
 	xmlparser.h xmlparser.c			\
