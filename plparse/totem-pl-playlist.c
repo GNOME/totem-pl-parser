@@ -132,7 +132,7 @@ create_playlist_item (void)
 /**
  * totem_pl_playlist_prepend:
  * @playlist: a #TotemPlPlaylist
- * @iter: an unset #TotemPlPlaylistIter for returning the location
+ * @iter: (out): an unset #TotemPlPlaylistIter for returning the location
  *
  * Prepends a new empty element to @playlist, and modifies @iter so
  * it points to it. To fill in values, you need to call
@@ -160,7 +160,7 @@ totem_pl_playlist_prepend (TotemPlPlaylist     *playlist,
 /**
  * totem_pl_playlist_append:
  * @playlist: a #TotemPlPlaylist
- * @iter: an unset #TotemPlPlaylistIter for returning the location
+ * @iter: (out): an unset #TotemPlPlaylistIter for returning the location
  *
  * Appends a new empty element to @playlist, and modifies @iter so
  * it points to it. To fill in values, you need to call
@@ -194,7 +194,7 @@ totem_pl_playlist_append (TotemPlPlaylist     *playlist,
  * totem_pl_playlist_insert:
  * @playlist: a #TotemPlPlaylist
  * @position: position in the playlist
- * @iter: an unset #TotemPlPlaylistIter for returning the location
+ * @iter: (out): an unset #TotemPlPlaylistIter for returning the location
  *
  * Inserts a new empty element to @playlist at @position, and modifies
  * @iter so it points to it. To fill in values, you need to call
@@ -249,7 +249,7 @@ check_iter (TotemPlPlaylist     *playlist,
 /**
  * totem_pl_playlist_iter_first:
  * @playlist: a #TotemPlPlaylist
- * @iter: an unset #TotemPlPlaylistIter for returning the location
+ * @iter: (out): an unset #TotemPlPlaylistIter for returning the location
  *
  * Modifies @iter so it points to the first element in @playlist.
  *
@@ -280,7 +280,7 @@ totem_pl_playlist_iter_first (TotemPlPlaylist     *playlist,
 /**
  * totem_pl_playlist_iter_next:
  * @playlist: a #TotemPlPlaylist
- * @iter: a #TotemPlPlaylistIter pointing to some item in @playlist
+ * @iter: (in): a #TotemPlPlaylistIter pointing to some item in @playlist
  *
  * Modifies @iter so it points to the next element it previously
  * pointed to. This function will return %FALSE if there was no
@@ -304,7 +304,7 @@ totem_pl_playlist_iter_next (TotemPlPlaylist     *playlist,
 /**
  * totem_pl_playlist_iter_prev:
  * @playlist: a #TotemPlPlaylist
- * @iter: a #TotemPlPlaylistIter pointing to some item in @playlist
+ * @iter: (in): a #TotemPlPlaylistIter pointing to some item in @playlist
  *
  * Modifies @iter so it points to the previous element it previously
  * pointed to. This function will return %FALSE if there was no
