@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+3.9.92:
+- Remove totem-disc from the public API
+- Remove linking to libquvi
+
 3.9.5:
 - Port to libquvi 0.9
 - Update for libarchive 3.0
