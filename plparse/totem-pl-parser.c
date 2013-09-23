@@ -256,8 +256,8 @@ static void totem_pl_parser_get_property (GObject *object,
 					  GParamSpec *pspec);
 
 struct TotemPlParserPrivate {
-	GList *ignore_schemes;
-	GList *ignore_mimetypes;
+	GHashTable *ignore_schemes; /* key = char *, value = boolean */
+	GHashTable *ignore_mimetypes; /*key = char *, value = boolean */
 	GMutex ignore_mutex;
 	GThread *main_thread; /* see CALL_ASYNC() in *-private.h */
 
@@ -1276,6 +1276,8 @@ totem_pl_parser_init (TotemPlParser *parser)
 	parser->priv = G_TYPE_INSTANCE_GET_PRIVATE (parser, TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate);
 	parser->priv->main_thread = g_thread_self ();
 	g_mutex_init (&parser->priv->ignore_mutex);
+	parser->priv->ignore_schemes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	parser->priv->ignore_mimetypes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 }
 
 static void
@@ -1286,11 +1288,8 @@ totem_pl_parser_finalize (GObject *object)
 	g_return_if_fail (object != NULL);
 	g_return_if_fail (priv != NULL);
 
-	g_list_foreach (priv->ignore_schemes, (GFunc) g_free, NULL);
-	g_list_free (priv->ignore_schemes);
-
-	g_list_foreach (priv->ignore_mimetypes, (GFunc) g_free, NULL);
-	g_list_free (priv->ignore_mimetypes);
+	g_clear_pointer (&priv->ignore_schemes, g_hash_table_destroy);
+	g_clear_pointer (&priv->ignore_mimetypes, g_hash_table_destroy);
 
 	g_mutex_clear (&priv->ignore_mutex);
 
@@ -1551,53 +1550,31 @@ static PlaylistTypes ignore_types[] = {
 gboolean
 totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, GFile *uri)
 {
-	GList *l;
+	char *scheme;
+	gboolean ret;
 
 	g_mutex_lock (&parser->priv->ignore_mutex);
 
-	if (parser->priv->ignore_schemes == NULL) {
-		g_mutex_unlock (&parser->priv->ignore_mutex);
-		return FALSE;
-	}
-
-	for (l = parser->priv->ignore_schemes; l != NULL; l = l->next) {
-		const char *scheme = l->data;
-		if (g_file_has_uri_scheme (uri, scheme) != FALSE) {
-			g_mutex_unlock (&parser->priv->ignore_mutex);
-			return TRUE;
-		}
-	}
+	scheme = g_file_get_uri_scheme (uri);
+	ret = GPOINTER_TO_INT (g_hash_table_lookup (parser->priv->ignore_schemes, scheme));
+	g_free (scheme);
 
 	g_mutex_unlock (&parser->priv->ignore_mutex);
 
-	return FALSE;
+	return ret;
 }
 
 static gboolean
 totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 				     const char *mimetype)
 {
-	GList *l;
+	gboolean ret;
 
 	g_mutex_lock (&parser->priv->ignore_mutex);
-
-	if (parser->priv->ignore_mimetypes == NULL) {
-		g_mutex_unlock (&parser->priv->ignore_mutex);
-		return FALSE;
-	}
-
-	for (l = parser->priv->ignore_mimetypes; l != NULL; l = l->next)
-	{
-		const char *item = l->data;
-		if (strcmp (mimetype, item) == 0) {
-			g_mutex_unlock (&parser->priv->ignore_mutex);
-			return TRUE;
-		}
-	}
-
+	ret = GPOINTER_TO_INT (g_hash_table_lookup (parser->priv->ignore_mimetypes, mimetype));
 	g_mutex_unlock (&parser->priv->ignore_mutex);
 
-	return FALSE;
+	return ret;
 }
 
 /**
@@ -2240,8 +2217,7 @@ totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 	s = g_strdup (scheme);
 	if (s[strlen (s) - 1] == ':')
 		s[strlen (s) - 1] = '\0';
-	parser->priv->ignore_schemes = g_list_prepend
-		(parser->priv->ignore_schemes, s);
+	g_hash_table_insert (parser->priv->ignore_schemes, s, GINT_TO_POINTER (1));
 
 	g_mutex_unlock (&parser->priv->ignore_mutex);
 }
@@ -2261,10 +2237,7 @@ totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
 
 	g_mutex_lock (&parser->priv->ignore_mutex);
-
-	parser->priv->ignore_mimetypes = g_list_prepend
-		(parser->priv->ignore_mimetypes, g_strdup (mimetype));
-
+	g_hash_table_insert (parser->priv->ignore_mimetypes, g_strdup (mimetype), GINT_TO_POINTER (1));
 	g_mutex_unlock (&parser->priv->ignore_mutex);
 }
 
