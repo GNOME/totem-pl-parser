@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+3.10.0:
+- Fix introspection for playlist saving
+
 3.9.92:
 - Remove totem-disc from the public API
 - Remove linking to libquvi
