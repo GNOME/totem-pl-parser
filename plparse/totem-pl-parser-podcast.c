@@ -693,7 +693,7 @@ totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 {
 	xml_node_t* doc;
 	const char *uri;
-	GFile *ret;
+	GFile *ret = NULL;
 	GByteArray *content;
 
 	uri = NULL;
@@ -716,11 +716,8 @@ totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 		return NULL;
 
 	/* If the document has no name */
-	if (doc->name == NULL
-	    || g_ascii_strcasecmp (doc->name, "plist") != 0) {
-		xml_parser_free_tree (doc);
-		return NULL;
-	}
+	if (doc->name == NULL || g_ascii_strcasecmp (doc->name, "plist") != 0)
+		goto out;
 
 	/* Redirect plist? Find a goto action */
 	uri = totem_pl_parser_parse_plist (doc);
@@ -728,15 +725,17 @@ totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 	if (debug)
 		g_print ("Found redirect URL: %s\n", uri);
 
-	if (uri == NULL) {
-		return NULL;
-	} else {
+	if (uri == NULL)
+		goto out;
 
-		content = totem_pl_parser_load_http_itunes (uri, debug);
-		ret = totem_pl_parser_get_feed_uri ((char *) content->data, content->len, debug);
-		g_byte_array_free (content, TRUE);
-	}
+	content = totem_pl_parser_load_http_itunes (uri, debug);
+	if (!content)
+		goto out;
+	ret = totem_pl_parser_get_feed_uri ((char *) content->data, content->len, debug);
+	g_byte_array_free (content, TRUE);
 
+out:
+	xml_parser_free_tree (doc);
 	return ret;
 }
 
