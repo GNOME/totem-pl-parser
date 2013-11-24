@@ -3,11 +3,11 @@ DIST_SUBDIRS = tests
 
 lib_LTLIBRARIES = libtotem-plparser.la libtotem-plparser-mini.la
 
+BUILTINFILES = totem-pl-parser-builtins.c totem-pl-parser-builtins.h
 MARSHALFILES = totemplparser-marshal.c totemplparser-marshal.h
 
 BUILT_SOURCES = $(MARSHALFILES) \
-		totem-pl-parser-builtins.c
-		totem-pl-parser-builtins.h
+		$(BUILTINFILES)
 
 totemplparser-marshal.c: totemplparser-marshal.list
 	 $(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_totemplparser_marshal --header --body --internal $< > $@
@@ -16,15 +16,14 @@ totemplparser-marshal.h: totemplparser-marshal.list
 	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_totemplparser_marshal --header --internal $< > $@
 
 plparserincludedir = $(pkgincludedir)/1/plparser
+nodist_plparserinclude_HEADERS = totem-pl-parser-builtins.h
 plparserinclude_HEADERS =			\
-	totem-pl-parser-builtins.h		\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
 	totem-pl-playlist.h			\
 	totem-pl-parser-mini.h
 
 plparser_sources =				\
-	totem-pl-parser-builtins.c		\
 	totem-disc.c				\
 	totem-pl-parser.c			\
 	totem-pl-parser-amz.c			\
@@ -41,10 +40,12 @@ plparser_sources =				\
 	totem-pl-parser-xspf.c			\
 	totem-pl-playlist.c
 
-nodist_libtotem_plparser_la_SOURCES = $(MARSHALFILES)
+nodist_libtotem_plparser_la_SOURCES = \
+	$(MARSHALFILES)				\
+	$(BUILTINFILES)
+
 dist_libtotem_plparser_la_SOURCES =		\
 	$(plparser_sources)			\
-	totem-pl-parser-builtins.h		\
 	totem-disc.h				\
 	totem-pl-parser-features.h		\
 	totem-pl-parser.h			\
@@ -198,6 +199,7 @@ if HAVE_INTROSPECTION
 introspection_sources = \
 	$(plparser_sources)		\
 	$(plparserinclude_HEADERS)	\
+	$(BUILTINFILES)			\
 	totemplparser-marshal.c
 
 TotemPlParser-1.0.gir: libtotem-plparser.la Makefile totemplparser-marshal.c totemplparser-marshal.h
