@@ -4,7 +4,10 @@ DIST_SUBDIRS = tests
 lib_LTLIBRARIES = libtotem-plparser.la libtotem-plparser-mini.la
 
 MARSHALFILES = totemplparser-marshal.c totemplparser-marshal.h
-BUILT_SOURCES = $(MARSHALFILES)
+
+BUILT_SOURCES = $(MARSHALFILES) \
+		totem-pl-parser-builtins.c
+		totem-pl-parser-builtins.h
 
 totemplparser-marshal.c: totemplparser-marshal.list
 	 $(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_totemplparser_marshal --header --body --internal $< > $@
@@ -168,10 +171,7 @@ totem-pl-parser-builtins.c: totem-pl-parser.h totem-pl-parser-builtins.h
 			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" $^ > xgen-$(@F) \
 		&& mv -f xgen-$(@F) $@)
 
-CLEANFILES = \
-	totem-pl-parser-builtins.h \
-	totem-pl-parser-builtins.c \
-	$(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 DISTCLEANFILES = $(CLEANFILES)
 
