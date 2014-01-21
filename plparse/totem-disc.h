@@ -35,6 +35,7 @@ G_BEGIN_DECLS
  * @MEDIA_TYPE_VCD: video CD
  * @MEDIA_TYPE_DVD: video DVD
  * @MEDIA_TYPE_DVB: digital television
+ * @MEDIA_TYPE_BD: video Blu-Ray
  *
  * Gives the media type of a disc, or %MEDIA_TYPE_ERROR if the media type
  * could not be determined.
@@ -45,7 +46,8 @@ typedef enum {
   MEDIA_TYPE_CDDA,
   MEDIA_TYPE_VCD,
   MEDIA_TYPE_DVD,
-  MEDIA_TYPE_DVB
+  MEDIA_TYPE_DVB,
+  MEDIA_TYPE_BD
 } TotemDiscMediaType;
 
 /**
