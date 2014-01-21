@@ -1,14 +1,14 @@
 # Norwegian bokmål translation of totem-pl-parser.
 # Copyright (C) 2002-2005 Free Software Foundation, Inc.
-# Kjartan Maraas  <kmaraas@gnome.org>, 2002-2013.
+# Kjartan Maraas  <kmaraas@gnome.org>, 2002-2014.
 # Terance Edward Sola <terance@lyse.net>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem 3.9.x\n"
+"Project-Id-Version: totem 3.11.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-16 14:52+0200\n"
-"PO-Revision-Date: 2013-07-16 14:53+0200\n"
+"POT-Creation-Date: 2014-01-21 21:38+0100\n"
+"PO-Revision-Date: 2014-01-21 21:38+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -18,33 +18,37 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
-#: ../plparse/totem-disc.c:528
+#: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Kunne ikke montere %s."
 
-#: ../plparse/totem-disc.c:413
+#: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "Ingen medier i stasjonen for enhet «%s»."
 
-#: ../plparse/totem-disc.c:471
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Du bør sjekke at det finnes en plate i spilleren."
 
-#: ../plparse/totem-disc.c:910
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "Lyd-CD"
 
-#: ../plparse/totem-disc.c:912
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "Video-CD"
 
-#: ../plparse/totem-disc.c:914
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:916
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Digital TV"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
