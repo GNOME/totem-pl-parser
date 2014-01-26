@@ -3,51 +3,58 @@
 # Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER.
 # Gil 'Dolfin' Osher <dolfin@rpg.org.il>, 2003.
 # Gil Osher <dolfin@rpg.org.il>, 2004.
+# Yosef Or Boczko <yoseforb@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem.HEAD.he\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&amp;component=playlist parser\n"
-"POT-Creation-Date: 2008-11-27 17:18+0000\n"
-"PO-Revision-Date: 2005-08-05 01:20+0300\n"
-"Last-Translator: Reuven Gonen <linxspider@yahoo.com>\n"
-"Language-Team: Hebrew <he@li.org>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-26 05:47+0200\n"
+"PO-Revision-Date: 2014-01-26 05:48+0200\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"Language-Team: עברית <>\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
-#: ../plparse/totem-disc.c:319 ../plparse/totem-disc.c:460
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "נכשל בעיגון %s."
 
-#: ../plparse/totem-disc.c:349
+#: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "אין מדיה בכונן עבור התקן '%s'."
 
-#: ../plparse/totem-disc.c:403
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "אנא בדוק שקיים דיסק בכונן"
 
-#: ../plparse/totem-disc.c:843
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "תקליטור שמע"
 
-#: ../plparse/totem-disc.c:845
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "תקליטור וידאו"
 
-#: ../plparse/totem-disc.c:847
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:849
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "טלוויזיה דיגיטלית"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
 
 #~ msgid "Could not connect to the HAL daemon"
 #~ msgstr "נכשל להתחברות אל HAL daemon"
