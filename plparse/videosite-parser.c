@@ -21,6 +21,8 @@
 
 #include "config.h"
 
+#include <locale.h>
+
 #include <glib.h>
 #include <quvi.h>
 #include "totem-pl-parser.h"
@@ -157,6 +159,8 @@ out:
 int main (int argc, char **argv)
 {
 	GOptionContext *context;
+
+	setlocale (LC_ALL, "");
 
 	context = g_option_context_new (NULL);
 	g_option_context_set_summary (context, "totem-pl-parser libquvi Helper");
