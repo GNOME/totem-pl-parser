@@ -1,10 +1,8 @@
 # translation of gl.po to Galego
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2002, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
-#
 # Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
 # colaborar connosco, podes atopar máis información en http://www.trasno.net
-#
 # Ignacio Casal Quinteiro <adorador_del_heavy@hotmail.com>, 2004.
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
@@ -12,49 +10,54 @@
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 # Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
+# Fran Dieguez <frandieguez@gnome.org>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-17 00:11+0200\n"
-"PO-Revision-Date: 2012-08-16 12:35+0200\n"
-"Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
-"Language-Team: Galego <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2014-02-07 00:19+0100\n"
+"PO-Revision-Date: 2014-02-07 00:19+0200\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
 
-#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:290
-#: ../plparse/totem-disc.c:525
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Produciuse un erro ao montar %s."
 
-#: ../plparse/totem-disc.c:414
+#: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "Non hai ningún soporte na unidade do dispositivo «%s»."
 
-#: ../plparse/totem-disc.c:468
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Verifique que hai un disco presente na unidade."
 
-#: ../plparse/totem-disc.c:907
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "CD de son"
 
-#: ../plparse/totem-disc.c:909
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "Vídeo CD"
 
-#: ../plparse/totem-disc.c:911
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:913
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Televisión dixital"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
