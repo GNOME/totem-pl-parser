@@ -11,10 +11,10 @@ AC_INIT([totem-pl-parser],
 AC_CONFIG_SRCDIR([plparse/totem-pl-parser.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AC_USE_SYSTEM_EXTENSIONS
 
 AM_INIT_AUTOMAKE([1.9 dist-xz no-dist-gzip check-news subdir-objects])
 AM_MAINTAINER_MODE([enable])
+AC_USE_SYSTEM_EXTENSIONS
 
 # Enable silent build when available (Automake 1.11)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
