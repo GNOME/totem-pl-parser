@@ -1486,11 +1486,11 @@ totem_pl_parser_add_uri_valist (TotemPlParser *parser,
  * totem_pl_parser_add_uri:
  * @parser: a #TotemPlParser
  * @first_property_name: the first property name
- * @Varargs: value for the first property, followed optionally by more
+ * @...: value for the first property, followed optionally by more
  * name/value pairs, followed by %NULL
  *
  * Adds a URI to the playlist with the properties given in @first_property_name
- * and @Varargs.
+ * and @....
  **/
 void
 totem_pl_parser_add_uri (TotemPlParser *parser,
