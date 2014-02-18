@@ -2,7 +2,7 @@ AC_PREREQ(2.62)
 
 m4_define(totem_version_major, 3)
 m4_define(totem_version_minor, 10)
-m4_define(totem_version_micro, 0)
+m4_define(totem_version_micro, 1)
 
 AC_INIT([totem-pl-parser],
         [totem_version_major.totem_version_minor.totem_version_micro],
@@ -56,7 +56,7 @@ LIBSOUP_REQS=2.43.0
 # - If binary compatibility has been broken (eg removed or changed interfaces)
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
-PLPARSER_LT_VERSION=18:0:0
+PLPARSER_LT_VERSION=19:0:1
 AC_SUBST(PLPARSER_LT_VERSION)
 
 TOTEM_PL_PARSER_VERSION_MAJOR=totem_version_major

@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+3.10.1:
+- Build fixes
+- Fix possible crash parsing iTunes podcasts
+- Add support for detecting Blu-ray discs
+- Add images to RSS feeds
+- Support non-ASCII characters for video sites metadata
+
 3.10.0:
 - Fix introspection for playlist saving
 
