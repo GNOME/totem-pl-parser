@@ -9,47 +9,55 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: totem trunk\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-12 23:23+0300\n"
-"PO-Revision-Date: 2007-02-20 12:55+0200\n"
-"Last-Translator: Nickolay V. Shmyrev <nshmyrev@yandex.ru>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=totem&keywords=I18N+L10N&component=playlist parser\n"
+"POT-Creation-Date: 2014-01-21 17:48+0000\n"
+"PO-Revision-Date: 2014-03-10 11:35+0300\n"
+"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
 
-#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Не удалось подключить %s."
 
-#: ../plparse/totem-disc.c:387
+#: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "Не найден носитель в устройстве «%s»."
 
-#: ../plparse/totem-disc.c:441
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Убедитесь, что диск вставлен в устройство."
 
-#: ../plparse/totem-disc.c:880
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "Аудио CD"
 
-#: ../plparse/totem-disc.c:882
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "Видео CD"
 
-#: ../plparse/totem-disc.c:884
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:886
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Цифровое телевидение"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
 
 #~ msgid "Leave Fullscreen"
 #~ msgstr "Выйти из полноэкранного режима"
@@ -333,8 +341,8 @@ msgstr "Цифровое телевидение"
 #~ "output, \"2\" for 5.0 channel output, \"3\" for 5.1 channel output, \"4\" "
 #~ "for AC3 Passthrough."
 #~ msgstr ""
-#~ "Тип используемого аудиовывода: «0» - стерео, «1» - выход на 4 канала, «2» - "
-#~ "выход 5.0, «3» - выход 5.1, «4» - пропускать AC3"
+#~ "Тип используемого аудиовывода: «0» - стерео, «1» - выход на 4 канала, «2» "
+#~ "- выход 5.0, «3» - выход 5.1, «4» - пропускать AC3"
 
 #~ msgid "UTF-8"
 #~ msgstr "UTF-8"
