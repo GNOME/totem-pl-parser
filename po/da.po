@@ -15,10 +15,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 00:39+0100\n"
-"PO-Revision-Date: 2009-02-14 22:59+0100\n"
+"POT-Creation-Date: 2014-03-19 22:34+0100\n"
+"PO-Revision-Date: 2014-03-15 13:43+0100\n"
 "Last-Translator: Per Kongstad <p_kongstad@op.pl>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,36 +28,41 @@ msgstr ""
 "X-Poedit-Country: DENMARK\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Kunne ikke montere %s."
 
-#: ../plparse/totem-disc.c:387
+#: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "Intet medie i drev for enhed \"%s\"."
 
-#: ../plparse/totem-disc.c:441
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Kontrollér venligst at der er en disk i drevet."
 
-#: ../plparse/totem-disc.c:880
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "Lyd-cd"
 
-#: ../plparse/totem-disc.c:882
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "Video-cd"
 
-#: ../plparse/totem-disc.c:884
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:886
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Digitalt fjernsyn"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
 
 #~ msgid "Could not connect to the HAL daemon"
 #~ msgstr "Kunne ikke forbinde til HAL-tjenesten"
@@ -1265,8 +1271,8 @@ msgstr "Digitalt fjernsyn"
 
 #~ msgid "A problem occurred while loading a library or a decoder (%s)."
 #~ msgstr ""
-#~ "Der opstod et problem under indlæsning af et bibliotek eller en afkoder (%"
-#~ "s)."
+#~ "Der opstod et problem under indlæsning af et bibliotek eller en afkoder "
+#~ "(%s)."
 
 #~ msgid "This file is encrypted and cannot be played back."
 #~ msgstr "Denne film er krypteret og kan ikke afspilles."
@@ -1276,10 +1282,6 @@ msgstr "Digitalt fjernsyn"
 
 #~ msgid "The audio device is busy. Is another application using it?"
 #~ msgstr "Lydenheden er optaget. Bruges denne af et andet program?"
-
-#, fuzzy
-#~ msgid "Authentication is required to access this file or stream."
-#~ msgstr "Serveren nægtede adgang til denne fil eller strøm."
 
 #~ msgid "You are not allowed to open this file."
 #~ msgstr "Du har ikke rettigheder til at åbne denne fil."
