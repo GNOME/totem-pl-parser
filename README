@@ -22,7 +22,7 @@ BUGS
 ====
 
 Bugs should be filed in GNOME's Bugzilla:
-http://bugzilla.gnome.org/enter_bug.cgi?product=totem&component=playlist%20parser
+http://bugzilla.gnome.org/enter_bug.cgi?product=totem-pl-parser
 
 To get a better debug output, run:
 # test-parser --debug
@@ -31,4 +31,4 @@ Contact
 =======
 
 Bastien Nocera <hadess@hadess.net>
-http://www.gnome.org/projects/totem/
+http://wiki.gnome.org/Apps/Videos
