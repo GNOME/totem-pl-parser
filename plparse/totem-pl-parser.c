@@ -1556,6 +1556,8 @@ totem_pl_parser_scheme_is_ignored (TotemPlParser *parser, GFile *uri)
 	g_mutex_lock (&parser->priv->ignore_mutex);
 
 	scheme = g_file_get_uri_scheme (uri);
+	if (!scheme)
+		return TRUE;
 	ret = GPOINTER_TO_INT (g_hash_table_lookup (parser->priv->ignore_schemes, scheme));
 	g_free (scheme);
 
