@@ -2265,7 +2265,7 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 
 	/* Formats used by both ASX and RAM files */
 	if (sscanf (duration, "%d:%d:%d.%d", &hours, &minutes, &seconds, &fractions) == 4) {
-		gint64 ret = hours * 3600 + minutes * 60 + seconds;
+		gint64 ret = (gint64) hours * 3600 + (gint64) minutes * 60 + seconds;
 		if (ret == 0 && fractions > 0) {
 			D(g_print ("Used 00:00:00.00 format, with fractions rounding\n"));
 			ret = 1;
@@ -2276,7 +2276,7 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 	}
 	if (sscanf (duration, "%d:%d:%d", &hours, &minutes, &seconds) == 3) {
 		D(g_print ("Used 00:00:00 format\n"));
-		return hours * 3600 + minutes * 60 + seconds;
+		return (gint64) hours * 3600 + (gint64) minutes * 60 + seconds;
 	}
 	if (sscanf (duration, "%d:%d.%d", &minutes, &seconds, &fractions) == 3) {
 		gint64 ret = minutes * 60 + seconds;
@@ -2290,16 +2290,16 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 	}
 	if (sscanf (duration, "%d:%d", &minutes, &seconds) == 2) {
 		D(g_print ("Used 00:00 format\n"));
-		return minutes * 60 + seconds;
+		return (gint64) minutes * 60 + seconds;
 	}
 	if (sscanf (duration, "%d.%d", &minutes, &seconds) == 2) {
 		D(g_print ("Used broken float format (00.00)\n"));
-		return minutes * 60 + seconds;
+		return (gint64) minutes * 60 + seconds;
 	}
 	/* YouTube format */
 	if (sscanf (duration, "%dm%ds", &minutes, &seconds) == 2) {
 		D(g_print ("Used YouTube format\n"));
-		return minutes * 60 + seconds;
+		return (gint64) minutes * 60 + seconds;
 	}
 	/* PLS files format */
 	if (sscanf (duration, "%d", &seconds) == 1) {
