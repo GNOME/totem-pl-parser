@@ -91,8 +91,8 @@ totem_pl_parser_add_quicktime_rtsptext (TotemPlParser *parser,
 		char **line;
 		g_free (rtspuri);
 
-		for (line = lines + 1; line && *line[0] == '\0'; line++);
-		if (line == NULL)
+		for (line = lines + 1; *line && *line[0] == '\0'; line++);
+		if (*line == NULL)
 			return TOTEM_PL_PARSER_RESULT_ERROR;
 		rtspuri = g_strdup (*line);
 	}
