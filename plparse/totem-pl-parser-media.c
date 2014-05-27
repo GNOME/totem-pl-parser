@@ -207,7 +207,7 @@ totem_pl_parser_load_directory (GFile *file, GList **list, gboolean *unhandled)
 	*unhandled = FALSE;
 
 	e = g_file_enumerate_children (file,
-				       G_FILE_ATTRIBUTE_STANDARD_NAME,
+				       G_FILE_ATTRIBUTE_STANDARD_NAME "," G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
 				       G_FILE_QUERY_INFO_NONE,
 				       NULL, &err);
 	if (e == NULL) {
@@ -270,10 +270,17 @@ totem_pl_parser_add_directory (TotemPlParser *parser,
 		GFileInfo *info = l->data;
 		GFile *item;
 		TotemPlParserResult ret;
+		const char *content_type;
 
 		item = g_file_get_child (file, g_file_info_get_name (info));
 
-		ret = totem_pl_parser_parse_internal (parser, item, NULL, parse_data);
+		/* Ignore partial files */
+		content_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+		if (g_strcmp0 ("application/x-partial-download", content_type) == 0)
+			ret = TOTEM_PL_PARSER_RESULT_IGNORED;
+		else
+			ret = totem_pl_parser_parse_internal (parser, item, NULL, parse_data);
+
 		if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS &&
 		    ret != TOTEM_PL_PARSER_RESULT_IGNORED &&
 		    ret != TOTEM_PL_PARSER_RESULT_ERROR) {
