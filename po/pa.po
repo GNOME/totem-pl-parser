@@ -3,51 +3,58 @@
 # This file is distributed under the same license as the totem package.
 #
 # Punjab Linux Technology <punjablinux@netscape.net>, 2004.
-# A S Alam <aalam@users.sf.net>, 2005, 2006, 2007, 2009.
+# A S Alam <aalam@users.sf.net>, 2005, 2006, 2007, 2009, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: totem.HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&component=playlist parser\n"
-"POT-Creation-Date: 2009-04-17 15:51+0000\n"
-"PO-Revision-Date: 2009-07-07 06:02+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=totem&keywords=I18N+L10N&component=playlist parser\n"
+"POT-Creation-Date: 2014-02-08 12:27+0000\n"
+"PO-Revision-Date: 2014-09-21 08:38-0500\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 0.3\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:499, c-format
-#| msgid "Failed to mount %s"
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
+#, c-format
 msgid "Failed to mount %s."
 msgstr "%s ਮਾਊਂਟ ਕਰਨ ਲਈ ਫੇਲ੍ਹ ਹੈ।"
 
-#: ../plparse/totem-disc.c:388
+#: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
 msgstr "ਜੰਤਰ '%s' ਲਈ ਡਰਾਇਵ ਵਿੱਚ ਕੋਈ ਮੀਡਿਆ ਨਹੀਂ।"
 
-#: ../plparse/totem-disc.c:442
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "ਤੁਹਾਨੂੰ ਇਹ ਪੜਤਾਲ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ ਕਿ ਡਿਸਕ ਡਰਾਇਵ ਅੰਦਰ ਹੈ।"
 
-#: ../plparse/totem-disc.c:881
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "ਆਡੀਓ CD"
 
-#: ../plparse/totem-disc.c:883
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "ਵੀਡਿਓ CD"
 
-#: ../plparse/totem-disc.c:885
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:887
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "ਡਿਜ਼ਿਟਲ ਟੈਲੀਵੀਜ਼ਿਨ"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "ਬਲਿਉ-ਰੇ"
 
 #~ msgid "Add..."
 #~ msgstr "ਸ਼ਾਮਲ..."
