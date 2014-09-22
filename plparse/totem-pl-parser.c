@@ -233,6 +233,7 @@ static PlaylistTypes dual_types[] = {
 	PLAYLIST_TYPE2 ("application/x-php", NULL, NULL),
 	PLAYLIST_TYPE2 ("audio/x-ms-asx", totem_pl_parser_add_asx, totem_pl_parser_is_asx),
 	PLAYLIST_TYPE2 ("video/x-ms-asf", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
+	PLAYLIST_TYPE2 ("application/vnd.ms-asf", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
 	PLAYLIST_TYPE2 ("video/x-ms-wmv", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
 	PLAYLIST_TYPE2 ("audio/x-ms-wma", totem_pl_parser_add_asf, totem_pl_parser_is_asf),
 	PLAYLIST_TYPE2 ("video/quicktime", totem_pl_parser_add_quicktime, totem_pl_parser_is_quicktime),
