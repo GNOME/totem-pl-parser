@@ -1,5 +1,12 @@
 New features and significant updates in version...
 
+3.10.3:
+- Ignore partially downloaded files when recursing
+- Fix crash when passing a broken URI
+- Fix potential integer overflow when parsing long durations
+- Fix potential crash when parsing RTSPtext QuickTime files
+- Fix parsing of Windows Media files
+
 3.10.2:
 - Build fixes
 - Translation updates
