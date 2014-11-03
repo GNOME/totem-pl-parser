@@ -1,6 +1,6 @@
 # Finnish messages for totem-pl-parser.
 # Copyright (C) 2002, 2003, 2005-2009 Free Software Foundation, Inc.
-# Suomennos: http://gnome.fi/
+# Suomennos: https://l10n.gnome.org/teams/fi/
 #
 # Ilkka Tuohela <hile@iki.fi>, 2002,2003,2005-2009.
 # Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2003-2005.
