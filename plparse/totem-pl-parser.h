@@ -265,6 +265,13 @@ typedef struct {
  * used when saving the state of an on-going playlist.
  **/
 #define TOTEM_PL_PARSER_FIELD_PLAYING           "playing"
+/**
+ * TOTEM_PL_PARSER_FIELD_AUDIO_TRACK:
+ *
+ * Metadata field for an entry's default audio-track selection. The default
+ * track is defined as NULL. Note that the value is sent as a string.
+ **/
+#define TOTEM_PL_PARSER_FIELD_AUDIO_TRACK       "audio-track"
 
 /**
  * TotemPlParserClass:

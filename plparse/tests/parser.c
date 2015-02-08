@@ -535,6 +535,16 @@ test_itms_parsing (void)
 }
 
 static void
+test_m3u_audio_track (void)
+{
+	char *uri;
+
+	uri = get_relative_uri (TEST_SRCDIR "radios-freebox.m3u");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_AUDIO_TRACK), ==, "1");
+	g_free (uri);
+}
+
+static void
 test_pl_content_type (void)
 {
 	char *uri;
@@ -1253,6 +1263,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/image_link", test_image_link);
+		g_test_add_func ("/parser/m3u_audio_track", test_m3u_audio_track);
 		g_test_add_func ("/parser/no_url_podcast", test_no_url_podcast);
 		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);
 		g_test_add_func ("/parser/compressed_content_encoding", test_compressed_content_encoding);

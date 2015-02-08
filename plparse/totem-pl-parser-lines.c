@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include <string.h>
+#include <stdlib.h>
 #include <glib.h>
 
 #ifndef TOTEM_PL_PARSER_MINI
@@ -41,7 +42,7 @@
 #ifndef TOTEM_PL_PARSER_MINI
 
 #define EXTINF "#EXTINF:"
-#define EXTVLCOPT "#EXTVLCOPT"
+#define EXTVLCOPT_AUDIOTRACK "#EXTVLCOPT:audio-track-id="
 
 static char *
 totem_pl_parser_uri_to_dos (const char *uri, GFile *output)
@@ -357,6 +358,23 @@ totem_pl_parser_get_extinfo_length (const char *extinfo)
 	return res;
 }
 
+static char *
+totem_pl_parser_get_extvlcopt_audio_track (const char *line)
+{
+	int id;
+	char *end;
+
+	if (line == NULL)
+		return NULL;
+	id = strtol (line + strlen (EXTVLCOPT_AUDIOTRACK), &end, 10);
+	if (*end != '\0')
+		return NULL;
+	/* Bizarre VLC quirk? */
+	if (id > 1000)
+		id = id - 1000;
+	return g_strdup_printf ("%d", id);
+}
+
 TotemPlParserResult
 totem_pl_parser_add_m3u (TotemPlParser *parser,
 			 GFile *file,
@@ -369,7 +387,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	gsize size;
 	guint i, num_lines;
 	gboolean dos_mode = FALSE;
-	const char *extinfo;
+	const char *extinfo, *extvlcopt_audiotrack;
 	char *pl_uri;
 
 	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
@@ -397,6 +415,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 
 	/* is non-NULL if there's an EXTINF on a preceding line */
 	extinfo = NULL;
+	extvlcopt_audiotrack = NULL;
 
 	/* figure out whether we're a unix m3u or dos m3u */
 	if (strstr(contents, "\x0d")) {
@@ -421,6 +440,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		const char *line;
 		char *length;
 		gint64 length_num = 0;
+		char *audio_track;
 
 		line = lines[i];
 
@@ -437,6 +457,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		if (line[0] == '#') {
 			if (extinfo == NULL && g_str_has_prefix (line, EXTINF) != FALSE)
 				extinfo = line;
+			if (extvlcopt_audiotrack == NULL && g_str_has_prefix (line, EXTVLCOPT_AUDIOTRACK) != FALSE)
+				extvlcopt_audiotrack = line;
 			continue;
 		}
 
@@ -444,6 +466,8 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		if (length != NULL)
 			length_num = totem_pl_parser_parse_duration (length, totem_pl_parser_is_debugging_enabled (parser));
 		g_free (length);
+
+		audio_track = totem_pl_parser_get_extvlcopt_audio_track (extvlcopt_audiotrack);
 
 		/* Either it's a URI, or it has a proper path ... */
 		if (strstr(line, "://") != NULL
@@ -453,11 +477,13 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			uri = g_file_new_for_commandline_arg (line);
 			if (length_num < 0 ||
 			    totem_pl_parser_parse_internal (parser, uri, NULL, parse_data) != TOTEM_PL_PARSER_RESULT_SUCCESS) {
-				totem_pl_parser_add_one_uri (parser, line,
-						totem_pl_parser_get_extinfo_title (extinfo));
+				totem_pl_parser_add_uri (parser,
+							 TOTEM_PL_PARSER_FIELD_URI, line,
+							 TOTEM_PL_PARSER_FIELD_TITLE, totem_pl_parser_get_extinfo_title (extinfo),
+							 TOTEM_PL_PARSER_FIELD_AUDIO_TRACK, audio_track,
+							 NULL);
 			}
 			g_object_unref (uri);
-			extinfo = NULL;
 		} else if (g_ascii_isalpha (line[0]) != FALSE
 			   && g_str_has_prefix (line + 1, ":\\")) {
 			/* Path relative to a drive on Windows, we need to use
@@ -467,10 +493,12 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
 			/* + 2, skip drive letter */
 			uri = g_file_get_child (base_file, line + 2);
-			totem_pl_parser_add_one_file (parser, uri,
-						     totem_pl_parser_get_extinfo_title (extinfo));
+			totem_pl_parser_add_uri (parser,
+						 TOTEM_PL_PARSER_FIELD_URI, uri,
+						 TOTEM_PL_PARSER_FIELD_TITLE, totem_pl_parser_get_extinfo_title (extinfo),
+						 TOTEM_PL_PARSER_FIELD_AUDIO_TRACK, audio_track,
+						 NULL);
 			g_object_unref (uri);
-			extinfo = NULL;
 		} else if (line[0] == '\\' && line[1] == '\\') {
 			/* ... Or it's in the windows smb form
 			 * (\\machine\share\filename), Note drive names
@@ -481,9 +509,11 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
 			tmpuri = g_strjoin (NULL, "smb:", line, NULL);
 
-			totem_pl_parser_add_one_uri (parser, tmpuri,
-					totem_pl_parser_get_extinfo_title (extinfo));
-			extinfo = NULL;
+			totem_pl_parser_add_uri (parser,
+						 TOTEM_PL_PARSER_FIELD_URI, tmpuri,
+						 TOTEM_PL_PARSER_FIELD_TITLE, totem_pl_parser_get_extinfo_title (extinfo),
+						 TOTEM_PL_PARSER_FIELD_AUDIO_TRACK, audio_track,
+						 NULL);
 
 			g_free (tmpuri);
 		} else {
@@ -497,11 +527,17 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 				lines[i] = g_strdelimit (lines[i], "\\", '/');
 			uri = g_file_get_child (_base_file, line);
 			g_object_unref (_base_file);
-			totem_pl_parser_add_one_file (parser, uri,
-						     totem_pl_parser_get_extinfo_title (extinfo));
+			totem_pl_parser_add_uri (parser,
+						 TOTEM_PL_PARSER_FIELD_URI, uri,
+						 TOTEM_PL_PARSER_FIELD_TITLE, totem_pl_parser_get_extinfo_title (extinfo),
+						 TOTEM_PL_PARSER_FIELD_AUDIO_TRACK, audio_track,
+						 NULL);
 			g_object_unref (uri);
-			extinfo = NULL;
 		}
+		extinfo = NULL;
+		extvlcopt_audiotrack = NULL;
+
+		g_free (audio_track);
 	}
 
 	g_strfreev (lines);

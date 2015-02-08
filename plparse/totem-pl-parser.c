@@ -571,6 +571,10 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 				     "Whether the track is playing", NULL,
 				     G_PARAM_READABLE & G_PARAM_WRITABLE);
 	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
+	pspec = g_param_spec_string ("audio-track", "audio-track",
+				     "The default audio-track to play", NULL,
+				     G_PARAM_READABLE & G_PARAM_WRITABLE);
+	g_param_spec_pool_insert (totem_pl_parser_pspec_pool, pspec, TOTEM_TYPE_PL_PARSER);
 }
 
 static void
