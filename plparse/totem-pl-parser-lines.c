@@ -481,7 +481,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			lines[i] = g_strdelimit (lines[i], "\\", '/');
 			tmpuri = g_strjoin (NULL, "smb:", line, NULL);
 
-			totem_pl_parser_add_one_uri (parser, line,
+			totem_pl_parser_add_one_uri (parser, tmpuri,
 					totem_pl_parser_get_extinfo_title (extinfo));
 			extinfo = NULL;
 
