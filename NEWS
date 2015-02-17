@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+3.10.4:
+- Fix parsing of Windows-style SMB playlists
+- Add support for EXTVLCOPT:audio-track-id in m3u files
+- Fix parsing of SMIL playlists
+
 3.10.3:
 - Ignore partially downloaded files when recursing
 - Fix crash when passing a broken URI
