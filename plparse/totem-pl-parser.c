@@ -196,6 +196,7 @@ static PlaylistTypes special_types[] = {
 	PLAYLIST_TYPE ("audio/x-scpls", totem_pl_parser_add_pls, NULL, FALSE),
 	PLAYLIST_TYPE ("application/x-smil", totem_pl_parser_add_smil, NULL, FALSE),
 	PLAYLIST_TYPE ("application/smil", totem_pl_parser_add_smil, NULL, FALSE),
+	PLAYLIST_TYPE ("application/smil+xml", totem_pl_parser_add_smil, NULL, FALSE),
 	PLAYLIST_TYPE ("application/vnd.ms-wpl", totem_pl_parser_add_smil, NULL, FALSE),
 	PLAYLIST_TYPE ("video/x-ms-wvx", totem_pl_parser_add_asx, NULL, FALSE),
 	PLAYLIST_TYPE ("audio/x-ms-wax", totem_pl_parser_add_asx, NULL, FALSE),
