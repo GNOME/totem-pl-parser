@@ -44,7 +44,7 @@ MAINTAINERCLEANFILES = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = totem-plparser.pc totem-plparser-mini.pc
 
-DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc --enable-introspection
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc --enable-introspection --enable-uninstalled-tests
 
 # Build ChangeLog from GIT history
 ChangeLog:

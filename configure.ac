@@ -174,6 +174,20 @@ if test "x$enable_libgcrypt" != "xno" ; then
 	fi
 fi
 
+############################
+# Checking uninstalled tests
+############################
+
+AC_ARG_ENABLE(uninstalled-tests,
+	      AS_HELP_STRING([--enable-uninstalled-tests],
+			     [Uninstalled tests (default is no).]),
+			     [],
+			     [enable_uninstalled_tests=no])
+if test "x$enable_uninstalled_tests" != "xno" ; then
+	AC_DEFINE(UNINSTALLED_TESTS, 1, [Uninstalled tests])
+fi
+
+
 dnl Check for packages for building libtotem-plparser.la
 PKG_CHECK_MODULES(TOTEM_PLPARSER, [$pkg_modules])
 AC_SUBST(TOTEM_PLPARSER_CFLAGS)

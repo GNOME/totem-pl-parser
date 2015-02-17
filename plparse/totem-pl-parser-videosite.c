@@ -35,7 +35,11 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 {
 #ifdef HAVE_QUVI
 	const char *args[] = {
+#ifdef UNINSTALLED_TESTS
+		"../totem-pl-parser-videosite",
+#else
 		LIBEXECDIR "/totem-pl-parser-videosite",
+#endif
 		"--check",
 		"--url",
 		NULL,
