@@ -42,6 +42,8 @@
 #ifndef TOTEM_PL_PARSER_MINI
 
 #define EXTINF "#EXTINF:"
+#define EXTINF_HLS "#EXT-X-STREAM-INF"
+#define EXTINF_HLS2 "#EXT-X-TARGETDURATION"
 #define EXTVLCOPT_AUDIOTRACK "#EXTVLCOPT:audio-track-id="
 
 static char *
@@ -411,6 +413,12 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			g_free (contents);
 			contents = fixed;
 		}
+	}
+
+	if (strstr (contents, EXTINF_HLS) ||
+	    strstr (contents, EXTINF_HLS2)) {
+		g_free (contents);
+		return retval;
 	}
 
 	/* is non-NULL if there's an EXTINF on a preceding line */
