@@ -1,0 +1,56 @@
+# Bosnian translation for bosnianuniversetranslation
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the bosnianuniversetranslation package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bosnianuniversetranslation\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=totem&keywords=I18N+L10N&component=playlist parser\n"
+"POT-Creation-Date: 2015-02-27 00:13+0000\n"
+"PO-Revision-Date: 2015-02-05 00:36+0000\n"
+"Last-Translator: Samir Ribić <Unknown>\n"
+"Language-Team: Bosnian <bs@li.org>\n"
+"Language: bs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2015-02-05 06:54+0000\n"
+"X-Generator: Launchpad (build 17331)\n"
+
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
+#, c-format
+msgid "Failed to mount %s."
+msgstr "Ne mogu da montiram %s."
+
+#: ../plparse/totem-disc.c:418
+#, c-format
+msgid "No media in drive for device '%s'."
+msgstr "Nije ubačen medijum u uređaju „%s“."
+
+#: ../plparse/totem-disc.c:476
+#, c-format
+msgid "Please check that a disc is present in the drive."
+msgstr "Provjerite da li je disk prisutan u uređaju."
+
+#: ../plparse/totem-disc.c:947
+msgid "Audio CD"
+msgstr "Audio CD"
+
+#: ../plparse/totem-disc.c:949
+msgid "Video CD"
+msgstr "Video CD"
+
+#: ../plparse/totem-disc.c:951
+msgid "DVD"
+msgstr "DVD"
+
+#: ../plparse/totem-disc.c:953
+msgid "Digital Television"
+msgstr "Digitalna televizija"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
