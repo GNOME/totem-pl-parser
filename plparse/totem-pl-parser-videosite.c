@@ -28,8 +28,6 @@
 #include "totem-pl-parser-videosite.h"
 #include "totem-pl-parser-private.h"
 
-#define BASE 20
-
 gboolean
 totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 {
