@@ -1,5 +1,9 @@
 New features and significant updates in version...
 
+3.10.5:
+- Don't handle HLS playlists served as m3u8
+- Updated translations
+
 3.10.4:
 - Fix parsing of Windows-style SMB playlists
 - Add support for EXTVLCOPT:audio-track-id in m3u files
