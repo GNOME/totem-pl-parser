@@ -28,23 +28,33 @@
 #include "totem-pl-parser-videosite.h"
 #include "totem-pl-parser-private.h"
 
+static char *
+find_helper_script (void)
+{
+#ifdef UNINSTALLED_TESTS
+	return g_strdup ("../totem-pl-parser-videosite");
+#else
+	return g_strdup (LIBEXECDIR "/totem-pl-parser-videosite");
+#endif
+}
+
 gboolean
 totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 {
 #ifdef HAVE_QUVI
 	const char *args[] = {
-#ifdef UNINSTALLED_TESTS
-		"../totem-pl-parser-videosite",
-#else
-		LIBEXECDIR "/totem-pl-parser-videosite",
-#endif
+		NULL,
 		"--check",
 		"--url",
 		NULL,
 		NULL
 	};
 	char *out;
+	char *script;
 
+	script = find_helper_script ();
+
+	args[0] = script;
 	args[3] = uri;
 	g_spawn_sync (NULL,
 		      (char **) args,
@@ -59,6 +69,8 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 	if (debug)
 		g_print ("Checking videosite for URI '%s' returned '%s' (%s)\n",
 			 uri, out, g_strcmp0 (out, "TRUE") == 0 ? "true" : "false");
+
+	g_free (script);
 
 	return (g_strcmp0 (out, "TRUE") == 0);
 #else
@@ -77,7 +89,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 {
 #ifdef HAVE_QUVI
 	const char *args[] = {
-		LIBEXECDIR "/totem-pl-parser-videosite",
+		NULL,
 		"--url",
 		NULL,
 		NULL
@@ -88,10 +100,13 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	guint i;
 	GHashTable *ht;
 	char *new_uri = NULL;
+	char *script;
 	TotemPlParserResult ret;
 
 	uri = g_file_get_uri (file);
+	script = find_helper_script ();
 
+	args[0] = script;
 	args[2] = uri;
 	g_spawn_sync (NULL,
 		      (char **) args,
@@ -144,6 +159,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	ret = TOTEM_PL_PARSER_RESULT_SUCCESS;
 
 out:
+	g_free (script);
 	g_free (uri);
 	return ret;
 #else
