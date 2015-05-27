@@ -88,6 +88,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	guint i;
 	GHashTable *ht;
 	char *new_uri = NULL;
+	TotemPlParserResult ret;
 
 	uri = g_file_get_uri (file);
 
@@ -106,13 +107,18 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 		g_print ("Parsing videosite for URI '%s' returned '%s'\n", uri, out);
 
 	if (out != NULL) {
-		if (g_str_equal (out, "TOTEM_PL_PARSER_RESULT_ERROR"))
-			return TOTEM_PL_PARSER_RESULT_ERROR;
-		if (g_str_equal (out, "TOTEM_PL_PARSER_RESULT_UNHANDLED"))
-			return TOTEM_PL_PARSER_RESULT_UNHANDLED;
+		if (g_str_equal (out, "TOTEM_PL_PARSER_RESULT_ERROR")) {
+			ret = TOTEM_PL_PARSER_RESULT_ERROR;
+			goto out;
+		}
+		if (g_str_equal (out, "TOTEM_PL_PARSER_RESULT_UNHANDLED")) {
+			ret = TOTEM_PL_PARSER_RESULT_UNHANDLED;
+			goto out;
+		}
 	} else {
 		/* totem-pl-parser-videosite failed to launch */
-		return TOTEM_PL_PARSER_RESULT_ERROR;
+		ret = TOTEM_PL_PARSER_RESULT_ERROR;
+		goto out;
 	}
 
 	ht = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
@@ -135,7 +141,11 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	totem_pl_parser_add_hash_table (parser, ht, new_uri, FALSE);
 	g_free (new_uri);
 
-	return TOTEM_PL_PARSER_RESULT_SUCCESS;
+	ret = TOTEM_PL_PARSER_RESULT_SUCCESS;
+
+out:
+	g_free (uri);
+	return ret;
 #else
 	return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 #endif /* !HAVE_QUVI */
