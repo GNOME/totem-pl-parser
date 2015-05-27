@@ -183,10 +183,11 @@ EXTRA_DIST =				\
 	plparser-mini.symbols
 
 if HAVE_QUVI
-libexec_PROGRAMS = totem-pl-parser-videosite
-totem_pl_parser_videosite_SOURCES = videosite-parser.c
-totem_pl_parser_videosite_CFLAGS = $(QUVI_CFLAGS) -DLIBEXECDIR=\""$(libexecdir)"\"
-totem_pl_parser_videosite_LDADD = $(QUVI_LIBS)
+libexecsubdir = $(libexecdir)/totem-pl-parser/
+libexecsub_PROGRAMS = 99-totem-pl-parser-videosite
+99_totem_pl_parser_videosite_SOURCES = videosite-parser.c
+99_totem_pl_parser_videosite_CFLAGS = $(QUVI_CFLAGS) -DLIBEXECDIR=\""$(libexecdir)"\"
+99_totem_pl_parser_videosite_LDADD = $(QUVI_LIBS)
 endif
 
 # Introspection

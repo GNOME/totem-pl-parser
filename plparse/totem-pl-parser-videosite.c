@@ -28,13 +28,39 @@
 #include "totem-pl-parser-videosite.h"
 #include "totem-pl-parser-private.h"
 
+/* The helper script will be either the one shipped in totem-pl-parser,
+ * when running tests, or the first non-hidden file in the totem-pl-parser
+ * libexec directory, when sorted by lexicographic ordering (through strcmp) */
 static char *
 find_helper_script (void)
 {
 #ifdef UNINSTALLED_TESTS
-	return g_strdup ("../totem-pl-parser-videosite");
+	return g_strdup ("../99-totem-pl-parser-videosite");
 #else
-	return g_strdup (LIBEXECDIR "/totem-pl-parser-videosite");
+	GDir *dir;
+	const char *name;
+	char *ret = NULL;
+
+	dir = g_dir_open (LIBEXECDIR "/totem-pl-parser", 0, NULL);
+	if (!dir)
+		goto bail;
+
+	while ((name = g_dir_read_name (dir)) != NULL) {
+		/* Skip hidden files */
+		if (name[0] == '.')
+			continue;
+		if (ret == NULL || g_strcmp0 (name, ret) < 0) {
+			g_free (ret);
+			ret = g_strdup (name);
+		}
+	}
+	g_clear_pointer (&dir, g_dir_close);
+
+	if (ret != NULL)
+		return ret;
+
+bail:
+	return g_strdup (LIBEXECDIR "/totem-pl-parser/99-totem-pl-parser-videosite");
 #endif
 }
 
