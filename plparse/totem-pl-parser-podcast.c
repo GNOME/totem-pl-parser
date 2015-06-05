@@ -770,6 +770,8 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 
 	/* Load the file using iTunes user-agent */
 	content = totem_pl_parser_load_http_itunes (itms_uri, totem_pl_parser_is_debugging_enabled (parser));
+	g_free (itms_uri);
+
 	if (!content)
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 
