@@ -770,6 +770,8 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 
 	/* Load the file using iTunes user-agent */
 	content = totem_pl_parser_load_http_itunes (itms_uri, totem_pl_parser_is_debugging_enabled (parser));
+	if (!content)
+		return TOTEM_PL_PARSER_RESULT_ERROR;
 
 	/* And look in the file for the feedURL */
 	feed_file = totem_pl_parser_get_feed_uri ((char *) content->data, content->len,
