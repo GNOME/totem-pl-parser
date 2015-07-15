@@ -404,6 +404,12 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 		return retval;
 	}
 
+	if (strstr (contents, EXTINF_HLS) ||
+	    strstr (contents, EXTINF_HLS2)) {
+		g_free (contents);
+		return retval;
+	}
+
 	/* Try to use ISO-8859-1 if we don't have valid UTF-8,
 	 * try to parse anyway if it's not ISO-8859-1 */
 	if (g_utf8_validate (contents, -1, NULL) == FALSE) {
@@ -413,12 +419,6 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			g_free (contents);
 			contents = fixed;
 		}
-	}
-
-	if (strstr (contents, EXTINF_HLS) ||
-	    strstr (contents, EXTINF_HLS2)) {
-		g_free (contents);
-		return retval;
 	}
 
 	/* is non-NULL if there's an EXTINF on a preceding line */
