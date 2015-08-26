@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: totem 2.25.90\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-01-26 12:49+0000\n"
+"POT-Creation-Date: 2015-07-21 11:56+0000\n"
 "PO-Revision-Date: 2014-01-27 22:22+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -34,7 +34,7 @@ msgstr "在裝置「%s」中沒有媒體。"
 #: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
-msgstr "您可能要檢查一下光碟是否已放在光碟機內。"
+msgstr "您可能要檢查一下碟片是否已放在碟片機內。"
 
 #: ../plparse/totem-disc.c:947
 msgid "Audio CD"
