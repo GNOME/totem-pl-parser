@@ -11,14 +11,14 @@
 # Stanisław Małolepszy <smalolepszy@aviary.pl>, 2007.
 # Tomasz Dominikowski <dominikowski@gmail.com>, 2007-2008.
 # Joanna Mazgaj <jmazgaj@aviary.pl>, 2009.
-# Piotr Drąg <piotrdrag@gmail.com>, 2010-2014.
-# Aviary.pl <gnomepl@aviary.pl>, 2007-2014.
+# Piotr Drąg <piotrdrag@gmail.com>, 2010-2015.
+# Aviary.pl <gnomepl@aviary.pl>, 2007-2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 19:23+0100\n"
-"PO-Revision-Date: 2014-01-21 19:24+0100\n"
+"POT-Creation-Date: 2015-08-26 19:59+0200\n"
+"PO-Revision-Date: 2015-08-26 20:00+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -34,12 +34,12 @@ msgstr ""
 #: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
-msgstr "Zamontowanie %s się nie powiodło."
+msgstr "Zamontowanie „%s” się nie powiodło."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
-msgstr "Brak nośnika w napędzie dla urządzenia \"%s\"."
+msgstr "Brak nośnika w napędzie dla urządzenia „%s”."
 
 #: ../plparse/totem-disc.c:476
 #, c-format
