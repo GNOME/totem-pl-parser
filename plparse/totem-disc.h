@@ -50,13 +50,6 @@ typedef enum {
   MEDIA_TYPE_BD
 } TotemDiscMediaType;
 
-/**
- * MEDIA_TYPE_NUM_TYPES: (skip)
- *
- * Number of media types
- **/
-#define MEDIA_TYPE_NUM_TYPES MEDIA_TYPE_DVB + 1
-
 #define MediaType TotemDiscMediaType
 
 GQuark totem_disc_media_type_quark	(void) G_GNUC_CONST;
