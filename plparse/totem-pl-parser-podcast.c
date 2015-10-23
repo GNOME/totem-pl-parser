@@ -726,8 +726,12 @@ totem_pl_parser_get_feed_uri (char *data, gsize len, gboolean debug)
 	/* Redirect plist? Find a goto action */
 	uri = totem_pl_parser_parse_plist (doc);
 
-	if (debug)
-		g_print ("Found redirect URL: %s\n", uri);
+	if (debug) {
+		if (uri == NULL)
+			g_print ("Did not find redirect URL in: %.*s\n", (int) len, data);
+		else
+			g_print ("Found redirect URL: %s\n", uri);
+	}
 
 	if (uri == NULL)
 		goto out;
