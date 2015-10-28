@@ -39,7 +39,7 @@ find_helper_script (void)
 #else
 	GDir *dir;
 	const char *name;
-	char *ret = NULL;
+	char *script_name = NULL;
 
 	dir = g_dir_open (LIBEXECDIR "/totem-pl-parser", 0, NULL);
 	if (!dir)
@@ -49,15 +49,19 @@ find_helper_script (void)
 		/* Skip hidden files */
 		if (name[0] == '.')
 			continue;
-		if (ret == NULL || g_strcmp0 (name, ret) < 0) {
-			g_free (ret);
-			ret = g_strdup (name);
+		if (script_name == NULL || g_strcmp0 (name, script_name) < 0) {
+			g_free (script_name);
+			script_name = g_strdup (name);
 		}
 	}
 	g_clear_pointer (&dir, g_dir_close);
 
-	if (ret != NULL)
+	if (script_name != NULL) {
+		char *ret;
+		ret = g_build_filename (LIBEXECDIR "/totem-pl-parser", script_name, NULL);
+		g_free (script_name);
 		return ret;
+	}
 
 bail:
 	return g_strdup (LIBEXECDIR "/totem-pl-parser/99-totem-pl-parser-videosite");
@@ -93,8 +97,8 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 		      NULL,
 		      NULL);
 	if (debug)
-		g_print ("Checking videosite for URI '%s' returned '%s' (%s)\n",
-			 uri, out, g_strcmp0 (out, "TRUE") == 0 ? "true" : "false");
+		g_print ("Checking videosite with script '%s' for URI '%s' returned '%s' (%s)\n",
+			 script, uri, out, g_strcmp0 (out, "TRUE") == 0 ? "true" : "false");
 
 	g_free (script);
 
