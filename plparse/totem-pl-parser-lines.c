@@ -502,7 +502,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			/* + 2, skip drive letter */
 			uri = g_file_get_child (base_file, line + 2);
 			totem_pl_parser_add_uri (parser,
-						 TOTEM_PL_PARSER_FIELD_URI, uri,
+						 TOTEM_PL_PARSER_FIELD_FILE, uri,
 						 TOTEM_PL_PARSER_FIELD_TITLE, totem_pl_parser_get_extinfo_title (extinfo),
 						 TOTEM_PL_PARSER_FIELD_AUDIO_TRACK, audio_track,
 						 NULL);
@@ -536,7 +536,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 			uri = g_file_get_child (_base_file, line);
 			g_object_unref (_base_file);
 			totem_pl_parser_add_uri (parser,
-						 TOTEM_PL_PARSER_FIELD_URI, uri,
+						 TOTEM_PL_PARSER_FIELD_FILE, uri,
 						 TOTEM_PL_PARSER_FIELD_TITLE, totem_pl_parser_get_extinfo_title (extinfo),
 						 TOTEM_PL_PARSER_FIELD_AUDIO_TRACK, audio_track,
 						 NULL);

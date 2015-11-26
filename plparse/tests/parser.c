@@ -283,8 +283,12 @@ entry_parsed_cb (TotemPlParser *parser,
 		 GHashTable *metadata,
 		 ParserResult *res)
 {
-	if (res->ret == NULL)
-		res->ret = g_strdup (g_hash_table_lookup (metadata, res->field));
+	if (res->ret == NULL) {
+		if (g_strcmp0 (res->field, TOTEM_PL_PARSER_FIELD_URI) == 0)
+			res->ret = g_strdup (uri);
+		else
+			res->ret = g_strdup (g_hash_table_lookup (metadata, res->field));
+	}
 }
 
 static void
@@ -542,6 +546,18 @@ test_m3u_audio_track (void)
 	uri = get_relative_uri (TEST_SRCDIR "radios-freebox.m3u");
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_AUDIO_TRACK), ==, "1");
 	g_free (uri);
+}
+
+static void
+test_m3u_relative (void)
+{
+	char *uri, *file_uri;
+
+	uri = get_relative_uri (TEST_SRCDIR "relative.m3u");
+	file_uri = get_relative_uri (TEST_SRCDIR "3gpp-file.mp4");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, file_uri);
+	g_free (uri);
+	g_free (file_uri);
 }
 
 static void
@@ -1263,6 +1279,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/image_link", test_image_link);
+		g_test_add_func ("/parser/m3u_relative", test_m3u_relative);
 		g_test_add_func ("/parser/m3u_audio_track", test_m3u_audio_track);
 		g_test_add_func ("/parser/no_url_podcast", test_no_url_podcast);
 		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);

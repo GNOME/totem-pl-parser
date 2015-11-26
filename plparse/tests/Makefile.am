@@ -75,6 +75,7 @@ EXTRA_DIST =			\
 	no-url-podcast.xml	\
 	xml-base.xspf		\
 	radioclasica.mp3.m3u    \
-	radios-freebox.m3u
+	radios-freebox.m3u	\
+	relative.m3u
 
 -include $(top_srcdir)/git.mk
