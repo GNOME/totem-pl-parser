@@ -80,6 +80,7 @@
 #define QUICKTIME_META_MIME_TYPE "application/x-quicktime-media-link"
 #define ASX_MIME_TYPE "audio/x-ms-asx"
 #define ASF_REF_MIME_TYPE "application/vnd.ms-asf"
+#define HLS_MIME_TYPE "application/vnd.apple.mpegurl"
 
 #define TOTEM_PL_PARSER_FIELD_FILE		"gfile-object"
 #define TOTEM_PL_PARSER_FIELD_BASE_FILE		"gfile-object-base"

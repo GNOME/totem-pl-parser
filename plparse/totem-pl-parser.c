@@ -1890,6 +1890,10 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		g_free (data);
 		g_free (mimetype);
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
+	} else if (strcmp (mimetype, HLS_MIME_TYPE) == 0) {
+		g_free (data);
+		g_free (mimetype);
+		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 
 	/* If we're at the top-level of the parsing, try to get more
