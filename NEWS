@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+3.10.6:
+- Fix a number of bugs in iTunes link handling and M3U
+  and HLS playlist parsing.
+- Make it possible to use an alternate helper script to
+  the default quvi based one
+
 3.10.5:
 - Don't handle HLS playlists served as m3u8
 - Updated translations
