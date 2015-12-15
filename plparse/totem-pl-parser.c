@@ -1738,10 +1738,16 @@ totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetyp
 		return FALSE;
 
 	for (i = 0; i < G_N_ELEMENTS (ignore_types); i++) {
-		if (g_content_type_is_a (mimetype, ignore_types[i].mimetype) != FALSE)
+		if (g_content_type_is_a (mimetype, ignore_types[i].mimetype) != FALSE) {
+			if (parser->priv->debug)
+				g_print ("Ignoring %s because it's a %s\n", mimetype, ignore_types[i].mimetype);
 			return TRUE;
-		if (g_content_type_equals (mimetype, ignore_types[i].mimetype) != FALSE)
+		}
+		if (g_content_type_equals (mimetype, ignore_types[i].mimetype) != FALSE) {
+			if (parser->priv->debug)
+				g_print ("Ignoring %s because it's equal to %s\n", mimetype, ignore_types[i].mimetype);
 			return TRUE;
+		}
 	}
 
 	return FALSE;
