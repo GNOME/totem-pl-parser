@@ -825,6 +825,7 @@ test_parsing_num_entries (void)
 	g_assert_cmpint (num, ==, 19);
 }
 
+/*
 static void
 test_parsing_404_error (void)
 {
@@ -836,6 +837,7 @@ test_parsing_404_error (void)
 	g_test_bug ("158052");
 	g_assert_cmpint (simple_parser_test ("http://live.hujjat.org:7860/main"), ==, TOTEM_PL_PARSER_RESULT_UNHANDLED);
 }
+*/
 
 static void
 test_parsing_3gpp_not_ignored (void)
@@ -1287,7 +1289,8 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
 		g_test_add_func ("/parser/parsing/nonexistent_files", test_parsing_nonexistent_files);
 		g_test_add_func ("/parser/parsing/broken_asx", test_parsing_broken_asx);
-		g_test_add_func ("/parser/parsing/404_error", test_parsing_404_error);
+		/* Disabled, as the host is unavailable most of the time
+		 * g_test_add_func ("/parser/parsing/404_error", test_parsing_404_error); */
 		g_test_add_func ("/parser/parsing/3gpp_not_ignored", test_parsing_3gpp_not_ignored);
 		g_test_add_func ("/parser/parsing/parsing_ts_not_ignored", test_parsing_ts_not_ignored);
 		g_test_add_func ("/parser/parsing/mp4_is_flv", test_parsing_mp4_is_flv);
