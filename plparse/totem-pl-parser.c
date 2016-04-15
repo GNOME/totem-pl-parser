@@ -1738,7 +1738,11 @@ totem_pl_parser_ignore_from_mimetype (TotemPlParser *parser, const char *mimetyp
 		return FALSE;
 
 	for (i = 0; i < G_N_ELEMENTS (ignore_types); i++) {
-		if (g_content_type_is_a (mimetype, ignore_types[i].mimetype) != FALSE) {
+		/* Up until we have a way to detect private inheritance
+		 * in shared-mime-info */
+		if (strcmp (mimetype, "application/vnd.apple.mpegurl") != 0 &&
+		    strcmp (mimetype, "audio/x-mpegurl") != 0 &&
+		    g_content_type_is_a (mimetype, ignore_types[i].mimetype) != FALSE) {
 			if (parser->priv->debug)
 				g_print ("Ignoring %s because it's a %s\n", mimetype, ignore_types[i].mimetype);
 			return TRUE;
