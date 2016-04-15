@@ -57,7 +57,7 @@ totem_pl_parser_is_asx (const char *data, gsize len)
 	if (g_strstr_len (data, len, ASX_NEEDLE3) != NULL)
 		return ASX_MIME_TYPE;
 
-	return FALSE;
+	return NULL;
 }
 
 const char *
