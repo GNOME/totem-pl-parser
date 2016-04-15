@@ -392,13 +392,16 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 	const char *extinfo, *extvlcopt_audiotrack;
 	char *pl_uri;
 
-	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE)
+	if (g_file_load_contents (file, NULL, &contents, &size, NULL, NULL) == FALSE) {
+		DEBUG (file, g_print ("Failed to load '%s'\n", uri));
 		return TOTEM_PL_PARSER_RESULT_ERROR;
+	}
 
 	/* .pls files with a .m3u extension, the nasties */
 	if (g_str_has_prefix (contents, "[playlist]") != FALSE
 			|| g_str_has_prefix (contents, "[Playlist]") != FALSE
 			|| g_str_has_prefix (contents, "[PLAYLIST]") != FALSE) {
+		DEBUG (file, g_print ("Parsing '%s' playlist as PLS\n", uri));
 		retval = totem_pl_parser_add_pls_with_contents (parser, file, base_file, contents, parse_data);
 		g_free (contents);
 		return retval;
@@ -406,6 +409,7 @@ totem_pl_parser_add_m3u (TotemPlParser *parser,
 
 	if (strstr (contents, EXTINF_HLS) ||
 	    strstr (contents, EXTINF_HLS2)) {
+		DEBUG (file, g_print ("Unhandled HLS playlist '%s', should be passed to player\n", uri));
 		g_free (contents);
 		return retval;
 	}
