@@ -8,10 +8,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-23 18:13+0000\n"
-"PO-Revision-Date: 2009-02-23 18:13+0000\n"
-"Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-08-22 19:45+0000\n"
+"PO-Revision-Date: 2016-09-18 10:28+0200\n"
+"Last-Translator: David King <amigadave@amigadave.com>\n"
 "Language-Team: English/GB <en@li.org>\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
@@ -19,36 +20,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:498
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Failed to mount %s."
 
-#: ../plparse/totem-disc.c:387
+#: ../plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device '%s'."
-msgstr "No media in drive for device '%s'."
+msgstr "No media in drive for device ‘%s’."
 
-#: ../plparse/totem-disc.c:441
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Please check that a disc is present in the drive."
 
-#: ../plparse/totem-disc.c:880
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: ../plparse/totem-disc.c:882
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "Video CD"
 
-#: ../plparse/totem-disc.c:884
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:886
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Digital Television"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
 
 #~ msgid "Failed to find mountpoint for device %s"
 #~ msgstr "Failed to find mountpoint for device %s"
