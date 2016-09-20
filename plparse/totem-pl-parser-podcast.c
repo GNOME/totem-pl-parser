@@ -666,7 +666,7 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 
 	id = get_itms_id (file);
 	if (id == NULL) {
-		DEBUG(file, g_print ("Could not get ITMS ID for URL '%s'", uri));
+		DEBUG(file, g_print ("Could not get ITMS ID for URL '%s'\n", uri));
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
@@ -678,14 +678,17 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	g_free (json_uri);
 
 	if (g_file_load_contents (json_file, NULL, &contents, &len, NULL, NULL) == FALSE) {
+		DEBUG(json_file, g_print ("Failed to load URL '%s'\n", uri));
 		g_object_unref (json_file);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
 	feed_url = totem_pl_parser_parse_json (contents, len, totem_pl_parser_is_debugging_enabled (parser));
 	g_free (contents);
-	if (feed_url == NULL)
+	if (feed_url == NULL) {
+		DEBUG(json_file, g_print ("Failed to parse JSON file at '%s'\n", uri));
 		return TOTEM_PL_PARSER_RESULT_ERROR;
+	}
 
 	feed_file = g_file_new_for_uri (feed_url);
 	g_free (feed_url);
