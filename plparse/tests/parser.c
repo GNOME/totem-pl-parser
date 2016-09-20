@@ -532,9 +532,8 @@ test_itms_parsing (void)
 		return;
 	}
 
-	/* From https://itunes.apple.com/us/podcast/best-of-chris-moyles/id77318908 */
-	g_assert_cmpstr (parser_test_get_playlist_uri ("itmss://itunes.apple.com/us/podcast/best-of-chris-moyles/id77318908?ign-msr=https%3A%2F%2Fwww.google.com%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D3%26ved%3D0CEEQFjAC%26url%3Dhttps%253A%252F%252Fitunes.apple.com%252Fus%252Fpodcast%252Fbest-of-chris-moyles%252Fid77318908%26ei%3DiMeaUO_ZIsfCtAbvk4DADA%26usg%3DAFQjCNE5YyukECjJE3fmrLIJICX5dMSyyg%26sig2%3DGM631xTbZq7E6m-eaGc3HA"), ==, "http://www.bbc.co.uk/programmes/p02nrx0j/episodes/downloads.rss");
-	g_assert_cmpstr (parser_test_get_playlist_uri ("https://itunes.apple.com/us/podcast/best-of-chris-moyles/id77318908#"), ==, "http://www.bbc.co.uk/programmes/p02nrx0j/episodes/downloads.rss");
+	/* From https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&ign-mpt=uo=4 */
+	g_assert_cmpstr (parser_test_get_playlist_uri ("https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&ign-mpt=uo%3D4#"), ==, "http://ws.geronimo.thisisglobal.com/api/RssFeed/GetPodcasts?StationId=27f88187-4880-4e70-be90-1a7dad1beb5e&ShowId=999e3658-ae1a-400b-9697-5bc35d5aa411");
 	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "http://www.bbc.co.uk/programmes/p02nrtyg/episodes/downloads.rss");
 }
 
