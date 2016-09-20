@@ -1,6 +1,5 @@
 include $(top_srcdir)/Makefile.decl
 
-pwd=`pwd`
 INCLUDES = \
 	-I$(top_srcdir)/plparse	\
 	-DTEST_SRCDIR=\""$(srcdir)/"\"
