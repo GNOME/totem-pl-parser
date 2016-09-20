@@ -49,7 +49,9 @@ DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc --enable-int
 # Build ChangeLog from GIT history
 ChangeLog:
 	@if test -f $(top_srcdir)/.git/HEAD; then \
+		pushd $(top_srcdir) ; \
 		git log --stat --after="Mon Jul 20 23:47:57 2009" > $@; \
+		popd ; \
 	fi
 
 dist: ChangeLog
