@@ -687,9 +687,11 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 	g_free (contents);
 	if (feed_url == NULL) {
 		DEBUG(json_file, g_print ("Failed to parse JSON file at '%s'\n", uri));
+		g_object_unref (json_file);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
+	g_object_unref (json_file);
 	feed_file = g_file_new_for_uri (feed_url);
 	g_free (feed_url);
 
