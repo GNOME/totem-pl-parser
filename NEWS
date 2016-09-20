@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+3.10.7:
+- Don't consider M3U playlists as text/plain
+- Simplify ITMS link parsing
+- Fix mmap error checking
+- Build fixes
+
 3.10.6:
 - Fix a number of bugs in iTunes link handling and M3U
   and HLS playlist parsing.
