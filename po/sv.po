@@ -1,16 +1,16 @@
 # Swedish messages for totem-pl-parser.
-# Copyright © 2002-2009, 2014 Free Software Foundation, Inc.
+# Copyright © 2002-2009, 2014, 2016 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2002, 2003, 2004, 2005.
 # Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2014.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2014, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-01-21 17:48+0000\n"
-"PO-Revision-Date: 2014-04-16 23:03+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-10-11 14:10+0000\n"
+"PO-Revision-Date: 2016-10-11 18:42+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.8.9\n"
 
 #: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
 #: ../plparse/totem-disc.c:533
@@ -28,7 +28,7 @@ msgstr "Misslyckades med att montera %s."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
 msgstr "Inget media i enheten ”%s”."
 
 #: ../plparse/totem-disc.c:476
