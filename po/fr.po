@@ -16,10 +16,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-01-21 17:48+0000\n"
-"PO-Revision-Date: 2014-03-07 14:17+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-10-11 14:10+0000\n"
+"PO-Revision-Date: 2016-10-11 16:29+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -36,7 +36,7 @@ msgstr "Le montage de %s a échoué."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
 msgstr "Aucun média dans le lecteur du périphérique « %s »."
 
 #: ../plparse/totem-disc.c:476
