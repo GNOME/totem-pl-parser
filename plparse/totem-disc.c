@@ -415,7 +415,7 @@ cd_cache_new (const char *dev,
   found = cd_cache_get_dev_from_volumes (mon, device, &mountpoint, &volume);
   if (!found) {
     g_set_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_NO_DISC,
-	_("No media in drive for device '%s'."),
+	_("No media in drive for device “%s”."),
 	device);
     g_free (device);
     return NULL;
