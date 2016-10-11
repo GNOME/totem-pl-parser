@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-22 21:43+0200\n"
-"PO-Revision-Date: 2016-08-22 21:44+0200\n"
+"POT-Creation-Date: 2016-10-11 16:10+0200\n"
+"PO-Revision-Date: 2016-10-11 16:11+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -34,7 +34,7 @@ msgstr "Zamontowanie „%s” się nie powiodło."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
 msgstr "Brak nośnika w napędzie dla urządzenia „%s”."
 
 #: ../plparse/totem-disc.c:476
