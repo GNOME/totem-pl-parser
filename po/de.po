@@ -5,22 +5,23 @@
 # Hendrik Richter <hendrikr@gnome.org>, 2004, 2005, 2006, 2007.
 # Hendrik Brandt <heb@gnome-de.org>, 2004-2005.
 # Andre Klapper <ak-47@gmx.net>, 2008, 2009.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-02-03 00:32+0000\n"
-"PO-Revision-Date: 2014-02-03 11:48+0100\n"
-"Last-Translator: David Lüder <davidl-dev@gmx-topmail.de>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-10-11 14:10+0000\n"
+"PO-Revision-Date: 2016-10-13 11:20+0200\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.8.9\n"
 
 #: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
 #: ../plparse/totem-disc.c:533
@@ -30,7 +31,7 @@ msgstr "Einbinden von %s gescheitert."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
 msgstr "Kein Medium im Laufwerk des Geräts »%s«."
 
 #: ../plparse/totem-disc.c:476
@@ -58,5 +59,3 @@ msgstr "Digitales Fernsehen"
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
-#~ msgid "Could not connect to the HAL daemon"
-#~ msgstr "Es konnte nicht mit dem HAL-Daemon verbunden werden"
