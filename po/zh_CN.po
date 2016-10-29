@@ -5,20 +5,23 @@
 # jan2xue <75jan@163.com>, 2004. 周延潮
 # Liu Songhe <jackliu9999@263.net>, 2004.
 # 甘露(Gan Lu) <rhythm.gan@gmail.com>, 2009
+# Dingzhong Chen <wsxy162@gmail.com>, 2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Totem\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-01-21 17:48+0000\n"
-"PO-Revision-Date: 2014-01-24 21:50+0800\n"
-"Last-Translator: 甘露(Gan Lu) <rhythm.gan@gmail.com>\n"
-"Language-Team: \n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-10-14 11:14+0000\n"
+"PO-Revision-Date: 2016-10-14 23:56+0800\n"
+"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
 #: ../plparse/totem-disc.c:533
@@ -28,7 +31,7 @@ msgstr "挂载 %s 失败。"
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
 msgstr "设备“%s”的驱动器中没有介质。"
 
 #: ../plparse/totem-disc.c:476
@@ -42,7 +45,7 @@ msgstr "音频 CD"
 
 #: ../plparse/totem-disc.c:949
 msgid "Video CD"
-msgstr "VCD"
+msgstr "视频 CD"
 
 #: ../plparse/totem-disc.c:951
 msgid "DVD"
@@ -54,7 +57,7 @@ msgstr "数字电视"
 
 #: ../plparse/totem-disc.c:955
 msgid "Blu-ray"
-msgstr "蓝牙"
+msgstr "蓝光"
 
 #~ msgid "Could not connect to the HAL daemon"
 #~ msgstr "无法连接到 HAL 守护程序"
