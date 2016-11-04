@@ -4,10 +4,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: totem 0\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2016-07-21 22:46+0000\n"
-"PO-Revision-Date: 2016-07-22 22:38+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-10-11 14:10+0000\n"
+"PO-Revision-Date: 2016-11-04 20:16+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -25,8 +25,8 @@ msgstr "Neuspješno montiranje %s."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
-msgstr "Nema medija u uređaju '%s'."
+msgid "No media in drive for device “%s”."
+msgstr "Nema medija u uređaju ”%s”."
 
 #: ../plparse/totem-disc.c:476
 #, c-format
