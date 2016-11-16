@@ -2,26 +2,31 @@
 # Copyright (C) 2005-2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the totem-pl-parser package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2007 - 2014.
+# Matej Urbančič <mateju@svn.gnome.org>, 2007–2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-02-06 12:27+0000\n"
-"PO-Revision-Date: 2014-02-06 20:25+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-11-15 19:55+0100\n"
+"PO-Revision-Date: 2016-11-15 19:56+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: sl\n"
+"Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
 "X-Launchpad-Export-Date: 2007-10-05 05:48+0000\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
 #: ../plparse/totem-disc.c:533
 #, c-format
@@ -30,8 +35,8 @@ msgstr "Napaka med priklapljanjem %s."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
-msgstr "Ni nosilca v pogonu naprave '%s'."
+msgid "No media in drive for device “%s”."
+msgstr "Ni nosilca v pogonu naprave “%s”."
 
 #: ../plparse/totem-disc.c:476
 #, c-format
@@ -57,6 +62,9 @@ msgstr "Digitalna televizija"
 #: ../plparse/totem-disc.c:955
 msgid "Blu-ray"
 msgstr "Blu-ray"
+
+#~ msgid "No media in drive for device '%s'."
+#~ msgstr "Ni nosilca v pogonu naprave '%s'."
 
 #~ msgid "Could not connect to the HAL daemon"
 #~ msgstr "Ni se mogoče povezati z ozadnjim programom HAL"
