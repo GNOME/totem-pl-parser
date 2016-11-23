@@ -5,23 +5,24 @@
 # Tuchinsky Artem <tuchinsky@gmail.com, 2006.
 #
 # This file is distributed under the same license as the "totem" package.
+# Stas Solovey <whats_up@tut.by>, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem trunk\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-01-21 17:48+0000\n"
-"PO-Revision-Date: 2014-03-10 11:35+0300\n"
-"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
-"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2016-10-11 14:10+0000\n"
+"PO-Revision-Date: 2016-11-24 00:26+0300\n"
+"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
+"Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.4\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
 #: ../plparse/totem-disc.c:533
@@ -31,8 +32,9 @@ msgstr "Не удалось подключить %s."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
-msgstr "Не найден носитель в устройстве «%s»."
+#| msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
+msgstr "Нет носителя в приводе устройства «%s»."
 
 #: ../plparse/totem-disc.c:476
 #, c-format
