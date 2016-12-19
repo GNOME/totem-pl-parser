@@ -229,6 +229,6 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
 
-@GNOME_CODE_COVERAGE_RULES@
+@CODE_COVERAGE_RULES@
 
 -include $(top_srcdir)/git.mk
