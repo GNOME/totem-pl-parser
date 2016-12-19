@@ -12,6 +12,8 @@ AC_CONFIG_SRCDIR([plparse/totem-pl-parser.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
+AX_IS_RELEASE([git-directory])
+
 AM_INIT_AUTOMAKE([1.9 dist-xz no-dist-gzip check-news subdir-objects])
 AM_MAINTAINER_MODE([enable])
 AC_USE_SYSTEM_EXTENSIONS
