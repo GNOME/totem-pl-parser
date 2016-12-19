@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)/plparse	\
 	-DTEST_SRCDIR=\""$(srcdir)/"\"
 
@@ -18,7 +18,6 @@ parser_CPPFLAGS			 = \
 				-I$(top_builddir)/plparse	\
 				-DGNOMELOCALEDIR=\""$(datadir)/locale"\"\
 				$(DISABLE_DEPRECATED)		\
-				$(INCLUDES)			\
 				$(AM_CPPFLAGS)
 parser_CFLAGS			 = \
 				$(TOTEM_PLPARSER_CFLAGS)\
@@ -38,7 +37,6 @@ disc_LDADD			 = \
 				$(TOTEM_PLPARSER_LIBS)
 disc_CPPFLAGS			 = \
 				$(common_defines)	\
-				$(INCLUDES)		\
 				$(AM_CPPFLAGS)
 disc_CFLAGS			 = \
 				$(WARN_CFLAGS)		\
