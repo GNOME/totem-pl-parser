@@ -1253,9 +1253,6 @@ main (int argc, char *argv[])
 
 	setlocale (LC_ALL, "");
 
-#if !GLIB_CHECK_VERSION (2, 36, 0)
-	g_type_init ();
-#endif
 	g_test_init (&argc, &argv, NULL);
 	g_test_bug_base ("http://bugzilla.gnome.org/show_bug.cgi?id=");
 
