@@ -99,6 +99,7 @@ libtotem_plparser_la_LDFLAGS =			\
 	-version-info $(PLPARSER_LT_VERSION)	\
 	-export-symbols $(srcdir)/plparser.symbols \
 	-no-undefined				\
+	$(WARN_LDFLAGS)				\
 	$(CODE_COVERAGE_LDFLAGS)		\
 	$(AM_LDFLAGS)
 
@@ -152,6 +153,7 @@ libtotem_plparser_mini_la_LDFLAGS =			\
 	-version-info $(PLPARSER_LT_VERSION)		\
 	-export-symbols $(srcdir)/plparser-mini.symbols	\
 	-no-undefined					\
+	$(WARN_LDFLAGS)					\
 	$(CODE_COVERAGE_LDFLAGS)			\
 	$(AM_LDFLAGS)
 
@@ -186,14 +188,15 @@ if HAVE_QUVI
 libexecsubdir = $(libexecdir)/totem-pl-parser/
 libexecsub_PROGRAMS = 99-totem-pl-parser-videosite
 99_totem_pl_parser_videosite_SOURCES = videosite-parser.c
-99_totem_pl_parser_videosite_CFLAGS = $(QUVI_CFLAGS) -DLIBEXECDIR=\""$(libexecdir)"\"
+99_totem_pl_parser_videosite_CFLAGS = $(QUVI_CFLAGS) $(WARN_CFLAGS) -DLIBEXECDIR=\""$(libexecdir)"\"
 99_totem_pl_parser_videosite_LDADD = $(QUVI_LIBS)
+99_totem_pl_parser_videosite_LDFLAGS = $(WARN_LDFLAGS)
 endif
 
 # Introspection
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --add-include-path=$(builddir) --warn-all
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --add-include-path=$(builddir) $(WARN_SCANNERFLAGS)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 if HAVE_INTROSPECTION

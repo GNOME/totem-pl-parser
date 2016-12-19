@@ -198,23 +198,7 @@ AC_SUBST(TOTEM_PLPARSER_LIBS)
 
 PKG_CHECK_MODULES([TOTEM_PLPARSER_MINI], [gio-2.0])
 
-GNOME_COMPILE_WARNINGS([maximum])
-GNOME_CXX_WARNINGS
-
-if test "$GCC" = "yes" ; then
-	CFLAGS="\
-	-Wall \
-	-Wchar-subscripts -Wmissing-declarations -Wmissing-prototypes \
-	-Wnested-externs -Wpointer-arith \
-	-Wcast-align -Wsign-compare \
-	-fno-strict-aliasing \
-	$CFLAGS"
-fi
-
-AC_SUBST([AM_CPPFLAGS])
-AC_SUBST([AM_CFLAGS])
-AC_SUBST([AM_CXXFLAGS])
-AC_SUBST([AM_LDFLAGS])
+AX_COMPILER_FLAGS([WARN_CFLAGS],[WARN_LDFLAGS])
 
 GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
 GOBJECT_INTROSPECTION_CHECK([0.9.5])

@@ -26,6 +26,9 @@ parser_CFLAGS			 = \
 				$(DBUS_CFLAGS)		\
 				$(WARN_CFLAGS)		\
 				$(AM_CFLAGS)
+parser_LDFLAGS			 = \
+				$(WARN_LDFLAGS)		\
+				$(AM_LDFLAGS)
 
 TEST_PROGS			+= disc
 disc_SOURCES			 = disc.c
@@ -41,7 +44,9 @@ disc_CFLAGS			 = \
 				$(WARN_CFLAGS)		\
 				$(TOTEM_PLPARSER_CFLAGS)\
 				$(AM_CFLAGS)
-disc_LDFLAGS			 = $(AM_LDFLAGS)
+disc_LDFLAGS			 = \
+				$(WARN_LDFLAGS)		\
+				$(AM_LDFLAGS)
 
 EXTRA_DIST =			\
 	541405.xml		\
