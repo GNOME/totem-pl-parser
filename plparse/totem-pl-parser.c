@@ -1822,7 +1822,6 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	if (!parse_data->recurse && parse_data->recurse_level > 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
-#ifdef HAVE_QUVI
 	/* Should we try to parse it with quvi? */
 	if (g_file_has_uri_scheme (file, "http")) {
 		char *url;
@@ -1834,7 +1833,6 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		}
 		g_free (url);
 	}
-#endif /* HAVE_QUVI */
 
 	/* In force mode we want to get the data */
 	if (parse_data->force != FALSE) {

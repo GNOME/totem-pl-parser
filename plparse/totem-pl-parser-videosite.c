@@ -64,14 +64,13 @@ find_helper_script (void)
 	}
 
 bail:
-	return g_strdup (LIBEXECDIR "/totem-pl-parser/99-totem-pl-parser-videosite");
+	return NULL;
 #endif
 }
 
 gboolean
 totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 {
-#ifdef HAVE_QUVI
 	const char *args[] = {
 		NULL,
 		"--check",
@@ -83,6 +82,11 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 	char *script;
 
 	script = find_helper_script ();
+	if (script == NULL) {
+		if (debug)
+			g_print ("Did not find a script to check whether '%s' is a videosite\n", uri);
+		return FALSE;
+	}
 
 	args[0] = script;
 	args[3] = uri;
@@ -103,9 +107,6 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 	g_free (script);
 
 	return (g_strcmp0 (out, "TRUE") == 0);
-#else
-	return FALSE;
-#endif /* HAVE_QUVI */
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
@@ -117,14 +118,13 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 			       TotemPlParseData *parse_data,
 			       gpointer data)
 {
-#ifdef HAVE_QUVI
 	const char *args[] = {
 		NULL,
 		"--url",
 		NULL,
 		NULL
 	};
-	char *uri;
+	char *_uri;
 	char *out = NULL;
 	char **lines;
 	guint i;
@@ -133,11 +133,15 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	char *script;
 	TotemPlParserResult ret;
 
-	uri = g_file_get_uri (file);
 	script = find_helper_script ();
+	if (script == NULL) {
+		DEBUG (file, g_print ("Did not find a script to check whether '%s' is a videosite\n", uri));
+		return FALSE;
+	}
 
+	_uri = g_file_get_uri (file);
 	args[0] = script;
-	args[2] = uri;
+	args[2] = _uri;
 	g_spawn_sync (NULL,
 		      (char **) args,
 		      NULL,
@@ -149,7 +153,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 		      NULL,
 		      NULL);
 	if (totem_pl_parser_is_debugging_enabled (parser))
-		g_print ("Parsing videosite for URI '%s' returned '%s'\n", uri, out);
+		g_print ("Parsing videosite for URI '%s' returned '%s'\n", _uri, out);
 
 	if (out != NULL) {
 		if (g_str_equal (out, "TOTEM_PL_PARSER_RESULT_ERROR")) {
@@ -190,11 +194,8 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 
 out:
 	g_free (script);
-	g_free (uri);
+	g_free (_uri);
 	return ret;
-#else
-	return TOTEM_PL_PARSER_RESULT_UNHANDLED;
-#endif /* !HAVE_QUVI */
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */
