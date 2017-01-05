@@ -40,6 +40,12 @@
 
 #define SAFE_FREE(x) { if (x != NULL) xmlFree (x); }
 
+static void
+debug_noop (void *ctx, const char *msg, ...)
+{
+	return;
+}
+
 static xmlDocPtr
 totem_pl_parser_parse_xml_file (GFile *file)
 {
@@ -64,6 +70,7 @@ totem_pl_parser_parse_xml_file (GFile *file)
 		}
 	}
 
+	xmlSetGenericErrorFunc (NULL, (xmlGenericErrorFunc) debug_noop);
 	doc = xmlParseMemory (contents, size);
 	if (doc == NULL)
 		doc = xmlRecoverMemory (contents, size);
@@ -519,6 +526,7 @@ totem_pl_parser_add_xspf_with_contents (TotemPlParser *parser,
 	xmlNodePtr node;
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
+	xmlSetGenericErrorFunc (NULL, (xmlGenericErrorFunc) debug_noop);
 	doc = xmlParseMemory (contents, strlen (contents));
 	if (doc == NULL)
 		doc = xmlRecoverMemory (contents, strlen (contents));
