@@ -171,7 +171,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 			 gpointer data)
 {
 	TotemPlParserResult retval = TOTEM_PL_PARSER_RESULT_UNHANDLED;
-	char *contents, *title, *uri;
+	char *contents, *title, *playlist_uri;
 	guint offset, max_entries, entry;
 	gsize size;
 
@@ -210,6 +210,7 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 	while (offset + RECORD_SIZE <= size && entry < max_entries) {
 		char *path;
 		GError *error = NULL;
+		char *uri;
 
 		/* path starts at +2, is at most 500 bytes, in big-endian utf16 .. */
 		path = g_convert (contents + offset + PATH_OFFSET,
@@ -245,9 +246,9 @@ totem_pl_parser_add_pla (TotemPlParser *parser,
 		entry++;
 	}
 
-	uri = g_file_get_uri (file);
-	totem_pl_parser_playlist_end (parser, uri);
-	g_free (uri);
+	playlist_uri = g_file_get_uri (file);
+	totem_pl_parser_playlist_end (parser, playlist_uri);
+	g_free (playlist_uri);
 
 	g_free (contents);
 
