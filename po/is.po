@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the totem-pl-parser package.
 # Áki G. Karlsson <aki@akademia.is>, 2004.
 # Anna Jonna Ármannsdóttir <annajonna@gmail.com>, 2009.
-# Sveinn í Felli <sv1@fellsnet.is>, 2015.
+# Sveinn í Felli <sv1@fellsnet.is>, 2015, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: totem 0.99\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-02-08 12:27+0000\n"
-"PO-Revision-Date: 2015-02-02 08:34+0000\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2017-02-28 06:43+0000\n"
+"PO-Revision-Date: 2017-03-01 11:42+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.net>\n"
 "Language: is\n"
@@ -28,14 +28,12 @@ msgstr "Gat ekki tengt %s."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
-msgstr "Enginn miðill í drifi tækisins '%s'."
+#| msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
+msgstr "Enginn miðill í drifi tækisins „%s”."
 
 #: ../plparse/totem-disc.c:476
 #, c-format
-#| msgid ""
-#| "You might want to check that a disc is present in the drive and that it "
-#| "is correctly configured."
 msgid "Please check that a disc is present in the drive."
 msgstr "Þú ættir að athuga hvort diskur sé í drifinu."
 
@@ -49,7 +47,7 @@ msgstr "CD mynddiskur"
 
 #: ../plparse/totem-disc.c:951
 msgid "DVD"
-msgstr "DVD"
+msgstr "DVD mynddiskur"
 
 #: ../plparse/totem-disc.c:953
 msgid "Digital Television"
