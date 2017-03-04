@@ -3,14 +3,15 @@
 #
 # Jang,Jae-Man <jacojang@korea.com>, 2003.
 # Young-Ho Cha <ganadist@gmail.com>, 2006
-# Changwoo Ryu <cwryu@debian.org>, 2004-2009, 2013-2014.
+# Changwoo Ryu <cwryu@debian.org>, 2004-2009, 2013-2014, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-03-07 11:45+0000\n"
-"PO-Revision-Date: 2014-03-08 02:57+0900\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2017-02-28 06:43+0000\n"
+"PO-Revision-Date: 2017-03-04 02:41+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -27,8 +28,8 @@ msgstr "%s 마운트 실패."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
-msgstr "'%s' 장치의 드라이브에 미디어가 없습니다."
+msgid "No media in drive for device “%s”."
+msgstr "“%s” 장치의 드라이브에 미디어가 없습니다."
 
 #: ../plparse/totem-disc.c:476
 #, c-format
