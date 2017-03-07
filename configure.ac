@@ -88,6 +88,13 @@ if test "x$enable_gmime" = "xyes" ; then
 		       [have_gmime=yes GMIME=gmime-2.6], 
 		       [have_gmime=no])
 
+   if test "x$have_gmime" = "xno" ; then
+       PKG_CHECK_MODULES(GMIME,
+                         gmime-3.0,
+                         [have_gmime=yes GMIME=gmime-3.0],
+                         [have_gmime=no])
+   fi
+
    if test "x$have_gmime" = "xyes" ; then
       AC_SUBST(GMIME, $GMIME)
       AC_SUBST(USEGMIME, yes)
