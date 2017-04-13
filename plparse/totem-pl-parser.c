@@ -2355,7 +2355,19 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 	}
 	D(g_message ("Failed to parse duration '%s' using the ISO8601 parser", date_str));
 	/* Fall back to RFC 2822 date parsing */
+#ifdef HAVE_GMIME3
+	{
+		g_autoptr(GDateTime) date = NULL;
+		date = g_mime_utils_header_decode_date (date_str);
+		if (!date || !g_date_time_to_timeval (date, &val)) {
+			D(g_message ("Failed to parse duration '%s' using the RFC 2822 parser", date_str));
+			return -1;
+		}
+		return val.tv_sec;
+	}
+#else
 	return g_mime_utils_header_decode_date (date_str, NULL);
+#endif /* HAVE_GMIME3 */
 #else
 	WARN_NO_GMIME;
 #endif /* HAVE_GMIME */
