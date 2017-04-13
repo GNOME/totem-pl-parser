@@ -85,14 +85,14 @@ AC_ARG_ENABLE(gmime-i-know-what-im-doing,
 if test "x$enable_gmime" = "xyes" ; then
    have_gmime3=no
    PKG_CHECK_MODULES(GMIME,
-                     gmime-2.6,
-                     [have_gmime=yes GMIME=gmime-2.6],
+                     gmime-3.0,
+                     [have_gmime=yes have_gmime3=yes GMIME=gmime-3.0],
                      [have_gmime=no])
 
    if test "x$have_gmime" = "xno" ; then
        PKG_CHECK_MODULES(GMIME,
-                         gmime-3.0,
-                         [have_gmime=yes have_gmime3=yes GMIME=gmime-3.0],
+                         gmime-2.6,
+                         [have_gmime=yes GMIME=gmime-2.6],
                          [have_gmime=no])
    fi
 
