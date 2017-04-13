@@ -83,15 +83,16 @@ AC_ARG_ENABLE(gmime-i-know-what-im-doing,
 			     [enable_gmime=yes])
 
 if test "x$enable_gmime" = "xyes" ; then
-   PKG_CHECK_MODULES(GMIME,  
-		       gmime-2.6,
-		       [have_gmime=yes GMIME=gmime-2.6], 
-		       [have_gmime=no])
+   have_gmime3=no
+   PKG_CHECK_MODULES(GMIME,
+                     gmime-2.6,
+                     [have_gmime=yes GMIME=gmime-2.6],
+                     [have_gmime=no])
 
    if test "x$have_gmime" = "xno" ; then
        PKG_CHECK_MODULES(GMIME,
                          gmime-3.0,
-                         [have_gmime=yes GMIME=gmime-3.0],
+                         [have_gmime=yes have_gmime3=yes GMIME=gmime-3.0],
                          [have_gmime=no])
    fi
 
@@ -99,6 +100,9 @@ if test "x$enable_gmime" = "xyes" ; then
       AC_SUBST(GMIME, $GMIME)
       AC_SUBST(USEGMIME, yes)
       AC_DEFINE(HAVE_GMIME, 1, [GMime available in the system])
+      if test "x$have_gmime3" = xyes ; then
+        AC_DEFINE(HAVE_GMIME3, 1, [GMime 3.0 available in the system])
+      fi
       pkg_modules="$pkg_modules $GMIME"
    else
       AC_MSG_ERROR([libgmime is required to compile totem-pl-parser.])
