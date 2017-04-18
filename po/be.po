@@ -1,13 +1,15 @@
 # Vital Khilko <dojlid@mova.org>,2002, 2003.
 # Ales Nyakhaychyk <nyakhaychyk@gmail.com>, 2003, 2006, 2009.
 # Ihar Hrachyshka <ihar.hrachyshka@gmail.com>, 2006, 2007, 2011.
+# Yuras Shumovich <shumovichy@gmail.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: totem.master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-20 19:12+0300\n"
-"PO-Revision-Date: 2011-07-20 19:11+0300\n"
-"Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
+"pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2017-02-28 06:43+0000\n"
+"PO-Revision-Date: 2017-04-16 13:01+0300\n"
+"Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
 "MIME-Version: 1.0\n"
@@ -15,35 +17,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.8.11\n"
 
-#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:290
-#: ../plparse/totem-disc.c:315 ../plparse/totem-disc.c:499
+#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
+#: ../plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Не ўдалося прымацаваць %s."
 
-#: ../plparse/totem-disc.c:388
+#: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
 msgstr "У прыстасаванні \"%s\" няма носьбіта."
 
-#: ../plparse/totem-disc.c:442
+#: ../plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Праверце наяўнасць дыска ў прыстасаванні."
 
-#: ../plparse/totem-disc.c:879
+#: ../plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: ../plparse/totem-disc.c:881
+#: ../plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "Video CD"
 
-#: ../plparse/totem-disc.c:883
+#: ../plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:885
+#: ../plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Лічбавае тэлебачанне"
+
+#: ../plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
