@@ -1,0 +1,9 @@
+LIBTOTEM_PL_PARSER_MINI_1.0 {
+  global:
+    totem_pl_parser_can_parse_from_data; totem_pl_parser_can_parse_from_filename; totem_pl_parser_can_parse_from_uri;
+
+  local:
+    *;
+};
+
+
