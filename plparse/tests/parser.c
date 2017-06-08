@@ -534,7 +534,7 @@ test_itms_parsing (void)
 
 	/* From https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&ign-mpt=uo=4 */
 	g_assert_cmpstr (parser_test_get_playlist_uri ("https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&ign-mpt=uo%3D4#"), ==, "http://ws.geronimo.thisisglobal.com/api/RssFeed/GetPodcasts?StationId=27f88187-4880-4e70-be90-1a7dad1beb5e&ShowId=999e3658-ae1a-400b-9697-5bc35d5aa411");
-	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "http://www.bbc.co.uk/programmes/p02nrtyg/episodes/downloads.rss");
+	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "https://podcasts.files.bbci.co.uk/p02nrtyg.rss");
 }
 
 static void
