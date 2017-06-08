@@ -177,7 +177,6 @@ if enable_quvi != 'no'
     cdata.set('HAVE_QUVI', true,
       description: 'libquvi available in the system')
     have_quvi = true
-    totem_pl_parser_deps += [quvi_dep]
   endif
 endif
 
