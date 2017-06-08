@@ -236,8 +236,10 @@ plparser_inc = include_directories('plparse')
 
 subdir('lib')
 subdir('plparse')
-subdir('docs/reference')
 subdir('po')
+if get_option('enable-gtk-doc')
+  subdir('docs/reference')
+endif
 
 # config.h
 configure_file(output: 'config.h', configuration: cdata)
