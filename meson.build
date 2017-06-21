@@ -1,5 +1,5 @@
 project('totem-pl-parser', 'c',
-        version: '3.10.7', # Don't forget to also change plparser_lt_version!
+        version: '3.25.3', # Don't forget to also change plparser_lt_version!
         default_options: [
           'buildtype=debugoptimized',
           'warning_level=1',
