@@ -28,18 +28,20 @@
 #include "totem-pl-parser-videosite.h"
 #include "totem-pl-parser-private.h"
 
+#define SCRIPT_ENVVAR "TOTEM_PL_PARSER_VIDEOSITE_SCRIPT"
+
 /* The helper script will be either the one shipped in totem-pl-parser,
  * when running tests, or the first non-hidden file in the totem-pl-parser
  * libexec directory, when sorted by lexicographic ordering (through strcmp) */
 static char *
 find_helper_script (void)
 {
-#ifdef UNINSTALLED_TESTS
-	return g_strdup ("../99-totem-pl-parser-videosite");
-#else
 	GDir *dir;
 	const char *name;
 	char *script_name = NULL;
+
+	if (g_getenv (SCRIPT_ENVVAR) != NULL)
+		return g_strdup (g_getenv (SCRIPT_ENVVAR));
 
 	dir = g_dir_open (LIBEXECDIR "/totem-pl-parser", 0, NULL);
 	if (!dir)
@@ -65,7 +67,6 @@ find_helper_script (void)
 
 bail:
 	return NULL;
-#endif
 }
 
 gboolean

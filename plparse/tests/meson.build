@@ -8,5 +8,10 @@ foreach test_name : tests
                    include_directories: [config_inc, totemlib_inc],
                    dependencies: plparser_dep)
 
-  test(test_name, exe)
+  env = environment()
+  if have_quvi
+    env.set('TOTEM_PL_PARSER_VIDEOSITE_SCRIPT', videosite_exe.full_path())
+  endif
+
+  test(test_name, exe, env: env, timeout: 3 * 60)
 endforeach

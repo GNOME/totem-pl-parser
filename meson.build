@@ -222,13 +222,6 @@ if enable_libgcrypt != 'no'
   endif
 endif
 
-# uninstalled tests
-enable_uninstalled_tests = get_option('enable-uninstalled-tests')
-if enable_uninstalled_tests
-  cdata.set('UNINSTALLED_TESTS', true,
-    description: 'Uninstalled tests')
-endif
-
 # subdirs
 
 plparser_inc = include_directories('plparse')
