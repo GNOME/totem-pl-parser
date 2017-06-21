@@ -1,5 +1,13 @@
 New features and significant updates in version...
 
+3.10.8:
+- Use Unicode in translatable strings
+- Autotools build changes
+- Enable videosite support even without quvi
+- Port from GSimpleAsyncResult to GTask
+- Fix shadowed URI variable in PLA parser
+- Add support for GMime 3.0 API
+
 3.10.7:
 - Don't consider M3U playlists as text/plain
 - Simplify ITMS link parsing
