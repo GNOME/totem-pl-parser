@@ -248,7 +248,6 @@ pkg_install_dir = join_paths(get_option('libdir'), 'pkgconfig')
 # FIXME: skipping uninstalled .pc files because they unnecessarily
 # reference .la libtool archives directly, this needs fixing first
 pkg_files = [
-  'totem-pl-parser.spec',
   'totem-plparser.pc',
   'totem-plparser-mini.pc',
 ]
