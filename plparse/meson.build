@@ -12,7 +12,8 @@ version_cdata = configuration_data()
 version_cdata.set('TOTEM_PL_PARSER_VERSION_MAJOR', plparse_major_version)
 version_cdata.set('TOTEM_PL_PARSER_VERSION_MINOR', plparse_minor_version)
 version_cdata.set('TOTEM_PL_PARSER_VERSION_MICRO', plparse_micro_version)
-features_h = configure_file(output: 'totem-pl-parser-features.h',
+features_h = configure_file(input:  'totem-pl-parser-features.h.in',
+                            output: 'totem-pl-parser-features.h',
                             install_dir: 'include/totem-pl-parser/1/plparser',
                             configuration: version_cdata)
 
