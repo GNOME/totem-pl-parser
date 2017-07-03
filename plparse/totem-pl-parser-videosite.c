@@ -80,12 +80,13 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 	};
 	char *out;
 	char *script;
+	gboolean ret = FALSE;
 
 	script = find_helper_script ();
 	if (script == NULL) {
 		if (debug)
 			g_print ("Did not find a script to check whether '%s' is a videosite\n", uri);
-		return FALSE;
+		return ret;
 	}
 
 	args[0] = script;
@@ -100,13 +101,16 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 		      NULL,
 		      NULL,
 		      NULL);
+
+	ret = g_strcmp0 (out, "TRUE") == 0;
 	if (debug)
 		g_print ("Checking videosite with script '%s' for URI '%s' returned '%s' (%s)\n",
-			 script, uri, out, g_strcmp0 (out, "TRUE") == 0 ? "true" : "false");
+			 script, uri, out, ret ? "true" : "false");
 
 	g_free (script);
+	g_free (out);
 
-	return (g_strcmp0 (out, "TRUE") == 0);
+	return ret;
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
