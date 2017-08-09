@@ -21,7 +21,13 @@ plparse_major_version = plparse_version.split('.')[0].to_int()
 plparse_minor_version = plparse_version.split('.')[1].to_int()
 plparse_micro_version = plparse_version.split('.')[2].to_int()
 
-plparse_soversion = '.'.join(plparser_lt_version.split(':'))
+plparse_lt_current  = plparser_lt_version.split(':')[0].to_int()
+plparse_lt_revision = plparser_lt_version.split(':')[1].to_int()
+plparse_lt_age      = plparser_lt_version.split(':')[2].to_int()
+plparse_soversion   = plparse_lt_current - plparse_lt_age
+# Convert the lt_version to libtool library naming to maintain ABI compat with
+# the old Autotools build. This can be changed with the next ABI break.
+plparse_libversion  = '@0@.@1@.@2@'.format(plparse_soversion, plparse_lt_age, plparse_lt_revision)
 
 # Requirements
 glib_req    = '>= 2.36.0'

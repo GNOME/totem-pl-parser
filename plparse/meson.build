@@ -69,7 +69,7 @@ plparser_lib = library('totem-plparser',
                        link_args : symbol_link_args,
                        link_with: totem_glibc_lib,
                        link_depends : symbol_map,
-                       soversion: plparse_soversion,
+                       version: plparse_libversion,
                        install: true)
 
 plparser_dep = declare_dependency(sources: [totem_pl_parser_builtins_h, features_h],
@@ -104,7 +104,7 @@ plparser_mini_lib = library('totem-plparser-mini',
                             link_args : mini_symbol_link_args,
                             link_with: totem_glibc_lib,
                             link_depends : mini_symbol_map,
-                            soversion: plparse_soversion,
+                            version: plparse_libversion,
                             install: true)
 
 if have_quvi
