@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: "
-"http://bugzilla.gnome.org/enter_bug.cgi?product=totem-pl-parser&keywords=I18N+L10N&component=General\n"
-"POT-Creation-Date: 2016-10-11 14:10+0000\n"
+"https://bugzilla.gnome.org/enter_bug.cgi?product=totem-pl-parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2017-08-15 20:46+0000\n"
 "PO-Revision-Date: 2017-02-16 00:57+0100\n"
 "Last-Translator: Per Kongstad <p_kongstad@op.pl>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -29,39 +29,38 @@ msgstr ""
 "X-Poedit-Country: DENMARK\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
-#: ../plparse/totem-disc.c:533
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Kunne ikke montere %s."
 
-#: ../plparse/totem-disc.c:418
+#: plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device “%s”."
-msgstr "Intet medie i drev for enhed \"%s\"."
+msgstr "Intet medie i drev for enhed “%s”."
 
-#: ../plparse/totem-disc.c:476
+#: plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Kontrollér venligst at der er en disk i drevet."
 
-#: ../plparse/totem-disc.c:947
+#: plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "Lyd-cd"
 
-#: ../plparse/totem-disc.c:949
+#: plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "Video-cd"
 
-#: ../plparse/totem-disc.c:951
+#: plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:953
+#: plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Digitalt fjernsyn"
 
-#: ../plparse/totem-disc.c:955
+#: plparse/totem-disc.c:955
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
@@ -266,13 +265,13 @@ msgstr "Blu-ray"
 #~ msgstr "Mellemlagerstørrelse"
 
 #~ msgid "Default location for the \"Take Screenshot\" dialogues"
-#~ msgstr "Forvalgt placering for \"Gem skærmbillede …\"-vinduerne"
+#~ msgstr "Forvalgt placering for “Gem skærmbillede …”-vinduerne"
 
 #~ msgid ""
 #~ "Default location for the \"Take Screenshot\" dialogues, default is the "
 #~ "Pictures directory"
 #~ msgstr ""
-#~ "Forvalgt placering for \"Gem skærmbillede …\"-vinduerne - standard er den "
+#~ "Forvalgt placering for “Gem skærmbillede …”-vinduerne - standard er den "
 #~ "mappen Billeder"
 
 #~ msgid "Enable deinterlacing"
@@ -340,8 +339,8 @@ msgstr "Blu-ray"
 #~ "\"2\" for 5.0 channel output, \"3\" for 5.1 channel output, \"4\" for AC3 "
 #~ "Passthrough."
 #~ msgstr ""
-#~ "Type lyduddata der skal benyttes: \"0\" for stereo, \"1\" for 4-kanals "
-#~ "uddata, \"2\" for 5.0-kanals uddata, \"3\" for 5.1-kanals uddata, \"4\" for "
+#~ "Type lyduddata der skal benyttes: “0” for stereo, “1” for 4-kanals uddata, "
+#~ "“2” for 5.0-kanals uddata, “3” for 5.1-kanals uddata, “4” for "
 #~ "AC3-gennemslutning."
 
 #~ msgid "UTF-8"
@@ -370,7 +369,7 @@ msgstr "Blu-ray"
 #~ msgstr "Ingen fil"
 
 #~ msgid "Could not launch URL \"%s\": %s"
-#~ msgstr "Kunne ikke åbne URL \"%s\": %s"
+#~ msgstr "Kunne ikke åbne URL “%s”: %s"
 
 #~ msgid "Default browser not configured"
 #~ msgstr "Standardbrowseren er ikke indstillet"
@@ -379,7 +378,7 @@ msgstr "Blu-ray"
 #~ msgstr "Fejl ved opstart af URI"
 
 #~ msgid "Couldn't load the '%s' interface. %s"
-#~ msgstr "Kunne ikke indlæse grænsefladen \"%s\". %s"
+#~ msgstr "Kunne ikke indlæse grænsefladen “%s”. %s"
 
 #~ msgid "Make sure that Totem is properly installed."
 #~ msgstr "Sikr dig at Totem er korrekt installeret."
@@ -429,7 +428,7 @@ msgstr "Blu-ray"
 #~ msgstr "Auto"
 
 #~ msgid "Play Disc '%s'"
-#~ msgstr "Afspil disk \"%s\""
+#~ msgstr "Afspil disk “%s”"
 
 #~ msgid "device%d"
 #~ msgstr "enhed%d"
@@ -816,8 +815,7 @@ msgstr "Blu-ray"
 #~ msgstr "Afspilningsliste"
 
 #~ msgid "The playlist '%s' could not be parsed, it might be damaged."
-#~ msgstr ""
-#~ "Afspilningslisten \"%s\" kunne ikke fortolkes, den kan være beskadiget."
+#~ msgstr "Afspilningslisten “%s” kunne ikke fortolkes, den kan være beskadiget."
 
 #~ msgid "Playlist error"
 #~ msgstr "Afspilningslistefejl"
@@ -1014,7 +1012,7 @@ msgstr "Blu-ray"
 #~ msgstr "På pause"
 
 #~ msgid "Totem could not play '%s'."
-#~ msgstr "Totem kunne ikke afspille \"%s\"."
+#~ msgstr "Totem kunne ikke afspille “%s”."
 
 #~ msgid ""
 #~ "Totem cannot play this type of media (%s) because it does not have the "
@@ -1224,7 +1222,7 @@ msgstr "Blu-ray"
 #~ "Couldn't load the '%s' audio driver\n"
 #~ "Check that the device is not busy."
 #~ msgstr ""
-#~ "Kunne ikke indlæse lyddriveren \"%s\".\n"
+#~ "Kunne ikke indlæse lyddriveren “%s”.\n"
 #~ "Kontrollér at enheden ikke benyttes af et andet program."
 
 #~ msgid ""
@@ -1304,14 +1302,14 @@ msgstr "Blu-ray"
 #~ "Video codec '%s' is not handled. You might need to install additional "
 #~ "plugins to be able to play some types of movies"
 #~ msgstr ""
-#~ "Videokodningen \"%s\" er ikke håndteret. Du bliver muligvis nødt til at "
+#~ "Videokodningen “%s” er ikke håndteret. Du bliver muligvis nødt til at "
 #~ "installere yderligere udvidelsesmoduler for at afspille nogle typer film"
 
 #~ msgid ""
 #~ "Audio codec '%s' is not handled. You might need to install additional "
 #~ "plugins to be able to play some types of movies"
 #~ msgstr ""
-#~ "Lydkodningen \"%s\" er ikke håndteret. Du bliver muligvis nødt til at "
+#~ "Lydkodningen “%s” er ikke håndteret. Du bliver muligvis nødt til at "
 #~ "installere yderligere udvidelsesmoduler for at afspille nogle typer film"
 
 #~ msgid "This is an audio-only file, and there is no audio output available."
@@ -1370,7 +1368,7 @@ msgstr "Blu-ray"
 #~ msgstr "Kunne ikke skrive fortolker: %s"
 
 #~ msgid "Couldn't open file '%s': %s"
-#~ msgstr "Kunne ikke åbne filen \"%s\": %s"
+#~ msgstr "Kunne ikke åbne filen “%s”: %s"
 
 #~ msgid "Plugin"
 #~ msgstr "Udvidelsesmodul"
@@ -1469,7 +1467,7 @@ msgstr "Blu-ray"
 #~ msgstr "Spring til angivet tidspunkt"
 
 #~ msgid "Could not load the \"Skip to\" dialogue interface."
-#~ msgstr "Kunne ikke indlæse grænsefladen til \"Spring til\"-vinduet."
+#~ msgstr "Kunne ikke indlæse grænsefladen til “Spring til”-vinduet."
 
 #~ msgid "_Skip to:"
 #~ msgstr "_Spring til:"
@@ -1481,11 +1479,12 @@ msgstr "Blu-ray"
 #~ msgstr "Ingen URI at afspille"
 
 #~ msgid "Totem could not play '%s'"
-#~ msgstr "Totem kunne ikke afspille \"%s\"."
+#~ msgstr "Totem kunne ikke afspille “%s”."
 
 #~ msgid "Opening %s"
-#~ msgstr "Åbner \"%s\""
+#~ msgstr "Åbner “%s”"
 
 #~ msgid "_Open with \"%s\""
-#~ msgstr "_Åbn med \"%s\""
+#~ msgstr "_Åbn med “%s”"
+
 
