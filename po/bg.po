@@ -1,17 +1,18 @@
 # Bulgarian translation of totem-pl-parser po-file.
 # Copyright (C) 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
-# Copyright (C) 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 2008, 2009, 2017 Free Software Foundation, Inc.
 # This file is distributed under the same license as the totem package.
 # Evgeni Boevski <linkej@yahoo.com>, 2003.
 # Alexander Shopov <ash@kambanaria.org>, 2004, 2005, 2007, 2008, 2009, 2015.
+# Alexander Shopov <ash@kambanaria.org>, 2017.
 # Vladimir Petkov <kaladan@gmail.com> 2006, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-09 19:26+0200\n"
-"PO-Revision-Date: 2015-03-09 19:26+0200\n"
+"POT-Creation-Date: 2017-09-03 09:52+0300\n"
+"PO-Revision-Date: 2017-09-03 09:52+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -28,7 +29,7 @@ msgstr "Неуспех при монтирането на %s."
 
 #: ../plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
+msgid "No media in drive for device “%s”."
 msgstr "В устройство „%s“ няма носител."
 
 #: ../plparse/totem-disc.c:476
