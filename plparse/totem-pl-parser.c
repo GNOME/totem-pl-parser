@@ -1828,8 +1828,10 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		url = g_file_get_uri (file);
 		if (url != NULL && totem_pl_parser_is_videosite (url, parser->priv->debug) != FALSE) {
 			ret = totem_pl_parser_add_videosite (parser, file, base_file, parse_data, NULL);
-			if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS)
+			if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS) {
+				g_free (url);
 				return ret;
+			}
 		}
 		g_free (url);
 	}
