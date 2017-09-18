@@ -225,6 +225,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	g_strfreev (lines);
 
 	totem_pl_parser_add_hash_table (parser, ht, new_uri, FALSE);
+	g_hash_table_unref (ht);
 	g_free (new_uri);
 
 	ret = TOTEM_PL_PARSER_RESULT_SUCCESS;
