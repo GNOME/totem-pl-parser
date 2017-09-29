@@ -4,15 +4,15 @@
 # Meelad Zakaria <meelad@farsiweb.info>, 2005.
 # Roozbeh Pournader <roozbeh@farsiweb.info>, 2005.
 # Mahyar Moghimi <mahyar.moqimi@gmail.com>, 2010.
-# Arash Mousavi <mousavi.arash@gmail.com>, 2015.
+# Arash Mousavi <mousavi.arash@gmail.com>, 2015, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: totem HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=totem&keywords=I18N+L10N&component=playlist parser\n"
-"POT-Creation-Date: 2014-10-06 23:04+0000\n"
-"PO-Revision-Date: 2015-09-17 01:28+0430\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=totem-pl-"
+"parser&keywords=I18N+L10N&component=General\n"
+"POT-Creation-Date: 2017-08-15 20:46+0000\n"
+"PO-Revision-Date: 2017-09-29 19:21+0330\n"
 "Last-Translator: Arash Mousavi <mousavi.arash@gmail.com>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
 "Language: fa\n"
@@ -20,41 +20,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 2.0.4\n"
 
-#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
-#: ../plparse/totem-disc.c:533
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
-msgstr "سوار کردن شکست خورد: %s"
+msgstr "سوار کردن شکست خورد: %s."
 
-#: ../plparse/totem-disc.c:418
+#: plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
-msgstr "رسانه‌ای در گرداننده دستگاه «%s» نیست."
+msgid "No media in drive for device “%s”."
+msgstr "رسانه‌ای در دیسگ‌گردانِ دستگاه «%s» نیست."
 
-#: ../plparse/totem-disc.c:476
+#: plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "لطفاً بررسی کنید که دیسکی در دیسک گردان باشد."
 
-#: ../plparse/totem-disc.c:947
+#: plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "سی‌دی صوتی"
 
-#: ../plparse/totem-disc.c:949
+#: plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "سی‌دی ویدیو"
 
-#: ../plparse/totem-disc.c:951
+#: plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "دی‌وی‌دی"
 
-#: ../plparse/totem-disc.c:953
+#: plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "تلویزیون دیجیتال"
 
-#: ../plparse/totem-disc.c:955
+#: plparse/totem-disc.c:955
 msgid "Blu-ray"
 msgstr "بلو-ری"
 
