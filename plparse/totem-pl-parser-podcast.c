@@ -149,6 +149,12 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 		} else if (g_ascii_strcasecmp (node->name, "media:content") == 0) {
 			const char *tmp;
 
+			tmp = xml_parser_get_property (node, "medium");
+			if (tmp != NULL && g_str_equal (tmp, "image")) {
+				img = xml_parser_get_property (node, "url");
+				continue;
+			}
+
 			tmp = xml_parser_get_property (node, "type");
 			if (tmp != NULL &&
 			    g_str_has_prefix (tmp, "audio/") == FALSE) {

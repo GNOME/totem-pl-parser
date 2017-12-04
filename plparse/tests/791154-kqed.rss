@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0"
+xmlns:ev="http://purl.org/rss/2.0/modules/event/"
+xmlns:nprml="https://api.npr.org/nprml"
+	xmlns:media="http://search.yahoo.com/mrss/"
+	>
+<channel>
+	<title>KQED&#8217;s The California Report</title>
+	<atom:link href="https://ww2.kqed.org/news/tag/tcrarchive/feed/podcast" rel="self" type="application/rss+xml" />
+	<link>https://ww2.kqed.org/news/programs/the-california-report</link>
+	<description>KQED&#8217;s statewide radio news program, providing daily coverage of issues, trends, and public policy decisions affecting California and its diverse population.</description>
+	<lastBuildDate>Mon, 04 Dec 2017 08:01:09 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<generator>https://wordpress.org/?v=4.2.2</generator>
+<!-- podcast_generator="Blubrry PowerPress/7.1.1" mode="advanced" ttid="21285" -->
+	<itunes:new-feed-url>https://ww2.kqed.org/news/tag/tcram/feed/podcast</itunes:new-feed-url>
+	<itunes:summary>KQED&#039;s statewide half-hour radio news program, providing daily coverage of issues, trends, and public policy decisions affecting California and its diverse population.</itunes:summary>
+	<itunes:author>KQED</itunes:author>
+	<itunes:explicit>clean</itunes:explicit>
+	<itunes:image href="https://ww2.kqed.org/news/wp-content/uploads/sites/10/2017/07/The_California_Report_iTunes_Badge-06.png" />
+	<itunes:owner>
+		<itunes:name>KQED</itunes:name>
+		<itunes:email>carlosgonzalez@kqed.org</itunes:email>
+	</itunes:owner>
+	<managingEditor>carlosgonzalez@kqed.org (KQED)</managingEditor>
+	<copyright>Copyright &#xA9; 2017 KQED Inc. All Rights Reserved.</copyright>
+	<itunes:subtitle>KQED Public Media for Northern CA</itunes:subtitle>
+	<image>
+		<title>KQED&#8217;s The California Report</title>
+		<url>https://ww2.kqed.org/news/wp-content/uploads/sites/10/2017/07/The_California_Report_iTunes_Badge-06.png</url>
+		<link>https://ww2.kqed.org/news/programs/the-california-report</link>
+	</image>
+	<itunes:category text="News &amp; Politics">
+	</itunes:category>
+	<googleplay:email>carlosgonzalez@kqed.org</googleplay:email>
+	<googleplay:category text="News &amp; Politics" />
+	<googleplay:image href="https://ww2.kqed.org/news/wp-content/uploads/sites/10/2017/07/The_California_Report_iTunes_Badge-06.png" />
+	<rawvoice:subscribe feed="https://ww2.kqed.org/news/tag/tcrarchive/feed/podcast" itunes="https://itunes.apple.com/us/podcast/id79681292"></rawvoice:subscribe>
+<atom:link rel="hub" href="https://pubsubhubbub.appspot.com"/><atom:link rel="hub" href="https://pubsubhubbub.superfeedr.com"/><site xmlns="com-wordpress:feed-additions:1">76140667</site>	<item>
+		<title>The California Report Magazine: Homeless Housemates and Gold Rush Opera</title>
+		<link>https://ww2.kqed.org/news/2017/12/01/the-california-report-magazine-homeless-housemates-and-gold-rush-opera/</link>
+		<pubDate>Sat, 02 Dec 2017 01:59:12 +0000</pubDate>
+		<guid isPermaLink="false">https://ww2.kqed.org/news/?p=11634383</guid>
+		<comments>https://ww2.kqed.org/news/2017/12/01/the-california-report-magazine-homeless-housemates-and-gold-rush-opera/#comments</comments>
+		<wfw:commentRss>https://ww2.kqed.org/news/2017/12/01/the-california-report-magazine-homeless-housemates-and-gold-rush-opera/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<description>Helping the Homeless, By Living With them, A Reporter and A Politician Share Loss, Giant Tree Stump Takes the Opera Stage, Bumpass Hell</description>
+		<enclosure url="https://www.podtrac.com/pts/redirect.mp3/www.kqed.org/.stream/anon/radio/tcrmag/2017/12/TCRPodcastDec1.mp3" length="13906776" type="audio/mpeg" />
+		<itunes:subtitle>Helping the Homeless, By Living With them, A Reporter and A Politician Share Loss, Giant Tree Stump Takes the Opera Stage, Bumpass Hell</itunes:subtitle>
+		<itunes:summary>Helping the Homeless, By Living With them, A Reporter and A Politician Share Loss, Giant Tree Stump Takes the Opera Stage, Bumpass Hell</itunes:summary>
+		<itunes:author>KQED</itunes:author>
+		<itunes:image href="https://ww2.kqed.org/news/wp-content/uploads/sites/10/2017/07/The_California_Report_iTunes_Badge-06.png" />
+		<itunes:duration>28:58</itunes:duration>
+<post-id xmlns="com-wordpress:feed-additions:1">11634383</post-id><media:content url="https://ww2.kqed.org/news/wp-content/uploads/sites/10/2017/11/TCRMag_iTunes_3000x3000-800x800.jpg" medium="image" height="1920" width="1920"><media:thumbnail url="https://ww2.kqed.org/news/wp-content/uploads/sites/10/2017/11/TCRMag_iTunes_3000x3000-160x160.jpg" height="60" width="60" /></media:content>
+<nprml:parent id="319418027" type="collection"/>Helping the Homeless, By Living With them, A Reporter and A Politician Share Loss, Giant Tree Stump Takes the Opera Stage, Bumpass Hell
+		</item>
+</channel>
+</rss>
