@@ -34,16 +34,14 @@ glib_req    = '>= 2.36.0'
 gio_req     = '>= 2.24.0'
 quvi_req    = '>= 0.9.1'
 archive_req = '>= 3.0'
-soup_req    = '>= 2.43.0'
 
 # Dependencies
 glib_dep = dependency('glib-2.0', version : glib_req)
 gthread_dep = dependency('gthread-2.0', version : glib_req)
 gio_dep = dependency('gio-2.0', version : gio_req)
 xml_dep = dependency('libxml-2.0')
-soup_dep = dependency('libsoup-2.4', version: soup_req)
 
-totem_pl_parser_deps = [glib_dep, xml_dep, gthread_dep, gio_dep, soup_dep]
+totem_pl_parser_deps = [glib_dep, xml_dep, gthread_dep, gio_dep]
 
 # project-wide cflags
 add_project_arguments('-D_GNU_SOURCE', language: 'c')

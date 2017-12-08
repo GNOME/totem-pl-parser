@@ -25,7 +25,6 @@
 #include <glib.h>
 
 #ifndef TOTEM_PL_PARSER_MINI
-#include <libsoup/soup.h>
 #include "xmlparser.h"
 #include "totem-pl-parser.h"
 #include "totem-disc.h"

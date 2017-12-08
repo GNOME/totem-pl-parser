@@ -17,7 +17,6 @@ Dependencies
 
 glib >= 2.36
 gmime >= 2.6 or >= 3.0
-libsoup >= 2.44
 libxml2
 
 libquvi >= 0.9.1 (optional)
