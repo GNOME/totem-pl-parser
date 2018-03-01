@@ -2,14 +2,14 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the totem-pl-parser package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
-# GunChleoc <fios@foramnagaidhlig.net>, 2014, 2017.
+# GunChleoc <fios@foramnagaidhlig.net>, 2014, 2017, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product"
 "=totem-pl-parser&keywords=I18N+L10N&component=General\n"
-"POT-Creation-Date: 2017-02-28 06:43+0000\n"
-"PO-Revision-Date: 2017-03-07 11:53+0100\n"
+"POT-Creation-Date: 2017-08-15 20:46+0000\n"
+"PO-Revision-Date: 2018-03-01 11:08+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "Language: gd\n"
@@ -22,39 +22,37 @@ msgstr ""
 "X-Launchpad-Export-Date: 2013-09-14 10:24+0000\n"
 "X-Project-Style: gnome\n"
 
-#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
-#: ../plparse/totem-disc.c:533
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:533
 #, c-format
 msgid "Failed to mount %s."
 msgstr "Cha deach leinn %s a mhunntachadh."
 
-#: ../plparse/totem-disc.c:418
+#: plparse/totem-disc.c:418
 #, c-format
-#| msgid "No media in drive for device '%s'."
 msgid "No media in drive for device “%s”."
-msgstr "Chan eil meadhan san draibh airson an uidheim \"%s\"."
+msgstr "Chan eil meadhan san draibh airson an uidheim “%s”."
 
-#: ../plparse/totem-disc.c:476
+#: plparse/totem-disc.c:476
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Dèann cinnteach gu bheil diosga san draibh."
 
-#: ../plparse/totem-disc.c:947
+#: plparse/totem-disc.c:947
 msgid "Audio CD"
 msgstr "CD fuaime"
 
-#: ../plparse/totem-disc.c:949
+#: plparse/totem-disc.c:949
 msgid "Video CD"
 msgstr "CD video"
 
-#: ../plparse/totem-disc.c:951
+#: plparse/totem-disc.c:951
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:953
+#: plparse/totem-disc.c:953
 msgid "Digital Television"
 msgstr "Telebhisean digiteach"
 
-#: ../plparse/totem-disc.c:955
+#: plparse/totem-disc.c:955
 msgid "Blu-ray"
 msgstr "Blu-ray"
