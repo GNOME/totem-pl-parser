@@ -1,5 +1,3 @@
-option('disable-gmime-i-know-what-im-doing', type: 'boolean', value: 'false',
-  description : 'Disable libgmime (Unsupported, breaks Podcast support).')
 option('enable-quvi', type: 'combo', choices : ['yes', 'no', 'auto'], value : 'auto',
   description : 'Enable libquvi support.')
 option('enable-libarchive', type: 'combo', choices : ['yes', 'no', 'auto'], value : 'auto',

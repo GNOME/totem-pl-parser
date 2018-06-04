@@ -132,16 +132,13 @@
 #ifndef TOTEM_PL_PARSER_MINI
 #include <gobject/gvaluecollector.h>
 
-#ifdef HAVE_GMIME
-#include <gmime/gmime-utils.h>
-#endif
-
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
 #include "totem-disc.h"
 #endif /* !TOTEM_PL_PARSER_MINI */
 
 #include "totem-pl-parser-mini.h"
+#include "totem-pl-parser-decode-date.h"
 #include "totem-pl-parser-wm.h"
 #include "totem-pl-parser-qt.h"
 #include "totem-pl-parser-pls.h"
@@ -2345,7 +2342,6 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 guint64
 totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 {
-#ifdef HAVE_GMIME
 	GTimeVal val;
 
 	g_return_val_if_fail (date_str != NULL, -1);
@@ -2358,7 +2354,6 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 	}
 	D(g_message ("Failed to parse duration '%s' using the ISO8601 parser", date_str));
 	/* Fall back to RFC 2822 date parsing */
-#ifdef HAVE_GMIME3
 	{
 		g_autoptr(GDateTime) date = NULL;
 		date = g_mime_utils_header_decode_date (date_str);
@@ -2368,12 +2363,6 @@ totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 		}
 		return val.tv_sec;
 	}
-#else
-	return g_mime_utils_header_decode_date (date_str, NULL);
-#endif /* HAVE_GMIME3 */
-#else
-	WARN_NO_GMIME;
-#endif /* HAVE_GMIME */
 }
 #endif /* !TOTEM_PL_PARSER_MINI */
 

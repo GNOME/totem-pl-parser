@@ -136,37 +136,6 @@ foreach cflag: test_cflags
   endif
 endforeach
 
-# gmime dependency
-enable_gmime = not get_option('disable-gmime-i-know-what-im-doing')
-if enable_gmime
-   have_gmime3 = false
-   gmime_dep = dependency('gmime-3.0', required : false)
-   if gmime_dep.found()
-     cdata.set('HAVE_GMIME3', true,
-       description: 'GMime 3.0 available in the system')
-     pkgconf.set('GMIME', 'gmime-3.0')
-   else
-     gmime_dep = dependency('gmime-2.6', required : false)
-     if not gmime_dep.found()
-       error('libgmime is required to compile totem-pl-parser.')
-     endif
-     pkgconf.set('GMIME', 'gmime-2.6')
-   endif
-   pkgconf.set('USEGMIME', 'yes')
-   cdata.set('HAVE_GMIME', true,
-     description: 'GMime available in the system')
-   totem_pl_parser_deps += [gmime_dep]
-else
-  message('''
-**************************************************************
- Compiling totem-pl-parser without libgmime.
- This will break podcast support and is completely unsupported.
-**************************************************************
-  ''')
-   pkgconf.set('USEGMIME', 'no')
-   pkgconf.set('GMIME', '')
-endif
-
 # quvi dependency
 enable_quvi = get_option('enable-quvi')
 have_quvi = false

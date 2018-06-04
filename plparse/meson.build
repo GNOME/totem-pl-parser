@@ -34,6 +34,7 @@ plparser_sources = [
   'totem-disc.c',
   'totem-pl-parser.c',
   'totem-pl-parser-amz.c',
+  'totem-pl-parser-decode-date.c',
   'totem-pl-parser-lines.c',
   'totem-pl-parser-media.c',
   'totem-pl-parser-misc.c',

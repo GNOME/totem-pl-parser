@@ -39,13 +39,6 @@ const char * totem_pl_parser_is_xml_feed (const char *data, gsize len);
 
 #ifndef TOTEM_PL_PARSER_MINI
 
-#ifndef HAVE_GMIME
-#define WARN_NO_GMIME { \
-	g_warning("Trying to parse a podcast, but totem-pl-parser built without libgmime support. Please contact your distribution provider."); \
-	return TOTEM_PL_PARSER_RESULT_ERROR; \
-}
-#endif /* !HAVE_GMIME */
-
 gboolean totem_pl_parser_is_itms_feed (GFile *file);
 
 TotemPlParserResult totem_pl_parser_add_xml_feed (TotemPlParser *parser,
