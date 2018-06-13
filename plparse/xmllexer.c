@@ -356,7 +356,7 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 	  case 'D':
 	    lexer->lexbuf_pos++;
 	    if (strncmp(lexer->lexbuf + lexer->lexbuf_pos, "OCTYPE", 6) == 0) {
-	      strncpy(tok + tok_pos, "DOCTYPE", 7); /* FIXME */
+	      memcpy(tok + tok_pos, "DOCTYPE", strlen ("DOCTYPE"));
 	      lexer->lexbuf_pos += 6;
 	      return T_DOCTYPE_START;
 	    } else {
@@ -366,7 +366,7 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 	  case '[':
 	    lexer->lexbuf_pos++;
 	    if (strncmp(lexer->lexbuf + lexer->lexbuf_pos, "CDATA[", 6) == 0) {
-	      strncpy (tok + tok_pos, "[CDATA[", 7); /* FIXME */
+	      memcpy (tok + tok_pos, "[CDATA[", strlen ("[CDATA["));
 	      lexer->lexbuf_pos += 6;
 	      lexer->lex_mode = CDATA;
 	      return T_CDATA_START;
