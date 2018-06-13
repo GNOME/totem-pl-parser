@@ -1,5 +1,11 @@
 New features and significant updates in version...
 
+3.26.1:
+- Fix small memory leaks
+- Add support for "medium" property in podcasts
+- Allow players to handle MJPEG streams
+- Updated translations
+
 3.26.0:
 - Updated translations
 
