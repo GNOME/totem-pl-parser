@@ -1,4 +1,24 @@
 private_headers = [
+    'xmllexer.h',
+    'totem-pl-parser-media.h',
+    'totem-pl-parser-xspf.h',
+    'totem-pl-parser-podcast.h',
+    'totem-pl-parser-private.h',
+    'totem-pl-parser-smil.h',
+    'totem-pl-parser-mini.h',
+    'totem-pl-parser-lines.h',
+    'totem-pl-parser-amz.h',
+    'totem-disc.h',
+    'totem-pl-parser-pls.h',
+    'totem-pl-parser-misc.h',
+    'xmlparser.h',
+    'totem-pl-parser-qt.h',
+    'totem-pl-parser-pla.h',
+    'totem-pl-parser-wm.h',
+    'bswap.h',
+    'totem-pl-parser-videosite.h',
+    'totem_internal.h',
+    'totemplparser-marshal.h'
 ]
 
 configure_file(input: 'version.xml.in',
