@@ -1,5 +1,7 @@
 gnome = import('gnome')
 
+includedir = join_paths(get_option('includedir'), 'totem-pl-parser/1/plparser')
+
 plparser_public_headers = [
   'totem-pl-parser.h',
   'totem-pl-playlist.h',
@@ -14,14 +16,14 @@ version_cdata.set('TOTEM_PL_PARSER_VERSION_MINOR', plparse_minor_version)
 version_cdata.set('TOTEM_PL_PARSER_VERSION_MICRO', plparse_micro_version)
 features_h = configure_file(input:  'totem-pl-parser-features.h.in',
                             output: 'totem-pl-parser-features.h',
-                            install_dir: 'include/totem-pl-parser/1/plparser',
+                            install_dir: includedir,
                             configuration: version_cdata)
 
 totem_pl_parser_builtins = gnome.mkenums('totem-pl-parser-builtins',
                                          sources: 'totem-pl-parser.h',
                                          c_template : 'totem-pl-parser-builtins.c.template',
                                          h_template : 'totem-pl-parser-builtins.h.template',
-                                         install_dir : 'include/totem-pl-parser/1/plparser',
+                                         install_dir : includedir,
                                          install_header : true)
 
 totem_pl_parser_builtins_h = totem_pl_parser_builtins[1]
