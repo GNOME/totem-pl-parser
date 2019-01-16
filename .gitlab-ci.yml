@@ -10,5 +10,5 @@ build-fedora:
   script:
     - meson _build
     - dnf install -y $TEST_DEPS
-    - dbus-run-session ninja -C _build test
+    - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build test
     - ninja -C _build install
