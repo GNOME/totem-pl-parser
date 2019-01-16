@@ -1332,7 +1332,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/m3u_leading_tabs", test_m3u_leading_tabs);
 		g_test_add_func ("/parser/parsing/empty-asx.asx", test_empty_asx);
 		g_test_add_func ("/parser/parsing/emptyplaylist.pls", test_empty_pls);
-		//g_test_add_func ("/parser/parsing/dir_recurse", test_directory_recurse);
+		g_test_add_func ("/parser/parsing/dir_recurse", test_directory_recurse);
 		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
 		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
 
