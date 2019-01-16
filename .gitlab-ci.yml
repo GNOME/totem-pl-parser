@@ -1,8 +1,14 @@
+variables:
+  DEPENDENCIES: redhat-rpm-config meson git gettext gtk-doc intltool meson glib2-devel libxml2-devel gobject-introspection-devel libgcrypt-devel libarchive-devel libquvi-devel
+  TEST_DEPS: gvfs dbus-daemon
+
 build-fedora:
   image: fedora:latest
   before_script:
-    - dnf install -y redhat-rpm-config meson git gettext gtk-doc intltool meson glib2-devel libxml2-devel gobject-introspection-devel libgcrypt-devel libarchive-devel libquvi-devel
+    # Update
+    - dnf -y update && dnf install -y $DEPENDENCIES
   script:
     - meson _build
-    - ninja -C _build test
+    - dnf install -y TEST_DEPS
+    - dbus-run-session ninja -C _build test
     - ninja -C _build install
