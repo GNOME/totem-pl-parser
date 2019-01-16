@@ -1,6 +1,6 @@
 variables:
   DEPENDENCIES: redhat-rpm-config meson git gettext gtk-doc intltool meson glib2-devel libxml2-devel gobject-introspection-devel libgcrypt-devel libarchive-devel libquvi-devel
-  TEST_DEPS: gvfs udisks2 dbus-daemon
+  TEST_DEPS: gvfs dbus-daemon
 
 build-fedora:
   image: fedora:latest
