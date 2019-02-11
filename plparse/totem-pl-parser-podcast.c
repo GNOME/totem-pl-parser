@@ -406,11 +406,11 @@ static TotemPlParserResult
 parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 {
 	const char *title, *author, *uri, *filesize;
-	const char *copyright, *pub_date, *description;
+	const char *copyright, *pub_date, *description, *img;
 	xml_node_t *node;
 
 	title = author = uri = filesize = NULL;
-	copyright = pub_date = description = NULL;
+	copyright = pub_date = description = img = NULL;
 
 	for (node = parent->child; node != NULL; node = node->next) {
 		if (node->name == NULL)
@@ -472,6 +472,33 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 			type = xml_parser_get_property (node, "content");
 			if (type != NULL && g_ascii_strcasecmp (type, "text/plain") == 0)
 				description = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "media:group") == 0) {
+			xml_node_t *child;
+
+			for (child = node->child; child != NULL; child = child->next) {
+				if (child->name == NULL)
+					continue;
+
+				if (g_ascii_strcasecmp (child->name, "media:title") == 0 &&
+				    title == NULL) {
+					title = child->data;
+				} else if (g_ascii_strcasecmp (child->name, "media:description") == 0 &&
+					   description == NULL) {
+					description = child->data;
+				} else if (g_ascii_strcasecmp (child->name, "media:content") == 0 &&
+					   uri == NULL) {
+					const char *prop;
+
+					prop = xml_parser_get_property (child, "url");
+					if (prop == NULL)
+						continue;
+					if (!totem_pl_parser_is_videosite (prop, FALSE))
+						continue;
+					uri = prop;
+				} else if (g_ascii_strcasecmp (child->name, "media:thumbnail") == 0) {
+					img = xml_parser_get_property (child, "url");
+				}
+			}
 		}
 		//FIXME handle category
 	}
@@ -485,6 +512,7 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 					 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
 					 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
 					 TOTEM_PL_PARSER_FIELD_DESCRIPTION, description,
+					 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
 					 NULL);
 	}
 
