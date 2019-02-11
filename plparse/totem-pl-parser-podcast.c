@@ -452,6 +452,15 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 					continue;
 				/* This isn't really a copyright, but what the hey */
 				copyright = href;
+			} else if (g_ascii_strcasecmp (rel, "alternate") == 0) {
+				const char *href;
+
+				href = xml_parser_get_property (node, "href");
+				if (href == NULL)
+					continue;
+				if (!totem_pl_parser_is_videosite (href, FALSE))
+					continue;
+				uri = href;
 			}
 		} else if (g_ascii_strcasecmp (node->name, "updated") == 0
 			   || (g_ascii_strcasecmp (node->name, "modified") == 0 && pub_date == NULL)) {
