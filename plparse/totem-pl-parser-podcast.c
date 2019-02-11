@@ -419,7 +419,17 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 		if (g_ascii_strcasecmp (node->name, "title") == 0) {
 			title = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "author") == 0) {
-			//FIXME
+			xml_node_t *child;
+
+			for (child = node->child; child != NULL; child = child->next) {
+				if (child->name == NULL)
+					continue;
+
+				if (g_ascii_strcasecmp (child->name, "name") == 0) {
+					author = child->data;
+					break;
+				}
+			}
 		} else if (g_ascii_strcasecmp (node->name, "link") == 0) {
 			const char *rel;
 
