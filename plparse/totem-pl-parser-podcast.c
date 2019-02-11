@@ -444,7 +444,7 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 					continue;
 				uri = href;
 				filesize = xml_parser_get_property (node, "length");
-			} else if (g_ascii_strcasecmp (node->name, "license") == 0) {
+			} else if (g_ascii_strcasecmp (rel, "license") == 0) {
 				const char *href;
 
 				href = xml_parser_get_property (node, "href");
