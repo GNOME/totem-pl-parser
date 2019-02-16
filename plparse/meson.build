@@ -121,7 +121,7 @@ if have_quvi
 endif
 
 # Introspection
-if not meson.is_cross_build()
+if get_option('introspection')
   gnome.generate_gir(plparser_lib,
                      sources: plparser_public_headers + plparser_sources + [
                        totem_pl_parser_marshalers[1],
