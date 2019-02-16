@@ -6,3 +6,5 @@ option('enable-libgcrypt', type: 'combo', choices : ['yes', 'no', 'auto'], value
   description : 'Enable libgcrypt support.')
 option('enable-gtk-doc', type: 'boolean', value: 'false',
   description : 'Generate the API reference (depends on GTK-Doc)')
+option('introspection', type: 'boolean', value: 'true',
+  description : 'Generate GObject Introspection bindings')
