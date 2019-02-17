@@ -525,6 +525,27 @@ test_no_url_podcast (void)
 }
 
 static void
+test_youtube_starttime (void)
+{
+/* Those do not work with quvi */
+#if 0
+	const char *uri;
+
+	/* old type of direct link */
+	uri = "http://www.youtube.com/watch?v=Fk2bUvrv-Uc#t=2m30s";
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_STARTTIME), ==, "150");
+
+	/* new type of embed */
+	uri = "http://www.youtube.com/embed/Nc9xq-TVyHI?start=110";
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_STARTTIME), ==, "110");
+
+	/* new type of direct link */
+	uri = "http://www.youtube.com/watch?v=Fk2bUvrv-Uc&t=2m30s";
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_STARTTIME), ==, "150");
+#endif
+}
+
+static void
 test_itms_parsing (void)
 {
 	if (http_supported == FALSE) {
@@ -1316,6 +1337,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/parsing/rss_id", test_parsing_rss_id);
 		g_test_add_func ("/parser/parsing/rss_link", test_parsing_rss_link);
+		g_test_add_func ("/parser/parsing/youtube_starttime", test_youtube_starttime);
 #endif /* HAVE_QUVI */
 		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
 		g_test_add_func ("/parser/parsing/not_really_php", test_parsing_not_really_php);
