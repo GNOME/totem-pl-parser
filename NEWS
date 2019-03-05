@@ -1,5 +1,8 @@
 New features and significant updates in version...
 
+3.26.3:
+- Atom parsing bug fixes
+
 3.26.2:
 - Remove gmime dependency
 
