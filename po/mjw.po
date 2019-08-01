@@ -1,0 +1,53 @@
+# Karbi translation for totem-pl-parser.
+# Copyright (C) 2019 totem-pl-parser's Free Software Foundation, Inc.
+# This file is distributed under the same license as the totem-pl-parser package.
+# Jor Teron <jor.teron@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: totem-pl-parser master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/totem-pl-parser/issues\n"
+"POT-Creation-Date: 2019-04-08 19:26+0000\n"
+"PO-Revision-Date: 2019-08-01 19:26+0000\n"
+"Last-Translator: Jor Teron <jor.teron@gmail.com>\n"
+"Language-Team: Karbi <mjw@li.org>\n"
+"Language: mjw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plurals-Forms: nplurals=2 ; plural= (n != 1 );\n"
+
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:533
+#, c-format
+msgid "Failed to mount %s."
+msgstr "kethap-ingpu un eh %s"
+
+#: plparse/totem-disc.c:418
+#, c-format
+msgid "No media in drive for device “%s”."
+msgstr "“%s” long, kethap ason awe."
+
+#: plparse/totem-disc.c:476
+#, c-format
+msgid "Please check that a disc is present in the drive."
+msgstr "Drive long disc doma awe lang pame tha."
+
+#: plparse/totem-disc.c:947
+msgid "Audio CD"
+msgstr "Audio CD"
+
+#: plparse/totem-disc.c:949
+msgid "Video CD"
+msgstr "Video CD"
+
+#: plparse/totem-disc.c:951
+msgid "DVD"
+msgstr "DVD"
+
+#: plparse/totem-disc.c:953
+msgid "Digital Television"
+msgstr "Digital Television"
+
+#: plparse/totem-disc.c:955
+msgid "Blu-ray"
+msgstr "Blu-ray"
