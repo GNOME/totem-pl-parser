@@ -124,6 +124,7 @@
 #include "config.h"
 
 #include <string.h>
+#include <fnmatch.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib/gi18n-lib.h>
@@ -257,6 +258,7 @@ static void totem_pl_parser_get_property (GObject *object,
 struct TotemPlParserPrivate {
 	GHashTable *ignore_schemes; /* key = char *, value = boolean */
 	GHashTable *ignore_mimetypes; /*key = char *, value = boolean */
+	GHashTable *ignore_globs; /*key = char *, value = boolean */
 	GMutex ignore_mutex;
 	GThread *main_thread; /* see CALL_ASYNC() in *-private.h */
 
@@ -1281,6 +1283,7 @@ totem_pl_parser_init (TotemPlParser *parser)
 	g_mutex_init (&parser->priv->ignore_mutex);
 	parser->priv->ignore_schemes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 	parser->priv->ignore_mimetypes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	parser->priv->ignore_globs = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 }
 
 static void
@@ -1293,6 +1296,7 @@ totem_pl_parser_finalize (GObject *object)
 
 	g_clear_pointer (&priv->ignore_schemes, g_hash_table_destroy);
 	g_clear_pointer (&priv->ignore_mimetypes, g_hash_table_destroy);
+	g_clear_pointer (&priv->ignore_globs, g_hash_table_destroy);
 
 	g_mutex_clear (&priv->ignore_mutex);
 
@@ -1584,6 +1588,28 @@ totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 	return ret;
 }
 
+static gboolean
+totem_pl_parser_glob_is_ignored (TotemPlParser *parser,
+				 const char *filename)
+{
+	GHashTableIter iter;
+	gpointer key;
+	int ret;
+
+	g_mutex_lock (&parser->priv->ignore_mutex);
+	g_hash_table_iter_init (&iter, parser->priv->ignore_globs);
+	while (g_hash_table_iter_next (&iter, &key, NULL)) {
+		const char *glob = key;
+
+		ret = fnmatch (glob, filename, 0);
+		if (ret == 0)
+			break;
+	}
+	g_mutex_unlock (&parser->priv->ignore_mutex);
+
+	return (ret == 0);
+}
+
 /**
  * totem_pl_parser_ignore:
  * @parser: a #TotemPlParser
@@ -1607,6 +1633,9 @@ totem_pl_parser_ignore (TotemPlParser *parser, const char *uri)
 	g_autofree char *mimetype;
 	g_autoptr(GFile) file;
 	guint i;
+
+	if (totem_pl_parser_glob_is_ignored (parser, uri) != FALSE)
+		return TRUE;
 
 	file = g_file_new_for_path (uri);
 	if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE)
@@ -1820,6 +1849,11 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 			if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS)
 				return ret;
 		}
+	}
+
+	if (uri != NULL) {
+		if (totem_pl_parser_glob_is_ignored (parser, uri))
+			return TOTEM_PL_PARSER_RESULT_IGNORED;
 	}
 
 	/* In force mode we want to get the data */
@@ -2224,6 +2258,27 @@ totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 
 	g_mutex_lock (&parser->priv->ignore_mutex);
 	g_hash_table_insert (parser->priv->ignore_mimetypes, g_strdup (mimetype), GINT_TO_POINTER (1));
+	g_mutex_unlock (&parser->priv->ignore_mutex);
+}
+
+/**
+ * totem_pl_parser_add_ignored_glob:
+ * @parser: a #TotemPlParser
+ * @glob: a glob to ignore
+ *
+ * Adds a glob to the list of mimetypes to ignore, so that
+ * any URI of that glob is ignored during playlist parsing.
+ *
+ * Since: 3.26.4
+ **/
+void
+totem_pl_parser_add_ignored_glob (TotemPlParser *parser,
+				  const char    *glob)
+{
+	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
+
+	g_mutex_lock (&parser->priv->ignore_mutex);
+	g_hash_table_insert (parser->priv->ignore_globs, g_strdup (glob), GINT_TO_POINTER (1));
 	g_mutex_unlock (&parser->priv->ignore_mutex);
 }
 

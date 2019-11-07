@@ -352,6 +352,8 @@ void	   totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 					       const char *scheme);
 void       totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 						 const char *mimetype);
+void       totem_pl_parser_add_ignored_glob (TotemPlParser *parser,
+					     const char *glob);
 
 TotemPlParserResult totem_pl_parser_parse (TotemPlParser *parser,
 					   const char *uri, gboolean fallback);

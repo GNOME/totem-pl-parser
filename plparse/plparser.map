@@ -10,6 +10,7 @@ LIBTOTEM_PL_PARSER_MINI_1.0 {
     totem_disc_media_type_quark;
     totem_pl_parser_add_ignored_mimetype;
     totem_pl_parser_add_ignored_scheme;
+    totem_pl_parser_add_ignored_glob;
     totem_pl_parser_can_parse_from_data;
     totem_pl_parser_can_parse_from_filename;
     totem_pl_parser_can_parse_from_uri;
