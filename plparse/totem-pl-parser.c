@@ -1813,7 +1813,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	uri = g_file_get_uri (file);
 
 	/* Should we try to parse it with quvi? */
-	if (g_file_has_uri_scheme (file, "http")) {
+	if (g_file_has_uri_scheme (file, "http") ||
+	    g_file_has_uri_scheme (file, "https")) {
 		if (uri != NULL && totem_pl_parser_is_videosite (uri, parser->priv->debug) != FALSE) {
 			ret = totem_pl_parser_add_videosite (parser, file, base_file, parse_data, NULL);
 			if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS)
