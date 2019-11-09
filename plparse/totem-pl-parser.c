@@ -1604,39 +1604,28 @@ totem_pl_parser_mimetype_is_ignored (TotemPlParser *parser,
 gboolean
 totem_pl_parser_ignore (TotemPlParser *parser, const char *uri)
 {
-	char *mimetype;
-	GFile *file;
+	g_autofree char *mimetype;
+	g_autoptr(GFile) file;
 	guint i;
 
 	file = g_file_new_for_path (uri);
-	if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE) {
-		g_object_unref (file);
+	if (totem_pl_parser_scheme_is_ignored (parser, file) != FALSE)
 		return TRUE;
-	}
-	g_object_unref (file);
 
 	//FIXME wrong for win32
 	mimetype = g_content_type_guess (uri, NULL, 0, NULL);
-	if (mimetype == NULL || strcmp (mimetype, UNKNOWN_TYPE) == 0) {
-		g_free (mimetype);
+	if (mimetype == NULL || strcmp (mimetype, UNKNOWN_TYPE) == 0)
 		return FALSE;
-	}
 
 	for (i = 0; i < G_N_ELEMENTS (special_types); i++) {
-		if (strcmp (special_types[i].mimetype, mimetype) == 0) {
-			g_free (mimetype);
+		if (strcmp (special_types[i].mimetype, mimetype) == 0)
 			return FALSE;
-		}
 	}
 
 	for (i = 0; i < G_N_ELEMENTS (dual_types); i++) {
-		if (strcmp (dual_types[i].mimetype, mimetype) == 0) {
-			g_free (mimetype);
+		if (strcmp (dual_types[i].mimetype, mimetype) == 0)
 			return FALSE;
-		}
 	}
-
-	g_free (mimetype);
 
 	return TRUE;
 }
