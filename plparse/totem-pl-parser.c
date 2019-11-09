@@ -1771,6 +1771,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 {
 	g_autofree char *mimetype = NULL;
 	g_autofree gpointer data = NULL;
+	g_autofree char *uri = NULL;
 	guint i;
 	TotemPlParserResult ret = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	gboolean found = FALSE;
@@ -1809,18 +1810,15 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	if (!parse_data->recurse && parse_data->recurse_level > 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
+	uri = g_file_get_uri (file);
+
 	/* Should we try to parse it with quvi? */
 	if (g_file_has_uri_scheme (file, "http")) {
-		char *url;
-		url = g_file_get_uri (file);
-		if (url != NULL && totem_pl_parser_is_videosite (url, parser->priv->debug) != FALSE) {
+		if (uri != NULL && totem_pl_parser_is_videosite (uri, parser->priv->debug) != FALSE) {
 			ret = totem_pl_parser_add_videosite (parser, file, base_file, parse_data, NULL);
-			if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS) {
-				g_free (url);
+			if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS)
 				return ret;
-			}
 		}
-		g_free (url);
 	}
 
 	/* In force mode we want to get the data */
