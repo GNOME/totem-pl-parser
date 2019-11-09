@@ -1769,9 +1769,9 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				GFile *base_file,
 				TotemPlParseData *parse_data)
 {
-	char *mimetype;
+	g_autofree char *mimetype = NULL;
+	g_autofree gpointer data = NULL;
 	guint i;
-	gpointer data = NULL;
 	TotemPlParserResult ret = TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	gboolean found = FALSE;
 
@@ -1854,8 +1854,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	/* Not a directory on http though */
 	if (g_strcmp0 (mimetype, "inode/directory") == 0 &&
 	    g_file_has_uri_scheme (file, "http")) {
-		g_free (mimetype);
-		mimetype = NULL;
+		g_clear_pointer (&mimetype, g_free);
 	}
 
 	DEBUG(file, g_print ("_get_mime_type_for_name for '%s' returned '%s'\n", uri, mimetype));
@@ -1872,20 +1871,13 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		}
 	}
 
-	if (mimetype == NULL) {
-		g_free (data);
+	if (mimetype == NULL)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
-	}
 
-	if (strcmp (mimetype, EMPTY_FILE_TYPE) == 0) {
-		g_free (data);
-		g_free (mimetype);
+	if (strcmp (mimetype, EMPTY_FILE_TYPE) == 0)
 		return TOTEM_PL_PARSER_RESULT_SUCCESS;
-	} else if (strcmp (mimetype, HLS_MIME_TYPE) == 0) {
-		g_free (data);
-		g_free (mimetype);
+	else if (strcmp (mimetype, HLS_MIME_TYPE) == 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
-	}
 
 	/* If we're at the top-level of the parsing, try to get more
 	 * data from the playlist parser */
@@ -1899,11 +1891,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned '%s' (was %s)\n", uri, mimetype, AUDIO_MPEG_TYPE));
 	}
 
-	if (totem_pl_parser_mimetype_is_ignored (parser, mimetype) != FALSE) {
-		g_free (mimetype);
-		g_free (data);
+	if (totem_pl_parser_mimetype_is_ignored (parser, mimetype) != FALSE)
 		return TOTEM_PL_PARSER_RESULT_IGNORED;
-	}
 
 	if (parse_data->recurse || parse_data->recurse_level == 0) {
 		parse_data->recurse_level++;
@@ -1913,8 +1902,6 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				DEBUG(file, g_print ("URI '%s' is special type '%s'\n", uri, mimetype));
 				if (parse_data->disable_unsafe != FALSE && special_types[i].unsafe != FALSE) {
 					DEBUG(file, g_print ("URI '%s' is unsafe so was ignored\n", uri));
-					g_free (mimetype);
-					g_free (data);
 					return TOTEM_PL_PARSER_RESULT_IGNORED;
 				}
 				if (base_file == NULL)
@@ -1958,8 +1945,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 				if ((func == NULL && mimetype != NULL) || (mimetype == NULL && dual_types[i].func == NULL)) {
 					DEBUG(file, g_print ("Ignoring URI '%s' because we couldn't find a playlist parser for '%s'\n", uri, mimetype));
 					ret = TOTEM_PL_PARSER_RESULT_UNHANDLED;
-					g_free (mimetype);
-					mimetype = NULL;
+					g_clear_pointer (&mimetype, g_free);
 					break;
 				} else if (func == NULL) {
 					func = dual_types[i].func;
@@ -1980,21 +1966,14 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 			}
 		}
 
-		g_free (data);
-
 		parse_data->recurse_level--;
 	}
 
-	if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS) {
-		g_free (mimetype);
+	if (ret == TOTEM_PL_PARSER_RESULT_SUCCESS)
 		return ret;
-	}
 
-	if (totem_pl_parser_ignore_from_mimetype (parser, mimetype) != FALSE) {
-		g_free (mimetype);
+	if (totem_pl_parser_ignore_from_mimetype (parser, mimetype) != FALSE)
 		return TOTEM_PL_PARSER_RESULT_IGNORED;
-	}
-	g_free (mimetype);
 
 	if (ret != TOTEM_PL_PARSER_RESULT_SUCCESS && parse_data->fallback) {
 		totem_pl_parser_add_one_file (parser, file, NULL);
