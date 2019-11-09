@@ -524,6 +524,7 @@ test_no_url_podcast (void)
 #endif
 }
 
+#ifdef HAVE_QUVI
 static void
 test_youtube_starttime (void)
 {
@@ -544,6 +545,7 @@ test_youtube_starttime (void)
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_STARTTIME), ==, "150");
 #endif
 }
+#endif /* HAVE_QUVI */
 
 static void
 test_itms_parsing (void)
