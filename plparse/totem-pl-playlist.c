@@ -51,13 +51,10 @@ struct TotemPlPlaylistPrivate {
         GList *items;
 };
 
-#define TOTEM_PL_PLAYLIST_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TOTEM_TYPE_PL_PLAYLIST, TotemPlPlaylistPrivate))
-
 static void totem_pl_playlist_finalize (GObject *object);
 
-
-G_DEFINE_TYPE (TotemPlPlaylist, totem_pl_playlist, G_TYPE_OBJECT)
-
+G_DEFINE_TYPE_WITH_CODE (TotemPlPlaylist, totem_pl_playlist, G_TYPE_OBJECT,
+			 G_ADD_PRIVATE (TotemPlPlaylist))
 
 static void
 totem_pl_playlist_class_init (TotemPlPlaylistClass *klass)
@@ -65,8 +62,6 @@ totem_pl_playlist_class_init (TotemPlPlaylistClass *klass)
         GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
         object_class->finalize = totem_pl_playlist_finalize;
-
-        g_type_class_add_private (klass, sizeof (TotemPlPlaylistPrivate));
 }
 
 static void
@@ -79,7 +74,7 @@ totem_pl_playlist_finalize (GObject *object)
 {
         TotemPlPlaylistPrivate *priv;
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (object);
+        priv = totem_pl_playlist_get_instance_private (TOTEM_PL_PLAYLIST (object));
 
         g_list_foreach (priv->items, (GFunc) g_hash_table_destroy, NULL);
         g_list_free (priv->items);
@@ -115,7 +110,7 @@ totem_pl_playlist_size (TotemPlPlaylist *playlist)
 
         g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), 0);
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
+        priv = totem_pl_playlist_get_instance_private (playlist);
 
         return g_list_length (priv->items);
 }
@@ -148,7 +143,7 @@ totem_pl_playlist_prepend (TotemPlPlaylist     *playlist,
         g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
         g_return_if_fail (iter != NULL);
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
+        priv = totem_pl_playlist_get_instance_private (playlist);
 
         item = create_playlist_item ();
         priv->items = g_list_prepend (priv->items, item);
@@ -177,7 +172,7 @@ totem_pl_playlist_append (TotemPlPlaylist     *playlist,
         g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
         g_return_if_fail (iter != NULL);
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
+        priv = totem_pl_playlist_get_instance_private (playlist);
 
         item = create_playlist_item ();
 
@@ -214,7 +209,7 @@ totem_pl_playlist_insert (TotemPlPlaylist     *playlist,
         g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
         g_return_if_fail (iter != NULL);
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
+        priv = totem_pl_playlist_get_instance_private (playlist);
 
         item = create_playlist_item ();
         priv->items = g_list_insert (priv->items, item, position);
@@ -237,7 +232,7 @@ check_iter (TotemPlPlaylist     *playlist,
                 return FALSE;
         }
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
+        priv = totem_pl_playlist_get_instance_private (playlist);
 
         if (g_list_position (priv->items, iter->data2) == -1) {
                 return FALSE;
@@ -264,7 +259,7 @@ totem_pl_playlist_iter_first (TotemPlPlaylist     *playlist,
         g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
         g_return_val_if_fail (iter != NULL, FALSE);
 
-        priv = TOTEM_PL_PLAYLIST_GET_PRIVATE (playlist);
+        priv = totem_pl_playlist_get_instance_private (playlist);
 
         if (!priv->items) {
                 /* Empty playlist */

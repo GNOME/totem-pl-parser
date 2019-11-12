@@ -327,8 +327,6 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 
 	totem_pl_parser_parent_class = g_type_class_peek_parent (klass);
 
-	g_type_class_add_private (klass, sizeof (TotemPlParserPrivate));
-
 	object_class->finalize = totem_pl_parser_finalize;
 	object_class->set_property = totem_pl_parser_set_property;
 	object_class->get_property = totem_pl_parser_get_property;
@@ -1278,7 +1276,7 @@ totem_pl_parser_read_ini_line_string (char **lines, const char *key)
 static void
 totem_pl_parser_init (TotemPlParser *parser)
 {
-	parser->priv = G_TYPE_INSTANCE_GET_PRIVATE (parser, TOTEM_TYPE_PL_PARSER, TotemPlParserPrivate);
+	parser->priv = g_new0 (TotemPlParserPrivate, 1);
 	parser->priv->main_thread = g_thread_self ();
 	g_mutex_init (&parser->priv->ignore_mutex);
 	parser->priv->ignore_schemes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
@@ -1289,16 +1287,14 @@ totem_pl_parser_init (TotemPlParser *parser)
 static void
 totem_pl_parser_finalize (GObject *object)
 {
-	TotemPlParserPrivate *priv = TOTEM_PL_PARSER (object)->priv;
-
-	g_return_if_fail (object != NULL);
-	g_return_if_fail (priv != NULL);
+	TotemPlParser *parser = TOTEM_PL_PARSER (object);
+	TotemPlParserPrivate *priv = parser->priv;
 
 	g_clear_pointer (&priv->ignore_schemes, g_hash_table_destroy);
 	g_clear_pointer (&priv->ignore_mimetypes, g_hash_table_destroy);
 	g_clear_pointer (&priv->ignore_globs, g_hash_table_destroy);
-
 	g_mutex_clear (&priv->ignore_mutex);
+	g_clear_pointer (&parser->priv, g_free);
 
 	G_OBJECT_CLASS (totem_pl_parser_parent_class)->finalize (object);
 }
