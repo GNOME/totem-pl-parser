@@ -1,5 +1,13 @@
 New features and significant updates in version...
 
+3.26.4:
+- Apply same check to remote text files as local ones, which should
+  fix parsing of directories on network file systems
+- Add totem_pl_parser_add_ignored_glob() API, to force ignore some
+  files depending on how they are named, before we even get to checking
+  their contents
+- Fix a number of compilation warnings
+
 3.26.3:
 - Atom parsing bug fixes
 
