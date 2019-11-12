@@ -135,7 +135,7 @@ test_date (void)
 
 	/* Atom */
 	g_assert_cmpuint (totem_pl_parser_parse_date ("2003-12-13T18:30:02Z", verbose), ==, 1071340202);
-	g_assert_cmpuint (totem_pl_parser_parse_date ("1990-12-31T15:59:60-08:00", verbose), ==, 662688000);
+	g_assert_cmpuint (totem_pl_parser_parse_date ("1990-12-31T15:59:59-08:00", verbose), ==, 662687999);
 }
 
 #define READ_CHUNK_SIZE 8192

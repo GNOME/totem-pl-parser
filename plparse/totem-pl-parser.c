@@ -2361,27 +2361,24 @@ totem_pl_parser_parse_duration (const char *duration, gboolean debug)
 guint64
 totem_pl_parser_parse_date (const char *date_str, gboolean debug)
 {
-	GTimeVal val;
+	g_autoptr(GDateTime) date = NULL;
 
 	g_return_val_if_fail (date_str != NULL, -1);
 
-	memset (&val, 0, sizeof(val));
 	/* Try to parse as an ISO8601/RFC3339 date */
-	if (g_time_val_from_iso8601 (date_str, &val) != FALSE) {
+	date = g_date_time_new_from_iso8601 (date_str, NULL);
+	if (date != NULL) {
 		D(g_message ("Parsed duration '%s' using the ISO8601 parser", date_str));
-		return val.tv_sec;
+		return g_date_time_to_unix (date);
 	}
 	D(g_message ("Failed to parse duration '%s' using the ISO8601 parser", date_str));
 	/* Fall back to RFC 2822 date parsing */
-	{
-		g_autoptr(GDateTime) date = NULL;
-		date = g_mime_utils_header_decode_date (date_str);
-		if (!date || !g_date_time_to_timeval (date, &val)) {
-			D(g_message ("Failed to parse duration '%s' using the RFC 2822 parser", date_str));
-			return -1;
-		}
-		return val.tv_sec;
+	date = g_mime_utils_header_decode_date (date_str);
+	if (!date) {
+		D(g_message ("Failed to parse duration '%s' using the RFC 2822 parser", date_str));
+		return -1;
 	}
+	return g_date_time_to_unix (date);
 }
 #endif /* !TOTEM_PL_PARSER_MINI */
 

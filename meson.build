@@ -30,7 +30,7 @@ plparse_soversion   = plparse_lt_current - plparse_lt_age
 plparse_libversion  = '@0@.@1@.@2@'.format(plparse_soversion, plparse_lt_age, plparse_lt_revision)
 
 # Requirements
-glib_req    = '>= 2.36.0'
+glib_req    = '>= 2.56.0'
 gio_req     = '>= 2.24.0'
 quvi_req    = '>= 0.9.1'
 archive_req = '>= 3.0'
