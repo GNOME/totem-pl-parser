@@ -29,8 +29,8 @@ G_BEGIN_DECLS
 #define TOTEM_TYPE_PL_PLAYLIST            (totem_pl_playlist_get_type ())
 #define TOTEM_PL_PLAYLIST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TOTEM_TYPE_PL_PLAYLIST, TotemPlPlaylist))
 #define TOTEM_PL_PLAYLIST_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TOTEM_TYPE_PL_PLAYLIST, TotemPlPlaylistClass))
-#define TOTEM_IS_PL_PLAYLIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TOTEM_TYPE_PL_PLAYLIST))
-#define TOTEM_IS_PL_PLAYLIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TOTEM_TYPE_PL_PLAYLIST))
+#define TOTEM_PL_IS_PLAYLIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TOTEM_TYPE_PL_PLAYLIST))
+#define TOTEM_PL_IS_PLAYLIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TOTEM_TYPE_PL_PLAYLIST))
 
 /**
  * TotemPlPlaylist:

@@ -1136,8 +1136,8 @@ totem_pl_parser_save (TotemPlParser      *parser,
                       TotemPlParserType   type,
                       GError            **error)
 {
-        g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), FALSE);
-        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
+        g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), FALSE);
+        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
         g_return_val_if_fail (G_IS_FILE (dest), FALSE);
 
         if (totem_pl_playlist_size (playlist) == 0) {
@@ -2072,7 +2072,7 @@ totem_pl_parser_parse_with_base_async (TotemPlParser *parser, const char *uri, c
 	GTask *task;
 	ParseAsyncData *data;
 
-	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
+	g_return_if_fail (TOTEM_PL_IS_PARSER (parser));
 	g_return_if_fail (uri != NULL);
 	g_return_if_fail (strstr (uri, "://") != NULL);
 
@@ -2108,7 +2108,7 @@ totem_pl_parser_parse_with_base (TotemPlParser *parser, const char *uri,
 	TotemPlParserResult retval;
 	TotemPlParseData data;
 
-	g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
 	g_return_val_if_fail (uri != NULL, TOTEM_PL_PARSER_RESULT_UNHANDLED);
 	g_return_val_if_fail (strstr (uri, "://") != NULL,
 			TOTEM_PL_PARSER_RESULT_ERROR);
@@ -2183,7 +2183,7 @@ totem_pl_parser_parse_finish (TotemPlParser *parser, GAsyncResult *async_result,
 {
 	GTask *task = G_TASK (async_result);
 
-	g_return_val_if_fail (TOTEM_IS_PL_PARSER (parser), FALSE);
+	g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), FALSE);
 	g_return_val_if_fail (g_task_is_valid (async_result, parser), FALSE);
 
 	/* Propagate any errors which were caught and return the result; otherwise just return the result */
@@ -2226,7 +2226,7 @@ totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 {
 	char *s;
 
-	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
+	g_return_if_fail (TOTEM_PL_IS_PARSER (parser));
 
 	g_mutex_lock (&parser->priv->ignore_mutex);
 
@@ -2250,7 +2250,7 @@ void
 totem_pl_parser_add_ignored_mimetype (TotemPlParser *parser,
 		const char *mimetype)
 {
-	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
+	g_return_if_fail (TOTEM_PL_IS_PARSER (parser));
 
 	g_mutex_lock (&parser->priv->ignore_mutex);
 	g_hash_table_insert (parser->priv->ignore_mimetypes, g_strdup (mimetype), GINT_TO_POINTER (1));
@@ -2271,7 +2271,7 @@ void
 totem_pl_parser_add_ignored_glob (TotemPlParser *parser,
 				  const char    *glob)
 {
-	g_return_if_fail (TOTEM_IS_PL_PARSER (parser));
+	g_return_if_fail (TOTEM_PL_IS_PARSER (parser));
 
 	g_mutex_lock (&parser->priv->ignore_mutex);
 	g_hash_table_insert (parser->priv->ignore_globs, g_strdup (glob), GINT_TO_POINTER (1));

@@ -108,7 +108,7 @@ totem_pl_playlist_size (TotemPlPlaylist *playlist)
 {
         TotemPlPlaylistPrivate *priv;
 
-        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), 0);
+        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), 0);
 
         priv = totem_pl_playlist_get_instance_private (playlist);
 
@@ -140,7 +140,7 @@ totem_pl_playlist_prepend (TotemPlPlaylist     *playlist,
         TotemPlPlaylistPrivate *priv;
         GHashTable *item;
 
-        g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
+        g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
         g_return_if_fail (iter != NULL);
 
         priv = totem_pl_playlist_get_instance_private (playlist);
@@ -169,7 +169,7 @@ totem_pl_playlist_append (TotemPlPlaylist     *playlist,
         GHashTable *item;
         GList *list_item;
 
-        g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
+        g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
         g_return_if_fail (iter != NULL);
 
         priv = totem_pl_playlist_get_instance_private (playlist);
@@ -206,7 +206,7 @@ totem_pl_playlist_insert (TotemPlPlaylist     *playlist,
         TotemPlPlaylistPrivate *priv;
         GHashTable *item;
 
-        g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
+        g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
         g_return_if_fail (iter != NULL);
 
         priv = totem_pl_playlist_get_instance_private (playlist);
@@ -256,7 +256,7 @@ totem_pl_playlist_iter_first (TotemPlPlaylist     *playlist,
 {
         TotemPlPlaylistPrivate *priv;
 
-        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
+        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
         g_return_val_if_fail (iter != NULL, FALSE);
 
         priv = totem_pl_playlist_get_instance_private (playlist);
@@ -288,7 +288,7 @@ gboolean
 totem_pl_playlist_iter_next (TotemPlPlaylist     *playlist,
                              TotemPlPlaylistIter *iter)
 {
-        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
+        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
         g_return_val_if_fail (check_iter (playlist, iter), FALSE);
 
         iter->data2 = ((GList *) iter->data2)->next;
@@ -312,7 +312,7 @@ gboolean
 totem_pl_playlist_iter_prev (TotemPlPlaylist     *playlist,
                              TotemPlPlaylistIter *iter)
 {
-        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
+        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
         g_return_val_if_fail (check_iter (playlist, iter), FALSE);
 
         iter->data2 = ((GList *) iter->data2)->prev;
@@ -341,7 +341,7 @@ totem_pl_playlist_get_value (TotemPlPlaylist     *playlist,
         GHashTable *item_data;
         gchar *str;
 
-        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
+        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
         g_return_val_if_fail (check_iter (playlist, iter), FALSE);
         g_return_val_if_fail (key != NULL, FALSE);
         g_return_val_if_fail (value != NULL, FALSE);
@@ -376,7 +376,7 @@ totem_pl_playlist_get_valist (TotemPlPlaylist     *playlist,
         GHashTable *item_data;
         gchar *key, **value;
 
-        g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
+        g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
         g_return_if_fail (check_iter (playlist, iter));
 
         item_data = ((GList *) iter->data2)->data;
@@ -413,7 +413,7 @@ totem_pl_playlist_get (TotemPlPlaylist     *playlist,
 {
         va_list args;
 
-        g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
+        g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
         g_return_if_fail (check_iter (playlist, iter));
 
         va_start (args, iter);
@@ -441,7 +441,7 @@ totem_pl_playlist_set_value (TotemPlPlaylist     *playlist,
         GHashTable *item_data;
         gchar *str;
 
-        g_return_val_if_fail (TOTEM_IS_PL_PLAYLIST (playlist), FALSE);
+        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
         g_return_val_if_fail (check_iter (playlist, iter), FALSE);
         g_return_val_if_fail (key != NULL, FALSE);
         g_return_val_if_fail (value != NULL, FALSE);
@@ -490,7 +490,7 @@ totem_pl_playlist_set_valist (TotemPlPlaylist     *playlist,
         GHashTable *item_data;
         gchar *key, *value;
 
-        g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
+        g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
         g_return_if_fail (check_iter (playlist, iter));
 
         item_data = ((GList *) iter->data2)->data;
@@ -524,7 +524,7 @@ totem_pl_playlist_set (TotemPlPlaylist     *playlist,
 {
         va_list args;
 
-        g_return_if_fail (TOTEM_IS_PL_PLAYLIST (playlist));
+        g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
         g_return_if_fail (check_iter (playlist, iter));
 
         va_start (args, iter);
