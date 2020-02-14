@@ -10,7 +10,7 @@ foreach test_name : tests
 
   env = environment()
   if have_quvi
-    env.set('TOTEM_PL_PARSER_VIDEOSITE_SCRIPT', videosite_quvi_exe.full_path())
+    env.set('TOTEM_PL_PARSER_VIDEOSITE_SCRIPT', videosite_exe.full_path())
   endif
 
   test(test_name, exe, env: env, timeout: 3 * 60)

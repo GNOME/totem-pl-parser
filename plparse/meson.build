@@ -111,13 +111,13 @@ plparser_mini_lib = library('totem-plparser-mini',
                             install: true)
 
 if have_quvi
-  videosite_quvi_exe = executable('99-totem-pl-parser-videosite-quvi',
-                                  'videosite-quvi.c', totem_pl_parser_builtins_h,
-                                  c_args: '-DLIBEXECDIR="@0@"'.format(libexecdir),
-                                  include_directories: [config_inc, totemlib_inc],
-                                  dependencies: [quvi_dep, glib_dep],
-                                  install_dir: join_paths(libexecdir, 'totem-pl-parser'),
-                                  install: true)
+  videosite_exe = executable('99-totem-pl-parser-videosite',
+                             'videosite-parser.c', totem_pl_parser_builtins_h,
+                             c_args: '-DLIBEXECDIR="@0@"'.format(libexecdir),
+                             include_directories: [config_inc, totemlib_inc],
+                             dependencies: [quvi_dep, glib_dep],
+                             install_dir: join_paths(libexecdir, 'totem-pl-parser'),
+                             install: true)
 endif
 
 # Introspection
