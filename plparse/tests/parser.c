@@ -815,7 +815,7 @@ test_compressed_content_encoding (void)
 	/* Requires:
 	 * http://git.gnome.org/browse/gvfs/commit/?id=6929e9f9661b4d1e68f8912d8e60107366255a47
 	 * http://thread.gmane.org/gmane.comp.gnome.apps.rhythmbox.devel/11887 */
-	result = simple_parser_test ("http://escapepod.org/podcast.xml");
+	result = simple_parser_test ("https://escapepod.org/feed/");
 	g_assert_cmpint (result, ==, TOTEM_PL_PARSER_RESULT_SUCCESS);
 }
 
