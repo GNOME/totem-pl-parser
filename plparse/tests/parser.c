@@ -1137,6 +1137,49 @@ test_saving_sync (void)
 	g_assert_no_error (error);
 }
 
+static void
+test_saving_sync_cb (GObject       *source_object,
+		     GAsyncResult  *res,
+		     gpointer       user_data)
+{
+	GMainLoop *loop = user_data;
+	g_autoptr(GError) error = NULL;
+
+	totem_pl_parser_save_finish (TOTEM_PL_PARSER (source_object), res, &error);
+	g_assert_no_error (error);
+	g_main_loop_quit (loop);
+}
+
+static void
+test_saving_async (void)
+{
+	g_autoptr(TotemPlParser) parser = NULL;
+	g_autoptr(TotemPlPlaylist) playlist = NULL;
+	g_autoptr(GError) error = NULL;
+	g_autoptr(GFile) output = NULL;
+	TotemPlPlaylistIter pl_iter;
+	g_autofree char *path = NULL;
+	GMainLoop *loop;
+	int fd;
+
+	parser = totem_pl_parser_new ();
+	playlist = totem_pl_playlist_new ();
+	fd = g_file_open_tmp (NULL, &path, &error);
+	g_assert_no_error (error);
+	close (fd);
+	output = g_file_new_for_path (path);
+
+	totem_pl_playlist_append (playlist, &pl_iter);
+	add_pl_iter_metadata (playlist, &pl_iter);
+	loop = g_main_loop_new (NULL, FALSE);
+	totem_pl_parser_save_async (parser,
+				    playlist,
+				    output,
+				    NULL, TOTEM_PL_PARSER_XSPF,
+				    NULL, test_saving_sync_cb, loop);
+	g_main_loop_run (loop);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -1408,6 +1451,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
 		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
 		g_test_add_func ("/parser/saving/sync", test_saving_sync);
+		g_test_add_func ("/parser/saving/async", test_saving_async);
 
 		return g_test_run ();
 	}
