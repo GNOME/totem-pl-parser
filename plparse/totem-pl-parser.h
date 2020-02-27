@@ -69,6 +69,8 @@ typedef struct {
 	TotemPlParserPrivate *priv;
 } TotemPlParser;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(TotemPlParser, g_object_unref)
+
 /* Known metadata fields */
 
 /**
@@ -394,6 +396,8 @@ typedef GHashTable TotemPlParserMetadata;
 
 GType totem_pl_parser_metadata_get_type (void) G_GNUC_CONST;
 #define TOTEM_TYPE_PL_PARSER_METADATA (totem_pl_parser_metadata_get_type())
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(TotemPlParserMetadata, g_hash_table_destroy)
 
 G_END_DECLS
 

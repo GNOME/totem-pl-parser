@@ -41,6 +41,8 @@ typedef struct {
         GObject parent_instance;
 } TotemPlPlaylist;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(TotemPlPlaylist, g_object_unref)
+
 /**
  * TotemPlPlaylistClass:
  * @parent_class: the parent class
