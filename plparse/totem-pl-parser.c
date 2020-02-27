@@ -1106,7 +1106,7 @@ totem_pl_parser_resolve_uri (GFile *base_gfile,
  * @dest: output #GFile
  * @title: the playlist title
  * @type: a #TotemPlParserType for the outputted playlist
- * @error: return loction for a #GError, or %NULL
+ * @error: return location for a #GError, or %NULL
  *
  * Writes the playlist held by @parser and @playlist out to the path
  * pointed by @dest. The playlist is written in the format @type and is
