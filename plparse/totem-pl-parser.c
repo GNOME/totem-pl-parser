@@ -873,6 +873,7 @@ totem_pl_parser_write_string (GOutputStream *stream, const char *buf, GError **e
  * @stream: a #GFileOutputStream to an open file
  * @buf: the string buffer to write out
  * @len: the length of the string to write out
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Writes @len bytes of @buf to the file specified by @handle.
@@ -882,14 +883,18 @@ totem_pl_parser_write_string (GOutputStream *stream, const char *buf, GError **e
  * Return value: %TRUE on success
  **/
 gboolean
-totem_pl_parser_write_buffer (GOutputStream *stream, const char *buf, guint len, GError **error)
+totem_pl_parser_write_buffer (GOutputStream  *stream,
+			      const char     *buf,
+			      guint           len,
+			      GCancellable   *cancellable,
+			      GError        **error)
 {
 	gsize bytes_written;
 
 	if (g_output_stream_write_all (stream,
 				       buf, len,
 				       &bytes_written,
-				       NULL, error) == FALSE) {
+				       cancellable, error) == FALSE) {
 		g_object_unref (stream);
 		return FALSE;
 	}

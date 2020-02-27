@@ -135,6 +135,7 @@ gboolean totem_pl_parser_write_string		(GOutputStream *stream,
 gboolean totem_pl_parser_write_buffer		(GOutputStream *stream,
 						 const char *buf,
 						 guint size,
+						 GCancellable *cancellable,
 						 GError **error);
 char * totem_pl_parser_relative			(GFile *output,
 						 const char *filepath);

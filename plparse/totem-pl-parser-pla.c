@@ -72,7 +72,7 @@ totem_pl_parser_save_pla (TotemPlParser    *parser,
 	 * the 'quick list' name there.
 	 */
 	strncpy (buffer + TITLE_OFFSET, title, TITLE_SIZE);
-	if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, error) == FALSE)
+	if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, cancellable, error) == FALSE)
 	{
 		DEBUG(output, g_print ("Couldn't write header block for '%s'", uri));
 		g_free (buffer);
@@ -150,7 +150,7 @@ totem_pl_parser_save_pla (TotemPlParser    *parser,
 		memcpy (buffer + PATH_OFFSET, converted, written);
 		g_free (converted);
 
-		if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, error) == FALSE)
+		if (totem_pl_parser_write_buffer (G_OUTPUT_STREAM (stream), buffer, RECORD_SIZE, cancellable, error) == FALSE)
 		{
 			DEBUG1(g_print ("Couldn't write entry %d to the file\n", i));
 			ret = FALSE;
