@@ -349,6 +349,17 @@ gboolean totem_pl_parser_save (TotemPlParser      *parser,
 			       const gchar        *title,
 			       TotemPlParserType   type,
 			       GError            **error);
+void totem_pl_parser_save_async (TotemPlParser        *parser,
+				 TotemPlPlaylist      *playlist,
+				 GFile                *dest,
+				 const gchar          *title,
+				 TotemPlParserType     type,
+				 GCancellable         *cancellable,
+				 GAsyncReadyCallback   callback,
+				 gpointer              user_data);
+gboolean totem_pl_parser_save_finish (TotemPlParser   *parser,
+				      GAsyncResult    *result,
+				      GError         **error);
 
 void	   totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
 					       const char *scheme);

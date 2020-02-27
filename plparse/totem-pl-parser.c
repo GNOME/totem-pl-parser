@@ -1108,6 +1108,92 @@ totem_pl_parser_resolve_uri (GFile *base_gfile,
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
+typedef struct {
+	TotemPlPlaylist   *playlist;
+	GFile             *dest;
+	char              *title;
+	TotemPlParserType  type;
+} PlParserSaveData;
+
+static void
+pl_parser_save_data_free (PlParserSaveData *data)
+{
+	g_clear_object (&data->playlist);
+	g_clear_object (&data->dest);
+	g_clear_pointer (&data->title, g_free);
+	g_free (data);
+}
+
+static void
+pl_parser_save_thread (GTask        *task,
+		       gpointer      source_object,
+		       gpointer      task_data,
+		       GCancellable *cancellable)
+{
+	PlParserSaveData *data = task_data;
+	GError *error = NULL;
+	gboolean ret = FALSE;
+
+	switch (data->type) {
+	case TOTEM_PL_PARSER_PLS:
+		ret = totem_pl_parser_save_pls (source_object,
+						data->playlist,
+						data->dest,
+						data->title,
+						cancellable,
+						&error);
+		break;
+	case TOTEM_PL_PARSER_M3U:
+	case TOTEM_PL_PARSER_M3U_DOS:
+		ret = totem_pl_parser_save_m3u (source_object,
+						data->playlist,
+						data->dest,
+						(data->type == TOTEM_PL_PARSER_M3U_DOS),
+						cancellable,
+						&error);
+		break;
+	case TOTEM_PL_PARSER_XSPF:
+		ret = totem_pl_parser_save_xspf (source_object,
+						 data->playlist,
+						 data->dest,
+						 data->title,
+						 cancellable,
+						 &error);
+		break;
+	case TOTEM_PL_PARSER_IRIVER_PLA:
+		ret = totem_pl_parser_save_pla (source_object,
+						data->playlist,
+						data->dest,
+						data->title,
+						cancellable,
+						&error);
+		break;
+	default:
+		g_assert_not_reached ();
+	}
+
+	if (ret == FALSE)
+		g_task_return_error (task, error);
+	else
+		g_task_return_boolean (task, TRUE);
+}
+
+static gboolean
+pl_parser_save_check_size (TotemPlPlaylist *playlist,
+			   GTask           *task)
+{
+	if (totem_pl_playlist_size (playlist) > 0)
+		return TRUE;
+
+	/* FIXME add translation */
+	g_task_return_new_error (task,
+				 TOTEM_PL_PARSER_ERROR,
+				 TOTEM_PL_PARSER_ERROR_EMPTY_PLAYLIST,
+				 "Playlist selected for saving is empty");
+	g_object_unref (task);
+	return FALSE;
+}
+
 /**
  * totem_pl_parser_save:
  * @parser: a #TotemPlParser
@@ -1145,38 +1231,98 @@ totem_pl_parser_save (TotemPlParser      *parser,
                       TotemPlParserType   type,
                       GError            **error)
 {
-        g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), FALSE);
-        g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
-        g_return_val_if_fail (G_IS_FILE (dest), FALSE);
+	GTask *task;
+	PlParserSaveData *data;
 
-        if (totem_pl_playlist_size (playlist) == 0) {
-		/* FIXME add translation */
-		g_set_error (error,
-			     TOTEM_PL_PARSER_ERROR,
-			     TOTEM_PL_PARSER_ERROR_EMPTY_PLAYLIST,
-			     "Playlist selected for saving is empty");
-                return FALSE;
-        }
+	g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), FALSE);
+	g_return_val_if_fail (TOTEM_PL_IS_PLAYLIST (playlist), FALSE);
+	g_return_val_if_fail (G_IS_FILE (dest), FALSE);
 
-        switch (type)
-        {
-	case TOTEM_PL_PARSER_PLS:
-		return totem_pl_parser_save_pls (parser, playlist, dest, title, NULL, error);
-	case TOTEM_PL_PARSER_M3U:
-	case TOTEM_PL_PARSER_M3U_DOS:
-		return totem_pl_parser_save_m3u (parser, playlist, dest,
-                                                 (type == TOTEM_PL_PARSER_M3U_DOS),
-                                                 NULL,
-                                                 error);
-	case TOTEM_PL_PARSER_XSPF:
-		return totem_pl_parser_save_xspf (parser, playlist, dest, title, NULL, error);
-	case TOTEM_PL_PARSER_IRIVER_PLA:
-		return totem_pl_parser_save_pla (parser, playlist, dest, title, NULL, error);
-	default:
-		g_assert_not_reached ();
-	}
+	task = g_task_new (parser, NULL, NULL, NULL);
+	if (!pl_parser_save_check_size (playlist, task))
+		return g_task_propagate_boolean (task, error);
 
-	return FALSE;
+	data = g_new0 (PlParserSaveData, 1);
+	data->playlist = g_object_ref (playlist);
+	data->dest = g_object_ref (dest);
+	data->title = g_strdup (title);
+	data->type = type;
+
+	g_task_set_task_data (task, data, (GDestroyNotify) pl_parser_save_data_free);
+	g_task_run_in_thread_sync (task, pl_parser_save_thread);
+
+	return g_task_propagate_boolean (task, error);
+}
+
+/**
+ * totem_pl_parser_save_async:
+ * @parser: a #TotemPlParser
+ * @playlist: a #TotemPlPlaylist
+ * @dest: output #GFile
+ * @title: the playlist title
+ * @type: a #TotemPlParserType for the outputted playlist
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when saving has finished
+ * @user_data: data to pass to the @callback function
+ *
+ * Starts asynchronous version of totem_pl_parser_save(). For more details
+ * see totem_pl_parser_save().
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * totem_pl_parser_save_finish() to get the results of the operation.
+ **/
+void
+totem_pl_parser_save_async (TotemPlParser        *parser,
+			    TotemPlPlaylist      *playlist,
+			    GFile                *dest,
+			    const gchar          *title,
+			    TotemPlParserType     type,
+			    GCancellable         *cancellable,
+			    GAsyncReadyCallback   callback,
+			    gpointer              user_data)
+{
+	GTask *task;
+	PlParserSaveData *data;
+
+	g_return_if_fail (TOTEM_PL_IS_PARSER (parser));
+	g_return_if_fail (TOTEM_PL_IS_PLAYLIST (playlist));
+	g_return_if_fail (G_IS_FILE (dest));
+
+	task = g_task_new (parser, cancellable, callback, user_data);
+	if (!pl_parser_save_check_size (playlist, task))
+		return;
+
+	data = g_new0 (PlParserSaveData, 1);
+	data->playlist = g_object_ref (playlist);
+	data->dest = g_object_ref (dest);
+	data->title = g_strdup (title);
+	data->type = type;
+
+	g_task_set_task_data (task, data, (GDestroyNotify) pl_parser_save_data_free);
+	g_task_run_in_thread (task, pl_parser_save_thread);
+}
+
+/**
+ * totem_pl_parser_save_finish:
+ * @parser: a #TotemPlParser
+ * @async_result: a #GAsyncResult
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an asynchronous playlist saving operation started with totem_pl_parser_save_async().
+ *
+ * If saving of the playlist is cancelled part-way through, %G_IO_ERROR_CANCELLED will be
+ * returned when this function is called.
+ *
+ * Return value: %TRUE on success, %FALSE on failure.
+ **/
+gboolean
+totem_pl_parser_save_finish (TotemPlParser   *parser,
+			     GAsyncResult    *async_result,
+			     GError         **error)
+{
+	g_return_val_if_fail (g_task_is_valid (async_result, parser), NULL);
+
+	return g_task_propagate_boolean (G_TASK (async_result), error);
 }
 #endif /* TOTEM_PL_PARSER_MINI */
 
