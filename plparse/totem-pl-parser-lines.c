@@ -84,6 +84,7 @@ totem_pl_parser_save_m3u (TotemPlParser    *parser,
                           TotemPlPlaylist  *playlist,
                           GFile            *output,
                           gboolean          dos_compatible,
+                          GCancellable     *cancellable,
                           GError          **error)
 {
         TotemPlPlaylistIter iter;

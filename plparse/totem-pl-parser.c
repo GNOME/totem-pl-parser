@@ -1152,16 +1152,17 @@ totem_pl_parser_save (TotemPlParser      *parser,
         switch (type)
         {
 	case TOTEM_PL_PARSER_PLS:
-		return totem_pl_parser_save_pls (parser, playlist, dest, title, error);
+		return totem_pl_parser_save_pls (parser, playlist, dest, title, NULL, error);
 	case TOTEM_PL_PARSER_M3U:
 	case TOTEM_PL_PARSER_M3U_DOS:
 		return totem_pl_parser_save_m3u (parser, playlist, dest,
                                                  (type == TOTEM_PL_PARSER_M3U_DOS),
+                                                 NULL,
                                                  error);
 	case TOTEM_PL_PARSER_XSPF:
-		return totem_pl_parser_save_xspf (parser, playlist, dest, title, error);
+		return totem_pl_parser_save_xspf (parser, playlist, dest, title, NULL, error);
 	case TOTEM_PL_PARSER_IRIVER_PLA:
-		return totem_pl_parser_save_pla (parser, playlist, dest, title, error);
+		return totem_pl_parser_save_pla (parser, playlist, dest, title, NULL, error);
 	default:
 		g_assert_not_reached ();
 	}

@@ -48,6 +48,7 @@ totem_pl_parser_save_pla (TotemPlParser    *parser,
                           TotemPlPlaylist  *playlist,
                           GFile            *output,
                           const char       *title,
+                          GCancellable     *cancellable,
                           GError          **error)
 {
         TotemPlPlaylistIter iter;

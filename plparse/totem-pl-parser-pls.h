@@ -36,6 +36,7 @@ gboolean totem_pl_parser_save_pls				(TotemPlParser *parser,
                                                                  TotemPlPlaylist *playlist,
 								 GFile *file,
 								 const char *title,
+								 GCancellable *cancellable,
 								 GError **error);
 TotemPlParserResult totem_pl_parser_add_pls_with_contents	(TotemPlParser *parser,
 								 GFile *file,

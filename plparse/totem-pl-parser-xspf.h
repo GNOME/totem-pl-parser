@@ -37,6 +37,7 @@ gboolean totem_pl_parser_save_xspf (TotemPlParser *parser,
                                     TotemPlPlaylist *playlist,
                                     GFile *output,
                                     const char *title,
+                                    GCancellable *cancellable,
                                     GError **error);
 
 TotemPlParserResult totem_pl_parser_add_xspf_with_contents (TotemPlParser *parser,
