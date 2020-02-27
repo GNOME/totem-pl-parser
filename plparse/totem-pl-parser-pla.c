@@ -57,7 +57,7 @@ totem_pl_parser_save_pla (TotemPlParser    *parser,
 	char *buffer;
 	gboolean valid, ret;
 
-	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
+	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, cancellable, error);
 	if (stream == NULL)
 		return FALSE;
 

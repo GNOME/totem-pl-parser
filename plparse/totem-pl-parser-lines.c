@@ -93,7 +93,7 @@ totem_pl_parser_save_m3u (TotemPlParser    *parser,
 	char *buf;
 	const char *cr;
 
-	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
+	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, cancellable, error);
 	if (stream == NULL)
 		return FALSE;
 

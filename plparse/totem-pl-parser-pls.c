@@ -51,7 +51,7 @@ totem_pl_parser_save_pls (TotemPlParser    *parser,
 
 	num_entries = totem_pl_parser_num_entries (parser, playlist);
 
-	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
+	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, cancellable, error);
 	if (stream == NULL)
 		return FALSE;
 

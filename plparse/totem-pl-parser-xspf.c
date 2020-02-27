@@ -108,7 +108,7 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 	char *buf;
 	gboolean valid, success;
 
-	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, NULL, error);
+	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, cancellable, error);
 	if (stream == NULL)
 		return FALSE;
 
