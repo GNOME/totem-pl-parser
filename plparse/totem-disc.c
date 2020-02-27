@@ -421,7 +421,6 @@ cd_cache_new (const char *dev,
     return NULL;
   }
 
-  /* create struture */
   cache = g_new0 (CdCache, 1);
   cache->device = device;
   cache->mountpoint = mountpoint;
