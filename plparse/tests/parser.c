@@ -1089,6 +1089,54 @@ test_async_parsing_signal_order (void)
 	g_main_loop_unref (data.mainloop);
 }
 
+static void
+add_pl_iter_metadata (TotemPlPlaylist     *playlist,
+		      TotemPlPlaylistIter *pl_iter)
+{
+	totem_pl_playlist_set (playlist, pl_iter,
+			       TOTEM_PL_PARSER_FIELD_URI, "file:///fake/uri.mp4",
+			       TOTEM_PL_PARSER_FIELD_TITLE, "custom title",
+			       TOTEM_PL_PARSER_FIELD_SUBTITLE_URI, "file:///fake/uri.srt",
+			       TOTEM_PL_PARSER_FIELD_PLAYING, "true",
+			       TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, "video/mp4",
+			       TOTEM_PL_PARSER_FIELD_STARTTIME, "1",
+			       NULL);
+}
+
+static void
+test_saving_sync (void)
+{
+	g_autoptr(TotemPlParser) parser = NULL;
+	g_autoptr(TotemPlPlaylist) playlist = NULL;
+	g_autoptr(GError) error = NULL;
+	g_autoptr(GFile) output = NULL;
+	TotemPlPlaylistIter pl_iter;
+	g_autofree char *path = NULL;
+	int fd;
+
+	parser = totem_pl_parser_new ();
+	playlist = totem_pl_playlist_new ();
+	fd = g_file_open_tmp (NULL, &path, &error);
+	g_assert_no_error (error);
+	close (fd);
+	output = g_file_new_for_path (path);
+
+	totem_pl_parser_save (parser,
+			      playlist,
+			      output,
+			      NULL, TOTEM_PL_PARSER_XSPF, &error);
+	g_assert_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_EMPTY_PLAYLIST);
+	g_clear_error (&error);
+
+	totem_pl_playlist_append (playlist, &pl_iter);
+	add_pl_iter_metadata (playlist, &pl_iter);
+	totem_pl_parser_save (parser,
+			      playlist,
+			      output,
+			      NULL, TOTEM_PL_PARSER_XSPF, &error);
+	g_assert_no_error (error);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -1359,6 +1407,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/dir_recurse", test_directory_recurse);
 		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
 		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
+		g_test_add_func ("/parser/saving/sync", test_saving_sync);
 
 		return g_test_run ();
 	}
