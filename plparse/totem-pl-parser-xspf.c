@@ -115,7 +115,7 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 	buf = g_strdup_printf ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				"<playlist version=\"1\" xmlns=\"http://xspf.org/ns/0/\">\n"
 				" <trackList>\n");
-	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 	g_free (buf);
 	if (success == FALSE)
 		return FALSE;
@@ -145,7 +145,7 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 		uri_escaped = g_markup_escape_text (relative ? relative : uri, -1);
 		buf = g_strdup_printf ("  <track>\n"
                                        "   <location>%s</location>\n", uri_escaped);
-		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 		g_free (uri);
 		g_free (uri_escaped);
 		g_free (relative);
@@ -193,7 +193,7 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 						       fields[i].element);
 			}
 
-			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 			g_free (buf);
 			g_free (escaped);
 
@@ -205,12 +205,12 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 			return FALSE;
 
 		if (wrote_ext)
-			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), "   </extension>\n", error);
+			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), "   </extension>\n", cancellable, error);
 
 		if (success == FALSE)
 			return FALSE;
 
-		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), "  </track>\n", error);
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), "  </track>\n", cancellable, error);
 		if (success == FALSE)
 			return FALSE;
 
@@ -219,7 +219,7 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
 
 	buf = g_strdup_printf (" </trackList>\n"
                                "</playlist>");
-	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 	g_free (buf);
 
 	g_object_unref (stream);

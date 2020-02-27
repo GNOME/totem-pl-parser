@@ -100,7 +100,7 @@ totem_pl_parser_save_m3u (TotemPlParser    *parser,
 	cr = dos_compatible ? "\r\n" : "\n";
 
 	buf = g_strdup_printf ("#EXTM3U%s", cr);
-	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 	g_free (buf);
 	if (success == FALSE)
 		return FALSE;
@@ -135,7 +135,7 @@ totem_pl_parser_save_m3u (TotemPlParser    *parser,
 
 		if (title) {
 			buf = g_strdup_printf (EXTINF",%s%s", title, cr);
-			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+			success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 			g_free (buf);
 			if (success == FALSE) {
 				g_free (title);
@@ -163,7 +163,7 @@ totem_pl_parser_save_m3u (TotemPlParser    *parser,
 		g_free (path2);
 		g_free (uri);
 
-		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 		g_free (buf);
 
 		if (success == FALSE)

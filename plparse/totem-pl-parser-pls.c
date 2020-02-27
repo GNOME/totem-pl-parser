@@ -56,21 +56,21 @@ totem_pl_parser_save_pls (TotemPlParser    *parser,
 		return FALSE;
 
 	buf = g_strdup ("[playlist]\n");
-	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 	g_free (buf);
 	if (success == FALSE)
 		return FALSE;
 
 	if (title != NULL) {
 		buf = g_strdup_printf ("X-GNOME-Title=%s\n", title);
-		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+		success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 		g_free (buf);
 		if (success == FALSE)
 			return FALSE;
 	}
 
 	buf = g_strdup_printf ("NumberOfEntries=%d\n", num_entries);
-	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 	g_free (buf);
 	if (success == FALSE)
 		return FALSE;
@@ -111,7 +111,7 @@ totem_pl_parser_save_pls (TotemPlParser    *parser,
                 g_free (relative);
                 g_free (uri);
 
-                success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+                success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
                 g_free (buf);
 
                 if (success == FALSE) {
@@ -124,7 +124,7 @@ totem_pl_parser_save_pls (TotemPlParser    *parser,
                 }
 
                 buf = g_strdup_printf ("Title%d=%s\n", i, entry_title);
-                success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, error);
+                success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
                 g_free (buf);
                 g_free (entry_title);
 

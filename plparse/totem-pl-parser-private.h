@@ -131,6 +131,7 @@ gboolean totem_pl_parser_scheme_is_ignored	(TotemPlParser *parser,
 gboolean totem_pl_parser_line_is_empty		(const char *line);
 gboolean totem_pl_parser_write_string		(GOutputStream *stream,
 						 const char *buf,
+						 GCancellable *cancellable,
 						 GError **error);
 gboolean totem_pl_parser_write_buffer		(GOutputStream *stream,
 						 const char *buf,

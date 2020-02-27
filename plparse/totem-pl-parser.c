@@ -852,6 +852,7 @@ totem_pl_parser_line_is_empty (const char *line)
  * totem_pl_parser_write_string:
  * @handle: a #GFileOutputStream to an open file
  * @buf: the string buffer to write out
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Writes the string @buf out to the file specified by @handle.
@@ -860,12 +861,15 @@ totem_pl_parser_line_is_empty (const char *line)
  * Return value: %TRUE on success
  **/
 gboolean
-totem_pl_parser_write_string (GOutputStream *stream, const char *buf, GError **error)
+totem_pl_parser_write_string (GOutputStream  *stream,
+			      const char     *buf,
+			      GCancellable   *cancellable,
+			      GError        **error)
 {
 	guint len;
 
 	len = strlen (buf);
-	return totem_pl_parser_write_buffer (stream, buf, len, error);
+	return totem_pl_parser_write_buffer (stream, buf, len, cancellable, error);
 }
 
 /**
