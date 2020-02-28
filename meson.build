@@ -1,5 +1,5 @@
 project('totem-pl-parser', 'c',
-        version: '3.26.4', # Don't forget to also change plparser_lt_version!
+        version: '3.26.5', # Don't forget to also change plparser_lt_version!
         default_options: [
           'buildtype=debugoptimized',
           'warning_level=1',
@@ -14,7 +14,7 @@ project('totem-pl-parser', 'c',
 # - If binary compatibility has been broken (eg removed or changed interfaces)
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
-plparser_lt_version='20:4:2'
+plparser_lt_version='21:4:3'
 
 plparse_version       = meson.project_version()
 plparse_major_version = plparse_version.split('.')[0].to_int()

@@ -1,5 +1,10 @@
 New features and significant updates in version...
 
+3.26.5:
+- Add g_auto* cleanup support
+- Add asynchronous version of totem_pl_parser_save()
+- Fixed parsing of some remote MP3 files
+
 3.26.4:
 - Apply same check to remote text files as local ones, which should
   fix parsing of directories on network file systems
