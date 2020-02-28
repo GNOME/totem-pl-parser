@@ -2075,6 +2075,9 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 			mimetype = tmp;
 		}
 		DEBUG(file, g_print ("_get_mime_type_with_data for '%s' returned '%s' (was %s)\n", uri, mimetype, AUDIO_MPEG_TYPE));
+
+		if (strcmp (mimetype, AUDIO_MPEG_TYPE) == 0)
+			return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 	}
 
 	if (totem_pl_parser_mimetype_is_ignored (parser, mimetype) != FALSE)
