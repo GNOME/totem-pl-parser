@@ -1012,6 +1012,14 @@ test_parsing_not_really_php (void)
 }
 
 static void
+test_parsing_remote_mp3 (void)
+{
+	g_test_bug ("19");
+	/* URL from https://gitlab.gnome.org/GNOME/totem-pl-parser/issues/19 */
+	g_assert_cmpint (simple_parser_test ("http://feeds.soundcloud.com/stream/303432626-opensourcesecuritypodcast-episode-28-rsa-conference-2017.mp3"), ==, TOTEM_PL_PARSER_RESULT_UNHANDLED);
+}
+
+static void
 test_parsing_not_really_php_but_html_instead (void)
 {
 	char *uri;
@@ -1450,6 +1458,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/dir_recurse", test_directory_recurse);
 		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
 		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
+		g_test_add_func ("/parser/parsing/remote_mp3", test_parsing_remote_mp3);
 		g_test_add_func ("/parser/saving/sync", test_saving_sync);
 		g_test_add_func ("/parser/saving/async", test_saving_async);
 
