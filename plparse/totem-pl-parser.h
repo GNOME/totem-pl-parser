@@ -358,7 +358,7 @@ void totem_pl_parser_save_async (TotemPlParser        *parser,
 				 GAsyncReadyCallback   callback,
 				 gpointer              user_data);
 gboolean totem_pl_parser_save_finish (TotemPlParser   *parser,
-				      GAsyncResult    *result,
+				      GAsyncResult    *async_result,
 				      GError         **error);
 
 void	   totem_pl_parser_add_ignored_scheme (TotemPlParser *parser,
