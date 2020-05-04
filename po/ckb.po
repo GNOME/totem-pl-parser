@@ -1,0 +1,54 @@
+# Kurdish (Sorani) translation for totem-pl-parser
+# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
+# This file is distributed under the same license as the totem-pl-parser package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: totem-pl-parser\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-04-05 02:20+0000\n"
+"PO-Revision-Date: 2020-05-05 01:15+0300\n"
+"Last-Translator: Jwtiyar Nariman <jwtiyar@gmail.com>\n"
+"Language-Team: Kurdish (Sorani) <ckb@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2020-05-04 22:12+0000\n"
+"X-Generator: Poedit 2.3\n"
+"Language: ckb\n"
+
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
+#, c-format
+msgid "Failed to mount %s."
+msgstr "نەتوانرا %s بکرێتەوە."
+
+#: plparse/totem-disc.c:418
+#, c-format
+msgid "No media in drive for device “%s”."
+msgstr "هیچ میدیاییەک نیە لە ناو وەگەڕخەر \"%s\"."
+
+#: plparse/totem-disc.c:475
+#, c-format
+msgid "Please check that a disc is present in the drive."
+msgstr "تکایە ئەوە دڵنیابەرەوە کە پەپکە لە ناو وەگەڕخەرەکەدایە."
+
+#: plparse/totem-disc.c:946
+msgid "Audio CD"
+msgstr "سی-دی دەنگی"
+
+#: plparse/totem-disc.c:948
+msgid "Video CD"
+msgstr "سی-دی ڤیدیۆیی"
+
+#: plparse/totem-disc.c:950
+msgid "DVD"
+msgstr "دی-ڤیدی"
+
+#: plparse/totem-disc.c:952
+msgid "Digital Television"
+msgstr "تەلەفزیۆنی دیجیتاڵ"
+
+#: plparse/totem-disc.c:954
+msgid "Blu-ray"
+msgstr "بلو-ڕەی"
