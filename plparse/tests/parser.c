@@ -766,6 +766,37 @@ test_parsing_medium (void)
 }
 
 static void
+test_parsing_feed_description (void)
+{
+	char *uri;
+	const char *description1;
+	const char *description2;
+
+	description1 =
+		"At the end of the day, we're all black. Can we just get along? A podcast featuring "
+		"conversations to improve understanding between Africans and African Americans.";
+	description2 =
+		"Bastian Bielendorfer und Reinhard Remfort haben sich vor einigen Jahren bei einem "
+		"Dreh für das ZDF kennengelernt und schnell rausgefunden, dass sie eine gemeinsame "
+		"Vergangenheit teilen. Beide kommen aus dem tiefsten Ruhrpott, beide waren die dicken "
+		"Kinder in der Klasse und beide haben mindestens ein \"Sachbuch\" geschrieben. Heute "
+		"stehen die beiden vor der Kamera, auf Bühnen und sprechen in Mikrofone um Wissen zu "
+		"verbreiten und den Menschen in Ihrer Umgebung ein Lächeln ins Gesicht zu zaubern.\n\n"
+		"\"Alliteration am Arsch\" ist dabei der Versuch die Menschen an dem Leben zweier "
+		"ehemals dicker Kinder aus den 80ern teilhaben zu lassen.";
+
+	/* test for longer feed description */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-description.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_DESCRIPTION), ==, description1);
+	g_free (uri);
+
+	/* test for empty feed description tags */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-empty-description.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_DESCRIPTION), ==, description2);
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1446,6 +1477,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
 		g_test_add_func ("/parser/parsing/podcast_content_type", test_parsing_content_type);
 		g_test_add_func ("/parser/parsing/podcast_medium", test_parsing_medium);
+		g_test_add_func ("/parser/parsing/podcast_feed_description", test_parsing_feed_description);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);

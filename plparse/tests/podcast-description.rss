@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+      <channel>
+        <atom:link href="http://feeds.soundcloud.com/users/soundcloud:users:576266064/sounds.rss" rel="self" type="application/rss+xml"/>
+        <atom:link href="http://feeds.soundcloud.com/users/soundcloud:users:576266064/sounds.rss?before=626225214" rel="next" type="application/rss+xml"/>
+        <title>Akata is a bad word. Improving Understanding Between Africans and African Americans</title>
+        <link>http://soundcloud.com/akataisabadword</link>
+        <pubDate>Tue, 11 Feb 2020 20:55:03 +0000</pubDate>
+        <lastBuildDate>Tue, 11 Feb 2020 20:55:03 +0000</lastBuildDate>
+        <ttl>60</ttl>
+        <language>en</language>
+        <copyright>All rights reserved</copyright>
+        <webMaster>feeds@soundcloud.com (SoundCloud Feeds)</webMaster>
+        <description>At the end of the day, we're all black. Can we just get along? A podcast featuring conversations to improve understanding between Africans and African Americans.</description>
+        <itunes:subtitle>At the end of the day, we're all black. Can we ju…</itunes:subtitle>
+        <itunes:owner>
+          <itunes:name>Akata is a bad word. The Podcast</itunes:name>
+          <itunes:email>feeds@soundcloud.com</itunes:email>
+        </itunes:owner>
+        <itunes:author>Busola Saka</itunes:author>
+        <itunes:explicit>no</itunes:explicit>
+        <itunes:image href="http://i1.sndcdn.com/avatars-000665823515-vx8mgl-original.jpg"/>
+        <image>
+          <url>http://i1.sndcdn.com/avatars-000665823515-vx8mgl-original.jpg</url>
+          <title>Akata is a bad word. The Podcast</title>
+          <link>http://soundcloud.com/akataisabadword</link>
+        </image>
+        <itunes:category text="Society &amp; Culture"/>
+        <item>
+      <guid isPermaLink="false">tag:soundcloud,2010:tracks/684738454</guid>
+      <title>Tougher than Nigerian Hair</title>
+      <pubDate>Sat, 21 Sep 2019 18:36:00 +0000</pubDate>
+      <link>https://soundcloud.com/akataisabadword/tougher-than-nigerian-hair</link>
+      <itunes:duration>00:04:20</itunes:duration>
+      <itunes:author>Busola Saka</itunes:author>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:summary>H&amp;M ad and hair standards in the black community</itunes:summary>
+      <itunes:subtitle>H&amp;M ad and hair standards in the black community</itunes:subtitle>
+      <description>H&amp;M ad and hair standards in the black community</description>
+      <enclosure type="audio/mpeg" url="http://feeds.soundcloud.com/stream/684738454-akataisabadword-tougher-than-nigerian-hair.mp3" length="4186042"/>
+      <itunes:image href="http://i1.sndcdn.com/artworks-000601159948-xg47rg-t3000x3000.jpg"/>
+    </item><item>
+      <guid isPermaLink="false">tag:soundcloud,2010:tracks/668798198</guid>
+      <title>Hollywood Casting of Africans and African Americans - Harriet Tubman</title>
+      <pubDate>Fri, 23 Aug 2019 13:38:04 +0000</pubDate>
+      <link>https://soundcloud.com/akataisabadword/hollywood-casting-of-africans-and-african-americans-harriet-tubman</link>
+      <itunes:duration>00:56:36</itunes:duration>
+      <itunes:author>Busola Saka</itunes:author>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:summary>Cynthia Erivo plays Harriet Tubman, and not everyone is happy about it.</itunes:summary>
+      <itunes:subtitle>Cynthia Erivo plays Harriet Tubman, and not every…</itunes:subtitle>
+      <description>Cynthia Erivo plays Harriet Tubman, and not everyone is happy about it.</description>
+      <enclosure type="audio/mpeg" url="http://feeds.soundcloud.com/stream/668798198-akataisabadword-hollywood-casting-of-africans-and-african-americans-harriet-tubman.mp3" length="48344032"/>
+      <itunes:image href="http://i1.sndcdn.com/avatars-000665823515-vx8mgl-original.jpg"/>
+    </item><item>
+      <guid isPermaLink="false">tag:soundcloud,2010:tracks/645666603</guid>
+      <title>Bridging the gap through travel</title>
+      <pubDate>Fri, 05 Jul 2019 19:08:42 +0000</pubDate>
+      <link>https://soundcloud.com/akataisabadword/travel-and-truth</link>
+      <itunes:duration>00:57:33</itunes:duration>
+      <itunes:author>Busola Saka</itunes:author>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:summary>An African American decided to travel to as many countries in Africa to see  and learn for himself. DeNorris of Travel and Truth talks travel and history.</itunes:summary>
+      <itunes:subtitle>An African American decided to travel to as many …</itunes:subtitle>
+      <description>An African American decided to travel to as many countries in Africa to see  and learn for himself. DeNorris of Travel and Truth talks travel and history.</description>
+      <enclosure type="audio/mpeg" url="http://feeds.soundcloud.com/stream/645666603-akataisabadword-travel-and-truth.mp3" length="49799166"/>
+      <itunes:image href="http://i1.sndcdn.com/artworks-000575457968-qzxzhv-t3000x3000.jpg"/>
+    </item><item>
+      <guid isPermaLink="false">tag:soundcloud,2010:tracks/626225214</guid>
+      <title>So you married an African-American</title>
+      <pubDate>Tue, 28 May 2019 15:46:10 +0000</pubDate>
+      <link>https://soundcloud.com/akataisabadword/so-you-married-an-african-american</link>
+      <itunes:duration>00:53:06</itunes:duration>
+      <itunes:author>Busola Saka</itunes:author>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:summary>In this episode, a Nigerian-American shares her experience being called an Akata by Nigerians, dating Nigerians, being married to an African American, and more.</itunes:summary>
+      <itunes:subtitle>In this episode, a Nigerian-American shares her e…</itunes:subtitle>
+      <description>In this episode, a Nigerian-American shares her experience being called an Akata by Nigerians, dating Nigerians, being married to an African American, and more.</description>
+      <enclosure type="audio/mpeg" url="http://feeds.soundcloud.com/stream/626225214-akataisabadword-so-you-married-an-african-american.mp3" length="45212370"/>
+      <itunes:image href="http://i1.sndcdn.com/artworks-000575458196-rpbwsb-t3000x3000.jpg"/>
+    </item>
+      </channel>
+    </rss>

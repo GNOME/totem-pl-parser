@@ -113,6 +113,20 @@ is_image (const char *url)
 	return retval;
 }
 
+static void
+set_longer_description (xml_node_t *node, const char **description)
+{
+	if (node->data == NULL)
+		return;
+	if (*description) {
+		/* prefer longer descriptions */
+		if (strlen (node->data) > strlen (*description))
+			*description = node->data;
+	} else {
+		*description = node->data;
+	}
+}
+
 static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
@@ -236,8 +250,10 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 		} else if (g_ascii_strcasecmp (node->name, "language") == 0) {
 			language = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "description") == 0
-			 || g_ascii_strcasecmp (node->name, "itunes:subtitle") == 0) {
-		    	description = node->data;
+			 || g_ascii_strcasecmp (node->name, "itunes:subtitle") == 0
+			 || g_ascii_strcasecmp (node->name, "itunes:summary") == 0) {
+			/* prefer longer feed descriptions */
+			set_longer_description (node, &description);
 		} else if (g_ascii_strcasecmp (node->name, "author") == 0
 			 || g_ascii_strcasecmp (node->name, "itunes:author") == 0
 			 || (g_ascii_strcasecmp (node->name, "generator") == 0 && author == NULL)) {
