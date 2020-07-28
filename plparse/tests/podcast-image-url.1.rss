@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+      <channel>
+        <atom:link href="http://feeds.soundcloud.com/users/soundcloud:users:320899690/sounds.rss" rel="self" type="application/rss+xml"/>
+        <atom:link href="http://feeds.soundcloud.com/users/soundcloud:users:320899690/sounds.rss?before=336780890" rel="next" type="application/rss+xml"/>
+        <title>Exit Poll New England</title>
+        <link>http://soundcloud.com/exitpollnewengland</link>
+        <pubDate>Wed, 23 Aug 2017 01:55:17 +0000</pubDate>
+        <lastBuildDate>Wed, 23 Aug 2017 01:55:17 +0000</lastBuildDate>
+        <ttl>60</ttl>
+        <language>en</language>
+        <copyright>All rights reserved</copyright>
+        <webMaster>feeds@soundcloud.com (SoundCloud Feeds)</webMaster>
+        <description>Podcast by Exit Poll New England</description>
+        <itunes:subtitle>Podcast by Exit Poll New England</itunes:subtitle>
+        <itunes:owner>
+          <itunes:name>Exit Poll New England</itunes:name>
+          <itunes:email>exitpollnewengland@gmail.com</itunes:email>
+        </itunes:owner>
+        <itunes:author>Exit Poll New England</itunes:author>
+        <itunes:explicit>no</itunes:explicit>
+        <itunes:image href="http://i1.sndcdn.com/avatars-000325311522-dw14t0-original.jpg"/>
+        <image>
+          <url>http://i1.sndcdn.com/avatars-000325311522-dw14t0-original.jpg</url>
+          <title>Exit Poll New England</title>
+          <link>http://soundcloud.com/exitpollnewengland</link>
+        </image>
+        <itunes:category text="News"/>
+        <item>
+      <guid isPermaLink="false">tag:soundcloud,2010:tracks/339085841</guid>
+      <title>Exit Poll Episode 4</title>
+      <pubDate>Wed, 23 Aug 2017 01:55:17 +0000</pubDate>
+      <link>https://soundcloud.com/exitpollnewengland/exit-poll-episode-4</link>
+      <itunes:duration>01:03:36</itunes:duration>
+      <itunes:author>Exit Poll New England</itunes:author>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:summary>Exit Poll Episode 4 by Exit Poll New England</itunes:summary>
+      <itunes:subtitle>Exit Poll Episode 4 by Exit Poll New England</itunes:subtitle>
+      <description>Exit Poll Episode 4 by Exit Poll New England</description>
+      <enclosure type="audio/mpeg" url="http://feeds.soundcloud.com/stream/339085841-exitpollnewengland-exit-poll-episode-4.mp3" length="61060074"/>
+      <itunes:image href="http://i1.sndcdn.com/avatars-000325311522-dw14t0-original.jpg"/>
+    </item><item>
+      <guid isPermaLink="false">tag:soundcloud,2010:tracks/336780890</guid>
+      <title>Episode 3 - Jason Palitsch</title>
+      <pubDate>Mon, 07 Aug 2017 02:08:50 +0000</pubDate>
+      <link>https://soundcloud.com/exitpollnewengland/episode-3</link>
+      <itunes:duration>01:05:29</itunes:duration>
+      <itunes:author>Exit Poll New England</itunes:author>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:summary>In episode 3 Clancy and Joe talk to Jason Palitsch about his experience in politics!</itunes:summary>
+      <itunes:subtitle>In episode 3 Clancy and Joe talk to Jason Palitsc…</itunes:subtitle>
+      <description>In episode 3 Clancy and Joe talk to Jason Palitsch about his experience in politics!</description>
+      <enclosure type="audio/mpeg" url="http://feeds.soundcloud.com/stream/336780890-exitpollnewengland-episode-3.mp3" length="62863986"/>
+      <itunes:image href="http://i1.sndcdn.com/artworks-000237209681-dqpcbk-t3000x3000.jpg"/>
+    </item>
+      </channel>
+    </rss>

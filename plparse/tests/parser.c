@@ -820,6 +820,22 @@ test_parsing_item_description (void)
 }
 
 static void
+test_parsing_feed_image (void)
+{
+	char *uri;
+
+	/* <itunes:image> followed by <image> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.1.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_IMAGE_URI), ==, "http://i1.sndcdn.com/avatars-000325311522-dw14t0-original.jpg");
+	g_free (uri);
+
+	/* <image> followed by <itunes:image> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.2.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_IMAGE_URI), ==, "http://ichef.bbci.co.uk/images/ic/3000x3000/p076j2sr.jpg");
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1502,6 +1518,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_medium", test_parsing_medium);
 		g_test_add_func ("/parser/parsing/podcast_feed_description", test_parsing_feed_description);
 		g_test_add_func ("/parser/parsing/podcast_item_description", test_parsing_item_description);
+		g_test_add_func ("/parser/parsing/podcast_feed_image", test_parsing_feed_image);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);

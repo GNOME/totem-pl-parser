@@ -277,7 +277,11 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 		} else if (g_ascii_strcasecmp (node->name, "webMaster") == 0) {
 			contact = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "image") == 0) {
-			img = node->data;
+			const char *tmp;
+
+			tmp = xml_parser_get_node_value (node, "url");
+			if (tmp != NULL)
+				img = tmp;
 		} else if (g_ascii_strcasecmp (node->name, "itunes:image") == 0) {
 			const char *href;
 
