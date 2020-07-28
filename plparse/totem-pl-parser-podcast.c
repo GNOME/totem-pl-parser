@@ -196,7 +196,9 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 				}
 				continue;
 			}
-			content_type = tmp;
+
+			if (tmp != NULL)
+				content_type = tmp;
 
 			tmp = xml_parser_get_property (node, "url");
 			if (tmp != NULL)
@@ -222,6 +224,10 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			tmp = xml_parser_get_property (node, "length");
 			if (tmp != NULL)
 				filesize = tmp;
+
+			tmp = xml_parser_get_property (node, "type");
+			if (tmp != NULL)
+				content_type = tmp;
 		} else if (g_ascii_strcasecmp (node->name, "link") == 0 &&
 			   totem_pl_parser_is_videosite (node->data, FALSE) != FALSE) {
 			uri = node->data;

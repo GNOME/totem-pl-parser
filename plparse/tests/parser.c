@@ -751,7 +751,29 @@ static void
 test_parsing_content_type (void)
 {
 	char *uri;
+
+	/* no audio content */
+	uri = get_relative_uri (TEST_SRCDIR "no-url-podcast.xml");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, NULL);
+	g_free (uri);
+
+	/* <enclosure> without <media:content> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-description.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "audio/mpeg");
+	g_free (uri);
+
+	/* <media:content> followed by <enclosure> */
 	uri = get_relative_uri (TEST_SRCDIR "HackerMedley");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "audio/mpeg");
+	g_free (uri);
+
+	/* <enclosure> followed by <media:content> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.2.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "audio/mpeg");
+	g_free (uri);
+
+	/* <enclosure> followed by <media:content> with image */
+	uri = get_relative_uri (TEST_SRCDIR "791154-kqed.rss");
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "audio/mpeg");
 	g_free (uri);
 }
