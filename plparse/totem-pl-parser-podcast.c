@@ -151,7 +151,8 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			id = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "description") == 0
 			   || g_ascii_strcasecmp (node->name, "itunes:summary") == 0) {
-			description = node->data;
+			/* prefer longer item descriptions */
+			set_longer_description (node, &description);
 		} else if (g_ascii_strcasecmp (node->name, "author") == 0
 			   || g_ascii_strcasecmp (node->name, "itunes:author") == 0) {
 			author = node->data;

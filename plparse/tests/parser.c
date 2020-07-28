@@ -797,6 +797,29 @@ test_parsing_feed_description (void)
 }
 
 static void
+test_parsing_item_description (void)
+{
+	char *uri;
+	const char *description1;
+	const char *description2;
+
+	description1 =
+		"H&M ad and hair standards in the black community";
+	description2 =
+		"Wie versprochen die zweite Hälfte unseres kleinen Auftritts in Frankfurt. Ist ab sofort auch in voller Länge auf YouTube zu finden: https://youtu.be/GAQakfNHGj8";
+
+	/* test for longer item description */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-description.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_DESCRIPTION), ==, description1);
+	g_free (uri);
+
+	/* test for empty item description */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-empty-description.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_DESCRIPTION), ==, description2);
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1478,6 +1501,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_content_type", test_parsing_content_type);
 		g_test_add_func ("/parser/parsing/podcast_medium", test_parsing_medium);
 		g_test_add_func ("/parser/parsing/podcast_feed_description", test_parsing_feed_description);
+		g_test_add_func ("/parser/parsing/podcast_item_description", test_parsing_item_description);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
