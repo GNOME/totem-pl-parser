@@ -836,6 +836,32 @@ test_parsing_feed_image (void)
 }
 
 static void
+test_parsing_item_image (void)
+{
+	char *uri;
+
+	/* no podcast item image */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.2.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_IMAGE_URI), ==, NULL);
+	g_free (uri);
+
+	/* only <itunes:image> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.1.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_IMAGE_URI), ==, "http://i1.sndcdn.com/avatars-000325311522-dw14t0-original.jpg");
+	g_free (uri);
+
+	/* <itunes:image> followed by <media:content> with image */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-different-item-images.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_IMAGE_URI), ==, "https://images.theabcdn.com/i/37623804.jpg");
+	g_free (uri);
+
+	/* <image><url> followed by <itunes:image> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-empty-description.rss");
+	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_IMAGE_URI), ==, "https://images.podigee.com/0x,svlSD5_BDle5m2pLyGQT7_GWO0GW8iv2Kgr6AhbFe8vU=/https://cdn.podigee.com/uploads/u2254/dafcf335-4257-4401-bdc3-349ef792aba4.jpg");
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1519,6 +1545,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_feed_description", test_parsing_feed_description);
 		g_test_add_func ("/parser/parsing/podcast_item_description", test_parsing_item_description);
 		g_test_add_func ("/parser/parsing/podcast_feed_image", test_parsing_feed_image);
+		g_test_add_func ("/parser/parsing/podcast_item_image", test_parsing_item_image);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);

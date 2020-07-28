@@ -180,15 +180,20 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 
 			tmp = xml_parser_get_property (node, "medium");
 			if (tmp != NULL && g_str_equal (tmp, "image")) {
-				img = xml_parser_get_property (node, "url");
+				tmp = xml_parser_get_property (node, "url");
+				if (tmp != NULL)
+					img = tmp;
 				continue;
 			}
 
 			tmp = xml_parser_get_property (node, "type");
 			if (tmp != NULL &&
 			    g_str_has_prefix (tmp, "audio/") == FALSE) {
-				if (g_str_has_prefix (tmp, "image/"))
-					img = xml_parser_get_property (node, "url");
+				if (g_str_has_prefix (tmp, "image/")) {
+					tmp = xml_parser_get_property (node, "url");
+					if (tmp != NULL)
+						img = tmp;
+				}
 				continue;
 			}
 			content_type = tmp;
@@ -220,6 +225,18 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 		} else if (g_ascii_strcasecmp (node->name, "link") == 0 &&
 			   totem_pl_parser_is_videosite (node->data, FALSE) != FALSE) {
 			uri = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "image") == 0) {
+			const char *tmp;
+
+			tmp = xml_parser_get_node_value (node, "url");
+			if (tmp != NULL)
+				img = tmp;
+		} else if (g_ascii_strcasecmp (node->name, "itunes:image") == 0) {
+			const char *tmp;
+
+			tmp = xml_parser_get_property (node, "href");
+			if (tmp != NULL)
+				img = tmp;
 		}
 	}
 
