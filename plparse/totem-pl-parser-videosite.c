@@ -69,13 +69,17 @@ static char *
 find_helper_script (void)
 {
 	GDir *dir;
-	const char *name;
+	const char *name, *script_dir;
 	char *script_name = NULL;
 
 	if (g_getenv (SCRIPT_ENVVAR) != NULL)
 		return g_strdup (g_getenv (SCRIPT_ENVVAR));
 
-	dir = g_dir_open (LIBEXECDIR "/totem-pl-parser", 0, NULL);
+	script_dir = g_getenv ("TOTEM_PL_PARSER_VIDEOSITE_SCRIPT_DIR");
+	if (!script_dir)
+		script_dir = LIBEXECDIR "/totem-pl-parser";
+
+	dir = g_dir_open (script_dir, 0, NULL);
 	if (!dir)
 		goto bail;
 
@@ -92,7 +96,7 @@ find_helper_script (void)
 
 	if (script_name != NULL) {
 		char *ret;
-		ret = g_build_filename (LIBEXECDIR "/totem-pl-parser", script_name, NULL);
+		ret = g_build_filename (script_dir, script_name, NULL);
 		g_free (script_name);
 		return ret;
 	}
