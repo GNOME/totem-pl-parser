@@ -110,6 +110,9 @@ plparser_mini_lib = library('totem-plparser-mini',
                             version: plparse_libversion,
                             install: true)
 
+install_data('README-videosite-script.md',
+             install_dir: join_paths(libexecdir, 'totem-pl-parser'))
+
 if have_quvi
   videosite_quvi_exe = executable('99-totem-pl-parser-videosite-quvi',
                                   'videosite-quvi.c', totem_pl_parser_builtins_h,
