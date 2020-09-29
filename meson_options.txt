@@ -1,4 +1,4 @@
-option('enable-quvi', type: 'combo', choices : ['yes', 'no', 'auto'], value : 'auto',
+option('enable-quvi', type: 'combo', choices : ['yes', 'no', 'auto'], value : 'no',
   description : 'Enable libquvi support.')
 option('enable-libarchive', type: 'combo', choices : ['yes', 'no', 'auto'], value : 'auto',
   description : 'Enable libarchive support.')
