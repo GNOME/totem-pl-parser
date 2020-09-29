@@ -30,40 +30,7 @@
 
 #define SCRIPT_ENVVAR "TOTEM_PL_PARSER_VIDEOSITE_SCRIPT"
 
-/* totem-pl-parser can "parse" pages from certain websites into a single
- * video playback URL. This is particularly useful for websites which
- * show a unique video on a web page, and use one-time URLs to prevent direct
- * linking.
- *
- * This feature is implemented in a helper binary, either the one shipped
- * in totem-pl-parser (which uses libquvi), or the first non-hidden file in
- * the totem-pl-parser libexec directory, when sorted by lexicographic
- * ordering (through strcmp).
- *
- * The API to implement is straight-forward. For each URL that needs to
- * be checked, the script will be called with the command-line arguments
- * "--check --url" followed by the URL. The script should return the
- * string "TRUE" if the script knows how to handle video pages from
- * this site. This call should not making any network calls, and should
- * be fast.
- *
- * If the video site is handled by the script, then the script can be
- * called with "--url" followed by the URL. The script can return the
- * strings "TOTEM_PL_PARSER_RESULT_ERROR" or
- * "TOTEM_PL_PARSER_RESULT_UNHANDLED" to indicate an error (see the
- * meaning of those values in the totem-pl-parser API documentation), or
- * a list of "<key>=<value>" pairs separated by newlines characters (\n)
- * The keys are "metadata fields" in the API documentation, such as:
- * url=https://www.videosite.com/unique-link-to.mp4
- * title=Unique Link to MP4
- * author=Well-known creator
- *
- * Integrators should make sure that totem-pl-parser is shipped with at
- * least one video site parser, either the quvi one offered by
- * totem-pl-parser itself, or, in a separate package, a third-party parser
- * that implements a compatible API as explained above. Do *NOT* ship
- * third-party parsers in the same package as totem itself.
- */
+/* See README-videosite-script.md */
 
 static char *
 find_helper_script (void)
