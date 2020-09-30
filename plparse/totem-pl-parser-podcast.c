@@ -142,6 +142,26 @@ set_longer_description (xml_node_t *node, const char **description)
 	}
 }
 
+static void
+set_recent_date (xml_node_t *node, const char **date)
+{
+	if (node->data == NULL)
+		return;
+
+	if (*date) {
+		guint64 old, new;
+
+		old = totem_pl_parser_parse_date (*date, FALSE);
+		new = totem_pl_parser_parse_date (node->data, FALSE);
+
+		/* prefer recent date */
+		if (new <= old)
+			return;
+	}
+
+	*date = node->data;
+}
+
 static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
@@ -312,8 +332,9 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 			if (href != NULL)
 				img = href;
 		} else if (g_ascii_strcasecmp (node->name, "lastBuildDate") == 0
-			 || g_ascii_strcasecmp (node->name, "pubDate") == 0) {
-		    	pub_date = node->data;
+			   || (g_ascii_strcasecmp (node->name, "pubDate") == 0)) {
+			/* prefer recent of <lastBuildDate> and <pubDate> date */
+			set_recent_date (node, &pub_date);
 		} else if (g_ascii_strcasecmp (node->name, "copyright") == 0) {
 			copyright = node->data;
 		}

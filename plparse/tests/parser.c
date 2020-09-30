@@ -884,6 +884,38 @@ test_parsing_item_image (void)
 }
 
 static void
+test_parsing_feed_pubdate (void)
+{
+	char *uri;
+
+	/* no <lastBuildDate> or <pubDate> */
+	uri = get_relative_uri (TEST_SRCDIR "585407.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_PUB_DATE), ==, NULL);
+	g_free (uri);
+
+	/* only <lastBuildDate> */
+	uri = get_relative_uri (TEST_SRCDIR "791154-kqed.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_PUB_DATE), ==, "Mon, 04 Dec 2017 08:01:09 +0000");
+	g_free (uri);
+
+	/* same <lastBuildDate> and <pubDate> */
+	uri = get_relative_uri (TEST_SRCDIR "560051.xml");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_PUB_DATE), ==, "Mon, 8 Dec 2008 13:20:00 CST");
+	g_free (uri);
+
+	/* <pubDate> followed by <lastBuildDate> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-empty-description.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_PUB_DATE), ==, "Sun, 26 Jul 2020 20:07:40 +0000");
+	g_free (uri);
+
+	/* <lastBuildDate> followed by <pubDate> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.1.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_PUB_DATE), ==, "Wed, 23 Aug 2017 01:55:17 +0000");
+	g_free (uri);
+
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1568,6 +1600,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_item_description", test_parsing_item_description);
 		g_test_add_func ("/parser/parsing/podcast_feed_image", test_parsing_feed_image);
 		g_test_add_func ("/parser/parsing/podcast_item_image", test_parsing_item_image);
+		g_test_add_func ("/parser/parsing/podcast_feed_pubdate", test_parsing_feed_pubdate);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
