@@ -98,6 +98,21 @@ totem_pl_parser_is_xml_feed (const char *data, gsize len)
 
 #ifndef TOTEM_PL_PARSER_MINI
 
+static const char *
+xml_parser_get_node_value (xml_node_t *parent, const char *node_name)
+{
+	xml_node_t *child;
+
+	for (child = parent->child; child != NULL; child = child->next) {
+		if (child->name == NULL)
+			continue;
+		if (g_ascii_strcasecmp (child->name, node_name) == 0)
+			return child->data;
+	}
+
+	return NULL;
+}
+
 static gboolean
 is_image (const char *url)
 {
