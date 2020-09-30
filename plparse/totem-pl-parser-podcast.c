@@ -191,12 +191,12 @@ get_content_rating (const char *value)
 static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
-	const char *title, *uri, *description, *author, *img;
+	const char *title, *uri, *description, *author, *img, *explicit;
 	const char *pub_date, *duration, *filesize, *content_type, *id;
 	xml_node_t *node;
 
 	title = uri = description = author = content_type = NULL;
-	img = pub_date = duration = filesize = id = NULL;
+	img = pub_date = duration = filesize = id = explicit = NULL;
 
 	for (node = parent->child; node != NULL; node = node->next) {
 		if (node->name == NULL)
@@ -289,6 +289,8 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			tmp = xml_parser_get_property (node, "href");
 			if (tmp != NULL)
 				img = tmp;
+		} else if (g_ascii_strcasecmp (node->name, "itunes:explicit") == 0) {
+			explicit = node->data;
 		}
 	}
 
@@ -309,6 +311,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 					 TOTEM_PL_PARSER_FIELD_FILESIZE, filesize,
 					 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, content_type,
 					 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
+					 TOTEM_PL_PARSER_FIELD_CONTENT_RATING, get_content_rating (explicit),
 					 NULL);
 	}
 
