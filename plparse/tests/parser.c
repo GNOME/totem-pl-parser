@@ -916,6 +916,32 @@ test_parsing_feed_pubdate (void)
 }
 
 static void
+test_parsing_feed_author (void)
+{
+	char *uri;
+
+	/* no <itunes:owner> or <itunes:author> */
+	uri = get_relative_uri (TEST_SRCDIR "541405.xml");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_AUTHOR), ==, NULL);
+	g_free (uri);
+
+	/* <itunes:owner> without <itunes:author> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-empty-description.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_AUTHOR), ==, "Bastian Bielendorfer und Reinhard Remfort");
+	g_free (uri);
+
+	/* same <itunes:owner> and <itunes:author> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.1.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_AUTHOR), ==, "Exit Poll New England");
+	g_free (uri);
+
+	/* different <itunes:owner> with <itunes:author> */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.2.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_AUTHOR), ==, "BBC Radio");
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1601,6 +1627,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_feed_image", test_parsing_feed_image);
 		g_test_add_func ("/parser/parsing/podcast_item_image", test_parsing_item_image);
 		g_test_add_func ("/parser/parsing/podcast_feed_pubdate", test_parsing_feed_pubdate);
+		g_test_add_func ("/parser/parsing/podcast_feed_author", test_parsing_feed_author);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);

@@ -293,11 +293,11 @@ static TotemPlParserResult
 parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 {
 	const char *title, *language, *description, *author;
-	const char *contact, *img, *pub_date, *copyright;
+	const char *contact, *img, *pub_date, *copyright, *generator;
 	xml_node_t *node;
 
 	title = language = description = author = NULL;
-	contact = img = pub_date = copyright = NULL;
+	contact = img = pub_date = copyright = generator = NULL;
 
 	/* We need to parse for the feed metadata first, then for the items */
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -314,9 +314,19 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 			/* prefer longer feed descriptions */
 			set_longer_description (node, &description);
 		} else if (g_ascii_strcasecmp (node->name, "author") == 0
-			 || g_ascii_strcasecmp (node->name, "itunes:author") == 0
-			 || (g_ascii_strcasecmp (node->name, "generator") == 0 && author == NULL)) {
-		    	author = node->data;
+			   || g_ascii_strcasecmp (node->name, "itunes:author") == 0) {
+			if (node->data)
+				author = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "generator") == 0) {
+			generator = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "itunes:owner") == 0) {
+			const char *tmp;
+
+			/* Owner name is much broader than author. So, we set it
+			 * only if there is no author in feed yet. */
+			tmp = xml_parser_get_node_value (node, "itunes:name");
+			if (tmp != NULL && author == NULL)
+				author = tmp;
 		} else if (g_ascii_strcasecmp (node->name, "webMaster") == 0) {
 			contact = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "image") == 0) {
@@ -339,6 +349,10 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 			copyright = node->data;
 		}
 	}
+
+	/* update generator as author, only as last resort */
+	if (!author && generator)
+		author = generator;
 
 	/* Send the info we already have about the feed */
 	totem_pl_parser_add_uri (parser,
