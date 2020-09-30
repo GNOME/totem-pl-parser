@@ -274,6 +274,20 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(TotemPlParser, g_object_unref)
  * track is defined as NULL. Note that the value is sent as a string.
  **/
 #define TOTEM_PL_PARSER_FIELD_AUDIO_TRACK       "audio-track"
+/**
+ * TOTEM_PL_PARSER_FIELD_CONTENT_RATING:
+ *
+ * Metadata field for an entry's content rating. It is
+ * %TOTEM_PL_PARSER_CONTENT_RATING_CLEAN for clean content,
+ * %TOTEM_PL_PARSER_CONTENT_RATING_EXPLICIT for explicit content and
+ * %TOTEM_PL_PARSER_CONTENT_RATING_UNRATED for content which is not
+ * rated.
+ **/
+#define TOTEM_PL_PARSER_FIELD_CONTENT_RATING       "content-rating"
+
+#define TOTEM_PL_PARSER_CONTENT_RATING_CLEAN       "clean"
+#define TOTEM_PL_PARSER_CONTENT_RATING_EXPLICIT    "explicit"
+#define TOTEM_PL_PARSER_CONTENT_RATING_UNRATED     "unrated"
 
 /**
  * TotemPlParserClass:
