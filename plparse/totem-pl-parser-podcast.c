@@ -162,6 +162,32 @@ set_recent_date (xml_node_t *node, const char **date)
 	*date = node->data;
 }
 
+static const char*
+get_content_rating (const char *value)
+{
+	gchar *str;
+	const gchar* content_rating = TOTEM_PL_PARSER_CONTENT_RATING_UNRATED;
+
+	if (value) {
+		str = g_strdup (value);
+		g_strstrip (str);
+
+		if (g_ascii_strcasecmp (str, "no") == 0 ||
+		    g_ascii_strcasecmp (str, "false") == 0 ||
+		    g_ascii_strcasecmp (str, "clean") == 0) {
+			content_rating = TOTEM_PL_PARSER_CONTENT_RATING_CLEAN;
+		} else if (g_ascii_strcasecmp (str, "yes") == 0 ||
+			   g_ascii_strcasecmp (str, "true") == 0 ||
+			   g_ascii_strcasecmp (str, "explicit") == 0) {
+			content_rating = TOTEM_PL_PARSER_CONTENT_RATING_EXPLICIT;
+		}
+
+		g_free (str);
+	}
+
+	return content_rating;
+}
+
 static TotemPlParserResult
 parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 {
@@ -293,11 +319,11 @@ static TotemPlParserResult
 parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 {
 	const char *title, *language, *description, *author;
-	const char *contact, *img, *pub_date, *copyright, *generator;
+	const char *contact, *img, *pub_date, *copyright, *generator, *explicit;
 	xml_node_t *node;
 
 	title = language = description = author = NULL;
-	contact = img = pub_date = copyright = generator = NULL;
+	contact = img = pub_date = copyright = generator = explicit = NULL;
 
 	/* We need to parse for the feed metadata first, then for the items */
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -347,6 +373,8 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 			set_recent_date (node, &pub_date);
 		} else if (g_ascii_strcasecmp (node->name, "copyright") == 0) {
 			copyright = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "itunes:explicit") == 0) {
+			explicit = node->data;
 		}
 	}
 
@@ -366,6 +394,7 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 				 TOTEM_PL_PARSER_FIELD_COPYRIGHT, copyright,
 				 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
 				 TOTEM_PL_PARSER_FIELD_CONTACT, contact,
+				 TOTEM_PL_PARSER_FIELD_CONTENT_RATING, get_content_rating (explicit),
 				 NULL);
 
 	for (node = parent->child; node != NULL; node = node->next) {

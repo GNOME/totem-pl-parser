@@ -942,6 +942,27 @@ test_parsing_feed_author (void)
 }
 
 static void
+test_parsing_feed_explicit (void)
+{
+	char *uri;
+
+	/* clean feed */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-image-url.1.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_RATING), ==, TOTEM_PL_PARSER_CONTENT_RATING_CLEAN);
+	g_free (uri);
+
+	/* explicit feed */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-empty-description.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_RATING), ==, TOTEM_PL_PARSER_CONTENT_RATING_EXPLICIT);
+	g_free (uri);
+
+	/* unrated feed */
+	uri = get_relative_uri (TEST_SRCDIR "content-no-rating.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_RATING), ==, TOTEM_PL_PARSER_CONTENT_RATING_UNRATED);
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1628,6 +1649,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_item_image", test_parsing_item_image);
 		g_test_add_func ("/parser/parsing/podcast_feed_pubdate", test_parsing_feed_pubdate);
 		g_test_add_func ("/parser/parsing/podcast_feed_author", test_parsing_feed_author);
+		g_test_add_func ("/parser/parsing/podcast_feed_explicit", test_parsing_feed_explicit);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
