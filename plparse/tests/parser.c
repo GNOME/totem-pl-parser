@@ -651,6 +651,15 @@ test_parsing_xspf_escaping (void)
 }
 
 static void
+test_parsing_xspf_metadata (void)
+{
+	char *uri;
+	uri = get_relative_uri (TEST_SRCDIR "playlist.xspf");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_TITLE), ==, "Test Playlist");
+	g_free (uri);
+}
+
+static void
 test_parsing_xspf_xml_base (void)
 {
 	char *uri;
@@ -1452,6 +1461,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/num_items_in_pls", test_parsing_num_entries);
 		g_test_add_func ("/parser/parsing/xspf_genre", test_parsing_xspf_genre);
 		g_test_add_func ("/parser/parsing/xspf_escaping", test_parsing_xspf_escaping);
+		g_test_add_func ("/parser/parsing/xspf_metadata", test_parsing_xspf_metadata);
 		g_test_add_func ("/parser/parsing/xspf_xml_base", test_parsing_xspf_xml_base);
 		g_test_add_func ("/parser/parsing/test_pl_content_type", test_pl_content_type);
 		g_test_add_func ("/parser/parsing/itms_link", test_itms_parsing);

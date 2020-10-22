@@ -473,7 +473,7 @@ parse_xspf_entries (TotemPlParser *parser,
 			continue;
 
 		if (g_ascii_strcasecmp ((char *)node->name, "title") == 0) {
-			title = node->name;
+			title = xmlNodeListGetString (doc, node->xmlChildrenNode, 1);
 			break;
 		}
 	}
@@ -499,6 +499,8 @@ parse_xspf_entries (TotemPlParser *parser,
 		totem_pl_parser_playlist_end (parser, uri);
 		g_free (uri);
 	}
+
+	SAFE_FREE (title);
 
 	return retval;
 }
