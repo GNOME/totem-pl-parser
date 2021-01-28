@@ -2,7 +2,7 @@ variables:
   DEPENDENCIES: redhat-rpm-config meson git gettext gtk-doc meson glib2-devel libxml2-devel gobject-introspection-devel libgcrypt-devel libarchive-devel
   DEPS_QUVI: libquvi-devel
   DEPS_ABI_CHECK: libabigail libsoup-devel gmime-devel
-  TEST_DEPS: gvfs dbus-daemon
+  TEST_DEPS: gvfs dbus-daemon shared-mime-info
   LAST_ABI_BREAK: "9ccc3c78a5a41b86bdd2c9fb63ad4963e65e4f63"
 
 build-fedora:
