@@ -6,7 +6,7 @@ variables:
   LAST_ABI_BREAK: "9ccc3c78a5a41b86bdd2c9fb63ad4963e65e4f63"
 
 build-fedora:
-  image: fedora:latest
+  image: fedora:33
   before_script:
     # Update
     - dnf -y update && dnf install -y $DEPENDENCIES
@@ -23,4 +23,6 @@ build-fedora:
     - ninja -C _build install
     # ABI check
     - dnf install -y $DEPS_ABI_CHECK
+    # See https://sourceware.org/bugzilla/show_bug.cgi?id=27269
+    - rpm -Uvh --oldpackage https://kojipkgs.fedoraproject.org//packages/libabigail/1.7/2.fc33/x86_64/libabigail-1.7-2.fc33.x86_64.rpm
     - ./.ci/check-abi ${LAST_ABI_BREAK} $(git rev-parse HEAD)
