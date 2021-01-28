@@ -97,6 +97,12 @@ test_resolution (void)
 		return;
 	}
 
+	if (g_strcmp0 (g_content_type_guess ("foo.html", NULL, 0, NULL), "text/html") != 0) {
+		g_test_message ("“foo.html” isn't detected as text/html, is shared-mime-info installed?");
+		g_test_fail ();
+		return;
+	}
+
 	/* http://bugzilla.gnome.org/show_bug.cgi?id=555417 */
 	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
 	g_assert_cmpstr (test_resolution_real ("http://www.yle.fi/player/player.jsp?actionpage=3&id=288629&locale", "288629.asx?s=1000"), ==, "http://www.yle.fi/player/288629.asx?s=1000");
