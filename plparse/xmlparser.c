@@ -210,6 +210,30 @@ typedef enum {
   STATE_CDATA,
 } parser_state_t;
 
+static const char *const states[] = {
+  "STATE_IDLE",
+  "STATE_NODE",
+  "STATE_ATTRIBUTE",
+  "STATE_NODE_CLOSE",
+  "STATE_TAG_TERM",
+  "STATE_ATTRIBUTE_EQUALS",
+  "STATE_STRING",
+  "STATE_TAG_TERM_IGNORE",
+  "STATE_Q_NODE",
+  "STATE_Q_ATTRIBUTE",
+  "STATE_Q_NODE_CLOSE",
+  "STATE_Q_TAG_TERM",
+  "STATE_Q_ATTRIBUTE_EQUALS",
+  "STATE_Q_STRING",
+  "STATE_COMMENT",
+  "STATE_DOCTYPE",
+  "STATE_CDATA"
+};
+
+static inline const char *state_to_str(parser_state_t state) {
+  return states[state];
+}
+
 static xml_node_t *xml_parser_append_text (xml_node_t *node, xml_node_t *subnode, const char *text, int flags)
 {
   if (!text || !*text)
@@ -316,7 +340,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  lprintf("info: node data : %s\n", current_node->data);
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -348,7 +372,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  lprintf("info: current node name \"%s\"\n", node_name);
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -439,7 +463,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  lprintf("info: current property name \"%s\"\n", property_name);
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -456,7 +480,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	case (T_IDENT):
 	  goto new_prop;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -493,7 +517,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  }
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -506,7 +530,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  return retval;
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -541,7 +565,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  state = STATE_ATTRIBUTE;
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -576,7 +600,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  state = STATE_Q_ATTRIBUTE;
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -606,7 +630,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  state = Q_STATE(STRING, ATTRIBUTE);
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -643,7 +667,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  state = STATE_IDLE;
 	  break;
         default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}
@@ -656,7 +680,7 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  state = STATE_IDLE;
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %d\n", tok, state);
+	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
 	  return -1;
 	  break;
 	}

@@ -159,6 +159,28 @@ typedef enum {
   STATE_IDENT /* must be last */
 } lexer_state_t;
 
+static const char *const states[] = {
+  "STATE_UNKNOWN",
+  "STATE_IDLE",
+  "STATE_EOL",
+  "STATE_SEPAR",
+  "STATE_T_M_START",
+  "STATE_T_M_STOP_1",
+  "STATE_T_M_STOP_2",
+  "STATE_T_EQUAL",
+  "STATE_T_STRING_SINGLE",
+  "STATE_T_STRING_DOUBLE",
+  "STATE_T_COMMENT",
+  "STATE_T_TI_STOP",
+  "STATE_T_DASHDASH",
+  "STATE_T_C_STOP",
+  "STATE_IDENT"
+};
+
+static inline const char *state_to_str(lexer_state_t state) {
+  return states[state + 1];
+}
+
 /* for ABI compatibility */
 int lexer_get_token_d(char ** _tok, int * _tok_size, int fixed) {
   return lexer_get_token_d_r(static_lexer, _tok, _tok_size, fixed);
@@ -175,7 +197,7 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
   if (tok) {
     while ((tok_pos < tok_size) && (lexer->lexbuf_pos < lexer->lexbuf_size)) {
       c = lexer->lexbuf[lexer->lexbuf_pos];
-      lprintf("c=%c, state=%d, in_comment=%d\n", c, state, lexer->in_comment);
+      lprintf("c=%c, state=%s (%d), in_comment=%d\n", c, state_to_str(state), state, lexer->in_comment);
 
       switch (lexer->lex_mode) {
       case NORMAL:
@@ -597,7 +619,7 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 	  lprintf("unknown state, state=%d\n", state);
 	}
       } else {
-	lprintf("abnormal end of buffer, state=%d\n", state);
+	lprintf("abnormal end of buffer, state=%s (%d)\n", state_to_str(state), state);
       }
     }
     return T_ERROR;
