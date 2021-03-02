@@ -273,6 +273,13 @@ static xml_node_t *xml_parser_append_text (xml_node_t *node, xml_node_t *subnode
 
 #define Q_STATE(CURRENT,NEW) (STATE_##NEW + state - STATE_##CURRENT)
 
+static int is_space(const char *str)
+{
+  char *text = str;
+  while (isspace (*text))
+    ++text;
+  return (*text == '\0');
+}
 
 static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 				 char ** token_buffer, int * token_buffer_size,
@@ -530,8 +537,10 @@ static int xml_parser_get_node_internal (xml_parser_t *xml_parser,
 	  return retval;
 	  break;
 	default:
-	  lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
-	  return -1;
+	  if (!is_space(tok)) {
+	    lprintf("error: unexpected token \"%s\", state %s (%d)\n", tok, state_to_str(state), state);
+	    return -1;
+	  }
 	  break;
 	}
 	break;
