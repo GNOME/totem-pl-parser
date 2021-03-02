@@ -47,7 +47,15 @@
 #ifdef XINE_COMPILE
 #include <xine/xineutils.h>
 #else
+#if defined(LOG)
+#define lprintf(fmt, args...)  \
+      do {                     \
+        printf(fmt, ##args);   \
+        fflush(stdout);        \
+      } while(0)
+#else
 #define lprintf(...)
+#endif
 #define XINE_MALLOC
 #endif
 #include "xmllexer.h"
