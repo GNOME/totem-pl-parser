@@ -1253,6 +1253,16 @@ test_parsing_remote_mp3 (void)
 }
 
 static void
+test_xml_trailing_space (void)
+{
+	g_autofree char *uri = NULL;
+	g_test_bug ("28");
+	uri = get_relative_uri (TEST_SRCDIR "xml-trailing-space.xml");
+	/* URL from https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/28 */
+	g_assert_cmpint (simple_parser_test (uri), ==, TOTEM_PL_PARSER_RESULT_SUCCESS);
+}
+
+static void
 test_parsing_not_really_php_but_html_instead (void)
 {
 	char *uri;
@@ -1701,6 +1711,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/async_signal_order", test_async_parsing_signal_order);
 		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
 		g_test_add_func ("/parser/parsing/remote_mp3", test_parsing_remote_mp3);
+		g_test_add_func ("/parser/parsing/xml_trailing_space", test_xml_trailing_space);
 		g_test_add_func ("/parser/saving/sync", test_saving_sync);
 		g_test_add_func ("/parser/saving/async", test_saving_async);
 
