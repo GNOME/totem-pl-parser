@@ -398,6 +398,7 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 				 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
 				 TOTEM_PL_PARSER_FIELD_CONTACT, contact,
 				 TOTEM_PL_PARSER_FIELD_CONTENT_RATING, get_content_rating (explicit),
+				 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, "application/rss+xml",
 				 NULL);
 
 	for (node = parent->child; node != NULL; node = node->next) {
@@ -680,6 +681,7 @@ parse_atom_entries (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 							 TOTEM_PL_PARSER_FIELD_AUTHOR, author,
 							 TOTEM_PL_PARSER_FIELD_PUB_DATE, pub_date,
 							 TOTEM_PL_PARSER_FIELD_IMAGE_URI, img,
+							 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, "application/atom+xml",
 							 NULL);
 				started = TRUE;
 			}
@@ -921,6 +923,7 @@ parse_opml_head_body (TotemPlParser *parser, const char *uri, xml_node_t *parent
 				totem_pl_parser_add_uri (parser,
 							 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
 							 TOTEM_PL_PARSER_FIELD_URI, uri,
+							 TOTEM_PL_PARSER_FIELD_CONTENT_TYPE, "text/x-opml+xml",
 							 NULL);
 				started = TRUE;
 			}
