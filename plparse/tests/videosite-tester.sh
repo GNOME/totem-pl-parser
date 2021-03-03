@@ -61,3 +61,10 @@ if [ $1 = "--check" ] && [ $2 = "--url" ] && [ $3 = "http://www.guardian.co.uk/t
 	echo -n "TRUE"
 	exit 0
 fi
+
+# test_video_links_slow_parsing
+if [ x$SLOW_PARSING != x ] ; then
+	sleep 1
+fi
+
+echo -n "FALSE"

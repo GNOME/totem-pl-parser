@@ -749,7 +749,7 @@ test_parsing_needle_carriage_return (void)
 
 	/* atom needle test */
 	uri = get_relative_uri (TEST_SRCDIR "atom.xml");
-	g_assert_cmpuint (parser_test_get_num_entries (uri), ==, 0);
+	g_assert_cmpuint (parser_test_get_num_entries (uri), ==, 1);
 	g_free (uri);
 
 	/* opml needle test */
@@ -1288,6 +1288,55 @@ test_parsing_m3u_streaming (void)
 	/* File from http://radioclasica.rtve.stream.flumotion.com/rtve/radioclasica.mp3.m3u */
 	uri = get_relative_uri (TEST_SRCDIR "radioclasica.mp3.m3u");
 	g_assert_cmpint (simple_parser_test (uri), ==, TOTEM_PL_PARSER_RESULT_SUCCESS);
+	g_free (uri);
+}
+
+static void
+video_links_slow_parsing (const char *uri, gfloat timeout)
+{
+	time_t start, end;
+	double run_time;
+
+	g_setenv ("SLOW_PARSING", "1", TRUE);
+
+	start = time (NULL);
+	option_no_recurse = TRUE;
+	parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_TITLE);
+	end = time (NULL);
+
+	run_time = difftime (end, start);
+
+	g_assert_cmpfloat (run_time, <, timeout);
+}
+
+static void
+test_video_links_slow_parsing ()
+{
+	char *uri;
+	gfloat timeout = 2.0; /* seconds */
+
+	/* rss feed with 400 entries. should take 400 * 1 = 400
+	 * seconds with videosite check, and approx. less than 1
+	 * second if we bypass videosite check.
+	 */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-different-item-images.rss");
+	video_links_slow_parsing (uri, timeout);
+	g_free (uri);
+
+	/* atom feed with 20 entries. should take 20 * 1 = 20
+	 * seconds with videosite check, and approx. less than 1
+	 * second if we bypass videosite check.
+	 */
+	uri = get_relative_uri (TEST_SRCDIR "gitlab-issues.atom");
+	video_links_slow_parsing (uri, timeout);
+	g_free (uri);
+
+	/* atom feed with 5 entries. should take 5 * 1 = 5
+	 * seconds with videosite check, and approx. less than 1
+	 * second if we bypass videosite check.
+	 */
+	uri = get_relative_uri (TEST_SRCDIR "status-gnome-org.atom");
+	video_links_slow_parsing (uri, timeout);
 	g_free (uri);
 }
 
@@ -1880,6 +1929,8 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/saving/parsing/xspf_title", test_saving_parsing_xspf_title);
 		g_test_add_func ("/parser/saving/sync", test_saving_sync);
 		g_test_add_func ("/parser/saving/async", test_saving_async);
+		/* set an envvar, keep at the end */
+		g_test_add_func ("/parser/parsing/video_links_slow_parsing", test_video_links_slow_parsing);
 
 		return g_test_run ();
 	}

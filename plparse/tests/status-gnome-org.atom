@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" >
+    <title type="text">GNOME infrastructure Status</title>
+    <subtitle type="html"><![CDATA[Status Feed]]></subtitle>
+    <link href="http://status.gnome.org/atom"></link>
+    <id>https://status.gnome.org/</id>
+    <link rel="alternate" type="text/html" href="http://status.gnome.org/atom" ></link>
+    <link rel="self" type="application/atom+xml" href="https://status.gnome.org/" ></link>
+        <updated>2021-05-12T18:00:00+00:00</updated>
+        <entry>
+            <author>
+                <name>GNOME infrastructure Status</name>
+            </author>
+            <media:group>
+                <media:content url="https://status.gnome.org/media/status-1.mp4"/>
+            </media:group>
+              <title type="text"><![CDATA[Mass reboots]]></title>
+            <link rel="alternate" type="text/html" href="http://status.gnome.org/incident/23424/"></link>
+            <id>http://status.gnome.org/incident/23424/</id>
+            <summary type="html"><![CDATA[<p>Mass reboots in progress</p>
+]]></summary>
+            <content type="html"><![CDATA[]]></content>
+            <updated>2021-04-08T08:55:13+00:00</updated>
+        </entry>
+        <entry>
+            <author>
+                <name>GNOME infrastructure Status</name>
+            </author>
+            <media:group>
+                <media:content url="https://status.gnome.org/media/status-2.mp4"/>
+            </media:group>
+            <title type="text"><![CDATA[Planned maintenance in progress]]></title>
+            <link rel="alternate" type="text/html" href="http://status.gnome.org/incident/22711/"></link>
+            <id>http://status.gnome.org/incident/22711/</id>
+            <summary type="html"><![CDATA[<p>All GNOME services will be shut down between 12:00 - 13:30 PM UTC due to networking infrastructure maintenance.</p>
+]]></summary>
+            <content type="html"><![CDATA[]]></content>
+            <updated>2021-01-28T11:47:58+00:00</updated>
+        </entry>
+        <entry>
+            <author>
+                <name>GNOME infrastructure Status</name>
+            </author>
+            <media:group>
+                <media:content url="https://status.gnome.org/media/status-3.mp4"/>
+            </media:group>
+            <title type="text"><![CDATA[Mass reboots]]></title>
+            <link rel="alternate" type="text/html" href="http://status.gnome.org/incident/22099/"></link>
+            <id>http://status.gnome.org/incident/22099/</id>
+            <summary type="html"><![CDATA[<p>https://mail.gnome.org/archives/infrastructure-announce/2020-November/msg00000.html</p>
+]]></summary>
+            <content type="html"><![CDATA[]]></content>
+            <updated>2020-11-16T18:43:38+00:00</updated>
+        </entry>
+        <entry>
+            <author>
+                <name>GNOME infrastructure Status</name>
+            </author>
+            <media:group>
+                <media:content url="https://status.gnome.org/media/status-4.mp4"/>
+            </media:group>
+            <title type="text"><![CDATA[Mass reboots]]></title>
+            <link rel="alternate" type="text/html" href="http://status.gnome.org/incident/17256/"></link>
+            <id>http://status.gnome.org/incident/17256/</id>
+            <summary type="html"><![CDATA[<p>https://mail.gnome.org/archives/infrastructure-announce/2020-August/msg00001.html</p>
+]]></summary>
+            <content type="html"><![CDATA[]]></content>
+            <updated>2020-08-12T13:22:19+00:00</updated>
+        </entry>
+        <entry>
+            <author>
+                <name>GNOME infrastructure Status</name>
+            </author>
+            <media:group>
+                <media:content url="https://status.gnome.org/media/status-5.mp4"/>
+            </media:group>
+            <title type="text"><![CDATA[Mass reboots]]></title>
+            <link rel="alternate" type="text/html" href="http://status.gnome.org/incident/13552/"></link>
+            <id>http://status.gnome.org/incident/13552/</id>
+            <summary type="html"><![CDATA[<p>https://mail.gnome.org/archives/infrastructure-announce/2020-June/msg00000.html</p>
+]]></summary>
+            <content type="html"><![CDATA[]]></content>
+            <updated>2020-06-09T08:52:51+00:00</updated>
+        </entry>
+</feed>

@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+<title>totem-pl-parser issues</title>
+<link href="/GNOME/totem-pl-parser/-/issues.atom?feed_token=EQWvks3t_bxCW7boi5zZ&amp;state=opened" rel="self" type="application/atom+xml"/>
+<link href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues" rel="alternate" type="text/html"/>
+<id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues</id>
+<updated>2021-04-23T18:18:42Z</updated>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/36</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/36"/>
+  <title>CI pipeline fails due to test_itms_parsing test failure</title>
+  <updated>2021-04-23T18:18:42Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>CI pipeline fails due to test_itms_parsing test failure</summary>
+  <description>`ERROR:../plparse/tests/parser.c:565:test_itms_parsing: assertion failed (parser_test_get_playlist_uri ("https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&amp;ign-mpt=uo%3D4#") == "https://rss.hosting.thisisdax.com/ed87f36a-7b44-4e79-beea-f3220752406c"): (NULL == "https://rss.hosting.thisisdax.com/ed87f36a-7b44-4e79-beea-f3220752406c")`
+
+https://gitlab.gnome.org/crvi/totem-pl-parser/-/jobs/1264555</description>
+  <content>`ERROR:../plparse/tests/parser.c:565:test_itms_parsing: assertion failed (parser_test_get_playlist_uri ("https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&amp;ign-mpt=uo%3D4#") == "https://rss.hosting.thisisdax.com/ed87f36a-7b44-4e79-beea-f3220752406c"): (NULL == "https://rss.hosting.thisisdax.com/ed87f36a-7b44-4e79-beea-f3220752406c")`
+
+https://gitlab.gnome.org/crvi/totem-pl-parser/-/jobs/1264555</content>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/29</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/29"/>
+  <title>xml parsing fails while parsing valid XML processing instructions ( PI )</title>
+  <updated>2021-04-22T23:42:39Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>xml parsing fails while parsing valid XML processing instructions ( PI )</summary>
+  <description>libxml2 parses fine.
+
+```console
+$ ~/totem-pl-parser/build-dir/plparse/tests/parser --debug file:///tmp/backtracks.fm.rss
+# random seed: R02S0f64ce29b2a8b2b7d647f80859d8a74c
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation gvfs (GDaemonVfs) for ‘gio-vfs’
+_get_mime_type_for_name for 'file:///tmp/backtracks.fm.rss' returned 'application/rss+xml'
+URI 'file:///tmp/backtracks.fm.rss' was opened successfully in _get_mime_type_with_data
+_get_mime_type_with_data for 'file:///tmp/backtracks.fm.rss' returned 'application/rss+xml'
+URI 'file:///tmp/backtracks.fm.rss' is special type 'application/rss+xml'
+Using application/rss+xml function for 'file:///tmp/backtracks.fm.rss'
+Ignoring application/rss+xml because it's a text/plain
+# MESSAGE: Ignored URI "file:///tmp/backtracks.fm.rss".
+** Message: 11:40:41.511: Ignored URI "file:///tmp/backtracks.fm.rss".
+```
+
+[backtracks.fm.rss](/uploads/1520bd345562041515d1c89d29f372c8/backtracks.fm.rss)
+
+URL: https://backtracks.fm/feed/235d0e0a7a3de5e4</description>
+  <content>libxml2 parses fine.
+
+```console
+$ ~/totem-pl-parser/build-dir/plparse/tests/parser --debug file:///tmp/backtracks.fm.rss
+# random seed: R02S0f64ce29b2a8b2b7d647f80859d8a74c
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation gvfs (GDaemonVfs) for ‘gio-vfs’
+_get_mime_type_for_name for 'file:///tmp/backtracks.fm.rss' returned 'application/rss+xml'
+URI 'file:///tmp/backtracks.fm.rss' was opened successfully in _get_mime_type_with_data
+_get_mime_type_with_data for 'file:///tmp/backtracks.fm.rss' returned 'application/rss+xml'
+URI 'file:///tmp/backtracks.fm.rss' is special type 'application/rss+xml'
+Using application/rss+xml function for 'file:///tmp/backtracks.fm.rss'
+Ignoring application/rss+xml because it's a text/plain
+# MESSAGE: Ignored URI "file:///tmp/backtracks.fm.rss".
+** Message: 11:40:41.511: Ignored URI "file:///tmp/backtracks.fm.rss".
+```
+
+[backtracks.fm.rss](/uploads/1520bd345562041515d1c89d29f372c8/backtracks.fm.rss)
+
+URL: https://backtracks.fm/feed/235d0e0a7a3de5e4</content>
+  <labels>
+    <label>1. Bug</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/33</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/33"/>
+  <title>Parser failures should not return TOTEM_PL_PARSER_RESULT_IGNORED</title>
+  <updated>2021-04-22T23:42:38Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>Parser failures should not return TOTEM_PL_PARSER_RESULT_IGNORED</summary>
+  <description>Parser feed failures should return valid return types ( e.g. `TOTEM_PL_PARSER_RESULT_ERROR` ) and not `TOTEM_PL_PARSER_RESULT_IGNORED`, as below:
+
+```
+$ ninja &amp;&amp; plparse/tests/parser file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2 --debug
+
+_get_mime_type_for_name for 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' returned 'application/octet-stream'
+URI 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' was opened successfully in _get_mime_type_with_data
+
+_get_mime_type_with_data for 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' returned 'application/rss+xml'
+URI 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' is special type 'application/rss+xml'
+
+Using application/rss+xml function for 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2'
+Ignoring application/rss+xml because it's a text/plain
+```
+
+which is incorrect and misleading.</description>
+  <content>Parser feed failures should return valid return types ( e.g. `TOTEM_PL_PARSER_RESULT_ERROR` ) and not `TOTEM_PL_PARSER_RESULT_IGNORED`, as below:
+
+```
+$ ninja &amp;&amp; plparse/tests/parser file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2 --debug
+
+_get_mime_type_for_name for 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' returned 'application/octet-stream'
+URI 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' was opened successfully in _get_mime_type_with_data
+
+_get_mime_type_with_data for 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' returned 'application/rss+xml'
+URI 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2' is special type 'application/rss+xml'
+
+Using application/rss+xml function for 'file:///home/xyz/totem-pl-parser/plparse/tests/buggy_feed_2'
+Ignoring application/rss+xml because it's a text/plain
+```
+
+which is incorrect and misleading.</content>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/25</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/25"/>
+  <title>totem_pl_parser_is_videosite() causes huge delay in rss parsing</title>
+  <updated>2021-04-20T23:49:07Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>totem_pl_parser_is_videosite() causes huge delay in rss parsing</summary>
+  <description>version: git
+
+Currently, we do `totem_pl_parser_is_videosite()` check on each rss feed item's `&lt;link&gt;` node data. 
+
+For a rss feed with 400 items, it was 150 times slower ( 100ms without check, 15s with check ).
+
+This was an issue with Debian and its derivatives, as they added proper support for finding the helper script in `debian/rules`:
+
+```sh
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/$(libtotem-plparserN) \
+		-Denable-gtk-doc=true \
+		-Denable-libarchive=yes \
+		-Denable-libgcrypt=yes \
+		-Denable-quvi=yes
+```
+
+Don't see the issue in Fedora.</description>
+  <content>version: git
+
+Currently, we do `totem_pl_parser_is_videosite()` check on each rss feed item's `&lt;link&gt;` node data. 
+
+For a rss feed with 400 items, it was 150 times slower ( 100ms without check, 15s with check ).
+
+This was an issue with Debian and its derivatives, as they added proper support for finding the helper script in `debian/rules`:
+
+```sh
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/$(libtotem-plparserN) \
+		-Denable-gtk-doc=true \
+		-Denable-libarchive=yes \
+		-Denable-libgcrypt=yes \
+		-Denable-quvi=yes
+```
+
+Don't see the issue in Fedora.</content>
+  <labels>
+    <label>9. High visibility</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/32</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/32"/>
+  <title>Update README to README.md</title>
+  <updated>2021-04-20T23:39:27Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>Update README to README.md</summary>
+  <description>Update `README` file to `README.md` markdown format.</description>
+  <content>Update `README` file to `README.md` markdown format.</content>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/16</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/16"/>
+  <title>Add support for the trackNum tag in xspf playlists.</title>
+  <updated>2021-04-20T21:51:28Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>Add support for the trackNum tag in xspf playlists.</summary>
+  <description>## Submitted by Jared Smith  
+
+**[Link to original bug (#757260)](https://bugzilla.gnome.org/show_bug.cgi?id=757260)**  
+## Description
+Please add support for the track number from the xspf format specification (trackNum tag).
+
+This would enable the addition of track numbers for tracks that cannot be matched against the database (e.g. very old or obscure tracks, user-created tracks, etc.).</description>
+  <content>## Submitted by Jared Smith  
+
+**[Link to original bug (#757260)](https://bugzilla.gnome.org/show_bug.cgi?id=757260)**  
+## Description
+Please add support for the track number from the xspf format specification (trackNum tag).
+
+This would enable the addition of track numbers for tracks that cannot be matched against the database (e.g. very old or obscure tracks, user-created tracks, etc.).</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/35</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/35"/>
+  <title>Random test failure ( test_xml_is_text_plain )</title>
+  <updated>2021-04-19T12:17:12Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>Random test failure ( test_xml_is_text_plain )</summary>
+  <description>```sh
+$ ninja -C build-dir/ test
+ninja: Entering directory `build-dir/'
+
+...
+...
+
+# Bug Reference: http://bugzilla.gnome.org/show_bug.cgi?id=655378
+# Got retval 3 for uri 'http://leoville.tv/podcasts/floss.xml'
+Bail out! ERROR:../plparse/tests/parser.c:1102:test_xml_is_text_plain: assertion failed (result == TOTEM_PL_PARSER_RESULT_SUCCESS): (3 == 2)
+--- stderr ---
+** Message: 16:44:54.297: Is special type 'application/rss+xml'
+** Message: 16:44:54.298: Is special type 'application/rss+xml'
+** Message: 16:44:54.299: Is special type 'application/rss+xml'
+** Message: 16:44:54.299: couldn't mmap file:///tmp/file_doesnt_exist.wmv: Failed to open file “file:///tmp/file_doesnt_exist.wmv”: open() failed: No such file or directory
+** Message: 16:44:54.299: Is special type 'application/rss+xml'
+**
+ERROR:../plparse/tests/parser.c:1102:test_xml_is_text_plain: assertion failed (result == TOTEM_PL_PARSER_RESULT_SUCCESS): (3 == 2)
+-------
+
+Summary of Failures:
+
+1/2 parser FAIL           38.50s (killed by signal 6 SIGABRT)
+1/2 parser FAIL           38.50s (killed by signal 6 SIGABRT)
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+```
+
+```sh
+(gdb) bt
+#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:50
+#1  0x00007f1e10520537 in __GI_abort () at abort.c:79
+#2  0x00007f1e106dcdcc in g_assertion_message (domain=&lt;optimized out&gt;, file=0x56328c05300a "../plparse/tests/parser.c", line=&lt;optimized out&gt;, func=&lt;optimized out&gt;, message=&lt;optimized out&gt;) at ../../../glib/gtestutils.c:2937
+#3  0x00007f1e1073a646 in g_assertion_message_cmpnum (domain=domain@entry=0x0, file=file@entry=0x56328c05300a "../plparse/tests/parser.c", line=line@entry=1102, func=func@entry=0x56328c058680 &lt;__func__.8&gt; "test_xml_is_text_plain", expr=expr@entry=0x56328c057300 "result == TOTEM_PL_PARSER_RESULT_SUCCESS", arg1=3, cmp=cmp@entry=0x56328c0530bc "==", arg2=2, numtype=105 'i') at ../../../glib/gtestutils.c:2996
+#4  0x000056328c051303 in test_xml_is_text_plain () at ../plparse/tests/parser.c:1102
+#5  test_xml_is_text_plain () at ../plparse/tests/parser.c:1091
+#6  0x00007f1e10739b9e in test_case_run (tc=0x7f1e0000fd60) at ../../../glib/gtestutils.c:2656
+#7  g_test_run_suite_internal (suite=suite@entry=0x56328db104c0, path=path@entry=0x0) at ../../../glib/gtestutils.c:2744
+#8  0x00007f1e1073999b in g_test_run_suite_internal (suite=suite@entry=0x56328db10040, path=path@entry=0x0) at ../../../glib/gtestutils.c:2756
+#9  0x00007f1e1073a08a in g_test_run_suite (suite=0x56328db10040) at ../../../glib/gtestutils.c:2831
+#10 0x00007f1e1073a0a1 in g_test_run () at ../../../glib/gtestutils.c:2065
+#11 0x000056328c04cdb6 in main (argc=&lt;optimized out&gt;, argv=&lt;optimized out&gt;) at ../plparse/tests/parser.c:1788
+```
+
+**Subsequent run passes:**
+
+```sh
+$ ninja -C build-dir/ test
+ninja: Entering directory `build-dir/'
+[0/1] Running all tests.
+1/2 parser OK             20.07s
+2/2 disc   OK             0.05s
+
+
+Ok:                 2   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+```</description>
+  <content>```sh
+$ ninja -C build-dir/ test
+ninja: Entering directory `build-dir/'
+
+...
+...
+
+# Bug Reference: http://bugzilla.gnome.org/show_bug.cgi?id=655378
+# Got retval 3 for uri 'http://leoville.tv/podcasts/floss.xml'
+Bail out! ERROR:../plparse/tests/parser.c:1102:test_xml_is_text_plain: assertion failed (result == TOTEM_PL_PARSER_RESULT_SUCCESS): (3 == 2)
+--- stderr ---
+** Message: 16:44:54.297: Is special type 'application/rss+xml'
+** Message: 16:44:54.298: Is special type 'application/rss+xml'
+** Message: 16:44:54.299: Is special type 'application/rss+xml'
+** Message: 16:44:54.299: couldn't mmap file:///tmp/file_doesnt_exist.wmv: Failed to open file “file:///tmp/file_doesnt_exist.wmv”: open() failed: No such file or directory
+** Message: 16:44:54.299: Is special type 'application/rss+xml'
+**
+ERROR:../plparse/tests/parser.c:1102:test_xml_is_text_plain: assertion failed (result == TOTEM_PL_PARSER_RESULT_SUCCESS): (3 == 2)
+-------
+
+Summary of Failures:
+
+1/2 parser FAIL           38.50s (killed by signal 6 SIGABRT)
+1/2 parser FAIL           38.50s (killed by signal 6 SIGABRT)
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+```
+
+```sh
+(gdb) bt
+#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:50
+#1  0x00007f1e10520537 in __GI_abort () at abort.c:79
+#2  0x00007f1e106dcdcc in g_assertion_message (domain=&lt;optimized out&gt;, file=0x56328c05300a "../plparse/tests/parser.c", line=&lt;optimized out&gt;, func=&lt;optimized out&gt;, message=&lt;optimized out&gt;) at ../../../glib/gtestutils.c:2937
+#3  0x00007f1e1073a646 in g_assertion_message_cmpnum (domain=domain@entry=0x0, file=file@entry=0x56328c05300a "../plparse/tests/parser.c", line=line@entry=1102, func=func@entry=0x56328c058680 &lt;__func__.8&gt; "test_xml_is_text_plain", expr=expr@entry=0x56328c057300 "result == TOTEM_PL_PARSER_RESULT_SUCCESS", arg1=3, cmp=cmp@entry=0x56328c0530bc "==", arg2=2, numtype=105 'i') at ../../../glib/gtestutils.c:2996
+#4  0x000056328c051303 in test_xml_is_text_plain () at ../plparse/tests/parser.c:1102
+#5  test_xml_is_text_plain () at ../plparse/tests/parser.c:1091
+#6  0x00007f1e10739b9e in test_case_run (tc=0x7f1e0000fd60) at ../../../glib/gtestutils.c:2656
+#7  g_test_run_suite_internal (suite=suite@entry=0x56328db104c0, path=path@entry=0x0) at ../../../glib/gtestutils.c:2744
+#8  0x00007f1e1073999b in g_test_run_suite_internal (suite=suite@entry=0x56328db10040, path=path@entry=0x0) at ../../../glib/gtestutils.c:2756
+#9  0x00007f1e1073a08a in g_test_run_suite (suite=0x56328db10040) at ../../../glib/gtestutils.c:2831
+#10 0x00007f1e1073a0a1 in g_test_run () at ../../../glib/gtestutils.c:2065
+#11 0x000056328c04cdb6 in main (argc=&lt;optimized out&gt;, argv=&lt;optimized out&gt;) at ../plparse/tests/parser.c:1788
+```
+
+**Subsequent run passes:**
+
+```sh
+$ ninja -C build-dir/ test
+ninja: Entering directory `build-dir/'
+[0/1] Running all tests.
+1/2 parser OK             20.07s
+2/2 disc   OK             0.05s
+
+
+Ok:                 2   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+```</content>
+  <labels>
+    <label>2. Needs Diagnosis</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/13</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/13"/>
+  <title>Add whitelists, in place of blacklists</title>
+  <updated>2021-04-19T12:14:52Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>Add whitelists, in place of blacklists</summary>
+  <description>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#673588)](https://bugzilla.gnome.org/show_bug.cgi?id=673588)**  
+## Description
+We have ignore_mimetypes and ignore_schemes. We should also have a whitelist for use in totem-video-thumbnailer.
+
+
+### Blocking
+  * [Bug 673590](https://bugzilla.gnome.org/show_bug.cgi?id=673590)</description>
+  <content>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#673588)](https://bugzilla.gnome.org/show_bug.cgi?id=673588)**  
+## Description
+We have ignore_mimetypes and ignore_schemes. We should also have a whitelist for use in totem-video-thumbnailer.
+
+
+### Blocking
+  * [Bug 673590](https://bugzilla.gnome.org/show_bug.cgi?id=673590)</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/26</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/26"/>
+  <title>Add &amp;quot;mime-type&amp;quot; property to plparser object</title>
+  <updated>2021-04-19T12:14:51Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>Add "mime-type" property to plparser object</summary>
+  <description>Rhythmbox currently passes the `'collectionViewUrl'` ( from itunes search json results ), as below:
+
+`collectionViewUrl: https://podcasts.apple.com/us/podcast/global-news-podcast/id135067274?uo=4`
+
+`totem_pl_parser_parse (parser, collectionViewUrl, FALSE);`
+
+totem-pl-parser obtaines the itms id which is `135067274` and again does a itunes lookup, as below: 
+
+`json_uri = g_strdup_printf ("https://itunes.apple.com/lookup?id=%s&amp;entity=podcast", itms_id);`
+
+and obtains the RSS feed url from the `'feedUrl'` json attribute in the lookup result.
+
+The second itunes lookup step is pure overhead, as Rhythmbox can obtain and pass `'feedUrl'` directly from search results to totem-pl-parser. In that case, it would be better if Rhythmbox can force the mime-type as `application/rss+xml` rather than totem-pl-parser detecting the mime-type and matching against supported types. The itms code path described above, infact uses the direct call without checking mime-type, as below:
+
+`ret = totem_pl_parser_add_rss (parser, feed_file, NULL, parse_data, NULL);`
+
+This should speedup podcast parsing in all apps which know the mime-type well in advance.</description>
+  <content>Rhythmbox currently passes the `'collectionViewUrl'` ( from itunes search json results ), as below:
+
+`collectionViewUrl: https://podcasts.apple.com/us/podcast/global-news-podcast/id135067274?uo=4`
+
+`totem_pl_parser_parse (parser, collectionViewUrl, FALSE);`
+
+totem-pl-parser obtaines the itms id which is `135067274` and again does a itunes lookup, as below: 
+
+`json_uri = g_strdup_printf ("https://itunes.apple.com/lookup?id=%s&amp;entity=podcast", itms_id);`
+
+and obtains the RSS feed url from the `'feedUrl'` json attribute in the lookup result.
+
+The second itunes lookup step is pure overhead, as Rhythmbox can obtain and pass `'feedUrl'` directly from search results to totem-pl-parser. In that case, it would be better if Rhythmbox can force the mime-type as `application/rss+xml` rather than totem-pl-parser detecting the mime-type and matching against supported types. The itms code path described above, infact uses the direct call without checking mime-type, as below:
+
+`ret = totem_pl_parser_add_rss (parser, feed_file, NULL, parse_data, NULL);`
+
+This should speedup podcast parsing in all apps which know the mime-type well in advance.</content>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/34</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/34"/>
+  <title>Support full parsing cancellation</title>
+  <updated>2021-04-19T12:10:41Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/29033/avatar.png"/>
+  <author>
+    <name>crvi</name>
+    <email></email>
+  </author>
+  <summary>Support full parsing cancellation</summary>
+  <description>Currently, we support cancellation before parsing, not otherwise.</description>
+  <content>Currently, we support cancellation before parsing, not otherwise.</content>
+  <labels>
+    <label>1. Enhancement</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/22</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/22"/>
+  <title>Does not work with GJS (Introspection)</title>
+  <updated>2021-01-28T17:59:49Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/f8b185f04383f2937ffd11f497d0d7dc?s=80&amp;d=identicon"/>
+  <author>
+    <name>abak</name>
+    <email></email>
+  </author>
+  <summary>Does not work with GJS (Introspection)</summary>
+  <description>TotemPlParser is not usable with GJS (Javascript).  
+Tested version: 3.26.5 (GJS 1.64.3)
+
+ * Async:
+
+ ```Javascript
+#!/usr/bin/gjs
+
+const GLib = imports.gi.GLib;
+const TotemPlParser = imports.gi.TotemPlParser;
+
+let uri = 'file:///home/me/playlist.m3u';
+
+let parser = new imports.gi.TotemPlParser.Parser();
+parser.connect('playlist-started', (parser, uri, metadata) =&gt; log("playlist started " + [parser, uri, metadata]));
+parser.connect('entry-parsed', (parser, uri, metadata) =&gt; log("entry parsed " + [parser, uri, metadata]));
+parser.connect('playlist-ended', (parser, uri, metadata) =&gt; log("playlist ended " + [parser, uri, metadata]));
+
+parser.parse_async(uri, true, null, (source, result) =&gt; {
+   log('parse callback ' + [source, result]);
+});
+
+GLib.MainLoop.new(null, true).run();
+
+/* return:
+
+(gjs:2781): Gjs-WARNING **: 21:48:14.325: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserASync.js:17:31
+
+......
+
+(gjs:2781): Gjs-WARNING **: 21:48:14.325: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserASync.js:17:31
+
+Gjs-Message: 21:48:14.325: JS LOG: playlist ended [object instance wrapper GIName:TotemPlParser.Parser jsobj@0x3f0460589080 native@0x55c8213b5580],file:///home/me/playlist.m3u,
+Gjs-Message: 21:48:14.330: JS LOG: parse callback [object instance wrapper GIName:TotemPlParser.Parser jsobj@0x3f0460589080 native@0x55c8213b5580],[object instance wrapper GIName:Gio.Task jsobj@0x3f0460588d30 native@0x55c82139ad70]
+
+*/
+ ```
+
+ * Sync:
+
+ ```Javascript
+#!/usr/bin/gjs
+
+const GLib = imports.gi.GLib;
+const TotemPlParser = imports.gi.TotemPlParser;
+
+let uri = 'file:///home/me/playlist.m3u';
+
+let parser = new imports.gi.TotemPlParser.Parser();
+parser.connect('playlist-started', (parser, uri, metadata) =&gt; log("playlist started " + [parser, uri, metadata]));
+parser.connect('entry-parsed', (parser, uri, metadata) =&gt; log("entry parsed " + [parser, uri, metadata]));
+parser.connect('playlist-ended', (parser, uri, metadata) =&gt; log("playlist ended " + [parser, uri, metadata]));
+
+parser.parse(uri, true);
+
+GLib.MainLoop.new(null, true).run();
+
+/* return:
+
+(gjs:2716): Gjs-WARNING **: 21:46:23.844: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserSync.js:13:8
+
+......
+
+(gjs:2716): Gjs-WARNING **: 21:46:23.844: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserSync.js:13:8
+
+
+Gjs-Message: 21:41:36.996: JS LOG: playlist ended [object instance wrapper GIName:TotemPlParser.Parser jsobj@0x30d971589080 native@0x55ee3361d200],file:///home/me/playlist.m3u,
+
+*/
+ ```
+
+Without 'playlist-started' and 'entry-parsed' signal connections, there is no error message.</description>
+  <content>TotemPlParser is not usable with GJS (Javascript).  
+Tested version: 3.26.5 (GJS 1.64.3)
+
+ * Async:
+
+ ```Javascript
+#!/usr/bin/gjs
+
+const GLib = imports.gi.GLib;
+const TotemPlParser = imports.gi.TotemPlParser;
+
+let uri = 'file:///home/me/playlist.m3u';
+
+let parser = new imports.gi.TotemPlParser.Parser();
+parser.connect('playlist-started', (parser, uri, metadata) =&gt; log("playlist started " + [parser, uri, metadata]));
+parser.connect('entry-parsed', (parser, uri, metadata) =&gt; log("entry parsed " + [parser, uri, metadata]));
+parser.connect('playlist-ended', (parser, uri, metadata) =&gt; log("playlist ended " + [parser, uri, metadata]));
+
+parser.parse_async(uri, true, null, (source, result) =&gt; {
+   log('parse callback ' + [source, result]);
+});
+
+GLib.MainLoop.new(null, true).run();
+
+/* return:
+
+(gjs:2781): Gjs-WARNING **: 21:48:14.325: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserASync.js:17:31
+
+......
+
+(gjs:2781): Gjs-WARNING **: 21:48:14.325: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserASync.js:17:31
+
+Gjs-Message: 21:48:14.325: JS LOG: playlist ended [object instance wrapper GIName:TotemPlParser.Parser jsobj@0x3f0460589080 native@0x55c8213b5580],file:///home/me/playlist.m3u,
+Gjs-Message: 21:48:14.330: JS LOG: parse callback [object instance wrapper GIName:TotemPlParser.Parser jsobj@0x3f0460589080 native@0x55c8213b5580],[object instance wrapper GIName:Gio.Task jsobj@0x3f0460588d30 native@0x55c82139ad70]
+
+*/
+ ```
+
+ * Sync:
+
+ ```Javascript
+#!/usr/bin/gjs
+
+const GLib = imports.gi.GLib;
+const TotemPlParser = imports.gi.TotemPlParser;
+
+let uri = 'file:///home/me/playlist.m3u';
+
+let parser = new imports.gi.TotemPlParser.Parser();
+parser.connect('playlist-started', (parser, uri, metadata) =&gt; log("playlist started " + [parser, uri, metadata]));
+parser.connect('entry-parsed', (parser, uri, metadata) =&gt; log("entry parsed " + [parser, uri, metadata]));
+parser.connect('playlist-ended', (parser, uri, metadata) =&gt; log("playlist ended " + [parser, uri, metadata]));
+
+parser.parse(uri, true);
+
+GLib.MainLoop.new(null, true).run();
+
+/* return:
+
+(gjs:2716): Gjs-WARNING **: 21:46:23.844: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserSync.js:13:8
+
+......
+
+(gjs:2716): Gjs-WARNING **: 21:46:23.844: JS ERROR: Error: No introspection information found for TotemPlParserMetadata
+@./parserSync.js:13:8
+
+
+Gjs-Message: 21:41:36.996: JS LOG: playlist ended [object instance wrapper GIName:TotemPlParser.Parser jsobj@0x30d971589080 native@0x55ee3361d200],file:///home/me/playlist.m3u,
+
+*/
+ ```
+
+Without 'playlist-started' and 'entry-parsed' signal connections, there is no error message.</content>
+  <labels>
+    <label>1. Bug</label>
+    <label>4. Help Wanted</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/14</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/14"/>
+  <title>Directory parsing problem</title>
+  <updated>2019-03-20T10:38:29Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>Directory parsing problem</summary>
+  <description>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#678814)](https://bugzilla.gnome.org/show_bug.cgi?id=678814)**  
+## Description
+totem-pl-parser recursive parsing fails when the directory depth is too high, and the last level of recursion is a directory</description>
+  <content>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#678814)](https://bugzilla.gnome.org/show_bug.cgi?id=678814)**  
+## Description
+totem-pl-parser recursive parsing fails when the directory depth is too high, and the last level of recursion is a directory</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/11</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/11"/>
+  <title>totem-pl-parser fails to detect max open files</title>
+  <updated>2019-03-20T10:38:06Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>totem-pl-parser fails to detect max open files</summary>
+  <description>## Submitted by Jon Masters  
+
+**[Link to original bug (#583473)](https://bugzilla.gnome.org/show_bug.cgi?id=583473)**  
+## Description
+Please describe the problem:
+my_g_file_info_get_mime_type_with_data fails to detect that a GError object might be telling it that the maximum number of open file descriptors has been exceeded.
+
+Steps to reproduce:
+1. 
+2. 
+3. 
+
+
+Actual results:
+
+
+Expected results:
+
+
+Does this happen every time?
+
+
+Other information:
+
+Version: 2.24.x</description>
+  <content>## Submitted by Jon Masters  
+
+**[Link to original bug (#583473)](https://bugzilla.gnome.org/show_bug.cgi?id=583473)**  
+## Description
+Please describe the problem:
+my_g_file_info_get_mime_type_with_data fails to detect that a GError object might be telling it that the maximum number of open file descriptors has been exceeded.
+
+Steps to reproduce:
+1. 
+2. 
+3. 
+
+
+Actual results:
+
+
+Expected results:
+
+
+Does this happen every time?
+
+
+Other information:
+
+Version: 2.24.x</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/10</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/10"/>
+  <title>add API for parsing in-memory playlists</title>
+  <updated>2019-03-20T10:37:58Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>add API for parsing in-memory playlists</summary>
+  <description>## Submitted by Jonathan Matthew  
+
+**[Link to original bug (#518811)](https://bugzilla.gnome.org/show_bug.cgi?id=518811)**  
+## Description
+For last.fm streaming ([bug 518231](https://bugzilla.gnome.org/show_bug.cgi?id=518231)), it'd be good to be able to pass an in-memory playlist to totem-pl-parser.  The obvious:
+
+  totem_pl_parser_parse_from_data (parser, data, data_len, fallback)
+
+(with a 'base' arg if required) would do nicely.
+
+Later on, a _parse variant taking a GInputStream could be handy, although I don't have any use cases for that.
+
+Version: 2.23.x</description>
+  <content>## Submitted by Jonathan Matthew  
+
+**[Link to original bug (#518811)](https://bugzilla.gnome.org/show_bug.cgi?id=518811)**  
+## Description
+For last.fm streaming ([bug 518231](https://bugzilla.gnome.org/show_bug.cgi?id=518231)), it'd be good to be able to pass an in-memory playlist to totem-pl-parser.  The obvious:
+
+  totem_pl_parser_parse_from_data (parser, data, data_len, fallback)
+
+(with a 'base' arg if required) would do nicely.
+
+Later on, a _parse variant taking a GInputStream could be handy, although I don't have any use cases for that.
+
+Version: 2.23.x</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/9</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/9"/>
+  <title>Doesn&amp;#39;t inherit properties when parsing substream</title>
+  <updated>2019-03-20T10:37:49Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>Doesn't inherit properties when parsing substream</summary>
+  <description>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#507825)](https://bugzilla.gnome.org/show_bug.cgi?id=507825)**  
+## Description
+$ ./test-parser file:///home/hadess/Projects/Cvs/totem-pl-parser/plparse/test.asx 
+
+###################### parsing ################
+
+added URI 'mmsh://viptf1.yacast.net/tf1jt/jt13d08012007.asf'
+
+
+&lt;ASX VERSION="3.0"&gt;
+`&lt;ENTRY&gt;`
+       `&lt;TITLE&gt;`Inquiétude des pêcheurs de bulots du Cotentin`&lt;/TITLE&gt;`
+       &lt;STARTTIME VALUE="907.000000" /&gt;
+       &lt;DURATION VALUE="109.000000" /&gt;
+       &lt;REF HREF="http://viptf1.yacast.net/tf1jt/jt13d08012007.asf" /&gt;
+`&lt;/ENTRY&gt;`
+`&lt;/ASX&gt;`
+
+The duration and starttime aren't passed down to the children when they should be.
+
+Version: 2.23.x</description>
+  <content>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#507825)](https://bugzilla.gnome.org/show_bug.cgi?id=507825)**  
+## Description
+$ ./test-parser file:///home/hadess/Projects/Cvs/totem-pl-parser/plparse/test.asx 
+
+###################### parsing ################
+
+added URI 'mmsh://viptf1.yacast.net/tf1jt/jt13d08012007.asf'
+
+
+&lt;ASX VERSION="3.0"&gt;
+`&lt;ENTRY&gt;`
+       `&lt;TITLE&gt;`Inquiétude des pêcheurs de bulots du Cotentin`&lt;/TITLE&gt;`
+       &lt;STARTTIME VALUE="907.000000" /&gt;
+       &lt;DURATION VALUE="109.000000" /&gt;
+       &lt;REF HREF="http://viptf1.yacast.net/tf1jt/jt13d08012007.asf" /&gt;
+`&lt;/ENTRY&gt;`
+`&lt;/ASX&gt;`
+
+The duration and starttime aren't passed down to the children when they should be.
+
+Version: 2.23.x</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/8</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/8"/>
+  <title>Does not parse asx playlist trees like WMP</title>
+  <updated>2019-03-20T10:37:30Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>Does not parse asx playlist trees like WMP</summary>
+  <description>## Submitted by Marcus Granado  
+
+**[Link to original bug (#426773)](https://bugzilla.gnome.org/show_bug.cgi?id=426773)**  
+## Description
+Please describe the problem:
+Totem 2.18.0 in Ubuntu Feisty Beta (using today's repository, xine-lib 1.1.4 and today's GStreamer 0.10.12) only plays the *first* video in a master-playlist containing nested asx sub-playlists (in a playlist tree with arbitrary depth).
+
+Microsoft media player iterates over all sub-playlists (the nodes/leaves of the tree) correctly and plays *all* the videos in the nested playlist.
+
+The master asx playlist (the root of the tree, listed below) contains further references to other nested asx sub-playlists as in a tree of playlists. Each sub-playlist leaf contains only one mms: video stream element each which should be played.
+Each sub-playlist is successfully played by totem if started manually, but totem fails to iterate over all of them if given the master playlist to play.
+
+Steps to reproduce:
+
+totem "http://mrc.gran.googlepages.com/example-nested-playlist.asx"
+
+(the asx contents of this url can be seen below.)
+
+Actual results:
+- only the first item of the master-playlist above is shown.
+- each item can be played successfully if manually started using the sub-playlist urls (see list of urls below).
+- *sometimes*, totem can be made to iterate over some of the master playlist items if the 'next item' button is pressed repeatedly without stopping.
+
+Expected results:
+totem should play *all* videostreams in the leaves of the playlist tree, just like Microsoft Media Player does.
+
+Does this happen every time?
+yes
+
+Other information:
+- Microsoft media player fetches/plays each asx sub-playlists and mms: streams inside them synchronously (depth-first, blocking the iteration that fetches the next asx sub-playlist contents until the current videostream is over or cancelled).
+- maybe totem is doing this asynchronously (breadth-first, fetching the contents of all asx sub-playlists before starting to play the first videostream)?
+
+The master playlist in the root of the tree (pointing to nested sub-playlists) given as example:
+
+&lt;asx version = "3.0"&gt;
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=654705|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=660298|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=660285|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=659836|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;/asx&gt;`
+
+Version: 2.23.x</description>
+  <content>## Submitted by Marcus Granado  
+
+**[Link to original bug (#426773)](https://bugzilla.gnome.org/show_bug.cgi?id=426773)**  
+## Description
+Please describe the problem:
+Totem 2.18.0 in Ubuntu Feisty Beta (using today's repository, xine-lib 1.1.4 and today's GStreamer 0.10.12) only plays the *first* video in a master-playlist containing nested asx sub-playlists (in a playlist tree with arbitrary depth).
+
+Microsoft media player iterates over all sub-playlists (the nodes/leaves of the tree) correctly and plays *all* the videos in the nested playlist.
+
+The master asx playlist (the root of the tree, listed below) contains further references to other nested asx sub-playlists as in a tree of playlists. Each sub-playlist leaf contains only one mms: video stream element each which should be played.
+Each sub-playlist is successfully played by totem if started manually, but totem fails to iterate over all of them if given the master playlist to play.
+
+Steps to reproduce:
+
+totem "http://mrc.gran.googlepages.com/example-nested-playlist.asx"
+
+(the asx contents of this url can be seen below.)
+
+Actual results:
+- only the first item of the master-playlist above is shown.
+- each item can be played successfully if manually started using the sub-playlist urls (see list of urls below).
+- *sometimes*, totem can be made to iterate over some of the master playlist items if the 'next item' button is pressed repeatedly without stopping.
+
+Expected results:
+totem should play *all* videostreams in the leaves of the playlist tree, just like Microsoft Media Player does.
+
+Does this happen every time?
+yes
+
+Other information:
+- Microsoft media player fetches/plays each asx sub-playlists and mms: streams inside them synchronously (depth-first, blocking the iteration that fetches the next asx sub-playlist contents until the current videostream is over or cancelled).
+- maybe totem is doing this asynchronously (breadth-first, fetching the contents of all asx sub-playlists before starting to play the first videostream)?
+
+The master playlist in the root of the tree (pointing to nested sub-playlists) given as example:
+
+&lt;asx version = "3.0"&gt;
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=654705|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=660298|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=660285|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;entry&gt;`
+&lt;ref href="http://playervideo.globo.com/webmedia/GMCMidiaASX?midiaId=659836|banda=N|ext.asx"/&gt;
+`&lt;/entry&gt;`
+`&lt;/asx&gt;`
+
+Version: 2.23.x</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/7</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/7"/>
+  <title>Try to reduce remote accesses</title>
+  <updated>2019-03-20T10:37:12Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>Try to reduce remote accesses</summary>
+  <description>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#395827)](https://bugzilla.gnome.org/show_bug.cgi?id=395827)**  
+## Description
+$ ./test-parser http://localhost:12345/playlist.asx
+###################### parsing ################
+
+added URI 'http://localhost:12345/leopard.mov' with title 'empty' genre 'empty'
+added URI 'http://localhost:12345/frontrow-music.mov' with title 'empty' genre 'empty'
+
+Shows in the logs:
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /playlist.asx HTTP/1.1" 200 319 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /playlist.asx HTTP/1.1" 200 319 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /leopard.mov HTTP/1.1" 200 348892 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /frontrow-music.mov HTTP/1.1" 200 473716 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+
+It should only access playlist.asx once if possible.
+
+Version: 2.23.x</description>
+  <content>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#395827)](https://bugzilla.gnome.org/show_bug.cgi?id=395827)**  
+## Description
+$ ./test-parser http://localhost:12345/playlist.asx
+###################### parsing ################
+
+added URI 'http://localhost:12345/leopard.mov' with title 'empty' genre 'empty'
+added URI 'http://localhost:12345/frontrow-music.mov' with title 'empty' genre 'empty'
+
+Shows in the logs:
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /playlist.asx HTTP/1.1" 200 319 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /playlist.asx HTTP/1.1" 200 319 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /leopard.mov HTTP/1.1" 200 348892 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+127.0.0.1 - - [12/Jan/2007:16:19:26 +0000] "GET /frontrow-music.mov HTTP/1.1" 200 473716 "-" "gnome-vfs/2.14.2 neon/0.25.4"
+
+It should only access playlist.asx once if possible.
+
+Version: 2.23.x</content>
+  <labels>
+    <label>bugzilla</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/5</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/5"/>
+  <title>Handle shortened movie URLs</title>
+  <updated>2019-02-22T23:34:25Z</updated>
+  <media:thumbnail width="40" height="40" url="https://secure.gravatar.com/avatar/a80efbd95010128eb78be538d237198b?s=80&amp;d=identicon"/>
+  <author>
+    <name>bugzilla-migration</name>
+    <email></email>
+  </author>
+  <summary>Handle shortened movie URLs</summary>
+  <description>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#688893)](https://bugzilla.gnome.org/show_bug.cgi?id=688893)**  
+## Description
+Such as http://t.co/99VcPH5M
+
+We might have a problem within totem-pl-parser instead.</description>
+  <content>## Submitted by Bastien Nocera `@hadess`  
+
+**[Link to original bug (#688893)](https://bugzilla.gnome.org/show_bug.cgi?id=688893)**  
+## Description
+Such as http://t.co/99VcPH5M
+
+We might have a problem within totem-pl-parser instead.</content>
+  <labels>
+    <label>1. Enhancement</label>
+  </labels>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/4</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/4"/>
+  <title>VCDs playback requires device node</title>
+  <updated>2019-02-15T16:39:35Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/525/avatar.png"/>
+  <author>
+    <name>Bastien Nocera</name>
+    <email></email>
+  </author>
+  <summary>VCDs playback requires device node</summary>
+  <description>The `vcdsrc` in GStreamer currently only supports playing back from block devices, and could fairly easily [support playing back from images](https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/issues/898). What it will not support is playing back from directories.
+
+```sh
+$ ./disc /run/media/hadess/20121123_1310
+** Message: /run/media/hadess/20121123_1310 contains a Video CD.
+** Message: MRL for directory is "vcd:///run/media/hadess/20121123_1310".
+$ ./disc ~/Videos/VCD.iso 
+** Message: /home/hadess/Videos/VCD.iso contains a Video CD.
+** Message: MRL for directory is "vcd:///home/hadess/Videos/VCD.iso".
+$ mount | grep 20121123_1310
+/home/hadess/Videos/VCD.iso on /run/media/hadess/20121123_1310 type iso9660 (ro,nosuid,nodev,relatime,norock,check=r,map=n,blocksize=2048,uid=1000,gid=1000,dmode=500,fmode=400,uhelper=udisks2)
+```
+
+Both `./disc` runs should have the same result instead, pointing to an image or block device, never to a directory.</description>
+  <content>The `vcdsrc` in GStreamer currently only supports playing back from block devices, and could fairly easily [support playing back from images](https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/issues/898). What it will not support is playing back from directories.
+
+```sh
+$ ./disc /run/media/hadess/20121123_1310
+** Message: /run/media/hadess/20121123_1310 contains a Video CD.
+** Message: MRL for directory is "vcd:///run/media/hadess/20121123_1310".
+$ ./disc ~/Videos/VCD.iso 
+** Message: /home/hadess/Videos/VCD.iso contains a Video CD.
+** Message: MRL for directory is "vcd:///home/hadess/Videos/VCD.iso".
+$ mount | grep 20121123_1310
+/home/hadess/Videos/VCD.iso on /run/media/hadess/20121123_1310 type iso9660 (ro,nosuid,nodev,relatime,norock,check=r,map=n,blocksize=2048,uid=1000,gid=1000,dmode=500,fmode=400,uhelper=udisks2)
+```
+
+Both `./disc` runs should have the same result instead, pointing to an image or block device, never to a directory.</content>
+</entry>
+<entry>
+  <id>https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/3</id>
+  <link rel="alternate" href="https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues/3"/>
+  <title>Add discs to tests</title>
+  <updated>2019-02-15T13:32:40Z</updated>
+  <media:thumbnail width="40" height="40" url="https://gitlab.gnome.org/uploads/-/system/user/avatar/525/avatar.png"/>
+  <author>
+    <name>Bastien Nocera</name>
+    <email></email>
+  </author>
+  <summary>Add discs to tests</summary>
+  <description>`plparse/tests/disc.c` just doesn't do any tests if it's not on my machine, and needs a disc in a drive that's never plugged in. We should at least have test for the disc images that are easy to mock with ISO images (VCD, DVD, BD).</description>
+  <content>`plparse/tests/disc.c` just doesn't do any tests if it's not on my machine, and needs a disc in a drive that's never plugged in. We should at least have test for the disc images that are easy to mock with ISO images (VCD, DVD, BD).</content>
+</entry>
+</feed>
+
