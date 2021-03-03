@@ -748,7 +748,28 @@ test_parsing_rtsp_text (void)
 }
 
 static void
-test_parsing_content_type (void)
+test_parsing_feed_content_type (void)
+{
+	char *uri;
+
+	/* rss */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-description.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "application/rss+xml");
+	g_free (uri);
+
+	/* atom */
+	uri = get_relative_uri (TEST_SRCDIR "atom.xml");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "application/atom+xml");
+	g_free (uri);
+
+	/* opml */
+	uri = get_relative_uri (TEST_SRCDIR "feeds.opml");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTENT_TYPE), ==, "text/x-opml+xml");
+	g_free (uri);
+}
+
+static void
+test_parsing_item_content_type (void)
 {
 	char *uri;
 
@@ -1672,7 +1693,8 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
 		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
 		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
-		g_test_add_func ("/parser/parsing/podcast_content_type", test_parsing_content_type);
+		g_test_add_func ("/parser/parsing/podcast_feed_content_type", test_parsing_feed_content_type);
+		g_test_add_func ("/parser/parsing/podcast_item_content_type", test_parsing_item_content_type);
 		g_test_add_func ("/parser/parsing/podcast_medium", test_parsing_medium);
 		g_test_add_func ("/parser/parsing/podcast_feed_description", test_parsing_feed_description);
 		g_test_add_func ("/parser/parsing/podcast_item_description", test_parsing_item_description);

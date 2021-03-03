@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<opml version="1.0">
+  <head>
+    <title>PodcastAddict registration feeds</title>
+    <dateCreated>Feb 16, 2021 11:27:15 AM</dateCreated>
+    <dateModified>Feb 16, 2021 11:27:15 AM</dateModified>
+  </head>
+  <body>
+    <outline text="Economist Radio" type="rss" xmlUrl="http://rss.acast.com/theeconomistallaudio" htmlUrl="" />
+    <outline text="Editor's Picks from The Economist" type="rss" xmlUrl="http://rss.acast.com/theeconomisteditorspicks" htmlUrl="" />
+    <outline text="Global News Podcast" type="rss" xmlUrl="https://podcasts.files.bbci.co.uk/p02nq0gn.rss" htmlUrl="" />
+    <outline text="Le Cours de l'histoire" type="rss" xmlUrl="https://radiofrance-podcast.net/podcast09/35099478-7c72-4f9e-a6de-1b928400e9e5/rss_10076.xml" htmlUrl="https://www.franceculture.fr/emissions/le-cours-de-lhistoire" />
+    <outline text="The Compass" type="rss" xmlUrl="https://podcasts.files.bbci.co.uk/p035w97h.rss" htmlUrl="" />
+    <outline text="The Documentary Podcast" type="rss" xmlUrl="https://podcasts.files.bbci.co.uk/p02nq0lx.rss" htmlUrl="" />
+    <outline text="The Inquiry" type="rss" xmlUrl="https://podcasts.files.bbci.co.uk/p029399x.rss" htmlUrl="" />
+  </body>
+</opml>
