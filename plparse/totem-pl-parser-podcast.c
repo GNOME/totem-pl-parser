@@ -556,6 +556,10 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 
 			//FIXME how do we choose the default enclosure type?
 			rel = xml_parser_get_property (node, "rel");
+
+			if (rel == NULL)
+				continue;
+
 			if (g_ascii_strcasecmp (rel, "enclosure") == 0) {
 				const char *href;
 
