@@ -132,6 +132,9 @@
 
 #ifndef TOTEM_PL_PARSER_MINI
 #include <gobject/gvaluecollector.h>
+#ifdef HAVE_UCHARDET
+#include <uchardet.h>
+#endif
 
 #include "totem-pl-parser.h"
 #include "totemplparser-marshal.h"
@@ -1846,6 +1849,34 @@ totem_pl_parser_cleanup_xml (char *contents)
 	}
 }
 
+#ifdef HAVE_UCHARDET
+static char *
+guess_text_encoding (const char *text,
+		     gsize       len)
+{
+	uchardet_t handle;
+	char *encoding = NULL;
+	int ret;
+
+	handle = uchardet_new ();
+	ret = uchardet_handle_data (handle, text, len);
+	if (ret == 0) {
+		uchardet_data_end (handle);
+		encoding = g_strdup (uchardet_get_charset (handle));
+	}
+
+	uchardet_delete (handle);
+	return encoding;
+}
+#else
+static char *
+guess_text_encoding (const char *text,
+		     gsize       len)
+{
+	return NULL;
+}
+#endif /* HAVE_UCHARDET */
+
 xml_node_t *
 totem_pl_parser_parse_xml_relaxed (char *contents,
 				   gsize size)
@@ -1879,8 +1910,11 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 			return doc;
 		g_debug ("Document %s pretended to be in UTF-8 but didn't validate",
 			 encoding ? "explicitly" : "implicitly");
-		/* FIXME detect encoding using uchardet */
-		return NULL;
+		g_free (encoding);
+		encoding = guess_text_encoding (contents, size);
+		if (!encoding)
+			return NULL;
+		/* fall-through with the detected encoding */
 	}
 
 	xml_parser_free_tree (doc);

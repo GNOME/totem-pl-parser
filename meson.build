@@ -136,6 +136,22 @@ foreach cflag: test_cflags
   endif
 endforeach
 
+# uchardet dependency
+enable_uchardet = get_option('enable-uchardet')
+have_uchardet = false
+if enable_uchardet != 'no'
+  uchardet_dep = dependency('uchardet', required: false)
+  if enable_uchardet == 'yes' and not uchardet_dep.found()
+    error('uchardet support requested but not available.')
+  endif
+  if uchardet_dep.found()
+    cdata.set('HAVE_UCHARDET', true,
+      description: 'uchardet available in the system')
+    have_uchardet = true
+    totem_pl_parser_deps += [uchardet_dep]
+  endif
+endif
+
 # quvi dependency
 enable_quvi = get_option('enable-quvi')
 have_quvi = false
@@ -238,7 +254,9 @@ message('''
       Quvi video link parsing           : @0@
       ISO detection with libarchive     : @1@
       AmazonAMZ decoding with libgcrypt : @2@
+      uchardet encoding detection       : @3@
 '''.format(have_quvi.to_string('yes', 'no'),
            have_libarchive.to_string('yes', 'no'),
-           have_libgcrypt.to_string('yes', 'no')))
+           have_libgcrypt.to_string('yes', 'no'),
+           have_uchardet.to_string('yes', 'no')))
 
