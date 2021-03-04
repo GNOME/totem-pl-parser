@@ -1874,7 +1874,7 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 		break;
 	}
 
-	if (encoding == NULL || g_str_equal (encoding, "UTF-8") != FALSE)
+	if (encoding == NULL || g_ascii_strcasecmp (encoding, "UTF-8") == 0)
 		return doc;
 
 	xml_parser_free_tree (doc);
