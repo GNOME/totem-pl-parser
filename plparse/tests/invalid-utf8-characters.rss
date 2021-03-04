@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+<channel>
+<link>http://www.tennisabstract.com</link>
+<language>en-us</language>
+<copyright>&#xA9;2017-21</copyright>
+<webMaster>jeffsackmann@gmail.com (Jeff Sackmann)</webMaster>
+<managingEditor>jeffsackmann@gmail.com (Jeff Sackmann)</managingEditor>
+<image>
+<url>http://www.tennisabstract.com/podcast/tap_script_square.png</url>
+<title>Tennis Abstract Podcast</title>
+<link>http://www.tennisabstract.com</link>
+</image>
+<itunes:owner>
+<itunes:name>Jeff Sackmann</itunes:name>
+<itunes:email>jeffsackmann@gmail.com</itunes:email>
+</itunes:owner>
+<itunes:category text="Sports">
+<itunes:category text="Tennis"/>
+</itunes:category>
+<itunes:keywords>tennis, analytics, stats, statistics, tactics, Wimbledon, US Open, Australian Open, Roland Garros, Roger Federer, Serena Williams, Rafael Nadal, Novak Djokovic, Alexander Zverev, Dominic Thiem, Maria Sharapova, Simona Halep, Garbine Muguruza, Caroline Wozniacki, Andy Murray, Elina Svitolina, Naomi Osaka, Petra Kvitova</itunes:keywords>
+<itunes:explicit>no</itunes:explicit>
+<itunes:image href="http://www.tennisabstract.com/podcast/tap_script_square.png" />
+<atom:link href="http://www.tennisabstract.com/podcast/feed.xml" rel="self" type="application/rss+xml" />
+<pubDate>Thu, 06 Apr 2017 00:00:00 EST</pubDate>
+<title>The Tennis Abstract Podcast</title>
+<itunes:author>Jeff Sackmann</itunes:author>
+<description>Jeff Sackmann talks tennis and analytics with a rotating cast of experts and superfans.</description>
+<itunes:summary>Jeff Sackmann talks tennis and analytics with a rotating cast of experts and superfans.</itunes:summary>
+<itunes:subtitle>Jeff Sackmann talks tennis and analytics with a rotating cast of experts and superfans.</itunes:subtitle>
+<lastBuildDate>Thu, 25 Feb 2021 00:00:00 EST</lastBuildDate>
+
+<item>
+<title>Ep 88: Author David Berry on his People's History of Tennis</title>
+<description>Jeff interviews David Berry, veteran documentarian and author of A People's History of Tennis. The conversation, like his book, spans the entire history of tennis, with a particular focus on the ways in which the sport isn't conservative at all. As Berry explains, women were a crucial part of lawn tennis from the very beginning, and a key decision in the game's first decade ensured that the men's and women's games would remain intertwined. We also discuss the role of the local tennis club, the importance of public parks tennis around the world, and the fascinating yet mostly forgotten years of "Worker's Wimbledon."</description>
+<itunes:summary>Jeff interviews guest David Berry, veteran documentarian and author of A People's History of Tennis. The conversation, like his book, spans the entire history of tennis, with a particular focus on the ways in which the sport isn't conservative at all. As Berry explains, women were a crucial part of lawn tennis from the very beginning, and a key decision in the game's first decade ensured that the men's and women's games would remain intertwined. We also discuss the role of the local tennis club, the importance of public parks tennis around the world, and the fascinating yet mostly forgotten years of "Worker's Wimbledon."</itunes:summary>
+<itunes:subtitle>A book that goes beyond the stars and the majors for the last 150 years of tennis.</itunes:subtitle>
+<enclosure url="http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode088.mp3" type="audio/mp3" length="1" />
+<guid>http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode088.mp3</guid>
+<itunes:duration>1:00:55</itunes:duration>
+<pubDate>Wed, 16 Dec 2020 00:00:00 EST</pubDate>
+</item>
+
+<item>
+<title>Ep 87: Author Sasha Abramsky on Lottie Dod, the Little Wonder</title>
+<description>Jeff welcomes guest Sasha Abramsky, author of the book Little Wonder: The Fabulous Story of Lottie Dod, the World’s First Female Sports Superstar. Our wide-ranging conversation covers many aspects of the life and times of this 19th century superstar, from her global legions of fans, to her "Battle of the Sexes"-style challenges 80 years before King-Rings, to her unprecedented and varied string of sporting successes. We also touch on the relative dearth of tennis historiography, the chronological gap between Dod and the next generation of female athletic superstars, and whether there is a natural intersection between progressive politics and the compelling stories of tennis history.</description>
+<itunes:summary>Jeff welcomes guest Sasha Abramsky, author of the book Little Wonder: The Fabulous Story of Lottie Dod, the World’s First Female Sports Superstar. Our wide-ranging conversation covers many aspects of the life and times of this 19th century superstar, from her global legions of fans, to her "Battle of the Sexes"-style challenges 80 years before King-Rings, to her unprecedented and varied string of sporting successes. We also touch on the relative dearth of tennis historiography, the chronological gap between Dod and the next generation of female athletic superstars, and whether there is a natural intersection between progressive politics and the compelling stories of tennis history.</itunes:summary>
+<itunes:subtitle>A neglected corner of tennis history and a woman whose accomplishments transcended any single pursuit.</itunes:subtitle>
+<enclosure url="http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode087.mp3" type="audio/mp3" length="1" />
+<guid>http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode087.mp3</guid>
+<itunes:duration>1:00:23</itunes:duration>
+<pubDate>Wed, 10 Dec 2020 00:00:00 EST</pubDate>
+</item>
+
+<item>
+<title>Ep 86: A New Documentary on Guillermo Vilas and the No. 1 Ranking</title>
+<description>Jeff and Carl report back after watching the new Netflix documentary, Guillermo Vilas: Settling the Score. The Argentine star was a multi-slam winner in the 1970s, yet he never reached the top of the ranking list ... or did he? The film covers one journalist's quest to prove that Vilas deserved to be #1. We discuss the importance of the top ranking, the vagaries of the ranking algorithm, how Elo rates Vilas's peak years, and the ATP's response to Vilas's case for the top spot. We didn't love the documentary, but the issues it raises are fun to debate.</description>
+<itunes:summary>Jeff and Carl report back after watching the new Netflix documentary, Guillermo Vilas: Settling the Score. The Argentine star was a multi-slam winner in the 1970s, yet he never reached the top of the ranking list ... or did he? The film covers one journalist's quest to prove that Vilas deserved to be #1. We discuss the importance of the top ranking, the vagaries of the ranking algorithm, how Elo rates Vilas's peak years, and the ATP's response to Vilas's case for the top spot. We didn't love the documentary, but the issues it raises are fun to debate.</itunes:summary>
+<itunes:subtitle>We aren't exactly compelled by the case made by the new Netflix doc.</itunes:subtitle>
+<enclosure url="http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode086.mp3" type="audio/mp3" length="1" />
+<guid>http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode086.mp3</guid>
+<itunes:duration>0:48:31</itunes:duration>
+<pubDate>Wed, 9 Dec 2020 00:00:00 EST</pubDate>
+</item>
+
+<item>
+<title>Ep 85: Author Steven Blush on 1970s World Team Tennis</title>
+<description>Jeff welcomes guest Steven Blush, author of the recent book Bustin' Balls: World Team Tennis 1974-78: Pro Sports, Pop Culture, and Progressive Politics. We talk about how drastically WTT has changed from the early days, the crucial importance of Billie Jean King and the 1973 Battle of the Sexes, and how WTT fit into the 1970s cultural milieu. As Steven tells it, the original WTT was revolutionary, even "proto-woke," with a place for everyone, setting men and women on equal footing, and welcoming everyone from Black NBA star John Lucas to (eventually) transgender trailblazer Renee Richards. This is an in-depth look at a neglected but fascinating part of tennis history.</description>
+<itunes:summary>Jeff welcomes guest Steven Blush, author of the recent book Bustin' Balls: World Team Tennis 1974-78: Pro Sports, Pop Culture, and Progressive Politics. We talk about how drastically WTT has changed from the early days, the crucial importance of Billie Jean King and the 1973 Battle of the Sexes, and how WTT fit into the 1970s cultural milieu. As Steven tells it, the original WTT was revolutionary, even "proto-woke," with a place for everyone, setting men and women on equal footing, and welcoming everyone from Black NBA star John Lucas to (eventually) transgender trailblazer Renee Richards. This is an in-depth look at a neglected but fascinating part of tennis history.</itunes:summary>
+<itunes:subtitle>We talk about Blush's new book, Bustin' Balls: World Team Tennis 1974-78</itunes:subtitle>
+<enclosure url="http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode085.mp3" type="audio/mp3" length="1" />
+<guid>http://www.tennisabstract.com/podcast/TennisAbstractPodcast-episode085.mp3</guid>
+<itunes:duration>1:03:06</itunes:duration>
+<pubDate>Fri, 4 Dec 2020 00:00:00 EST</pubDate>
+</item>
+
+</channel>
+</rss>

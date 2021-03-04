@@ -1005,6 +1005,17 @@ test_parsing_item_explicit (void)
 }
 
 static void
+test_invalid_utf8_characters (void)
+{
+	char *uri;
+
+	/* Test all entries have been parsed by checking entry count */
+	uri = get_relative_uri (TEST_SRCDIR "invalid-utf8-characters.rss");
+	g_assert_cmpuint (parser_test_get_num_entries (uri), ==, 4);
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1704,6 +1715,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_feed_author", test_parsing_feed_author);
 		g_test_add_func ("/parser/parsing/podcast_feed_explicit", test_parsing_feed_explicit);
 		g_test_add_func ("/parser/parsing/podcast_item_explicit", test_parsing_item_explicit);
+		g_test_add_func ("/parser/parsing/invalid_utf8_characters", test_invalid_utf8_characters);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
