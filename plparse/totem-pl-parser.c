@@ -1881,7 +1881,8 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 
 	new_contents = g_convert (contents, size, "UTF-8", encoding, NULL, &new_size, &error);
 	if (new_contents == NULL) {
-		g_warning ("Failed to convert XML data to UTF-8: %s", error->message);
+		g_warning ("Failed to convert XML data from '%s' to '%s': %s",
+			   encoding, "UTF-8", error->message);
 		return NULL;
 	}
 
