@@ -1874,8 +1874,14 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 		break;
 	}
 
-	if (encoding == NULL || g_ascii_strcasecmp (encoding, "UTF-8") == 0)
-		return doc;
+	if (encoding == NULL || g_ascii_strcasecmp (encoding, "UTF-8") == 0) {
+		if (g_utf8_validate (contents, -1, NULL))
+			return doc;
+		g_debug ("Document %s pretended to be in UTF-8 but didn't validate",
+			 encoding ? "explicitly" : "implicitly");
+		/* FIXME detect encoding using uchardet */
+		return NULL;
+	}
 
 	xml_parser_free_tree (doc);
 
