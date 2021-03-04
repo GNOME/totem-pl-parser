@@ -1852,7 +1852,8 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 {
 	xml_node_t* doc, *node;
 	g_autoptr(GError) error = NULL;
-	char *encoding, *new_contents;
+	g_autofree char *encoding = NULL;
+	g_autofree char *new_contents = NULL;
 	gsize new_size;
 	xml_parser_t *xml_parser;
 
@@ -1873,30 +1874,24 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 		break;
 	}
 
-	if (encoding == NULL || g_ascii_strcasecmp (encoding, "UTF-8") == 0) {
-		g_free (encoding);
+	if (encoding == NULL || g_ascii_strcasecmp (encoding, "UTF-8") == 0)
 		return doc;
-	}
 
 	xml_parser_free_tree (doc);
 
 	new_contents = g_convert (contents, size, "UTF-8", encoding, NULL, &new_size, &error);
 	if (new_contents == NULL) {
 		g_warning ("Failed to convert XML data to UTF-8: %s", error->message);
-		g_free (encoding);
 		return NULL;
 	}
-	g_free (encoding);
 
 	xml_parser = xml_parser_init_r (new_contents, new_size, XML_PARSER_CASE_INSENSITIVE);
 	if (xml_parser_build_tree_with_options_r (xml_parser, &doc, XML_PARSER_RELAXED | XML_PARSER_MULTI_TEXT) < 0) {
 		xml_parser_finalize_r (xml_parser);
-		g_free (new_contents);
 		return NULL;
 	}
 
 	xml_parser_finalize_r (xml_parser);
-	g_free (new_contents);
 
 	return doc;
 }
