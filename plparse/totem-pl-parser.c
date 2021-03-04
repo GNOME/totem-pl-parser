@@ -1851,6 +1851,7 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 				   gsize size)
 {
 	xml_node_t* doc, *node;
+	g_autoptr(GError) error = NULL;
 	char *encoding, *new_contents;
 	gsize new_size;
 	xml_parser_t *xml_parser;
@@ -1879,9 +1880,9 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 
 	xml_parser_free_tree (doc);
 
-	new_contents = g_convert (contents, size, "UTF-8", encoding, NULL, &new_size, NULL);
+	new_contents = g_convert (contents, size, "UTF-8", encoding, NULL, &new_size, &error);
 	if (new_contents == NULL) {
-		g_warning ("Failed to convert XML data to UTF-8");
+		g_warning ("Failed to convert XML data to UTF-8: %s", error->message);
 		g_free (encoding);
 		return NULL;
 	}
