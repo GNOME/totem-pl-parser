@@ -119,6 +119,7 @@ int   totem_pl_parser_read_ini_line_int		(char **lines, const char *key);
 char *totem_pl_parser_read_ini_line_string_with_sep (char **lines, const char *key,
 						     const char *sep);
 gboolean totem_pl_parser_is_debugging_enabled	(TotemPlParser *parser);
+gboolean totem_pl_parser_get_recurse		(TotemPlParser *parser);
 char *totem_pl_parser_base_uri			(GFile *file);
 void totem_pl_parser_playlist_end		(TotemPlParser *parser,
 						 const char *playlist_title);

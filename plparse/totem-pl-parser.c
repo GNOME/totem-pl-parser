@@ -811,6 +811,12 @@ totem_pl_parser_is_debugging_enabled (TotemPlParser *parser)
 	return parser->priv->debug;
 }
 
+gboolean
+totem_pl_parser_get_recurse (TotemPlParser *parser)
+{
+	return parser->priv->recurse;
+}
+
 /**
  * totem_pl_parser_base_uri:
  * @uri: a URI
