@@ -1011,7 +1011,11 @@ test_invalid_utf8_characters (void)
 
 	/* Test all entries have been parsed by checking entry count */
 	uri = get_relative_uri (TEST_SRCDIR "invalid-utf8-characters.rss");
+#ifdef HAVE_UCHARDET
 	g_assert_cmpuint (parser_test_get_num_entries (uri), ==, 4);
+#else
+	g_assert_cmpint (simple_parser_test (uri), !=, TOTEM_PL_PARSER_RESULT_SUCCESS);
+#endif
 	g_free (uri);
 }
 
