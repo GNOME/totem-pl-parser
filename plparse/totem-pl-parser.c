@@ -1914,6 +1914,8 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 		encoding = guess_text_encoding (contents, size);
 		if (!encoding)
 			return NULL;
+
+		g_debug ("Guessed text encoding of XML data as '%s'", encoding);
 		/* fall-through with the detected encoding */
 	}
 
