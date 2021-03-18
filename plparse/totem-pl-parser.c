@@ -159,6 +159,7 @@
 
 #define READ_CHUNK_SIZE 8192
 #define RECURSE_LEVEL_MAX 4
+#define ILLEGAL_CONTEXT_LENGTH 20
 
 #define D(x) if (debug) x
 
@@ -1885,7 +1886,7 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 	g_autoptr(GError) error = NULL;
 	g_autofree char *encoding = NULL;
 	g_autofree char *new_contents = NULL;
-	gsize new_size;
+	gsize new_size, bytes_read;
 	xml_parser_t *xml_parser;
 
 	totem_pl_parser_cleanup_xml (contents);
@@ -1921,10 +1922,23 @@ totem_pl_parser_parse_xml_relaxed (char *contents,
 
 	xml_parser_free_tree (doc);
 
-	new_contents = g_convert (contents, size, "UTF-8", encoding, NULL, &new_size, &error);
+	new_contents = g_convert (contents, size, "UTF-8", encoding, &bytes_read, &new_size, &error);
 	if (new_contents == NULL) {
-		g_warning ("Failed to convert XML data from '%s' to '%s': %s",
-			   encoding, "UTF-8", error->message);
+		g_autofree char *message = NULL;
+		message = g_strdup_printf ("Failed to convert XML data from '%s' to '%s': %s",
+					   encoding, "UTF-8", error->message);
+
+		if (error->code == G_CONVERT_ERROR_ILLEGAL_SEQUENCE) {
+			int context_length = MIN (bytes_read, ILLEGAL_CONTEXT_LENGTH);
+
+			g_warning ("%s: byte offset %" G_GSIZE_FORMAT ", byte: '%.1s', byte context: '%.*s'",
+				   message, bytes_read, contents + bytes_read,
+				   context_length + 1,
+				   contents + bytes_read - context_length);
+		} else {
+			g_warning ("%s", message);
+		}
+
 		return NULL;
 	}
 
