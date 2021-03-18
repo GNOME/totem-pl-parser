@@ -1789,8 +1789,8 @@ totem_pl_parser_glob_is_ignored (TotemPlParser *parser,
 gboolean
 totem_pl_parser_ignore (TotemPlParser *parser, const char *uri)
 {
-	g_autofree char *mimetype;
-	g_autoptr(GFile) file;
+	g_autofree char *mimetype = NULL;
+	g_autoptr(GFile) file = NULL;
 	guint i;
 
 	if (totem_pl_parser_glob_is_ignored (parser, uri) != FALSE)
