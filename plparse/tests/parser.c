@@ -1016,6 +1016,29 @@ test_parsing_item_explicit (void)
 }
 
 static void
+test_invalid_characters (void)
+{
+	char *uri;
+
+	uri = get_relative_uri (TEST_SRCDIR "invalid-characters.rss");
+#ifdef HAVE_UCHARDET
+	if (g_test_subprocess ()) {
+		/* This call should abort with 'Invalid byte sequence in conversion input' */
+		simple_parser_test (uri);
+		g_assert_not_reached ();
+		return;
+	}
+
+	g_test_trap_subprocess (NULL, 0, 0);
+	g_test_trap_assert_failed ();
+	g_test_trap_assert_stderr ("*byte offset 22493,*");
+#else
+	g_assert_cmpint (simple_parser_test (uri), !=, TOTEM_PL_PARSER_RESULT_SUCCESS);
+#endif
+	g_free (uri);
+}
+
+static void
 test_invalid_utf8_characters (void)
 {
 	char *uri;
@@ -1823,6 +1846,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_feed_author", test_parsing_feed_author);
 		g_test_add_func ("/parser/parsing/podcast_feed_explicit", test_parsing_feed_explicit);
 		g_test_add_func ("/parser/parsing/podcast_item_explicit", test_parsing_item_explicit);
+		g_test_add_func ("/parser/parsing/invalid_characters", test_invalid_characters);
 		g_test_add_func ("/parser/parsing/invalid_utf8_characters", test_invalid_utf8_characters);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
