@@ -749,6 +749,27 @@ test_parsing_rtsp_text (void)
 }
 
 static void
+test_parsing_needle_carriage_return (void)
+{
+	char *uri;
+
+	/* rss needle test */
+	uri = get_relative_uri (TEST_SRCDIR "rss-needle-carriage-return");
+	g_assert_cmpuint (parser_test_get_num_entries (uri), ==, 19);
+	g_free (uri);
+
+	/* atom needle test */
+	uri = get_relative_uri (TEST_SRCDIR "atom.xml");
+	g_assert_cmpuint (parser_test_get_num_entries (uri), ==, 0);
+	g_free (uri);
+
+	/* opml needle test */
+	uri = get_relative_uri (TEST_SRCDIR "feeds.opml");
+	g_assert_cmpuint (parser_test_get_num_entries (uri), ==, 7);
+	g_free (uri);
+}
+
+static void
 test_parsing_feed_content_type (void)
 {
 	char *uri;
@@ -1802,6 +1823,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_comment_whitespace", test_parsing_xml_comment_whitespace);
 		g_test_add_func ("/parser/parsing/multi_line_rtsptext", test_parsing_rtsp_text_multi);
 		g_test_add_func ("/parser/parsing/single_line_rtsptext", test_parsing_rtsp_text);
+		g_test_add_func ("/parser/parsing/podcast_needle_carriage_return", test_parsing_needle_carriage_return);
 		g_test_add_func ("/parser/parsing/podcast_feed_content_type", test_parsing_feed_content_type);
 		g_test_add_func ("/parser/parsing/podcast_item_content_type", test_parsing_item_content_type);
 		g_test_add_func ("/parser/parsing/podcast_medium", test_parsing_medium);

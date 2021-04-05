@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss
+xmlns:content="http://purl.org/rss/1.0/modules/content/"
+xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:media="http://search.yahoo.com/mrss/"
+xmlns:atom="http://www.w3.org/2005/Atom"
+xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+<channel>
+<atom:link href="https://www.oalaig.org/eventspodcast/rss.php" rel="self" type="application/rss+xml" />
+<title>L.A. Intergroup of OA Special Events</title>
+<link>https://www.oalaig.org/</link>
+<description>Overeaters Anonymous members share their experience, strength and hope on a number of different topics.</description>
+<pubDate>Fri, 02 Apr 2021 05:04:27 -0700</pubDate>
+<language>en-us</language>
+<category>L.A. Intergroup of OA Special Events</category>
+<ttl>1440</ttl>
+<copyright>L.A. Intergroup of OA</copyright>
+<itunes:new-feed-url>https://www.oalaig.org/eventspodcast/rss.php</itunes:new-feed-url>
+<itunes:keywords>Overeaters Anonymous, 12-Step Recovery
+</itunes:keywords>
+<itunes:subtitle>Overeaters Anonymous members share their experience, strength and hope on a number of different topics.</itunes:subtitle>
+<itunes:author>Los Angeles Intergroup of Overeaters Anonymous</itunes:author>
+<itunes:explicit>no</itunes:explicit>
+<itunes:block>no</itunes:block>
+<itunes:summary>Overeaters Anonymous members share their experience, strength and hope on a number of different topics.</itunes:summary>
+<itunes:owner>
+<itunes:name>L.A. Intergroup of OA Special Events</itunes:name>
+<itunes:email>webmaster@oalaig.org</itunes:email>
+</itunes:owner>
+<image>
+<url>https://www.oalaig.org/eventspodcast/laig-podcast-event-logo-144.jpg</url>
+<title>L.A. Intergroup of OA Special Events</title>
+<link>https://www.oalaig.org/</link>
+</image>
+<itunes:image href="https://www.oalaig.org/eventspodcast/laig-podcast-event-logo-1400.jpg"></itunes:image>
+<itunes:category text="Health &amp; Fitness" />
+<itunes:category text="Religion &amp; Spirituality" />
+<itunes:category text="Society &amp; Culture" />
+	<item>
+		<title>The Tools Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/the_tools_2020-05-30pkiqg.mp3</link>
+		<description><![CDATA[presents a talk by]]></description>
+		<content:encoded><![CDATA[presents a talk by]]></content:encoded>
+		<itunes:author></itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from The Tools Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/the_tools_2020-05-30pkiqg.mp3" length="104072563" type="audio/mpeg" />
+		<pubDate>Sat, 30 May 2020 12:05:00 -0700</pubDate>
+		<itunes:duration>1:48:23</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/the_tools_2020-05-30pkiqg.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>The Candlelight Promises Meeting Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/the_candlelight_promises_meeting_2020-12-12jh35g.mp3</link>
+		<description><![CDATA[presents a talk by 12 Speakers on each of the 12 Promises]]></description>
+		<content:encoded><![CDATA[presents a talk by 12 Speakers on each of the 12 Promises]]></content:encoded>
+		<itunes:author>12 Speakers on each of the 12 Promises</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from The Candlelight Promises Meeting Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/the_candlelight_promises_meeting_2020-12-12jh35g.mp3" length="103828123" type="audio/mpeg" />
+		<pubDate>Sat, 12 Dec 2020 12:12:00 -0800</pubDate>
+		<itunes:duration>1:48:09</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/the_candlelight_promises_meeting_2020-12-12jh35g.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Thanksgiving in the Park Thanksgiving_in_the_Park</title>
+		<link>https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22uym51.mp3</link>
+		<description><![CDATA[presents a talk by Miriam]]></description>
+		<content:encoded><![CDATA[presents a talk by Miriam]]></content:encoded>
+		<itunes:author>Miriam</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Thanksgiving in the Park Thanksgiving_in_the_Park.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22uym51.mp3" length="30106985" type="audio/mpeg" />
+		<pubDate>Thu, 22 Nov 2018 12:11:00 -0800</pubDate>
+		<itunes:duration>20:54</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22uym51.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Thanksgiving in the Park Thanksgiving_in_the_Park</title>
+		<link>https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22u8j4e.mp3</link>
+		<description><![CDATA[presents a talk by Susan]]></description>
+		<content:encoded><![CDATA[presents a talk by Susan]]></content:encoded>
+		<itunes:author>Susan</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Thanksgiving in the Park Thanksgiving_in_the_Park.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22u8j4e.mp3" length="30104478" type="audio/mpeg" />
+		<pubDate>Thu, 22 Nov 2018 12:11:00 -0800</pubDate>
+		<itunes:duration>20:53</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22u8j4e.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Thanksgiving in the Park Thanksgiving_in_the_Park</title>
+		<link>https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22jcbe6.mp3</link>
+		<description><![CDATA[presents a talk by Cliff]]></description>
+		<content:encoded><![CDATA[presents a talk by Cliff]]></content:encoded>
+		<itunes:author>Cliff</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Thanksgiving in the Park Thanksgiving_in_the_Park.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22jcbe6.mp3" length="30104478" type="audio/mpeg" />
+		<pubDate>Thu, 22 Nov 2018 12:11:00 -0800</pubDate>
+		<itunes:duration>20:53</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-22jcbe6.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Thanksgiving in the Park Thanksgiving_in_the_Park</title>
+		<link>https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-226ox5r.mp3</link>
+		<description><![CDATA[presents a talk by James]]></description>
+		<content:encoded><![CDATA[presents a talk by James]]></content:encoded>
+		<itunes:author>James</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Thanksgiving in the Park Thanksgiving_in_the_Park.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-226ox5r.mp3" length="30104502" type="audio/mpeg" />
+		<pubDate>Thu, 22 Nov 2018 12:11:00 -0800</pubDate>
+		<itunes:duration>20:53</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/thanksgiving_in_the_park_2018-11-226ox5r.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Thanksgiving In The (Virtual) Park 2020 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/thanksgiving_in_the_(virtual)_park_2020_2020-11-26gs1pq.mp3</link>
+		<description><![CDATA[presents a talk by Jess M., Charles H., Domingo R., and Diane C.]]></description>
+		<content:encoded><![CDATA[presents a talk by Jess M., Charles H., Domingo R., and Diane C.]]></content:encoded>
+		<itunes:author>Jess M., Charles H., Domingo R., and Diane C.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Thanksgiving In The (Virtual) Park 2020 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/thanksgiving_in_the_(virtual)_park_2020_2020-11-26gs1pq.mp3" length="72774837" type="audio/mpeg" />
+		<pubDate>Thu, 26 Nov 2020 12:11:00 -0800</pubDate>
+		<itunes:duration>1:15:48</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/thanksgiving_in_the_(virtual)_park_2020_2020-11-26gs1pq.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Sponsorship Retreat Part 4 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_4_2020-10-248l2gd.mp3</link>
+		<description><![CDATA[presents a talk by Sheila J.]]></description>
+		<content:encoded><![CDATA[presents a talk by Sheila J.]]></content:encoded>
+		<itunes:author>Sheila J.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Sponsorship Retreat Part 4 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_4_2020-10-248l2gd.mp3" length="87825790" type="audio/mpeg" />
+		<pubDate>Sat, 24 Oct 2020 12:10:00 -0700</pubDate>
+		<itunes:duration>1:31:29</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_4_2020-10-248l2gd.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Sponsorship Retreat Part 3 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_3_2020-10-24ko9ed.mp3</link>
+		<description><![CDATA[presents a talk by Sheila J.]]></description>
+		<content:encoded><![CDATA[presents a talk by Sheila J.]]></content:encoded>
+		<itunes:author>Sheila J.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Sponsorship Retreat Part 3 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_3_2020-10-24ko9ed.mp3" length="115047553" type="audio/mpeg" />
+		<pubDate>Sat, 24 Oct 2020 12:10:00 -0700</pubDate>
+		<itunes:duration>1:59:50</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_3_2020-10-24ko9ed.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Sponsorship Retreat Part 2 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_2_2020-10-24byxqo.mp3</link>
+		<description><![CDATA[presents a talk by Sheila J.]]></description>
+		<content:encoded><![CDATA[presents a talk by Sheila J.]]></content:encoded>
+		<itunes:author>Sheila J.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Sponsorship Retreat Part 2 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_2_2020-10-24byxqo.mp3" length="115400037" type="audio/mpeg" />
+		<pubDate>Sat, 24 Oct 2020 12:10:00 -0700</pubDate>
+		<itunes:duration>2:00:12</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_2_2020-10-24byxqo.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Sponsorship Retreat Part 1 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_1_2020-10-24m7up4.mp3</link>
+		<description><![CDATA[presents a talk by Sheila J.]]></description>
+		<content:encoded><![CDATA[presents a talk by Sheila J.]]></content:encoded>
+		<itunes:author>Sheila J.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Sponsorship Retreat Part 1 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_1_2020-10-24m7up4.mp3" length="110768969" type="audio/mpeg" />
+		<pubDate>Sat, 24 Oct 2020 12:10:00 -0700</pubDate>
+		<itunes:duration>1:55:23</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/sponsorship_retreat_part_1_2020-10-24m7up4.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Slipping Workshop Part 3 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/slipping_workshop_part_3_2020-11-07egrtn.mp3</link>
+		<description><![CDATA[presents a talk by Sheila J.]]></description>
+		<content:encoded><![CDATA[presents a talk by Sheila J.]]></content:encoded>
+		<itunes:author>Sheila J.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Slipping Workshop Part 3 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/slipping_workshop_part_3_2020-11-07egrtn.mp3" length="156841117" type="audio/mpeg" />
+		<pubDate>Sat, 07 Nov 2020 12:11:00 -0800</pubDate>
+		<itunes:duration>2:43:22</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/slipping_workshop_part_3_2020-11-07egrtn.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Slipping Workshop Part 2 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/slipping_workshop_part_2_2020-11-07gpmhi.mp3</link>
+		<description><![CDATA[presents a talk by Sheila J.]]></description>
+		<content:encoded><![CDATA[presents a talk by Sheila J.]]></content:encoded>
+		<itunes:author>Sheila J.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Slipping Workshop Part 2 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/slipping_workshop_part_2_2020-11-07gpmhi.mp3" length="130854864" type="audio/mpeg" />
+		<pubDate>Sat, 07 Nov 2020 12:11:00 -0800</pubDate>
+		<itunes:duration>2:16:18</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/slipping_workshop_part_2_2020-11-07gpmhi.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Slipping Workshop Part 1 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/slipping_workshop_part_1_2020-11-071e2xh.mp3</link>
+		<description><![CDATA[presents a talk by Sheila J.]]></description>
+		<content:encoded><![CDATA[presents a talk by Sheila J.]]></content:encoded>
+		<itunes:author>Sheila J.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Slipping Workshop Part 1 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/slipping_workshop_part_1_2020-11-071e2xh.mp3" length="127924629" type="audio/mpeg" />
+		<pubDate>Sat, 07 Nov 2020 12:11:00 -0800</pubDate>
+		<itunes:duration>2:13:14</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/slipping_workshop_part_1_2020-11-071e2xh.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Michael D. - 11/23/2019</title>
+		<link>https://www.oalaig.org/eventspodcast/LAC_Michael_D.mp3</link>
+		<description><![CDATA[presents a talk by Michael D]]></description>
+		<content:encoded><![CDATA[presents a talk by Michael D]]></content:encoded>
+		<itunes:author>Michael D</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Michael D. - 11/23/2019.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/LAC_Michael_D.mp3" length="37968256" type="audio/mpeg" />
+		<pubDate>Wed, 31 Dec 1969 04:12:00 -0800</pubDate>
+		<itunes:duration>38:53</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/LAC_Michael_D.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>4th Step Workshop Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/4th_step_workshop_2020-08-22ej57v.mp3</link>
+		<description><![CDATA[presents a talk by]]></description>
+		<content:encoded><![CDATA[presents a talk by]]></content:encoded>
+		<itunes:author></itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from 4th Step Workshop Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/4th_step_workshop_2020-08-22ej57v.mp3" length="89051392" type="audio/mpeg" />
+		<pubDate>Sat, 22 Aug 2020 12:08:00 -0700</pubDate>
+		<itunes:duration>1:32:45</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/4th_step_workshop_2020-08-22ej57v.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Relapse Zoom Workshop Speaker section only</title>
+		<link>https://www.oalaig.org/eventspodcast/2020-07-11_relapse_zoom_workshop_1frd0.mp3</link>
+		<description><![CDATA[presents a talk by John K.]]></description>
+		<content:encoded><![CDATA[presents a talk by John K.]]></content:encoded>
+		<itunes:author>John K.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Relapse Zoom Workshop Speaker section only.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/2020-07-11_relapse_zoom_workshop_1frd0.mp3" length="50035456" type="audio/mpeg" />
+		<pubDate>Sat, 11 Jul 2020 12:07:00 -0700</pubDate>
+		<itunes:duration>1:44:14</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/2020-07-11_relapse_zoom_workshop_1frd0.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>Relapse Zoom Workshop - Questions Relapse_Zoom_Workshop</title>
+		<link>https://www.oalaig.org/eventspodcast/2020-07-11_relapse_zoom_workshop_-_questions_ygoq4.mp3</link>
+		<description><![CDATA[presents a talk by John K.]]></description>
+		<content:encoded><![CDATA[presents a talk by John K.]]></content:encoded>
+		<itunes:author>John K.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from Relapse Zoom Workshop - Questions Relapse_Zoom_Workshop.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/2020-07-11_relapse_zoom_workshop_-_questions_ygoq4.mp3" length="51317361" type="audio/mpeg" />
+		<pubDate>Sat, 11 Jul 2020 12:07:00 -0700</pubDate>
+		<itunes:duration>1:46:54</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/2020-07-11_relapse_zoom_workshop_-_questions_ygoq4.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+	<item>
+		<title>4th of July In The Virtual Park 2020 Special Event</title>
+		<link>https://www.oalaig.org/eventspodcast/2020-07-04_4th_of_july_in_the_virtual_park_2020_ea6qz.mp3</link>
+		<description><![CDATA[presents a talk by Melanie M., Luis S., &amp; Nancy D.]]></description>
+		<content:encoded><![CDATA[presents a talk by Melanie M., Luis S., &amp; Nancy D.]]></content:encoded>
+		<itunes:author>Melanie M., Luis S., &amp; Nancy D.</itunes:author>
+		<itunes:subtitle> A share of experience, strength, and hope from 4th of July In The Virtual Park 2020 Special Event.</itunes:subtitle>
+		<itunes:summary></itunes:summary>
+		<enclosure url="https://www.oalaig.org/eventspodcast/2020-07-04_4th_of_july_in_the_virtual_park_2020_ea6qz.mp3" length="70709673" type="audio/mpeg" />
+		<pubDate>Sat, 04 Jul 2020 12:07:00 -0700</pubDate>
+		<itunes:duration>1:13:39</itunes:duration>
+		<guid isPermaLink="false">https://www.oalaig.org/eventspodcast/2020-07-04_4th_of_july_in_the_virtual_park_2020_ea6qz.mp3</guid>
+		<itunes:keywords>Overeaters, Anonymous, 12-Step, Recovery, compulsive, overeating</itunes:keywords>
+	</item>
+</channel>
+</rss>
