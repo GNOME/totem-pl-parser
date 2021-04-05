@@ -35,53 +35,51 @@
 #include "totem-pl-parser-videosite.h"
 #include "totem-pl-parser-private.h"
 
-#define RSS_NEEDLE "<rss "
-#define RSS_NEEDLE2 "<rss\n"
-#define ATOM_NEEDLE "<feed "
-#define OPML_NEEDLE "<opml "
+#define RSS_NEEDLE "<rss"
+#define ATOM_NEEDLE "<feed"
+#define OPML_NEEDLE "<opml"
+
+static const char *
+totem_pl_parser_is_xml_type (const char *data,
+			     gsize len,
+			     const char *needle,
+			     const char *mimetype)
+{
+	gchar *found;
+	gchar separator;
+
+	g_return_val_if_fail (len > 0, NULL);
+
+	if (len > MIME_READ_CHUNK_SIZE)
+		len = MIME_READ_CHUNK_SIZE;
+
+	found = g_strstr_len (data, len, needle);
+	if (!found)
+		return NULL;
+
+	separator = *(found + strlen(needle));
+	if (g_ascii_isspace (separator))
+		return mimetype;
+
+	return NULL;
+}
 
 const char *
 totem_pl_parser_is_rss (const char *data, gsize len)
 {
-	if (len == 0)
-		return FALSE;
-	if (len > MIME_READ_CHUNK_SIZE)
-		len = MIME_READ_CHUNK_SIZE;
-
-	if (g_strstr_len (data, len, RSS_NEEDLE) != NULL)
-		return RSS_MIME_TYPE;
-	if (g_strstr_len (data, len, RSS_NEEDLE2) != NULL)
-		return RSS_MIME_TYPE;
-
-	return NULL;
+	return totem_pl_parser_is_xml_type (data, len, RSS_NEEDLE, RSS_MIME_TYPE);
 }
 
 const char *
 totem_pl_parser_is_atom (const char *data, gsize len)
 {
-	if (len == 0)
-		return FALSE;
-	if (len > MIME_READ_CHUNK_SIZE)
-		len = MIME_READ_CHUNK_SIZE;
-
-	if (g_strstr_len (data, len, ATOM_NEEDLE) != NULL)
-		return ATOM_MIME_TYPE;
-
-	return NULL;
+	return totem_pl_parser_is_xml_type (data, len, ATOM_NEEDLE, ATOM_MIME_TYPE);
 }
 
 const char *
 totem_pl_parser_is_opml (const char *data, gsize len)
 {
-	if (len == 0)
-		return FALSE;
-	if (len > MIME_READ_CHUNK_SIZE)
-		len = MIME_READ_CHUNK_SIZE;
-
-	if (g_strstr_len (data, len, OPML_NEEDLE) != NULL)
-		return OPML_MIME_TYPE;
-
-	return NULL;
+	return totem_pl_parser_is_xml_type (data, len, OPML_NEEDLE, OPML_MIME_TYPE);
 }
 
 const char *
