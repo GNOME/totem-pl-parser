@@ -1021,6 +1021,37 @@ test_invalid_utf8_characters (void)
 }
 
 static void
+test_parsing_xml_cdata (void)
+{
+	char *uri;
+	const char *description =
+		"POLL (Podcast LPM LONTAR) merupakan sebuah media yang kami gunakan "
+		"untuk menyalurkan potensi anggota LPM LONTAR dengan menyajikan beragam topik diskusi.";
+
+	uri = get_relative_uri (TEST_SRCDIR "cdata.rss");
+
+	/* empty cdata */
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_COPYRIGHT), ==, NULL);
+
+	/* single char */
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_CONTACT), ==, "X");
+
+	/* two chars */
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_LANGUAGE), ==, "in");
+
+	/* one word */
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_TITLE), ==, "POLL");
+
+	/* two words */
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_AUTHOR), ==, "POLL author");
+
+	/* long string */
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_DESCRIPTION), ==, description);
+
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1786,6 +1817,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
+		g_test_add_func ("/parser/parsing/xml_cdata", test_parsing_xml_cdata);
 #ifdef HAVE_QUVI
 		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/parsing/rss_id", test_parsing_rss_id);

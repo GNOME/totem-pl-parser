@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:anchor="https://anchor.fm/xmlns">
+	<channel>
+		<title><![CDATA[POLL]]></title>
+		<description><![CDATA[POLL (Podcast LPM LONTAR) merupakan sebuah media yang kami gunakan untuk menyalurkan potensi anggota LPM LONTAR dengan menyajikan beragam topik diskusi.]]></description>
+		<link>https://anchor.fm/poll1</link>
+		<image>
+			<url>https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/3822711/3822711-1584696597464-3f56d16d84da.jpg</url>
+			<title>POLL</title>
+			<link>https://anchor.fm/poll1</link>
+		</image>
+		<generator>Anchor Podcasts</generator>
+		<lastBuildDate>Tue, 06 Apr 2021 02:07:46 GMT</lastBuildDate>
+		<atom:link href="https://anchor.fm/s/176194fc/podcast/rss" rel="self" type="application/rss+xml"/>
+		<author><![CDATA[POLL]]></author>
+		<webMaster><![CDATA[X]]></webMaster>
+		<copyright><![CDATA[]]></copyright>
+		<language><![CDATA[in]]></language>
+		<atom:link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
+		<itunes:author><![CDATA[POLL author]]></itunes:author>
+		<itunes:summary>POLL (Podcast LPM LONTAR) merupakan sebuah media yang kami gunakan untuk menyalurkan potensi anggota LPM LONTAR dengan menyajikan beragam topik diskusi.</itunes:summary>
+		<itunes:type>episodic</itunes:type>
+		<itunes:owner>
+			<itunes:name>POLL</itunes:name>
+			<itunes:email>podcasts37+176194fc@anchor.fm</itunes:email>
+		</itunes:owner>
+		<itunes:explicit>No</itunes:explicit>
+		<itunes:category text="Education">
+			<itunes:category text="Self-Improvement"/>
+		</itunes:category>
+		<itunes:image href="https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/3822711/3822711-1584696597464-3f56d16d84da.jpg"/>
+		<item>
+			<title><![CDATA[POLL#1 "MAHASISWA" with Dimas AP]]></title>
+			<description><![CDATA[POLL#1 kali ini LPM LONTAR mencoba mengulik makna mahasiswa dari kacamata seorang Dimas AP mahasiswa Teknik Industri UMG
+]]></description>
+			<link>https://anchor.fm/poll1/episodes/POLL1-MAHASISWA-with-Dimas-AP-ebn40u</link>
+			<guid isPermaLink="false">https://anchor.fm/poll1/episodes/POLL1-MAHASISWA-with-Dimas-AP-ebn40u</guid>
+			<dc:creator><![CDATA[POLL]]></dc:creator>
+			<pubDate>Fri, 20 Mar 2020 09:20:00 GMT</pubDate>
+			<enclosure url="https://anchor.fm/s/176194fc/podcast/play/11292126/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fproduction%2F2020-2-20%2F57676097-48000-1-f743da4d9e9f9.mp3" length="28591917" type="audio/mpeg"/>
+			<itunes:summary>POLL#1 kali ini LPM LONTAR mencoba mengulik makna mahasiswa dari kacamata seorang Dimas AP mahasiswa Teknik Industri UMG
+</itunes:summary>
+			<itunes:explicit>No</itunes:explicit>
+			<itunes:duration>1786</itunes:duration>
+			<itunes:image href="https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/3822711/3822711-1584696597464-3f56d16d84da.jpg"/>
+			<itunes:season>1</itunes:season>
+			<itunes:episode>1</itunes:episode>
+			<itunes:episodeType>full</itunes:episodeType>
+		</item>
+	</channel>
+</rss>
