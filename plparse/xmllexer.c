@@ -541,6 +541,7 @@ int lexer_get_token_d_r(struct lexer * lexer, char ** _tok, int * _tok_size, int
 	  if (strncmp(lexer->lexbuf + lexer->lexbuf_pos, "]]>", 3) == 0) {
 	    lexer->lexbuf_pos += 3;
 	    lexer->lex_mode = DATA;
+	    tok[tok_pos] = '\0';
 	    return T_CDATA_STOP;
 	  } else {
 	    tok[tok_pos] = c;
