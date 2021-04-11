@@ -39,6 +39,9 @@
 #define ATOM_NEEDLE "<feed"
 #define OPML_NEEDLE "<opml"
 
+#define GENRE_SEPARATOR ','
+#define SUB_GENRE_SEPARATOR '/'
+
 static const char *
 totem_pl_parser_is_xml_type (const char *data,
 			     gsize len,
@@ -109,6 +112,69 @@ xml_parser_get_node_value (xml_node_t *parent, const char *node_name)
 	}
 
 	return NULL;
+}
+
+/*
+ * <itunes:category text="Health & Fitness">   <-- xml_node
+ *   <itunes:category text="Alternative Health"/>
+ * </itunes:category>
+ *
+ * get_itunes_subgenre (xml_node)
+ *
+ * returns "Alternative Health"
+ *
+ */
+static const char *
+get_itunes_subgenre (xml_node_t *parent)
+{
+	xml_node_t *child;
+	const char *sub_genre = NULL;
+
+	for (child = parent->child; child != NULL; child = child->next) {
+		if (child->name == NULL)
+			continue;
+
+		if (g_ascii_strcasecmp (child->name, "itunes:category") == 0) {
+			sub_genre = xml_parser_get_property (child, "text");
+
+			/* we expect atmost one itunes subgenre */
+			break;
+		}
+	}
+
+	return sub_genre;
+}
+
+/*
+ * <itunes:category text="Technology">         <-- xml_node
+ *   <itunes:category text="Tech News"/>
+ * </itunes:category>
+ *
+ * get_itunes_genre (xml_node)
+ *
+ * returns "Technology/Tech News"
+ *
+ */
+static char *
+get_itunes_genre (xml_node_t *node)
+{
+	char *genre = NULL;
+	const char *main_genre = NULL;
+
+	main_genre = xml_parser_get_property (node, "text");
+
+	/* if main genre exists, check and append sub-genres */
+	if (main_genre != NULL) {
+		const char *sub_genre;
+		sub_genre = get_itunes_subgenre (node);
+
+		if (sub_genre != NULL)
+			genre = g_strdup_printf ("%s%c%s", main_genre, SUB_GENRE_SEPARATOR, sub_genre);
+		else
+			genre = g_strdup (main_genre);
+	}
+
+	return genre;
 }
 
 static gboolean
@@ -323,8 +389,12 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 {
 	const char *title, *language, *description, *author;
 	const char *contact, *img, *pub_date, *copyright, *generator, *explicit;
+	g_autofree char *genre = NULL;
+	g_autofree char *genres = NULL;
+	GString *genres_str;
 	xml_node_t *node;
 
+	genres_str = NULL;
 	title = language = description = author = NULL;
 	contact = img = pub_date = copyright = generator = explicit = NULL;
 
@@ -378,8 +448,23 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 			copyright = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "itunes:explicit") == 0) {
 			explicit = node->data;
+		} else if (g_ascii_strcasecmp (node->name, "itunes:category") == 0) {
+			/* only one primary genre */
+			if (genre == NULL) {
+				genre = get_itunes_genre (node);
+				genres_str = g_string_new (genre);
+			} else {
+				char *tmp;
+
+				tmp = get_itunes_genre (node);
+				g_string_append_printf (genres_str, "%c%s", GENRE_SEPARATOR, tmp);
+				g_free (tmp);
+			}
 		}
 	}
+
+	if (genres_str)
+		genres = g_string_free (genres_str, FALSE);
 
 	/* update generator as author, only as last resort */
 	if (!author && generator)
@@ -390,6 +475,8 @@ parse_rss_items (TotemPlParser *parser, const char *uri, xml_node_t *parent)
 				 TOTEM_PL_PARSER_FIELD_IS_PLAYLIST, TRUE,
 				 TOTEM_PL_PARSER_FIELD_URI, uri,
 				 TOTEM_PL_PARSER_FIELD_TITLE, title,
+				 TOTEM_PL_PARSER_FIELD_GENRE, genre,
+				 TOTEM_PL_PARSER_FIELD_GENRES, genres,
 				 TOTEM_PL_PARSER_FIELD_LANGUAGE, language,
 				 TOTEM_PL_PARSER_FIELD_DESCRIPTION, description,
 				 TOTEM_PL_PARSER_FIELD_AUTHOR, author,

@@ -84,9 +84,17 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(TotemPlParser, g_object_unref)
 /**
  * TOTEM_PL_PARSER_FIELD_GENRE:
  *
- * Metadata field for an entry's genre.
+ * Metadata field for an entry's primary genre. This is a string of
+ * the form 'Genre1' or 'Genre1/SubGenre1".
  **/
 #define TOTEM_PL_PARSER_FIELD_GENRE		"genre"
+/**
+ * TOTEM_PL_PARSER_FIELD_GENRES:
+ *
+ * Metadata field for an entry's full genre. This is a concatenated
+ * string of the form 'Genre1/SubGenre1,Genre2/SubGenre2" etc.
+ **/
+#define TOTEM_PL_PARSER_FIELD_GENRES		"genres"
 /**
  * TOTEM_PL_PARSER_FIELD_TITLE:
  *
