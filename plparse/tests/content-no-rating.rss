@@ -5,6 +5,7 @@
 	xmlns:atom="http://www.w3.org/2005/Atom"
 	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
 	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
 	>
 
 <channel>
@@ -27,6 +28,15 @@
 	<width>32</width>
 	<height>32</height>
 </image> 
+	<itunes:category text="Health &amp; Fitness">
+		<itunes:category text="Alternative Health"/>
+	</itunes:category>
+	<itunes:category text="Education">
+		<itunes:category text="Self-Improvement"/>
+	</itunes:category>
+	<itunes:category text="Health &amp; Fitness">
+		<itunes:category text="Nutrition"/>
+	</itunes:category>
 	<item>
 		<title>Escape Pod 769: Deal</title>
 		<link>https://escapepod.org/2021/01/28/escape-pod-769-deal/</link>

@@ -1085,6 +1085,54 @@ test_parsing_xml_cdata (void)
 }
 
 static void
+test_parsing_feed_genres (void)
+{
+	char *uri;
+
+	/* missing genre */
+	uri = get_relative_uri (TEST_SRCDIR "541405.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, NULL);
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRES), ==, NULL);
+	g_free (uri);
+
+	/* single genre 1 */
+	uri = get_relative_uri (TEST_SRCDIR "podcast-description.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, "Society & Culture");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRES), ==, "Society & Culture");
+	g_free (uri);
+
+	/* single genre 2 */
+	uri = get_relative_uri (TEST_SRCDIR "791154-kqed.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, "News & Politics");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRES), ==, "News & Politics");
+	g_free (uri);
+
+	/* single genre (with single subgenre) */
+	uri = get_relative_uri (TEST_SRCDIR "HackerMedley");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, "Technology/Tech News");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRES), ==, "Technology/Tech News");
+	g_free (uri);
+
+	/* multiple genre 1 */
+	uri = get_relative_uri (TEST_SRCDIR "560051.xml");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, "Society & Culture");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRES), ==, "Society & Culture,News & Politics,Religion & Spirituality");
+	g_free (uri);
+
+	/* multiple genre (with single subgenre)  */
+	uri = get_relative_uri (TEST_SRCDIR "585407.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, "Business");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRES), ==, "Business,Health/Self-Help");
+	g_free (uri);
+
+	/* multiple genre (with subgenres) */
+	uri = get_relative_uri (TEST_SRCDIR "content-no-rating.rss");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRE), ==, "Health & Fitness/Alternative Health");
+	g_assert_cmpstr (parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_GENRES), ==, "Health & Fitness/Alternative Health,Education/Self-Improvement,Health & Fitness/Nutrition");
+	g_free (uri);
+}
+
+static void
 test_parsing_hadess (void)
 {
 	if (g_strcmp0 (g_get_user_name (), "hadess") == 0)
@@ -1897,6 +1945,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/podcast_item_explicit", test_parsing_item_explicit);
 		g_test_add_func ("/parser/parsing/invalid_characters", test_invalid_characters);
 		g_test_add_func ("/parser/parsing/invalid_utf8_characters", test_invalid_utf8_characters);
+		g_test_add_func ("/parser/parsing/podcast_feed_genres", test_parsing_feed_genres);
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
