@@ -434,8 +434,7 @@ totem_pl_parser_add_rss (TotemPlParser *parser,
 
 	/* If the document has no name */
 	if (doc->name == NULL
-	    || (g_ascii_strcasecmp (doc->name , "rss") != 0
-		&& g_ascii_strcasecmp (doc->name , "rss\n") != 0)) {
+	    || (g_ascii_strcasecmp (doc->name , "rss") != 0)) {
 		g_free (contents);
 		xml_parser_free_tree (doc);
 		return TOTEM_PL_PARSER_RESULT_ERROR;
