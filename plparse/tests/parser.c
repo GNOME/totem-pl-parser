@@ -3,6 +3,7 @@
 #include <locale.h>
 
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <gio/gio.h>
 
 #include <string.h>
@@ -1467,6 +1468,66 @@ test_saving_async (void)
 	g_main_loop_run (loop);
 }
 
+static void
+test_saving_parsing_xspf_title (void)
+{
+	g_autoptr(TotemPlParser) parser = NULL;
+	g_autoptr(TotemPlPlaylist) playlist = NULL;
+	g_autoptr(GError) error = NULL;
+	g_autoptr(GFile) output = NULL;
+	TotemPlPlaylistIter pl_iter;
+	g_autofree char *path = NULL;
+	int fd;
+	char *uri;
+	char *title;
+
+	parser = totem_pl_parser_new ();
+	playlist = totem_pl_playlist_new ();
+	fd = g_file_open_tmp (NULL, &path, &error);
+	g_assert_no_error (error);
+	close (fd);
+	output = g_file_new_for_path (path);
+	uri = g_file_get_uri (output);
+
+	/* save empty playlist file and check empty title */
+	{
+		totem_pl_parser_save (parser,
+				      playlist,
+				      output,
+				      NULL, TOTEM_PL_PARSER_XSPF, &error);
+		g_assert_error (error, TOTEM_PL_PARSER_ERROR, TOTEM_PL_PARSER_ERROR_EMPTY_PLAYLIST);
+		g_clear_error (&error);
+		title = parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_TITLE);
+		g_assert_cmpstr (title, ==, NULL);
+	}
+
+	/* save non-empty playlist file with empty title and check empty title */
+	{
+		totem_pl_playlist_append (playlist, &pl_iter);
+		add_pl_iter_metadata (playlist, &pl_iter);
+		totem_pl_parser_save (parser,
+				      playlist,
+				      output,
+				      NULL, TOTEM_PL_PARSER_XSPF, &error);
+		g_assert_no_error (error);
+		title = parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_TITLE);
+		g_assert_cmpstr (title, ==, NULL);
+	}
+
+	/* save non-empty playlist file with non-empty title and check non-empty title */
+	{
+		totem_pl_parser_save (parser,
+				      playlist,
+				      output,
+				      "샘플 재생 목록 제목", TOTEM_PL_PARSER_XSPF, &error);
+		g_assert_no_error (error);
+		title = parser_test_get_playlist_field (uri, TOTEM_PL_PARSER_FIELD_TITLE);
+		g_assert_cmpstr (title, ==, "샘플 재생 목록 제목");
+	}
+
+	g_free (uri);
+}
+
 #define MAX_DESCRIPTION_LEN 128
 #define DATE_BUFSIZE 512
 #define PRINT_DATE_FORMAT "%Y-%m-%dT%H:%M:%SZ"
@@ -1752,6 +1813,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/wma_asf", test_parsing_wma_asf);
 		g_test_add_func ("/parser/parsing/remote_mp3", test_parsing_remote_mp3);
 		g_test_add_func ("/parser/parsing/xml_trailing_space", test_xml_trailing_space);
+		g_test_add_func ("/parser/saving/parsing/xspf_title", test_saving_parsing_xspf_title);
 		g_test_add_func ("/parser/saving/sync", test_saving_sync);
 		g_test_add_func ("/parser/saving/async", test_saving_async);
 
