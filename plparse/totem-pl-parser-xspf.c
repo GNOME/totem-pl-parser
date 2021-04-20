@@ -106,15 +106,23 @@ totem_pl_parser_save_xspf (TotemPlParser    *parser,
         TotemPlPlaylistIter iter;
 	GFileOutputStream *stream;
 	char *buf;
+	GString *str;
 	gboolean valid, success;
 
 	stream = g_file_replace (output, NULL, FALSE, G_FILE_CREATE_NONE, cancellable, error);
 	if (stream == NULL)
 		return FALSE;
 
-	buf = g_strdup_printf ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				"<playlist version=\"1\" xmlns=\"http://xspf.org/ns/0/\">\n"
-				" <trackList>\n");
+	str = g_string_new ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			    "<playlist version=\"1\" xmlns=\"http://xspf.org/ns/0/\">\n");
+
+	if (title != NULL && title[0] != '\0') {
+		g_string_append_printf (str, "<title>%s</title>\n", title);
+	}
+
+	str = g_string_append (str, " <trackList>\n");
+	buf = g_string_free (str, FALSE);
+
 	success = totem_pl_parser_write_string (G_OUTPUT_STREAM (stream), buf, cancellable, error);
 	g_free (buf);
 	if (success == FALSE)
