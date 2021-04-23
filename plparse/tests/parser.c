@@ -1683,6 +1683,8 @@ main (int argc, char *argv[])
 	if (uris == NULL) {
 		check_http ();
 
+		option_debug = TRUE;
+
 		g_test_add_func ("/parser/duration", test_duration);
 		g_test_add_func ("/parser/date", test_date);
 		g_test_add_func ("/parser/relative", test_relative);
