@@ -25,3 +25,7 @@ build-fedora:
     - curl https://gitlab.freedesktop.org/hadess/check-abi/-/raw/main/contrib/check-abi-fedora.sh | bash
     - dnf install -y $DEPS_ABI_CHECK
     - check-abi ${LAST_ABI_BREAK} $(git rev-parse HEAD)
+  artifacts:
+    when: always
+    paths:
+    - _build/meson-logs/*
