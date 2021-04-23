@@ -825,7 +825,7 @@ totem_pl_parser_add_itms (TotemPlParser *parser,
 		return TOTEM_PL_PARSER_RESULT_ERROR;
 	}
 
-	DEBUG(file, g_print ("Got ID '%s' for URL '%s'", id, uri));
+	DEBUG(file, g_print ("Got ID '%s' for URL '%s'\n", id, uri));
 
 	json_uri = g_strdup_printf ("https://itunes.apple.com/lookup?id=%s&entity=podcast", id);
 	g_free (id);
