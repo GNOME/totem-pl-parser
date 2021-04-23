@@ -766,6 +766,9 @@ totem_pl_parser_parse_json (char *data, gsize len, gboolean debug)
 {
 	char *s, *end;
 
+	if (debug)
+		g_print ("About to parse JSON:\n%s", data);
+
 	s = g_strstr_len (data, len, "feedUrl\":\"");
 	if (s == NULL)
 		return NULL;
