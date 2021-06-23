@@ -50,6 +50,3 @@ msgstr "دي‌ڤي‌دي"
 #: ../plparse/totem-disc.c:889
 msgid "Digital Television"
 msgstr "تلفاز رقمي"
-
-#~ msgid "Could not connect to the HAL daemon"
-#~ msgstr "تعذّر الاتصال بجنّي HAL"
