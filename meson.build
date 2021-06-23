@@ -32,7 +32,6 @@ plparse_libversion  = '@0@.@1@.@2@'.format(plparse_soversion, plparse_lt_age, pl
 # Requirements
 glib_req    = '>= 2.56.0'
 gio_req     = '>= 2.24.0'
-quvi_req    = '>= 0.9.1'
 archive_req = '>= 3.0'
 
 # Dependencies
@@ -152,23 +151,6 @@ if enable_uchardet != 'no'
   endif
 endif
 
-# quvi dependency
-enable_quvi = get_option('enable-quvi')
-have_quvi = false
-pkgconf.set('QUVI', '')
-if enable_quvi != 'no'
-  quvi_dep = dependency('libquvi-0.9', version: quvi_req, required: false)
-  if enable_quvi == 'yes' and not quvi_dep.found()
-    error('Quvi support requested but not available.')
-  endif
-  if quvi_dep.found()
-    pkgconf.set('QUVI', 'libquvi-0.9')
-    cdata.set('HAVE_QUVI', true,
-      description: 'libquvi available in the system')
-    have_quvi = true
-  endif
-endif
-
 # libarchive dependency
 enable_libarchive = get_option('enable-libarchive')
 have_libarchive = false
@@ -251,12 +233,10 @@ message('''
 
     Configuration summary:
 
-      Quvi video link parsing           : @0@
-      ISO detection with libarchive     : @1@
-      AmazonAMZ decoding with libgcrypt : @2@
-      uchardet encoding detection       : @3@
-'''.format(have_quvi.to_string('yes', 'no'),
-           have_libarchive.to_string('yes', 'no'),
+      ISO detection with libarchive     : @0@
+      AmazonAMZ decoding with libgcrypt : @1@
+      uchardet encoding detection       : @2@
+'''.format(have_libarchive.to_string('yes', 'no'),
            have_libgcrypt.to_string('yes', 'no'),
            have_uchardet.to_string('yes', 'no')))
 

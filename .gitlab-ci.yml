@@ -1,6 +1,5 @@
 variables:
   DEPENDENCIES: redhat-rpm-config meson git gettext gtk-doc meson glib2-devel libxml2-devel gobject-introspection-devel libgcrypt-devel libarchive-devel uchardet-devel
-  DEPS_QUVI: libquvi-devel
   DEPS_ABI_CHECK: libsoup-devel gmime-devel
   TEST_DEPS: gvfs dbus-daemon shared-mime-info
   LAST_ABI_BREAK: "9ccc3c78a5a41b86bdd2c9fb63ad4963e65e4f63"
@@ -13,12 +12,6 @@ build-fedora:
   script:
     - meson _build
     - dnf install -y $TEST_DEPS
-    - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build test
-    - ninja -C _build install
-    # And now with quvi support
-    - rm -rf _build
-    - dnf install -y $DEPS_QUVI
-    - meson _build
     - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build test
     - ninja -C _build install
     # ABI check, the deps are needed to build the old version of totem-pl-parser
