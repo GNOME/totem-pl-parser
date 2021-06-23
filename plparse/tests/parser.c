@@ -200,7 +200,6 @@ test_data_get_data (const char *uri, guint *len)
 	return buffer;
 }
 
-#ifdef HAVE_QUVI
 static void
 test_videosite (void)
 {
@@ -209,7 +208,6 @@ test_videosite (void)
 	g_test_message ("Testing data parsing \"%s\"...", uri);
 	g_assert_true (totem_pl_parser_can_parse_from_uri (uri, TRUE));
 }
-#endif
 
 static void
 test_parsability (void)
@@ -508,35 +506,28 @@ parser_test_get_playlist_field (const char *uri,
 static void
 test_image_link (void)
 {
-#ifdef HAVE_QUVI
 	char *uri;
 
 	/* From http://www.101greatgoals.com/feed/ */
 	uri = get_relative_uri (TEST_SRCDIR "empty-feed.xml");
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, NULL);
 	g_free (uri);
-#endif
 }
 
 static void
 test_no_url_podcast (void)
 {
-#ifdef HAVE_QUVI
 	char *uri;
 
 	/* From http://feeds.guardian.co.uk/theguardian/football/rss */
 	uri = get_relative_uri (TEST_SRCDIR "no-url-podcast.xml");
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "http://www.guardian.co.uk/sport/video/2012/jul/26/london-2012-north-korea-flag-video");
 	g_free (uri);
-#endif
 }
 
-#ifdef HAVE_QUVI
 static void
 test_youtube_starttime (void)
 {
-/* Those do not work with quvi */
-#if 0
 	const char *uri;
 
 	/* old type of direct link */
@@ -550,9 +541,7 @@ test_youtube_starttime (void)
 	/* new type of direct link */
 	uri = "http://www.youtube.com/watch?v=Fk2bUvrv-Uc&t=2m30s";
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_STARTTIME), ==, "150");
-#endif
 }
-#endif /* HAVE_QUVI */
 
 static void
 test_itms_parsing (void)
@@ -1279,7 +1268,6 @@ test_parsing_m3u_streaming (void)
 	g_free (uri);
 }
 
-#ifdef HAVE_QUVI
 static void
 test_parsing_rss_id (void)
 {
@@ -1297,7 +1285,6 @@ test_parsing_rss_link (void)
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "http://www.guardian.co.uk/technology/audio/2011/may/03/tech-weekly-art-love-bin-laden");
 	g_free (uri);
 }
-#endif /* HAVE_QUVI */
 
 static void
 test_parsing_not_asx_playlist (void)
@@ -1795,6 +1782,7 @@ main (int argc, char *argv[])
 	/* If we've been given no URIs, run the static tests */
 	if (uris == NULL) {
 		check_http ();
+		g_setenv ("TOTEM_PL_PARSER_VIDEOSITE_SCRIPT", TEST_SRCDIR "/videosite-tester.sh", TRUE);
 
 		option_debug = TRUE;
 
@@ -1840,12 +1828,10 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
 		g_test_add_func ("/parser/parsing/xml_cdata", test_parsing_xml_cdata);
-#ifdef HAVE_QUVI
 		g_test_add_func ("/parser/videosite", test_videosite);
 		g_test_add_func ("/parser/parsing/rss_id", test_parsing_rss_id);
 		g_test_add_func ("/parser/parsing/rss_link", test_parsing_rss_link);
 		g_test_add_func ("/parser/parsing/youtube_starttime", test_youtube_starttime);
-#endif /* HAVE_QUVI */
 		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
 		g_test_add_func ("/parser/parsing/not_really_php", test_parsing_not_really_php);
 		g_test_add_func ("/parser/parsing/not_really_php_but_html_instead", test_parsing_not_really_php_but_html_instead);
