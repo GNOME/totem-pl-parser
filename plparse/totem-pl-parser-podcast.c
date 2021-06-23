@@ -273,7 +273,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 			if (tmp != NULL)
 				content_type = tmp;
 		} else if (g_ascii_strcasecmp (node->name, "link") == 0 &&
-			   totem_pl_parser_is_videosite (node->data, FALSE) != FALSE) {
+			   totem_pl_parser_is_videosite (node->data, totem_pl_parser_is_debugging_enabled (parser)) != FALSE) {
 			uri = node->data;
 		} else if (g_ascii_strcasecmp (node->name, "image") == 0) {
 			const char *tmp;
@@ -294,7 +294,7 @@ parse_rss_item (TotemPlParser *parser, xml_node_t *parent)
 
 	if (id != NULL &&
 	    uri == NULL &&
-	    totem_pl_parser_is_videosite (id, FALSE) != FALSE)
+	    totem_pl_parser_is_videosite (id, totem_pl_parser_is_debugging_enabled (parser)) != FALSE)
 		uri = id;
 
 	if (uri != NULL) {
@@ -580,7 +580,7 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 				href = xml_parser_get_property (node, "href");
 				if (href == NULL)
 					continue;
-				if (!totem_pl_parser_is_videosite (href, FALSE))
+				if (!totem_pl_parser_is_videosite (href, totem_pl_parser_is_debugging_enabled (parser)))
 					continue;
 				uri = href;
 			}
@@ -614,7 +614,7 @@ parse_atom_entry (TotemPlParser *parser, xml_node_t *parent)
 					prop = xml_parser_get_property (child, "url");
 					if (prop == NULL)
 						continue;
-					if (!totem_pl_parser_is_videosite (prop, FALSE))
+					if (!totem_pl_parser_is_videosite (prop, totem_pl_parser_is_debugging_enabled (parser)))
 						continue;
 					uri = prop;
 				} else if (g_ascii_strcasecmp (child->name, "media:thumbnail") == 0) {
