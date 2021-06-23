@@ -1,7 +1,7 @@
 # translation of lt.po to Lithuanian
-# Lithuanian translation of totem.
+# Lithuanian translation of totem-pl-parser.
 # Copyright (C) 2004-2006, 2007 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Artūras Šlajus <x11@h2o.pieva.net>, 2004.
 # Justina Klingaitė <justina.klingaite@gmail.com>, 2005.

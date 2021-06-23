@@ -1,13 +1,13 @@
-# translation of totem.HEAD.po to Azerbaijani
-# translation of totem.HEAD.po to Azerbaijani Turkish
-# totem.HEAD.po faylının Azərbaycan dilinə tərcüməsi
-# This file is distributed under the same license as the totem package.
+# translation of totem-pl-parser.HEAD.po to Azerbaijani
+# translation of totem-pl-parser.HEAD.po to Azerbaijani Turkish
+# totem-pl-parser.HEAD.po faylının Azərbaycan dilinə tərcüməsi
+# This file is distributed under the same license as the totem-pl-parser package.
 # Copyright (C) 2003 Mətin Əmirov
 # Mətin Əmirov <metin@karegen.com>, 2003, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem.HEAD\n"
+"Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-06-13 04:36+0200\n"
 "PO-Revision-Date: 2004-06-17 12:36+0300\n"

@@ -1,4 +1,4 @@
-# Chinese (Hong Kong) translation of totem.
+# Chinese (Hong Kong) translation of totem-pl-parser.
 # Copyright (C) 2003, 04, 05, 06, 07 Free Software Foundation, Inc.
 # Abel Cheung <abel@oaka.org>, 2003.
 # Woodman Tuen <wmtuen@gmail.com>, 2004-07.

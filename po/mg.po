@@ -1,6 +1,6 @@
-# Malagasy translation of TOTEM.
-# Copyright (C) 2006 THE TOTEM'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the TOTEM package.
+# Malagasy translation of totem-pl-parser.
+# Copyright (C) 2006 THE totem-pl-parser'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the totem-pl-parser package.
 # Fanomezana Rajaonarisoa <rajfanhar@yahoo.fr>, 2006.
 # Thierry Randrianiriana <randrianiriana@gmail.com>, 2006.
 #

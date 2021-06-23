@@ -1,6 +1,6 @@
-# translation of totem to Kinyarwanda.
+# translation of totem-pl-parser to Kinyarwanda.
 # Copyright (C) 2005 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Steve Murphy <murf@e-tools.com>, 2005
 # Steve performed initial rough translation from compendium built from translations provided by the following translators:
 # Philibert Ndandali  <ndandali@yahoo.fr>, 2005.

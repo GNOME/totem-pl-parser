@@ -4,7 +4,7 @@
 # Yuras Shumovich <shumovichy@gmail.com>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: totem.master\n"
+"Project-Id-Version: totem-pl-parser.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
 "pl-parser&keywords=I18N+L10N&component=General\n"
 "POT-Creation-Date: 2017-02-28 06:43+0000\n"

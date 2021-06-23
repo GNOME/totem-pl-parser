@@ -1,5 +1,5 @@
 # translation of bn_IN.po to Bengali INDIA
-# This file is distributed under the same license as the TOTEM package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Runa Bhattacharjee<runa77@softhome.net>, 2003.
 # Runa Bhattacharjee <runabh@gmail.com>, 2007.

@@ -1,10 +1,10 @@
-# Totem Bahasa Melayu (ms) .. menonton carekawawa
+# totem-pl-parser Bahasa Melayu (ms) .. menonton carekawawa
 # Jika takut risiko, Jangan bicara tentang Perjuangan
 # Hasbullah Bin Pit (sebol) <sebol@ikhlas.com>, 2002
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Totem HEAD\n"
+"Project-Id-Version: totem-pl-parser HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/totem-pl-parser/issues\n"
 "POT-Creation-Date: 2019-10-08 12:43+0000\n"
 "PO-Revision-Date: 2019-12-22 16:58+0800\n"

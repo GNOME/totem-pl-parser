@@ -1,14 +1,14 @@
-# translation of totem.HEAD.ro.po to Română
+# translation of totem-pl-parser.HEAD.ro.po to Română
 # translation of ro.po to
-# Romanian translation of totem.
-# Copyright (C) 2003 THE totem'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the totem package.
+# Romanian translation of totem-pl-parser.
+# Copyright (C) 2003 THE totem-pl-parser'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the totem-pl-parser package.
 # Mugurel Tudor <mugurelu@gnome.ro>, 2003, 2005, 2006.
 # Adi Roiban https://launchpad.net/~adiroiban, 2008, 2009
 # Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2015, 2018.
 msgid ""
 msgstr ""
-"Project-Id-Version: totem.HEAD.ro\n"
+"Project-Id-Version: totem-pl-parser.HEAD.ro\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
 "pl-parser&keywords=I18N+L10N&component=General\n"
 "POT-Creation-Date: 2017-08-15 20:46+0000\n"

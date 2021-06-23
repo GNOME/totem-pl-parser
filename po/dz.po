@@ -1,10 +1,10 @@
-# Dzongkha translation of totem.
+# Dzongkha translation of totem-pl-parser.
 # Copyright @ 2006, Free software foundation, Inc.
 # Mindu Dorji.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem.HEAD.dz\n"
+"Project-Id-Version: totem-pl-parser.HEAD.dz\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-13 22:42+0100\n"
 "PO-Revision-Date: 2007-05-22 00:08+0530\n"

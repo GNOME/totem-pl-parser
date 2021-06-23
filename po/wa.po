@@ -1,4 +1,4 @@
-# translation of totem.HEAD.po to Walloon
+# translation of totem-pl-parser.HEAD.po to Walloon
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2004 THE PACKAGE'S COPYRIGHT HOLDER.
 # Pablo Saratxaga <pablo@walon.org>, 2004, 2005.

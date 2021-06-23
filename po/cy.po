@@ -1,6 +1,6 @@
-# totem yn Gymraeg
+# totem-pl-parser yn Gymraeg
 # Copyright (C) 2003-2005 Rhys Griff, Dafydd Harries, Rhys Jones, Gareth Bowker
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Steve Griff <steve@stevegriff.com>, 2003.
 # Dafydd Harries <daf@parnassus.ath.cx>, 2003.
 # Gareth Bowker <tgb@tgb.org.uk>, 2005.

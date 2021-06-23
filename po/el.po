@@ -1,5 +1,5 @@
 # translation of totem-pl-parser.HEAD.po to Greek
-# This file is distributed under the same license as the totem.HEAD package.
+# This file is distributed under the same license as the totem-pl-parser.HEAD package.
 # Copyright (C) Free Software Foundation Inc, 2003
 #
 # Kostas Papadimas <pkst@gnome.org>, 2003, 2005.

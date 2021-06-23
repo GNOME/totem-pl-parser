@@ -1,6 +1,6 @@
-# translation of totem.HEAD.po to Punjabi
-# Copyright (C) 2004 THE totem'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the totem package.
+# translation of totem-pl-parser.HEAD.po to Punjabi
+# Copyright (C) 2004 THE totem-pl-parser'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Punjab Linux Technology <punjablinux@netscape.net>, 2004.
 # A S Alam <aalam@users.sf.net>, 2005, 2006, 2007, 2009, 2014, 2021.

@@ -1,7 +1,7 @@
 # translation of totem-pl-parser.HEAD.mr.po to marathi
-# Marathi translation for totem
+# Marathi translation for totem-pl-parser
 # Copyright (c) (c) 2006 Canonical Ltd, and Rosetta Contributors 2006
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Onkar Shinde <onkarshinde@gmail.com>, 2006.
 # Rahul Bhalerao <b.rahul.pm@gmail.com>, 2006.

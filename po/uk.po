@@ -1,6 +1,6 @@
 # Ukrainian translation of gnomeicu.
 # Copyright (C) Free Software Foundation 2003
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Yuriy Syrota <rasta@cvs.gnome.org>
 #
 # Maxim Dzumanenko <dziumanenko@gmail.com>, 2003-2007.

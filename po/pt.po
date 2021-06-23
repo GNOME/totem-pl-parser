@@ -1,5 +1,5 @@
 # totem-pl-parser's Portuguese translation.
-# Copyright © 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2013 totem
+# Copyright © 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2013 totem-pl-parser
 # This file is distributed under the same license as the totem-pl-parser package.
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2013.
 # Pedro Albuquerque <palbuquerque73@openmailbox.com>, 2015.

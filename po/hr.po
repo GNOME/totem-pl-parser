@@ -1,9 +1,9 @@
-# Translation of totem to Croatiann
+# Translation of totem-pl-parser to Croatiann
 # Copyright (C) Croatiann team
 # Translators: Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Diana Ćorluka <dina@iskrameco.hr>,Ivan Jankovic <rbrrneck@gmx.net>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,
 msgid ""
 msgstr ""
-"Project-Id-Version: totem 0\n"
+"Project-Id-Version: totem-pl-parser 0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
 "pl-parser&keywords=I18N+L10N&component=General\n"
 "POT-Creation-Date: 2016-10-11 14:10+0000\n"

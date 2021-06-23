@@ -1,9 +1,9 @@
-# Totem'i esitusnimekirja analüüsija eesti keele tõlge.
+# totem-pl-parser'i esitusnimekirja analüüsija eesti keele tõlge.
 # Estonian translation of Totem Playlist Parser.
 #
 # Copyright (C) 2002, 2005, 2006 The Free Software Foundation
 # Copyright (C) 2007-2009 The GNOME Project.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Ilmar Kerm <ikerm@hot.ee>, 2002.
 # Ivar Smolin <okul@linux.ee>, 2005-2009.

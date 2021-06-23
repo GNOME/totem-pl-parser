@@ -1,10 +1,10 @@
-# translation of totem.pot to Russian
+# translation of totem-pl-parser.pot to Russian
 #
 # Nail Abdrahmanov <nail@gella.com.ru>, 2002.
 # Leonid Kanter <leon@asplinux.ru>, 2003, 2004, 2005, 2006, 2007.
 # Tuchinsky Artem <tuchinsky@gmail.com, 2006.
 #
-# This file is distributed under the same license as the "totem" package.
+# This file is distributed under the same license as the "totem-pl-parser" package.
 # Stas Solovey <whats_up@tut.by>, 2016.
 #
 msgid ""

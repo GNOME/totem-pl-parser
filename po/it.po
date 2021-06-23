@@ -1,4 +1,4 @@
-# Totem's Italian translation.
+# totem-pl-parser's Italian translation.
 # Copyright (C) 2002-2009, 2014 Free Software Foundation, Inc.
 # Pier Luigi Fiorini <plfiorini@supereva.it>, 2002.
 # Davide Patti <dpatti@diit.unict.it> , 2007.

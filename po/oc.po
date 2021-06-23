@@ -1,6 +1,6 @@
 # Occitan translation of totem-pl-parser.
 # Copyright (C) 2002-2009 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Cédric Valmary <cvalmary@yahoo.fr>, 2015.
 # Cédric Valmary (Tot en òc) <cvalmary@yahoo.fr>, 2015.
 # Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>, 2016.

@@ -1,7 +1,7 @@
 # translation of totem-pl-parser.HEAD.po to Español
-# Translation of totem to Spanish
+# Translation of totem-pl-parser to Spanish
 # Copyright © 2002, 2006, 2007, 2008 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Ricardo Mones Lastra <mones@users.sourceforge.net>, 2002.
 # Baltasar Perez Diaz <baltasar.perez@hispalinux.es>, 2002.

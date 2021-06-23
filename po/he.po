@@ -1,4 +1,4 @@
-# translation of totem.HEAD.he.po to Hebrew
+# translation of totem-pl-parser.HEAD.he.po to Hebrew
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2005 THE PACKAGE'S COPYRIGHT HOLDER.
 # Gil 'Dolfin' Osher <dolfin@rpg.org.il>, 2003.
@@ -7,7 +7,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem.HEAD.he\n"
+"Project-Id-Version: totem-pl-parser.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-26 05:47+0200\n"
 "PO-Revision-Date: 2014-01-26 05:48+0200\n"

@@ -1,6 +1,6 @@
 # French translation of totem-pl-parser.
 # Copyright (C) 2002-2009 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Christophe Fergeau <christophe.fergeau@laposte.net>, 2002.
 # Sébastien Oustric <sebastien.oustric@laposte.net>, 2002.

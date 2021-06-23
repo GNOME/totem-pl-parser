@@ -1,6 +1,6 @@
-# Xhosa translation of totem
+# Xhosa translation of totem-pl-parser
 # Copyright (C) 2005 Canonical Ltd.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Translation by Canonical Ltd <translations@canonical.com> with thanks to
 # Translation World CC in South Africa, 2005.
 #

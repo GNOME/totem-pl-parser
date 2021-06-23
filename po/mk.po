@@ -1,7 +1,7 @@
-# translation of totem.gnome-2-20.po to Macedonian
-# translation of totem.HEAD.mk.po to
-# This file is distributed under the same license as the totem.HEAD.mk package.
-# Copyright (C) 2005 THE totem.HEAD.mk'S COPYRIGHT HOLDER, 2003
+# translation of totem-pl-parser.gnome-2-20.po to Macedonian
+# translation of totem-pl-parser.HEAD.mk.po to
+# This file is distributed under the same license as the totem-pl-parser package.
+# Copyright (C) 2005 THE totem-pl-parser'S COPYRIGHT HOLDER, 2003
 #
 #  <ufo@linux.net.mk>, 2005.
 # Арангел Ангов <ufo@linux.net.mk>, 2005.
@@ -10,7 +10,7 @@
 # Arangel Angov <arangel@linux.net.mk>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: totem.gnome-2-20\n"
+"Project-Id-Version: totem-pl-parser.gnome-2-20\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-07 17:14+0000\n"
 "PO-Revision-Date: 2007-09-02 19:58+0200\n"

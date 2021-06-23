@@ -1,5 +1,5 @@
 # Përkthimi i totem-pl-parser në shqip.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Copyright (C) 2004, 2005, 2008 Free Software Foundation, Inc.
 #
 # Elian Myftiu <elian@alblinux.net>,		2005.

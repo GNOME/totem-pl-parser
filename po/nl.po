@@ -1,6 +1,6 @@
-# Dutch translation of Totem
+# Dutch translation of totem-pl-parser
 #
-# This file is distributed under the same license as the Totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Huib Kleinhout <huib@stack.nl>, 2002–2004.
 # Tino Meinen <a.t.meinen@chello.nl>, 2004–2008.

@@ -1,7 +1,7 @@
 # translation of totem-pl-parser.master.te.po to Telugu
-# Telugu translation of totem
+# Telugu translation of totem-pl-parser
 # Copyright (C) 2005 Free Software Foundation, Andhra Pradesh.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 #
 # Prajasakti Localisation Team <localisation@prajasakti.com>, 2005.

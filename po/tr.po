@@ -1,6 +1,6 @@
-# Turkish translation of totem.
-# Copyright (C) 2003 totem's COPYRIGHT HOLDER
-# This file is distributed under the same license as the totem package.
+# Turkish translation of totem-pl-parser.
+# Copyright (C) 2003 totem-pl-parser's COPYRIGHT HOLDER
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 # Caner Baydemir <caner.baydemir@gelecek.com.tr>, 2003.
 # Erçin EKER <ercin.eker@linux.org.tr>, 2005,2007.

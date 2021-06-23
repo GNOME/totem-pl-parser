@@ -1,6 +1,6 @@
-# Serbian translation of totem
+# Serbian translation of totem-pl-parser
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2003—2016.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Вељко М. Станојевић <veljko@vms.homelinux.net>
 # Данило Шеган <danilo@gnome.org>, 2005
 # Андрија Зарић <andrija@gmail.com>, 2005
@@ -8,7 +8,7 @@
 # Марко М. Костић <marko.m.kostic@gmail.com>, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: totem\n"
+"Project-Id-Version: totem-pl-parser\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
 "pl-parser&keywords=I18N+L10N&component=General\n"
 "POT-Creation-Date: 2016-10-29 18:39+0000\n"

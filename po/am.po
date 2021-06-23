@@ -1,12 +1,12 @@
 # Translations into the Amharic Language.
 # Copyright (C) 2002 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem package.
+# This file is distributed under the same license as the totem-pl-parser package.
 # Ge'ez Frontier Foundation <locales@geez.org>, 2002.
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: totem\n"
+"Project-Id-Version: totem-pl-parser\n"
 "POT-Creation-Date: 2003-04-29 20:41+0100\n"
 "PO-Revision-Date: 2003-02-08 10:49+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"

@@ -1,7 +1,7 @@
 # translation of totem-pl-parser.master.id.po to Indonesian
-# translation of totem.
-# Copyright (C) 2004 THE totem's COPYRIGHT HOLDER
-# This file is distributed under the same license as the totem package.
+# translation of totem-pl-parser.
+# Copyright (C) 2004 THE totem-pl-parser's COPYRIGHT HOLDER
+# This file is distributed under the same license as the totem-pl-parser package.
 #
 #
 # Dicky Wahyu Purnomo <dicky.wahyu@massaint.or.id>, 2004.

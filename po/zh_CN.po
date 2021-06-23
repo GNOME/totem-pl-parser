@@ -1,6 +1,6 @@
-# zh_CN translation of totem.
-# Copyright (C) 2003-2004 Totem Team
-# This file is distributed under the same license as the totem package.
+# zh_CN translation of totem-pl-parser.
+# Copyright (C) 2003-2004 totem-pl-parser Team
+# This file is distributed under the same license as the totem-pl-parser package.
 # Funda Wang <fundawang@linux.net.cn>, 2003-2004.
 # jan2xue <75jan@163.com>, 2004. 周延潮
 # Liu Songhe <jackliu9999@263.net>, 2004.
