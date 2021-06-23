@@ -19,38 +19,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.3\n"
 
-#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289 ../plparse/totem-disc.c:533
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
 #, c-format
 msgid "Failed to mount %s."
 msgstr "%s माउन्ट गर्न असफल भयो।."
 
-#: ../plparse/totem-disc.c:418
+#: plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device “%s”."
 msgstr "उपकरण \"%s\" का लागि ड्राइभमा कुनै मिडिया छैन।."
 
-#: ../plparse/totem-disc.c:476
+#: plparse/totem-disc.c:475
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "डिक्स अहिलेसम्म पनि ड्राईभमा नै छ कि हेर्नुहोला ।."
 
-#: ../plparse/totem-disc.c:947
+#: plparse/totem-disc.c:946
 msgid "Audio CD"
 msgstr "ध्वनि सिडि॒"
 
-#: ../plparse/totem-disc.c:949
+#: plparse/totem-disc.c:948
 msgid "Video CD"
 msgstr "भिडिओ(दृष्य) सिडि"
 
-#: ../plparse/totem-disc.c:951
+#: plparse/totem-disc.c:950
 msgid "DVD"
 msgstr "डिभिडि॒"
 
-#: ../plparse/totem-disc.c:953
+#: plparse/totem-disc.c:952
 msgid "Digital Television"
 msgstr "डिजिटल टेलिभिजन"
 
-#: ../plparse/totem-disc.c:955
+#: plparse/totem-disc.c:954
 msgid "Blu-ray"
 msgstr "ब्लू रे"
 
@@ -657,11 +657,13 @@ msgstr "ब्लू रे"
 #~ msgstr "प्रयोगको लागी श्रव्य प्रतिफलको प्रकार"
 
 #~ msgid ""
-#~ "Type of audio output to use: \"0\" for stereo, \"1\" for 4-channel output, \"2\" for "
-#~ "5.0 channel output, \"3\" for 5.1 channel output, \"4\" for AC3 Passthrough."
+#~ "Type of audio output to use: \"0\" for stereo, \"1\" for 4-channel "
+#~ "output, \"2\" for 5.0 channel output, \"3\" for 5.1 channel output, \"4\" "
+#~ "for AC3 Passthrough."
 #~ msgstr ""
-#~ "प्रयोगको लागी श्रव्य प्रतिफलको प्रकार:\"०\"स्टेरियोको लागी, \"१\" ४-च्यानल प्रतिफलको लागी, \"२\" "
-#~ "५॰० च्यानल प्रतिफलको लागी, \"३\" ५॰१ च्यानल प्रतिफलको लागी \"४\" एसि३ पासथ्रुको लागी"
+#~ "प्रयोगको लागी श्रव्य प्रतिफलको प्रकार:\"०\"स्टेरियोको लागी, \"१\" ४-च्यानल "
+#~ "प्रतिफलको लागी, \"२\" ५॰० च्यानल प्रतिफलको लागी, \"३\" ५॰१ च्यानल प्रतिफलको "
+#~ "लागी \"४\" एसि३ पासथ्रुको लागी"
 
 #~ msgid "Whether the main window should stay on top"
 #~ msgstr "मुख्य विन्डो माथी गएर बस्छ कि"
@@ -757,8 +759,11 @@ msgstr "ब्लू रे"
 #~ "'%s' श्रव्य ड्राईभर लोड भएन।\n"
 #~ "साधधन व्यस्त छैन कि चेक गर्नुहोल ।"
 
-#~ msgid "No video output is available. Make sure that the program is correctly installed."
-#~ msgstr "भिडियो प्रतिफल उपलब्ध छैन । यकिन गर्नुस कि कार्यक्रम सहि तरिकाले जिडिएको छ ।"
+#~ msgid ""
+#~ "No video output is available. Make sure that the program is correctly "
+#~ "installed."
+#~ msgstr ""
+#~ "भिडियो प्रतिफल उपलब्ध छैन । यकिन गर्नुस कि कार्यक्रम सहि तरिकाले जिडिएको छ ।"
 
 #~ msgid "The server you are trying to connect to is not known."
 #~ msgstr "तपाईंले जडान गर्न न खोज्नु भएको सेवादायक चिनिएन ।"
@@ -776,11 +781,11 @@ msgstr "ब्लू रे"
 #~ msgstr "तोकिएको चलचित्र भेटिएन ।"
 
 #~ msgid ""
-#~ "The source seems encrypted, and can't be read. Are you trying to play an encrypted DVD "
-#~ "without libdvdcss?"
+#~ "The source seems encrypted, and can't be read. Are you trying to play an "
+#~ "encrypted DVD without libdvdcss?"
 #~ msgstr ""
-#~ "स्रोत गुप्तिकरण गरेको देखिन्छ, र पढ्न सकिन्दैन । के तपाईं libdvdcss बिना डिभिडिको गुप्तिकरण प्ले गर्न "
-#~ "कोशिश गर्न चहानुहुन्छ।"
+#~ "स्रोत गुप्तिकरण गरेको देखिन्छ, र पढ्न सकिन्दैन । के तपाईं libdvdcss बिना डिभिडिको "
+#~ "गुप्तिकरण प्ले गर्न कोशिश गर्न चहानुहुन्छ।"
 
 #~ msgid "The movie could not be read."
 #~ msgstr "चलचित्र पढ्न सकिएन ।"
@@ -822,18 +827,18 @@ msgstr "ब्लू रे"
 #~ msgstr "चलचित्र अझै छविमा छ । तपाईले यसलाई छवि दर्शकसंगै खोल्न सक्नु हुन्छ ।"
 
 #~ msgid ""
-#~ "Video codec '%s' is not handled. You might need to install additional plugins to be "
-#~ "able to play some types of movies"
+#~ "Video codec '%s' is not handled. You might need to install additional "
+#~ "plugins to be able to play some types of movies"
 #~ msgstr ""
-#~ "भिडिओ(दृष्य) कोडेक्क '%s' हेन्डल छैन ।केहि किसिमको चलचित्र प्ले गर्नको लागी तपाईले थप प्लगइनहरू स्थापना "
-#~ "गर्नुपर्छ ।"
+#~ "भिडिओ(दृष्य) कोडेक्क '%s' हेन्डल छैन ।केहि किसिमको चलचित्र प्ले गर्नको लागी तपाईले थप "
+#~ "प्लगइनहरू स्थापना गर्नुपर्छ ।"
 
 #~ msgid ""
-#~ "Audio codec '%s' is not handled. You might need to install additional plugins to be "
-#~ "able to play some types of movies"
+#~ "Audio codec '%s' is not handled. You might need to install additional "
+#~ "plugins to be able to play some types of movies"
 #~ msgstr ""
-#~ "ध्वनि कोडेक्क '%s' हेन्डल छैन ।केहि किसिमको चलचित्र प्ले गर्नको लागी तपाईले थप प्लगइनहरू स्थापना "
-#~ "गर्नुपर्छ ।"
+#~ "ध्वनि कोडेक्क '%s' हेन्डल छैन ।केहि किसिमको चलचित्र प्ले गर्नको लागी तपाईले थप "
+#~ "प्लगइनहरू स्थापना गर्नुपर्छ ।"
 
 #~ msgid "This is an audio-only file, and there is no audio output available."
 #~ msgstr "यो श्रव्य-मात्र फाइल हो र कुनै श्रव्य प्रतिफल उपलब्ध छैन।"
@@ -958,8 +963,11 @@ msgstr "ब्लू रे"
 #~ msgid "Overwrite file?"
 #~ msgstr "फाईल अधिलेखन गर्ने हो ?"
 
-#~ msgid "A file named '%s' already exists.  Are you sure you want to overwrite it?"
-#~ msgstr "दिनुभएको फाईल नाम '%s' पहिले नै राखिसकेको छ । के तपाई त्यसैमा अधिलेखन गर्न चाहानुहुन्छ?"
+#~ msgid ""
+#~ "A file named '%s' already exists.  Are you sure you want to overwrite it?"
+#~ msgstr ""
+#~ "दिनुभएको फाईल नाम '%s' पहिले नै राखिसकेको छ । के तपाई त्यसैमा अधिलेखन गर्न "
+#~ "चाहानुहुन्छ?"
 
 #~ msgid "Filename"
 #~ msgstr "लेखपत्रनाम॒"
@@ -984,21 +992,28 @@ msgstr "ब्लू रे"
 #~ "के तपाई दृष्य असरहरू सक्षम पार्न चाहानुहुन्छ ?"
 
 #~ msgid ""
-#~ "The change of this setting will only take effect for the next movie, or when Totem is "
-#~ "restarted."
+#~ "The change of this setting will only take effect for the next movie, or "
+#~ "when Totem is restarted."
 #~ msgstr ""
-#~ "यस सेेटिङको परिवर्तनले अर्को चलचित्रक लागी असर मात्र लिन्दछ वा जव टोटेम फेरि शुरू हुन्छ।फेरी शुरू हुन्छ ।"
+#~ "यस सेेटिङको परिवर्तनले अर्को चलचित्रक लागी असर मात्र लिन्दछ वा जव टोटेम फेरि शुरू हुन्छ।"
+#~ "फेरी शुरू हुन्छ ।"
 
-#~ msgid "Switching on or off this type of TV-Out requires a restart to take effect."
-#~ msgstr "स्विच खुल्ला वा बन्द गर्ने यस्तो प्रकारको टिभी-आउटको असर प्राप्त गर्नको लागी फेरी शुरू गर्नुपर्दछ।"
+#~ msgid ""
+#~ "Switching on or off this type of TV-Out requires a restart to take effect."
+#~ msgstr ""
+#~ "स्विच खुल्ला वा बन्द गर्ने यस्तो प्रकारको टिभी-आउटको असर प्राप्त गर्नको लागी फेरी शुरू "
+#~ "गर्नुपर्दछ।"
 
 #~ msgid "Totem could not start the file manager."
 #~ msgstr "टोटेमले फाईल प्रबन्धक शुरू गर्न सकेन।"
 
-#~ msgid "Changing the visuals effect type will require a restart to take effect."
+#~ msgid ""
+#~ "Changing the visuals effect type will require a restart to take effect."
 #~ msgstr "दृष्यहरूको असर परिवर्तन हुने प्रकारको असर प्राप्तको लागी फेरी शुरू गर्नुहोला ।"
 
-#~ msgid "The change of audio output type will only take effect when Totem is restarted."
+#~ msgid ""
+#~ "The change of audio output type will only take effect when Totem is "
+#~ "restarted."
 #~ msgstr "जब टोटेम पुन:शुरू हुन्छ "
 
 #~ msgid "Audio/Video"
@@ -1059,23 +1074,30 @@ msgstr "ब्लू रे"
 #~ msgstr "टोटेमले दृष्य मिडिया निकाल्न सकेन ।"
 
 #~ msgid ""
-#~ "Totem cannot play this type of media (%s) because you do not have the appropriate "
-#~ "plugins to handle it."
+#~ "Totem cannot play this type of media (%s) because you do not have the "
+#~ "appropriate plugins to handle it."
 #~ msgstr ""
-#~ "टोटेमले यस्तो प्रकारको मिडिया (%s) प्ले गर्न सकेन किनभने तपाईसंग त्यसलाई हेन्डल गर्ने उपयुक्तक प्लगईन छैन ।"
+#~ "टोटेमले यस्तो प्रकारको मिडिया (%s) प्ले गर्न सकेन किनभने तपाईसंग त्यसलाई हेन्डल गर्ने "
+#~ "उपयुक्तक प्लगईन छैन ।"
 
 #~ msgid ""
-#~ "Please install the necessary plugins and restart Totem to be able to play this media."
+#~ "Please install the necessary plugins and restart Totem to be able to play "
+#~ "this media."
 #~ msgstr ""
-#~ "कृपया चाहिएको प्लगइन स्थापना गर्नुहोला र टोटेमले यो मिडिया प्ले गर्न सक्छ कि फेरी शुरू गर्नुहोला ।"
+#~ "कृपया चाहिएको प्लगइन स्थापना गर्नुहोला र टोटेमले यो मिडिया प्ले गर्न सक्छ कि फेरी शुरू "
+#~ "गर्नुहोला ।"
 
-#~ msgid "Totem could not play this media (%s) although a plugin is present to handle it."
+#~ msgid ""
+#~ "Totem could not play this media (%s) although a plugin is present to "
+#~ "handle it."
 #~ msgstr "टोटेमले यो मिडिया (%s) प्ले गर्न सकेन तैपनि हेन्डल गर्नको लागी प्लगईन छ ।"
 
 #~ msgid ""
-#~ "You might want to check that a disc is present in the drive and that it is correctly "
-#~ "configured."
-#~ msgstr "तपाईले सायद डिक्स अहिलेसम्म पनि ड्राईभमा नै छ कि जाँच्न र ठीक तरिकाले कन्फिगर गर्न चहानुहुन्छ ।"
+#~ "You might want to check that a disc is present in the drive and that it "
+#~ "is correctly configured."
+#~ msgstr ""
+#~ "तपाईले सायद डिक्स अहिलेसम्म पनि ड्राईभमा नै छ कि जाँच्न र ठीक तरिकाले कन्फिगर गर्न "
+#~ "चहानुहुन्छ ।"
 
 #~ msgid "%s - Totem Movie Player"
 #~ msgstr "%s -टोटेम चलचित्र प्लेयर"
@@ -1179,7 +1201,9 @@ msgstr "ब्लू रे"
 #~ msgid ""
 #~ "Could not initialise the thread-safe libraries.\n"
 #~ "Verify your system installation. Vanity will now exit."
-#~ msgstr "पुस्तकालय सुरक्षितसंग थालनी भएन । तपाईको प्रणाली स्थापना रूज्जु गर्नुहोला ।रित्तोपना बन्द हुदैछ ।"
+#~ msgstr ""
+#~ "पुस्तकालय सुरक्षितसंग थालनी भएन । तपाईको प्रणाली स्थापना रूज्जु गर्नुहोला ।रित्तोपना "
+#~ "बन्द हुदैछ ।"
 
 #~ msgid ""
 #~ "Vanity couln't initialise the \n"

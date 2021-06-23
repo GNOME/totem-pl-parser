@@ -20,36 +20,40 @@ msgstr ""
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../plparse/totem-disc.c:357 ../plparse/totem-disc.c:499, c-format
-#| msgid "Failed to mount %s"
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
+#, c-format
 msgid "Failed to mount %s."
 msgstr "Klarte ikkje montera %s."
 
-#: ../plparse/totem-disc.c:388
-#, c-format
-msgid "No media in drive for device '%s'."
+#: plparse/totem-disc.c:418
+#, fuzzy, c-format
+msgid "No media in drive for device “%s”."
 msgstr "Ingen medium i stasjonen for eininga «%s»."
 
-#: ../plparse/totem-disc.c:442
+#: plparse/totem-disc.c:475
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Sjå til at det står ei plate i stasjonen."
 
-#: ../plparse/totem-disc.c:881
+#: plparse/totem-disc.c:946
 msgid "Audio CD"
 msgstr "Lyd-CD"
 
-#: ../plparse/totem-disc.c:883
+#: plparse/totem-disc.c:948
 msgid "Video CD"
 msgstr "Video-CD"
 
-#: ../plparse/totem-disc.c:885
+#: plparse/totem-disc.c:950
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:887
+#: plparse/totem-disc.c:952
 msgid "Digital Television"
 msgstr "Digital-TV"
+
+#: plparse/totem-disc.c:954
+msgid "Blu-ray"
+msgstr ""
 
 #~ msgid "Failed to find mountpoint for device %s"
 #~ msgstr "Klarte ikkje å finna monteringspunkt for eininga %s"
@@ -1275,8 +1279,8 @@ msgstr "Digital-TV"
 #~ "Audio codec '%s' is not handled. You might need to install additional "
 #~ "plugins to be able to play some types of movies"
 #~ msgstr ""
-#~ "Lydkodeken «%s» er ikkje handsama. du må kanskje installera fleire tillegg "
-#~ "for å spela av somme typar film"
+#~ "Lydkodeken «%s» er ikkje handsama. du må kanskje installera fleire "
+#~ "tillegg for å spela av somme typar film"
 
 #~ msgid "This is an audio-only file, and there is no audio output available."
 #~ msgstr "Dette er ei lydfil, men det går ikkje å spela lyd."
