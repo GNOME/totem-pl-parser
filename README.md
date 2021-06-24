@@ -16,11 +16,10 @@ See [NEWS](NEWS) file
 Dependencies
 ============
 
-glib >= 2.36
-libxml2
-
-libarchive >= 3.0 (optional)
-libgcrypt (optional)
+- glib >= 2.36
+- libxml2
+- libarchive >= 3.0 (optional)
+- libgcrypt (optional)
 
 BUGS
 ====
