@@ -123,6 +123,7 @@ elif cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=pointer-to-int-cast',
     '-Werror=empty-body',
     '-Werror=write-strings',
+    '-Werror=maybe-uninitialized',
   ]
 else
   test_cflags = []
