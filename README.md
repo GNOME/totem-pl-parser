@@ -19,7 +19,6 @@ Dependencies
 glib >= 2.36
 libxml2
 
-libquvi >= 0.9.1 (optional)
 libarchive >= 3.0 (optional)
 libgcrypt (optional)
 
