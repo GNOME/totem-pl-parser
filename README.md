@@ -1,8 +1,9 @@
-
-                         _|_ __|_ _ ._ _  
-                          |_(_)|_(/_| | | 
+```
+                         _|_ __|_ _ ._ _
+                          |_(_)|_(/_| | |
 
                          playlist parser
+```
 
 totem-pl-parser is a simple GObject-based library to parse a host of
 playlist formats, as well as save those
