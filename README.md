@@ -31,3 +31,9 @@ To get a parsing debug output, run:
 ```sh
 $ $BUILDDIR/plparse/tests/parser --debug <URI to playlist file>
 ```
+
+License
+=======
+
+totem-pl-parser is licensed under the GNU Lesser General Public License
+version 2.1 or later.
