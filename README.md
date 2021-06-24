@@ -11,7 +11,7 @@ playlist formats, as well as save those
 News
 ====
 
-See NEWS file
+See [NEWS](NEWS) file
 
 Dependencies
 ============
