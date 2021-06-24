@@ -26,8 +26,11 @@ BUGS
 
 Bugs should be filed in [GNOME GitLab](https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues).
 
-To get a better debug output, run:
-# test-parser --debug
+To get a parsing debug output, run:
+
+```sh
+$ $BUILDDIR/plparse/tests/parser --debug <URI to playlist file>
+```
 
 Contact
 =======
