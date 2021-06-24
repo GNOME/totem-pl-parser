@@ -31,9 +31,3 @@ To get a parsing debug output, run:
 ```sh
 $ $BUILDDIR/plparse/tests/parser --debug <URI to playlist file>
 ```
-
-Contact
-=======
-
-Bastien Nocera <hadess@hadess.net>
-http://wiki.gnome.org/Apps/Videos
