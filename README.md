@@ -24,8 +24,7 @@ Dependencies
 BUGS
 ====
 
-Bugs should be filed in GNOME's Bugzilla:
-http://bugzilla.gnome.org/enter_bug.cgi?product=totem-pl-parser
+Bugs should be filed in [GNOME GitLab](https://gitlab.gnome.org/GNOME/totem-pl-parser/-/issues).
 
 To get a better debug output, run:
 # test-parser --debug
