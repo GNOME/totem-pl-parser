@@ -1,3 +1,5 @@
+image: fedora:latest
+
 variables:
   DEPENDENCIES:
     redhat-rpm-config
@@ -22,7 +24,6 @@ variables:
   LAST_ABI_BREAK: "9ccc3c78a5a41b86bdd2c9fb63ad4963e65e4f63"
 
 build-fedora:
-  image: fedora:latest
   before_script:
     # Update
     - dnf -y update && dnf install -y $DEPENDENCIES
@@ -31,11 +32,15 @@ build-fedora:
     - dnf install -y $TEST_DEPS
     - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build test
     - ninja -C _build install
-    # ABI check, the deps are needed to build the old version of totem-pl-parser
-    - curl https://gitlab.freedesktop.org/hadess/check-abi/-/raw/main/contrib/check-abi-fedora.sh | bash
-    - dnf install -y $DEPS_ABI_CHECK
-    - check-abi ${LAST_ABI_BREAK} $(git rev-parse HEAD)
   artifacts:
     when: always
     paths:
     - _build/meson-logs/*
+
+check_abi:
+  before_script:
+    # ABI check, the deps are needed to build the old version of totem-pl-parser
+    - dnf update -y --nogpgcheck && dnf install -y --nogpgcheck $DEPENDENCIES $DEPS_ABI_CHECK
+  script:
+    - curl https://gitlab.freedesktop.org/hadess/check-abi/-/raw/main/contrib/check-abi-fedora.sh | bash
+    - check-abi ${LAST_ABI_BREAK} $(git rev-parse HEAD)
