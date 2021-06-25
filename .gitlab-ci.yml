@@ -32,10 +32,12 @@ build-fedora:
     - dnf install -y $TEST_DEPS
     - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build test
     - ninja -C _build install
+    - ninja -C _build dist
   artifacts:
     when: always
     paths:
     - _build/meson-logs/*
+    - _build/meson-dist/totem-pl-parser-*.tar.xz
 
 check_abi:
   before_script:
