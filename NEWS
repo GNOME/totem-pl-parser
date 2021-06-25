@@ -1,5 +1,13 @@
 New features and significant updates in version...
 
+3.26.6:
+- Remove quvi videosite checker. The videosite checker functionality
+  still exists and can be implemented according to README-videosite-script.md
+- Plenty of RSS and Atom related parsing fixes and enhancements, including
+  better description selection, exporting of feed content ratings, better
+  support for non-UTF-8 feeds, and general speedups
+- Fix parsing and saving XSPF playlist titles
+
 3.26.5:
 - Add g_auto* cleanup support
 - Add asynchronous version of totem_pl_parser_save()
