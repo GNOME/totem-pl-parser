@@ -1,3 +1,9 @@
+/*
+ * Copyright 2007-2022 Bastien Nocera <hadess@hadess.net>
+ *
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+
 #include "config.h"
 
 #include <locale.h>
