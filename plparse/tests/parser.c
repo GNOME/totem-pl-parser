@@ -22,34 +22,17 @@
 #include "totem-pl-parser.h"
 #include "totem-pl-parser-mini.h"
 #include "totem-pl-parser-private.h"
+#include "utils.h"
 
-typedef struct {
-	const char *field;
-	char *ret;
-} ParserResult;
+gboolean option_debug = FALSE;
+gboolean option_force = FALSE;
+gboolean option_disable_unsafe = FALSE;
+gboolean option_no_recurse = FALSE;
+char *option_base_uri = NULL;
 
 static GMainLoop *loop = NULL;
-static gboolean option_no_recurse = FALSE;
-static gboolean option_debug = FALSE;
-static gboolean option_force = FALSE;
-static gboolean option_disable_unsafe = FALSE;
-static char *option_base_uri = NULL;
 static char **uris = NULL;
 static gboolean http_supported = FALSE;
-
-static char *
-get_relative_uri (const char *rel)
-{
-	GFile *file;
-	char *uri;
-
-	file = g_file_new_for_commandline_arg (rel);
-	uri = g_file_get_uri (file);
-	g_object_unref (file);
-	g_assert_nonnull (uri);
-
-	return uri;
-}
 
 static char *
 test_relative_real (const char *uri, const char *output)
@@ -286,227 +269,6 @@ test_parsability (void)
 		g_test_message ("Testing filename parsing \"%s\"...", files[i].uri);
 		g_assert_cmpint (totem_pl_parser_can_parse_from_filename (files[i].uri, TRUE), ==, files[i].parsable);
 	}
-}
-
-static void
-entry_parsed_cb (TotemPlParser *parser,
-		 const char *uri,
-		 GHashTable *metadata,
-		 ParserResult *res)
-{
-	if (res->ret == NULL) {
-		if (g_strcmp0 (res->field, TOTEM_PL_PARSER_FIELD_URI) == 0)
-			res->ret = g_strdup (uri);
-		else
-			res->ret = g_strdup (g_hash_table_lookup (metadata, res->field));
-	}
-}
-
-static void
-entry_parsed_num_cb (TotemPlParser *parser,
-		     const char *uri,
-		     GHashTable *metadata,
-		     guint *ret)
-{
-	*ret = *ret + 1;
-}
-
-static guint
-parser_test_get_num_entries (const char *uri)
-{
-	TotemPlParserResult retval;
-	guint ret = 0;
-	TotemPlParser *pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", FALSE,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_num_cb), &ret);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return ret;
-}
-
-typedef struct {
-	gboolean pl_started;
-	gboolean parsed_item;
-	gboolean pl_ended;
-} PlOrderingData;
-
-static void
-playlist_started_order (TotemPlParser *parser,
-			const char *uri,
-			GHashTable *metadata,
-			PlOrderingData *data)
-{
-	data->pl_started = TRUE;
-}
-
-static void
-playlist_ended_order (TotemPlParser *parser,
-		      const char *uri,
-		      PlOrderingData *data)
-{
-	g_assert_true (data->pl_started);
-	g_assert_true (data->parsed_item);
-	data->pl_ended = TRUE;
-}
-
-static void
-entry_parsed_cb_order (TotemPlParser *parser,
-		       const char *uri,
-		       GHashTable *metadata,
-		       PlOrderingData *data)
-{
-	/* Check that the playlist started happened before the entry appeared */
-	g_assert_true (data->pl_started);
-	data->parsed_item = TRUE;
-}
-
-static gboolean
-parser_test_get_order_result (const char *uri)
-{
-	TotemPlParserResult retval;
-	PlOrderingData data;
-	TotemPlParser *pl;
-
-	pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	g_signal_connect (G_OBJECT (pl), "playlist-started",
-			  G_CALLBACK (playlist_started_order), &data);
-	g_signal_connect (G_OBJECT (pl), "playlist-ended",
-			  G_CALLBACK (playlist_ended_order), &data);
-	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_cb_order), &data);
-
-	data.pl_started = FALSE;
-	data.pl_ended = FALSE;
-	data.parsed_item = FALSE;
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_assert_true (data.pl_ended);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return data.pl_started && data.pl_ended && data.parsed_item;
-}
-
-static TotemPlParserResult
-simple_parser_test (const char *uri)
-{
-	TotemPlParserResult retval;
-	TotemPlParser *pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return retval;
-}
-
-static char *
-parser_test_get_entry_field (const char *uri, const char *field)
-{
-	TotemPlParserResult retval;
-	TotemPlParser *pl = totem_pl_parser_new ();
-	ParserResult res;
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	res.field = field;
-	res.ret = NULL;
-	g_signal_connect (G_OBJECT (pl), "entry-parsed",
-			  G_CALLBACK (entry_parsed_cb), &res);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return res.ret;
-}
-
-static void
-playlist_started_title_cb (TotemPlParser *parser,
-			   const char *uri,
-			   GHashTable *metadata,
-			   char **ret)
-{
-	*ret = g_strdup (uri);
-}
-
-static char *
-parser_test_get_playlist_uri (const char *uri)
-{
-	TotemPlParserResult retval;
-	char *ret = NULL;
-	TotemPlParser *pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	g_signal_connect (G_OBJECT (pl), "playlist-started",
-			  G_CALLBACK (playlist_started_title_cb), &ret);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return ret;
-}
-
-static void
-playlist_started_field_cb (TotemPlParser *parser,
-			   const char *uri,
-			   GHashTable *metadata,
-			   ParserResult *res)
-{
-	res->ret = g_strdup (g_hash_table_lookup (metadata, res->field));
-}
-
-static char *
-parser_test_get_playlist_field (const char *uri,
-				const char *field)
-{
-	TotemPlParserResult retval;
-	ParserResult res;
-	TotemPlParser *pl = totem_pl_parser_new ();
-
-	g_object_set (pl, "recurse", !option_no_recurse,
-			  "debug", option_debug,
-			  "force", option_force,
-			  "disable-unsafe", option_disable_unsafe,
-			  NULL);
-	res.field = field;
-	res.ret = NULL;
-	g_signal_connect (G_OBJECT (pl), "playlist-started",
-			  G_CALLBACK (playlist_started_field_cb), &res);
-
-	retval = totem_pl_parser_parse_with_base (pl, uri, option_base_uri, FALSE);
-	g_test_message ("Got retval %d for uri '%s'", retval, uri);
-	g_object_unref (pl);
-
-	return res.ret;
 }
 
 static void
@@ -1507,6 +1269,15 @@ block_main_loop_idle (gpointer data)
 }
 
 static void
+entry_parsed_num_cb (TotemPlParser *parser,
+		     const char *uri,
+		     GHashTable *metadata,
+		     guint *ret)
+{
+	*ret = *ret + 1;
+}
+
+static void
 test_async_parsing_signal_order (void)
 {
 	AsyncParseData data;
@@ -1826,52 +1597,6 @@ test_parsing (void)
 	g_main_loop_run (loop);
 }
 
-static void
-check_http (void)
-{
-	GVfs *vfs;
-	gboolean error_out_on_http = FALSE;
-
-	if (g_strcmp0 (g_get_user_name (), "hadess") == 0 &&
-	    http_supported == FALSE)
-		error_out_on_http = TRUE;
-
-	vfs = g_vfs_get_default ();
-	if (vfs == NULL) {
-		if (error_out_on_http)
-			g_error ("gvfs with http support is required (no gvfs)");
-		else
-			g_message ("gvfs with http support is required (no gvfs)");
-		return;
-	} else {
-		const char * const *schemes;
-
-		schemes = g_vfs_get_supported_uri_schemes (vfs);
-		if (schemes == NULL) {
-			if (error_out_on_http)
-				g_error ("gvfs with http support is required (no http)");
-			else
-				g_message ("gvfs with http support is required (no http)");
-			return;
-		} else {
-			guint i;
-			for (i = 0; schemes[i] != NULL; i++) {
-				if (g_str_equal (schemes[i], "http")) {
-					http_supported = TRUE;
-					break;
-				}
-			}
-		}
-	}
-
-	if (http_supported == FALSE) {
-		if (error_out_on_http)
-			g_error ("gvfs with http support is required (no http)");
-		else
-			g_message ("gvfs with http support is required (no http)");
-	}
-}
-
 int
 main (int argc, char *argv[])
 {
@@ -1907,7 +1632,7 @@ main (int argc, char *argv[])
 
 	/* If we've been given no URIs, run the static tests */
 	if (uris == NULL) {
-		check_http ();
+		http_supported = check_http ();
 		g_setenv ("TOTEM_PL_PARSER_VIDEOSITE_SCRIPT", TEST_SRCDIR "/videosite-tester.sh", TRUE);
 
 		option_debug = TRUE;
