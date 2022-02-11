@@ -303,7 +303,7 @@ static gpointer totem_pl_parser_parent_class = NULL;
 GType
 totem_pl_parser_get_type (void)
 {
-	static volatile gsize g_define_type_id__volatile = 0;
+	static gsize g_define_type_id__volatile = 0;
 	if (g_once_init_enter (&g_define_type_id__volatile))
 	{
 		const GTypeInfo g_define_type_info = {
@@ -2780,7 +2780,7 @@ totem_pl_parser_can_parse_from_uri (const char *uri, gboolean debug)
 GType
 totem_pl_parser_metadata_get_type (void)
 {
-	static volatile gsize g_define_type_id__volatile = 0;
+	static gsize g_define_type_id__volatile = 0;
 	if (g_once_init_enter (&g_define_type_id__volatile))
 	{
 		/* NOTE: This is equivalent to the definition for GHashTable in gboxed.c, in that it uses the same copy/free functions.
