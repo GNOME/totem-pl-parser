@@ -319,7 +319,7 @@ get_tzone (date_token **token)
 			memcpy (tzone, inptr, len);
 			tzone[len] = '\0';
 
-			return g_time_zone_new (tzone);
+			return g_time_zone_new_identifier (tzone);
 		}
 
 		if (*inptr == '(') {
@@ -338,7 +338,7 @@ get_tzone (date_token **token)
 
 			snprintf (tzone, 6, "%+05d", tz_offsets[t].offset);
 
-			return g_time_zone_new (tzone);
+			return g_time_zone_new_identifier (tzone);
 		}
 	}
 
