@@ -32,7 +32,8 @@ build-fedora:
     - dnf install -y $TEST_DEPS
     - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build test
     - ninja -C _build install
-    - ninja -C _build dist
+    # dist also runs the tests
+    - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build dist
   artifacts:
     when: always
     paths:
