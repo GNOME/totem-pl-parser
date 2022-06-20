@@ -2409,8 +2409,8 @@ totem_pl_parser_parse_finish (TotemPlParser *parser, GAsyncResult *async_result,
 {
 	GTask *task = G_TASK (async_result);
 
-	g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), FALSE);
-	g_return_val_if_fail (g_task_is_valid (async_result, parser), FALSE);
+	g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
+	g_return_val_if_fail (g_task_is_valid (async_result, parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
 
 	/* Propagate any errors which were caught and return the result; otherwise just return the result */
 	return g_task_propagate_int (task, error);
