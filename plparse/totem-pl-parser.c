@@ -2408,12 +2408,24 @@ TotemPlParserResult
 totem_pl_parser_parse_finish (TotemPlParser *parser, GAsyncResult *async_result, GError **error)
 {
 	GTask *task = G_TASK (async_result);
+	GError *local_error = NULL;
+	int ret;
 
 	g_return_val_if_fail (TOTEM_PL_IS_PARSER (parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
 	g_return_val_if_fail (g_task_is_valid (async_result, parser), TOTEM_PL_PARSER_RESULT_UNHANDLED);
 
 	/* Propagate any errors which were caught and return the result; otherwise just return the result */
-	return g_task_propagate_int (task, error);
+	ret = g_task_propagate_int (task, &local_error);
+	if (ret == -1) {
+		if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED)) {
+			ret = TOTEM_PL_PARSER_RESULT_CANCELLED;
+			g_error_free (local_error);
+		} else {
+			g_warning ("Unexpected error from asynchronous parsing: %s", local_error->message);
+			g_propagate_error (error, local_error);
+		}
+	}
+	return ret;
 }
 
 /**
