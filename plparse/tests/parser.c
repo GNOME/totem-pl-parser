@@ -278,6 +278,49 @@ test_parsability (void)
 }
 
 static void
+cancelled_parse_async_ready (GObject *pl, GAsyncResult *result, gpointer userdata)
+{
+	AsyncParseData *data = userdata;
+	TotemPlParserResult retval;
+	g_autoptr(GError) error = NULL;
+
+	retval = totem_pl_parser_parse_finish (TOTEM_PL_PARSER (pl), result, &error);
+	g_assert_cmpint (retval, ==, TOTEM_PL_PARSER_RESULT_CANCELLED);
+	g_assert_no_error (error);
+
+	data->count = 0xFEED;
+
+	g_main_loop_quit (data->mainloop);
+	g_object_unref (pl);
+}
+
+static void
+test_cancelled_parsing (void)
+{
+	TotemPlParser *pl = totem_pl_parser_new ();
+	GCancellable *cancellable;
+	AsyncParseData data;
+
+	cancellable = g_cancellable_new ();
+
+	g_object_set (pl, "recurse", FALSE,
+			  "debug", option_debug,
+			  "force", option_force,
+			  "disable-unsafe", option_disable_unsafe,
+			  NULL);
+	data.uri = get_relative_uri (TEST_SRCDIR "separator.m3u");
+	data.mainloop = g_main_loop_new (NULL, FALSE);
+	data.count = 0;
+
+	totem_pl_parser_parse_async (pl, data.uri, FALSE, cancellable, cancelled_parse_async_ready, &data);
+	g_cancellable_cancel (cancellable);
+	g_main_loop_run (data.mainloop);
+
+	g_free (data.uri);
+	g_assert_cmpint (data.count, ==, 0xFEED);
+}
+
+static void
 test_youtube_starttime (void)
 {
 	const char *uri;
@@ -1071,6 +1114,7 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/relative", test_relative);
 		g_test_add_func ("/parser/resolution", test_resolution);
 		g_test_add_func ("/parser/parsability", test_parsability);
+		g_test_add_func ("/parser/cancelled", test_cancelled_parsing);
 		g_test_add_func ("/parser/m3u_relative", test_m3u_relative);
 		g_test_add_func ("/parser/m3u_audio_track", test_m3u_audio_track);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
