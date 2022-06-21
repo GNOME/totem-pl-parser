@@ -34,6 +34,12 @@ static GMainLoop *loop = NULL;
 static char **uris = NULL;
 static gboolean http_supported = FALSE;
 
+typedef struct {
+	int count;
+	GMainLoop *mainloop;
+	char *uri;
+} AsyncParseData;
+
 static char *
 test_relative_real (const char *uri, const char *output)
 {
@@ -666,13 +672,6 @@ test_parsing_not_really_php_but_html_instead (void)
 	g_assert_cmpint (simple_parser_test (uri), ==, TOTEM_PL_PARSER_RESULT_IGNORED);
 	g_free (uri);
 }
-
-
-typedef struct {
-	int count;
-	GMainLoop *mainloop;
-	char *uri;
-} AsyncParseData;
 
 static void
 parse_async_ready (GObject *pl, GAsyncResult *result, gpointer userdata)
