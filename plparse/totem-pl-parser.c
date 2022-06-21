@@ -408,7 +408,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      G_STRUCT_OFFSET (TotemPlParserClass, entry_parsed),
 			      NULL, NULL,
 			      _totemplparser_marshal_VOID__STRING_BOXED,
-			      G_TYPE_NONE, 2, G_TYPE_STRING, TOTEM_TYPE_PL_PARSER_METADATA);
+			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_HASH_TABLE);
 	/**
 	 * TotemPlParser::playlist-started:
 	 * @parser: the object which received the signal
@@ -428,7 +428,7 @@ totem_pl_parser_class_init (TotemPlParserClass *klass)
 			      G_STRUCT_OFFSET (TotemPlParserClass, playlist_started),
 			      NULL, NULL,
 			      _totemplparser_marshal_VOID__STRING_BOXED,
-			      G_TYPE_NONE, 2, G_TYPE_STRING, TOTEM_TYPE_PL_PARSER_METADATA);
+			      G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_HASH_TABLE);
 	/**
 	 * TotemPlParser::playlist-ended:
 	 * @parser: the object which received the signal
