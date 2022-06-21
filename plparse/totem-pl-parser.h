@@ -427,11 +427,6 @@ TotemPlParser *totem_pl_parser_new (void);
  */
 typedef GHashTable TotemPlParserMetadata;
 
-GType totem_pl_parser_metadata_get_type (void) G_GNUC_CONST;
-#define TOTEM_TYPE_PL_PARSER_METADATA (totem_pl_parser_metadata_get_type())
-
-G_DEFINE_AUTOPTR_CLEANUP_FUNC(TotemPlParserMetadata, g_hash_table_destroy)
-
 G_END_DECLS
 
 #endif /* TOTEM_PL_PARSER_H */
