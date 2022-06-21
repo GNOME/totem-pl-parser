@@ -2787,24 +2787,3 @@ totem_pl_parser_can_parse_from_uri (const char *uri, gboolean debug)
 {
 	return totem_pl_parser_is_videosite (uri, debug);
 }
-
-#ifndef TOTEM_PL_PARSER_MINI
-GType
-totem_pl_parser_metadata_get_type (void)
-{
-	static gsize g_define_type_id__volatile = 0;
-	if (g_once_init_enter (&g_define_type_id__volatile))
-	{
-		/* NOTE: This is equivalent to the definition for GHashTable in gboxed.c, in that it uses the same copy/free functions.
-		 * This means that if we box a TotemPlParserMetadata inside a GValue, we can safely unbox it as a GHashTable (and vice-versa).
-		 * This means we can hide TotemPlParserMetadata from introspection, and just pretend it's actually been a GHashTable all along. */
-		GType g_define_type_id = g_boxed_type_register_static (
-		    g_intern_static_string ("TotemPlParserMetadata"),
-		    (GBoxedCopyFunc) g_hash_table_ref,
-		    (GBoxedFreeFunc) g_hash_table_unref);
-		g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-	}
-	return g_define_type_id__volatile;
-}
-#endif /* !TOTEM_PL_PARSER_MINI */
-
