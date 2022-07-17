@@ -1,35 +1,37 @@
-# translation of ka.po to Georgian
-# Alexander Didebulidze <didebuli@in.tum.de>, 2005, 2006.
-# Vladimer Sichinava <vsichi@gnome.org>, 2007.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: ka\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-27 08:58+0200\n"
-"PO-Revision-Date: 2007-02-19 03:10+0100\n"
-"Last-Translator: Vladimer Sichinava <vsichi@gnome.org>\n"
-"Language-Team: Georgian <http://mail.gnome.org/mailman/listinfo/gnome-ge-list>\n"
+"Project-Id-Version: totem-pl-parser\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/totem-pl-parser/issues\n"
+"POT-Creation-Date: 2022-06-21 10:36+0000\n"
+"PO-Revision-Date: 2022-07-17 19:26+0200\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to mount %s."
-msgstr "დაიშვა შეცდომა მონტირების დროს: %s"
+msgstr "%s-თვის მიმაგრების შეცდომა."
 
 #: plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device “%s”."
-msgstr ""
+msgstr "წამყვანში დისკი არ დევს (მოწყობილობა %s)"
 
 #: plparse/totem-disc.c:475
 #, c-format
 msgid "Please check that a disc is present in the drive."
-msgstr "გთხოვთ დარწმუნდეთ რომ დისკი ჩადებულია."
+msgstr "დარწმუნდით, რომ წამყვანში დისკი დევს."
 
 #: plparse/totem-disc.c:946
 msgid "Audio CD"
@@ -45,8 +47,8 @@ msgstr "DVD"
 
 #: plparse/totem-disc.c:952
 msgid "Digital Television"
-msgstr ""
+msgstr "ციფრული ტელევიზია"
 
 #: plparse/totem-disc.c:954
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-Ray"
