@@ -1,5 +1,5 @@
 # Turkish translation of totem-pl-parser.
-# Copyright (C) 2003 totem-pl-parser's COPYRIGHT HOLDER
+# Copyright (C) 2003-2022 totem-pl-parser's COPYRIGHT HOLDER
 # This file is distributed under the same license as the totem-pl-parser package.
 #
 # Caner Baydemir <caner.baydemir@gelecek.com.tr>, 2003.
@@ -13,9 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: totem-pl-parser\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=totem-"
-"pl-parser&keywords=I18N+L10N&component=General\n"
-"POT-Creation-Date: 2017-06-27 22:41+0000\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/totem-pl-parser/issues\n"
+"POT-Creation-Date: 2022-07-17 17:27+0000\n"
 "PO-Revision-Date: 2017-06-28 15:57+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -26,39 +25,37 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: ../plparse/totem-disc.c:276 ../plparse/totem-disc.c:289
-#: ../plparse/totem-disc.c:533
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
 #, c-format
 msgid "Failed to mount %s."
 msgstr "%s bağlanamadı."
 
-#: ../plparse/totem-disc.c:418
+#: plparse/totem-disc.c:418
 #, c-format
-#| msgid "No media in drive for device '%s'."
 msgid "No media in drive for device “%s”."
 msgstr "“%s” aygıtı için sürücüde ortam yok."
 
-#: ../plparse/totem-disc.c:476
+#: plparse/totem-disc.c:475
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "Sürücü içinde bir disk bulunup bulunmadığını denetleyin."
 
-#: ../plparse/totem-disc.c:947
+#: plparse/totem-disc.c:946
 msgid "Audio CD"
 msgstr "Ses CD’si"
 
-#: ../plparse/totem-disc.c:949
+#: plparse/totem-disc.c:948
 msgid "Video CD"
 msgstr "Video CD’si"
 
-#: ../plparse/totem-disc.c:951
+#: plparse/totem-disc.c:950
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:953
+#: plparse/totem-disc.c:952
 msgid "Digital Television"
 msgstr "Sayısal Televizyon"
 
-#: ../plparse/totem-disc.c:955
+#: plparse/totem-disc.c:954
 msgid "Blu-ray"
 msgstr "Blu-ray"
