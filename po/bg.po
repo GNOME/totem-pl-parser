@@ -1,7 +1,7 @@
 # Bulgarian translation of totem-pl-parser po-file.
 # Copyright (C) 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 # Copyright (C) 2008, 2009, 2017 Free Software Foundation, Inc.
-# This file is distributed under the same license as the totem-pl-parser package.
+# This file is distributed under the same license as the totem package.
 # Evgeni Boevski <linkej@yahoo.com>, 2003.
 # Alexander Shopov <ash@kambanaria.org>, 2004, 2005, 2007, 2008, 2009, 2015.
 # Alexander Shopov <ash@kambanaria.org>, 2017.
@@ -39,11 +39,11 @@ msgstr "Проверете има ли носител в устройствот�
 
 #: ../plparse/totem-disc.c:947
 msgid "Audio CD"
-msgstr "Аудио CD"
+msgstr "CD — аудио"
 
 #: ../plparse/totem-disc.c:949
 msgid "Video CD"
-msgstr "Видео CD"
+msgstr "CD — видео"
 
 #: ../plparse/totem-disc.c:951
 msgid "DVD"
