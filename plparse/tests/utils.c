@@ -171,7 +171,7 @@ parser_test_get_playlist_field (const char *uri,
 	ParserResult res;
 	TotemPlParser *pl = totem_pl_parser_new ();
 
-	g_object_set (pl, "recurse", !option_no_recurse,
+	g_object_set (pl, "recurse", FALSE,
 			  "debug", option_debug,
 			  "force", option_force,
 			  "disable-unsafe", option_disable_unsafe,
