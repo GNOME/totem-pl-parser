@@ -61,7 +61,7 @@ test_itms_parsing (void)
 	}
 
 	/* From https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&ign-mpt=uo=4 */
-	g_assert_cmpstr (parser_test_get_playlist_uri ("https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&ign-mpt=uo%3D4#"), ==, "https://rss.hosting.thisisdax.com/ed87f36a-7b44-4e79-beea-f3220752406c");
+	g_assert_cmpstr (parser_test_get_playlist_uri ("https://itunes.apple.com/fr/podcast/chris-moyles-show-on-radio/id1042635536?mt=2&ign-mpt=uo%3D4#"), ==, "https://feeds.captivate.fm/the-chris-moyles-show/");
 	g_assert_cmpstr (parser_test_get_playlist_uri ("http://itunes.apple.com/gb/podcast/radio-1-mini-mix/id268491175?uo=4"), ==, "https://podcasts.files.bbci.co.uk/p02nrtyg.rss");
 }
 
