@@ -1338,7 +1338,7 @@ totem_pl_parser_save_finish (TotemPlParser   *parser,
 			     GAsyncResult    *async_result,
 			     GError         **error)
 {
-	g_return_val_if_fail (g_task_is_valid (async_result, parser), NULL);
+	g_return_val_if_fail (g_task_is_valid (async_result, parser), FALSE);
 
 	return g_task_propagate_boolean (G_TASK (async_result), error);
 }
