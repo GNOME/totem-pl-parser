@@ -6,7 +6,7 @@
 	<name xml:lang="en">totem-pl-parser</name>
 	<shortdesc xml:lang="en">Simple GObject-based library to parse and save a host of playlist formats</shortdesc>
 	<description xml:lang="en">Simple GObject-based library to parse and save a host of playlist formats</description>
-	<homepage rdf:resource="https://wiki.gnome.org/Apps/Videos" />
+	<homepage rdf:resource="https://apps.gnome.org/Totem/" />
 	<mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-multimedia" />
 	<download-page rdf:resource="http://download.gnome.org/sources/totem-pl-parser/" />
 	<bug-database rdf:resource="https://gitlab.gnome.org/GNOME/totem-pl-parser/issues" />
