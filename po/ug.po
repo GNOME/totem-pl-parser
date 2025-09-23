@@ -5,10 +5,9 @@
 # Sahran <sahran.ug@gmail.com>, 2010
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: totem-pl-parser\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=totem&component=playlist parser\n"
-"POT-Creation-Date: 2010-12-23 18:39+0000\n"
+msgstr "Project-Id-Version: totem-pl-parser\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/totem-pl-parser/issues\n"
+"POT-Creation-Date: 2025-09-10 23:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sahran <sahran.ug@gmail.com>\n"
 "Language-Team: GNOME Uighur Translation Project <gnome-uighur@yahoogroups.com>\n"
@@ -18,33 +17,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../plparse/totem-disc.c:359 ../plparse/totem-disc.c:503
+#: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
 #, c-format
 msgid "Failed to mount %s."
-msgstr "%s ئېگەرلەش مەغلۇپ بولدى."
+msgstr "%s ئېگەرلىيەلمىدى."
 
-#: ../plparse/totem-disc.c:392
+#: plparse/totem-disc.c:418
 #, c-format
-msgid "No media in drive for device '%s'."
-msgstr "'%s' ئۈسكۈنىنىڭ قوزغاتقۇچىسىدا ۋاسىتە يوق."
+msgid "No media in drive for device “%s”."
+msgstr "«%s» ئۈسكۈنىنىڭ قوزغاتقۇچىسىدا ۋاسىتە يوق."
 
-#: ../plparse/totem-disc.c:446
+#: plparse/totem-disc.c:475
 #, c-format
 msgid "Please check that a disc is present in the drive."
 msgstr "قوزغاتقۇچتا دىسكىنىڭ بار يوقلۇقىنى تەكشۈرۈڭ."
 
-#: ../plparse/totem-disc.c:889
+#: plparse/totem-disc.c:946
 msgid "Audio CD"
 msgstr "ئۈن CD"
 
-#: ../plparse/totem-disc.c:891
+#: plparse/totem-disc.c:948
 msgid "Video CD"
 msgstr "سىن CD"
 
-#: ../plparse/totem-disc.c:893
+#: plparse/totem-disc.c:950
 msgid "DVD"
 msgstr "DVD"
 
-#: ../plparse/totem-disc.c:895
+#: plparse/totem-disc.c:952
 msgid "Digital Television"
 msgstr "رەقەملىك تېلېۋىزور"
+
+#: plparse/totem-disc.c:954
+msgid "Blu-ray"
+msgstr "كۆكنۇر"
