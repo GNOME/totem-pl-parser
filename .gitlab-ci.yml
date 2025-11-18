@@ -1,4 +1,12 @@
-image: fedora:latest
+include:
+  - component: "gitlab.gnome.org/GNOME/citemplates/release-service@master"
+    inputs:
+      job-stage: "release"
+      dist-job-name: "build-fedora"
+
+stages:
+  - "build"
+  - "release"
 
 variables:
   DEPENDENCIES:
@@ -21,26 +29,32 @@ variables:
     gvfs
     dbus-daemon
     shared-mime-info
+  MESON_BUILD_DIR: "_build"
   LAST_ABI_BREAK: "9ccc3c78a5a41b86bdd2c9fb63ad4963e65e4f63"
 
 build-fedora:
+  stage: "build"
+  image: fedora:latest
   before_script:
     # Update
     - dnf -y update && dnf install -y $DEPENDENCIES
   script:
-    - meson _build
+    - meson "${MESON_BUILD_DIR}"
     - dnf install -y $TEST_DEPS
-    - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build test
-    - ninja -C _build install
+    - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C "${MESON_BUILD_DIR}" test
+    - ninja -C "${MESON_BUILD_DIR}" install
     # dist also runs the tests
-    - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C _build dist
+    - GIO_USE_VOLUME_MONITOR=unix dbus-run-session ninja -C "${MESON_BUILD_DIR}" dist
+    - cp -r "${MESON_BUILD_DIR}/meson-dist/" "${CI_PROJECT_DIR}/public-dist/"
   artifacts:
     when: always
     paths:
-    - _build/meson-logs/*
-    - _build/meson-dist/totem-pl-parser-*.tar.xz
+      - ${MESON_BUILD_DIR}/meson-logs/*
+      - ${MESON_BUILD_DIR}/meson-dist/totem-pl-parser-*.tar.xz
+      - "public-dist"
 
 check_abi:
+  stage: "build"
   before_script:
     # ABI check, the deps are needed to build the old version of totem-pl-parser
     - dnf update -y --nogpgcheck && dnf install -y --nogpgcheck $DEPENDENCIES $DEPS_ABI_CHECK
