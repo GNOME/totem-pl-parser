@@ -15,7 +15,6 @@ variables:
     git
     gettext
     gtk-doc
-    meson
     glib2-devel
     libxml2-devel
     gobject-introspection-devel
