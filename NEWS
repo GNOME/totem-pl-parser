@@ -1,5 +1,20 @@
 New features and significant updates in version...
 
+3.26.7:
+- Fix uninitialized variable error in plparser
+- Add itunes genre support for podcast RSS feeds
+- Split podcast tests
+- Fix deprecation warnings
+- Fix return value from cancelled plparser calls
+- Fix TotemPlParserMetadata in plparser bindings
+- Use gitlab.gnome.org for bug-database in doap
+- Use apps.gnome.org for homepage in doap
+- Update podcast test for server changes
+- Fix guard return type in plparser
+- Add release CI elements
+- Remove duplicate dependency in CI
+- New and updated translations
+
 3.26.6:
 - Remove quvi videosite checker. The videosite checker functionality
   still exists and can be implemented according to README-videosite-script.md
