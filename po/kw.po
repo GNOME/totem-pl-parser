@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: totem-pl-parser master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/totem-pl-parser/issues\n"
 "POT-Creation-Date: 2024-03-14 09:15+0000\n"
-"PO-Revision-Date: 2026-01-26 12:49+0000\n"
+"PO-Revision-Date: 2026-05-11 22:04+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -23,22 +23,22 @@ msgstr ""
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 49.0\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
 #, c-format
 msgid "Failed to mount %s."
-msgstr "Y fyllis yskynna %s."
+msgstr "Ny yllir yskynna %s."
 
 #: plparse/totem-disc.c:418
 #, c-format
 msgid "No media in drive for device “%s”."
-msgstr "Media vyth kavosys yn kyf kov rag devis “%s”."
+msgstr "Nyns eus media yn kyf kov rag devis “%s”."
 
 #: plparse/totem-disc.c:475
 #, c-format
 msgid "Please check that a disc is present in the drive."
-msgstr "Mar pleg checkya unn plasen yw ena."
+msgstr "Checkyewgh yma plasen y'n kyf kov mar pleg."
 
 #: plparse/totem-disc.c:946
 msgid "Audio CD"
@@ -54,7 +54,7 @@ msgstr "DVD"
 
 #: plparse/totem-disc.c:952
 msgid "Digital Television"
-msgstr "Pellwolok Besyel"
+msgstr "Pellwolok Vesyel"
 
 #: plparse/totem-disc.c:954
 msgid "Blu-ray"
