@@ -4,14 +4,14 @@
 #
 # Åsmund Skjæveland <aasmunds@fys.uio.no>, 2006.
 # Eirik U. Birkeland <eirbir@gmail.com>, 2009.
+# Roy-Magne Mo <rmo@sunnmore.net>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=totem&component=playlist parser\n"
-"POT-Creation-Date: 2009-04-17 18:07+0000\n"
-"PO-Revision-Date: 2009-12-19 01:56+0100\n"
-"Last-Translator: Eirik U. Birkeland <eirbir@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/totem-pl-parser/issues\n"
+"POT-Creation-Date: 2024-03-14 09:15+0000\n"
+"PO-Revision-Date: 2026-09-16 10:04+0200\n"
+"Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "Language: nn\n"
 "MIME-Version: 1.0\n"
@@ -23,12 +23,12 @@ msgstr ""
 #: plparse/totem-disc.c:276 plparse/totem-disc.c:289 plparse/totem-disc.c:532
 #, c-format
 msgid "Failed to mount %s."
-msgstr "Klarte ikkje montera %s."
+msgstr "Klarte ikkje montere %s."
 
 #: plparse/totem-disc.c:418
-#, fuzzy, c-format
+#, c-format
 msgid "No media in drive for device “%s”."
-msgstr "Ingen medium i stasjonen for eininga «%s»."
+msgstr "Ikkje noko medium i stasjonen for eininga «%s»."
 
 #: plparse/totem-disc.c:475
 #, c-format
@@ -53,7 +53,7 @@ msgstr "Digital-TV"
 
 #: plparse/totem-disc.c:954
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-ray"
 
 #~ msgid "Failed to find mountpoint for device %s"
 #~ msgstr "Klarte ikkje å finna monteringspunkt for eininga %s"
